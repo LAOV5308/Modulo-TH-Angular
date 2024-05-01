@@ -8,7 +8,9 @@ router.get('/datos', async (req, res) => {
         const result = await pool.request().query('SELECT * FROM tblEmpleado');
         res.json(result.recordset);
     } catch (err) {
-        res.status(500).send({ message: 'Error al obtener los datos' });
+        res.status(500).send(
+            { message: 'Error al obtener los datos' }
+        );
     }
 });
 
@@ -21,9 +23,10 @@ router.get('/datos/:id', async (req, res) =>  {
         const result = await pool.request().query(qr);
         res.json(result.recordset);
     } catch (err) {
-        res.status(500).send({ message: 'Error al obtener los datos' });
+        res.status(500).send(
+            { message: 'Error al obtener los datos' }
+        );
     }
-
 });
 
 module.exports = router;

@@ -10,7 +10,9 @@ export class DataService {
 
     constructor(private http: HttpClient) {}
 
+    //GetAll
     obtenerDatos(): Observable<any> {
         return this.http.get(this.url);
     }
+
 }

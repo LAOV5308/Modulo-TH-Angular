@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { LoginComponent } from "../../frontend/login/login.component";
 import { DataService } from '../../backend/ConexionDB/data.service';
+import {MatButtonModule} from '@angular/material/button';
 
 
 
@@ -9,7 +10,8 @@ import { DataService } from '../../backend/ConexionDB/data.service';
         
     ],
     imports: [
-      LoginComponent
+      LoginComponent,
+      MatButtonModule
     ],
     providers: [DataService],
     bootstrap: []
