@@ -1,3 +1,8 @@
+//aplicacion que va ser que funcione importar expreess
+const express = require('express');
+const bodyParser = require("body-parser");
+const app = express();
+
 const sql = require('mssql');
 
 const config = {
@@ -11,6 +16,19 @@ const config = {
     }
 };
 
+async function getConnection() {
+  try {
+      await sql.connect(config);
+      console.log('Conectado a la base de datos SQL Server');
+      return sql;
+  } catch (err) {
+      console.error('Error al conectar a la base de datos:', err);
+      throw err;
+  }
+}
+
+module.exports = getConnection;
+/*
 const poolPromise = new sql.ConnectionPool(config)
   .connect()
   .then(pool => {
@@ -21,4 +39,6 @@ const poolPromise = new sql.ConnectionPool(config)
 
 module.exports = {
     sql, poolPromise
-};
+};*/
+
+

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { poolPromise } = require('./dbConfig');
 
+
+
 router.get('/datos', async (req, res) => {
     try {
         const pool = await poolPromise;

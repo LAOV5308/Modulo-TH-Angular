@@ -1,0 +1,39 @@
+
+  
+
+<h1>Datos de la Tabla</h1>
+<!-- lista-empleados.component.html -->
+  
+<!-- lista-empleados.component.html -->
+<div>
+<table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Fecha de Ingreso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let empleado of empleados">
+        <td>{{ empleado.id }}</td>
+        <td>{{ empleado.nombre }}</td>
+        <td>{{ empleado.apellido }}</td>
+        <td>{{ empleado.email }}</td>
+        <td>{{ empleado.fechaIngreso | date:'mediumDate' }}</td>
+        
+        <td>
+            <button mat-button color="primary" (click)="editar()">Editar</button>
+            <button mat-button color="warn" (click)="eliminar()">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div></div>
+  <div>
+    <button mat-flat-button color="accent" (click)="hola()">Guardar</button>
+  </div>
+
