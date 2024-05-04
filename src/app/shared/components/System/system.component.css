@@ -1,0 +1,30 @@
+.custom-jumbotron {
+    margin: 20px;
+    padding: 20px;
+    background-color: #ffffff; /* Ajusta el color de fondo según necesites */
+    box-shadow: 0 6px 10px rgba(0,0,0,0.1); /* Añade sombra para un efecto elevado */
+  }
+  
+  mat-card-title {
+    color: #333333; /* Color del título */
+  }
+  
+  mat-card-subtitle {
+    color: #666666; /* Color del subtítulo */
+  }
+  
+  mat-card-content p {
+    color: #444444; /* Color del texto */
+  }
+  
+
+  /* styles.css o en el archivo CSS de tu componente */
+mat-toolbar {
+    background-color: #00823b; /* Ajusta el color de fondo */
+    color: white;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
