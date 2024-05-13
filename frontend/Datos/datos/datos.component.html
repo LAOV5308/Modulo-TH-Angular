@@ -1,7 +1,7 @@
 
   
 
-<h1>Datos de la Tabla</h1>
+<h1>Datos de los Empleados</h1>
 <!-- lista-empleados.component.html -->
   
 <!-- lista-empleados.component.html -->
@@ -9,21 +9,29 @@
 <table>
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Email</th>
-        <th>Fecha de Ingreso</th>
+        <th>NumeroNomina</th>
+        <th>NombreEmpleado</th>
+        <th>NombreDepartamento</th>
+        <th>NombrePuesto</th>
+        <th>TipoIngreso</th>
+        <th>Antiguedad</th>
+        <th>HorarioSemanal</th>
+        <th>EstadoEmpleado</th>
+        <th>Ingreso</th>
         <th>Accion</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let empleado of empleados">
-        <td>{{ empleado.id }}</td>
-        <td>{{ empleado.nombre }}</td>
-        <td>{{ empleado.apellido }}</td>
-        <td>{{ empleado.email }}</td>
-        <td>{{ empleado.fechaIngreso | date:'mediumDate' }}</td>
+        <td>{{ empleado.NumeroNomina }}</td>
+        <td>{{ empleado.NombreEmpleado }}</td>
+        <td>{{ empleado.NombreDepartamento }}</td>
+        <td>{{ empleado.NombrePuesto }}</td>
+        <td>{{ empleado.TipoIngreso }}</td>
+        <td>{{ empleado.Antiguedad}}</td>
+        <td>{{ empleado.HorarioSemanal }}</td>
+        <td>{{ empleado.EstadoEmpleado }}</td>
+        <td>{{ empleado.Ingreso| date:'mediumDate' }}</td>
         
         <td>
             <button mat-button color="primary" (click)="editar()">Editar</button>
@@ -34,7 +42,9 @@
   </table>
 </div>
 <div></div>
+<!--
   <div>
     <button mat-flat-button color="accent" (click)="hola()">Guardar</button>
   </div>
+  -->
 

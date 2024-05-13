@@ -1,25 +1,26 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+const empleadosRutas = require('./backend/routes/empleadoRutas')
+const departamentosRutas = require('./backend/routes/departamentoRutas')
 const getConnection = require('./backend/ConexionDB/dbConfig');
 const port = 3000;
 
-app.use((req , res, next)=>{
-    // Permisos
-res.setHeader("Access-Control-Allow-Origin", "*")
-res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-res.setHeader("Access-Control-Allow-Methods","GET, POST, PATCH,PUT,  DELETE, OPTIONS");
-  next();
-});
 
-app.get('/empleados', async (req, res) => {
-    try {
-        const sql = await getConnection();
-        const result = await sql.query('SELECT * FROM Empleados');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send('Error al obtener datos de la base de datos');
-    }
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept")
+    res.setHeader("Access-Control-Allow-Methods",
+    "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+    next();
+
 });
+app.use(bodyParser.json());
+
+//Usar las rutas
+app.use('/empleados', empleadosRutas);
+app.use('/departamentos', departamentosRutas);
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);

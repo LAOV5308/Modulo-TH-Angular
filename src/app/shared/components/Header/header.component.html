@@ -1,10 +1,11 @@
 <!-- header.component.html -->
 <mat-toolbar color="primary">
-    <button mat-button >Sistema</button>
-    <button mat-button >Empleados</button>
-    <button mat-button >Departamento</button>
-    <button mat-button >Puestos</button>
-    <button mat-button >Usuarios</button>
+    <button mat-button> <mat-icon>dashboard</mat-icon>Dashboard</button>
+    <button mat-button (click)="empleados()"><mat-icon>people</mat-icon>Empleados</button>
+    <button mat-button (click)="departamentos()"><mat-icon>business</mat-icon>Departamentos</button>
+    <button mat-button><mat-icon>assignment</mat-icon> Puestos</button>
+    <button mat-button><mat-icon>account_circle</mat-icon> Usuarios</button>
     <span class="spacer"></span>
-    <button mat-button routerLink="/home">Cerrar sesión</button>
+    <button mat-button (click)="openDialog()"><mat-icon>exit_to_app</mat-icon>Cerrar sesión</button>
+    <!--<button mat-button routerLink="/home">Cerrar sesión</button>-->
   </mat-toolbar>

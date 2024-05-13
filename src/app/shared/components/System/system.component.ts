@@ -3,7 +3,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';  // Importante para manejar la navegación
-import { HeaderComponent } from '../Header/header.component';
+import { HeaderComponent } from '../header/header.component';
+import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
+
 
 @Component({
   selector: 'app-system',
@@ -12,7 +14,8 @@ import { HeaderComponent } from '../Header/header.component';
     MatCardModule,
     MatToolbarModule,
     RouterModule,
-    HeaderComponent
+    HeaderComponent,
+    DatosComponent
   ],
   templateUrl: './system.component.html',
   styleUrl: './system.component.css'

@@ -1,0 +1,104 @@
+<div mat-dialog-title>
+    <h1>Formulario Empleado</h1>
+</div>
+<form [formGroup]="empForm" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row">
+            <mat-form-field color="accent">
+                <mat-label>No.Nomina</mat-label>
+                <input matInput type="text" placeholder="Ex. 1010" formControlName="NumeroNomina">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>NombreEmpleado</mat-label>
+                <input matInput placeholder="Ex. Sanchez Juan" formControlName="NombreEmpleado">
+            </mat-form-field>
+        </div>
+
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Departamento</mat-label>
+                <mat-select formControlName="NombreDepartamento">
+                    <mat-option *ngFor="let val of departamentos" [value]="val">{{val}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Puestos</mat-label>
+                <mat-select formControlName="NombrePuesto">
+                    <mat-option *ngFor="let val of puestos" [value]="val">{{val}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!--<mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" placeholder="Ex. test@gmail.com" formControlName="email">
+            </mat-form-field>
+
+            
+            <mat-radio-group aria-label="Selecciona una Opcion" formControlName="gender">
+                <mat-label><b>Genero</b></mat-label>
+                <mat-radio-button value="Male">Masculino</mat-radio-button>
+                <mat-radio-button value="Female">Femenino</mat-radio-button>
+            </mat-radio-group>
+
+            <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Experience</mat-label>
+                <input matInput placeholder="Ex. 4" type="number" formControlName="experience">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Package</mat-label>
+                <input matInput placeholder="Ex. 12" type="number" formControlName="package">
+                <mat-hint>In rupees</mat-hint>
+            </mat-form-field>
+        </div>
+
+
+        -->
+
+        </div>
+
+        <div class="row">
+            <mat-form-field>
+                <mat-label>Fecha de Ingreso</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="Ingreso">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>       
+              
+            <mat-form-field appearance="outline">
+                <mat-label>Horario Semanal</mat-label>
+                <mat-select formControlName="HorarioSemanal">
+                    <mat-option *ngFor="let val of horariosemanal" [value]="val">{{val}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+              
+        </div>
+
+        <div class="row">
+            <mat-radio-group aria-label="Selecciona una Opcion" formControlName="TipoIngreso">
+                <mat-label><b>TipoIngreso</b></mat-label>
+                <mat-radio-button value="Nuevo">Nuevo</mat-radio-button>
+                <mat-radio-button value="Reingreso">Reingreso</mat-radio-button>
+            </mat-radio-group>
+
+           <!-- <mat-radio-group aria-label="Selecciona una Opcion" formControlName="EstadoEmpleado">
+                <mat-label><b>EstadoEmpleado</b></mat-label>
+                <mat-radio-button value="1">Activo</mat-radio-button>
+                <mat-radio-button value="0">Inactivo</mat-radio-button>
+            </mat-radio-group>-->
+
+        </div>
+
+
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </div>
+</form>

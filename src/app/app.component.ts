@@ -4,11 +4,9 @@ import {MatButtonModule} from '@angular/material/button';
 import { LoginComponent } from '../../frontend/login/login.component';
 import { DatosComponent } from '../../frontend/Datos/datos/datos.component';
 import { DataService } from '../../backend/ConexionDB/data.service';
-import { SystemComponent } from './shared/components/System/system.component';
-import { HeaderComponent } from './shared/components/Header/header.component';
-
-
-
+import { SystemComponent } from './shared/components/system/system.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { CreateEmpleadoComponent } from './shared/components/empleados/create-empleado/create-empleado.component';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +16,8 @@ import { HeaderComponent } from './shared/components/Header/header.component';
     LoginComponent,
     DatosComponent,
     SystemComponent,
-    HeaderComponent
+    HeaderComponent,
+    CreateEmpleadoComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

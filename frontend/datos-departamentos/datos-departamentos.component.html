@@ -1,0 +1,78 @@
+
+<button 
+    mat-raised-button 
+    color = "primary"
+    (click)="agregar()"
+    type="submit">Agregar Departamento
+    </button>
+
+
+<h1>Datos de los Departamentos</h1>
+<!-- lista-empleados.component.html -->
+  
+<div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="IdDepartamento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>IdDepartamento</th>
+        <td mat-cell *matCellDef="let row"> {{row.IdDepartamento}} </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="NombreDepartamento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>NombreDepartamento</th>
+        <td mat-cell *matCellDef="let row"> {{row.NombreDepartamento}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="EstadoDepartamento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>EstadoDepartamento</th>
+        <td mat-cell *matCellDef="let row"> {{row.EstadoDepartamento}}</td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="Acciones">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="primary" (click)="editar(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminar(row.IdDepartamento)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+  </div>
+
+<!-- lista-empleados.component.html LUIS -->
+<!--
+<div>
+<table>
+    <thead>
+      <tr>
+        <th>IdDepartamento</th>
+        <th>NombreDepartamento<th>
+        <th>EstadoDepartamento</th>
+        <th>Accion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let departamento of departamentos">
+        <td>{{ departamento.IdDepartamento }}</td>
+        <td>{{departamento.NombreDepartamento }}</td>
+        <td>{{departamento.EstadoDepartamento}}</td>
+        <td>
+            <button mat-button color="primary" (click)="editar()">Editar</button>
+            <button mat-button color="warn" (click)="eliminar()">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+-->

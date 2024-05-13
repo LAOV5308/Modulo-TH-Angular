@@ -62,6 +62,8 @@ body {
 }
 
 
+
+
 /* Botón de envío 
 button {
     /*background-color: #5c67f2;*/
@@ -78,3 +80,16 @@ button:hover {
     background-color: #4a54e1;
 }
 */
+
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border: 1px solid #4CAF50;
+  background-color: #8BC34A;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
