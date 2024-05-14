@@ -10,6 +10,7 @@ import { ComponentDepartamentoComponent } from './shared/components/Departamento
 
 
 
+
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
     {path: 'data', component: DatosComponent},

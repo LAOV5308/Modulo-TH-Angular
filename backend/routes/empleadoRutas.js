@@ -12,6 +12,30 @@ router.get('/', async (req, res) => {
         res.status(500).send('Error al obtener datos de la base de datos');
     }
 });
+//Obtener solamente el empleado por Id
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * FROM tblEmpleados WHERE NumeroNomina = ' + id);
+        res.json(result.recordset);
+        //res.send('Empleado Encontrado Correctamente');
+    } catch (err) {
+        res.status(500).send('Error al encontrar Empleado');
+    }
+});
+
+// Eliminar un empleado
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query(`DELETE FROM tblEmpleados WHERE NumeroNomina = ${id}`);
+        res.send('Empleado eliminado correctamente');
+    } catch (err) {
+        res.status(500).send('Error al eliminar el empleado');
+    }
+});
 
 // Crear un nuevo empleado
 router.post('/', async (req, res) => {
@@ -62,18 +86,6 @@ router.post('/', async (req, res) => {
         res.status(500).send('Error al crear el empleado');
     }
 });*/
-
-// Eliminar un empleado
-router.delete('/:id', async (req, res) => {
-    const { NumeroNomina } = req.params;
-    try {
-        const sql = await db.getConnection();
-        const result = await sql.query(`DELETE FROM tblEmpleados WHERE NumeroNomina = ${NumeroNomina}`);
-        res.send('Empleado eliminado correctamente');
-    } catch (err) {
-        res.status(500).send('Error al eliminar el empleado');
-    }
-});
 
 /*
 

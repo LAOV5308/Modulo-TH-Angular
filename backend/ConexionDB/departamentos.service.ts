@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DepartamentosService {
+
   private apiUrl = 'http://localhost:3000/departamentos';
   private inputDepartamentos: inputDepartamento[] = [];
 
@@ -32,7 +33,7 @@ export class DepartamentosService {
   }
 
   deleteDepartamentos(id: number): Observable<any> {
-    return this.http.delete(this.apiUrl+'/'+id,);
+    return this.http.delete(this.apiUrl+'/'+id);
   }
 
   private handleError(error: HttpErrorResponse) {

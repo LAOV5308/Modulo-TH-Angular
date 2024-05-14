@@ -83,8 +83,6 @@ export class DatosDepartamentosComponent implements OnInit{
         }
       }
     });
-
-
   }
 
   eliminar(id: number){
@@ -105,5 +103,7 @@ export class DatosDepartamentosComponent implements OnInit{
   actualizar(){
       this.ngOnInit();
   }
+
+  
 
 }

@@ -10,28 +10,21 @@ import { CreateEmpleadoComponent } from './create-empleado/create-empleado.compo
 import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
 
 
-
-
 @Component({
   selector: 'app-empleados',
   standalone: true,
   imports: [HeaderComponent,
     DatosComponent,
     MatButtonModule,
-    MatCardModule,
-    CreateEmpleadoComponent,
-    DatosDepartamentosComponent
-
+    MatCardModule
   ],
   providers:[EmpleadosService],
   templateUrl: './empleados.component.html',
   styleUrl: './empleados.component.css'
 })
 export class EmpleadosComponent implements OnInit{
+
   constructor(
-    private _dialog: MatDialog,
-    private _empService: EmpleadosService,
-    private datosDepartamentod: DatosDepartamentosComponent
   ){
 
   }
@@ -42,7 +35,7 @@ export class EmpleadosComponent implements OnInit{
   }
 
   agregarempleado(){
-    const dialog = this._dialog.open(CreateEmpleadoComponent);
+   // const dialog = this._dialog.open(CreateEmpleadoComponent);
     /*
     dialog.afterClosed().subscribe({
       next: (val) => {

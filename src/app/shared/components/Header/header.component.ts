@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
+
 //import { CoreService } from './core/core.service';
 
 @Component({
@@ -25,7 +27,8 @@ import { MatTableDataSource } from '@angular/material/table';
     ConfirmDialogComponent,
     MatIcon,
     NgIf,
-    NgFor
+    NgFor,
+    DatosComponent
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -55,6 +58,7 @@ export class HeaderComponent {
 }
 
 empleados(){
+  //window.alert('Empleados');
   this.router.navigate(['/empleados']);
 }
 
