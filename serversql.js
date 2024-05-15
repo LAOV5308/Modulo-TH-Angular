@@ -26,7 +26,7 @@ app.use('/empleados', empleadosRutas);
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 });
-
+//Hola
 /*
 app.use(express.json());
 
