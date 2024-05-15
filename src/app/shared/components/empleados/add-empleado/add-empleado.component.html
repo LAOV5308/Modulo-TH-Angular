@@ -1,0 +1,84 @@
+
+
+<h1>Agregar Empleado</h1>
+
+<mat-card>
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+  
+      <mat-accordion>
+  
+        <!-- Información Personal -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Información Personal
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Apellidos</mat-label>
+            <input matInput formControlName="apellidos">
+          </mat-form-field>
+          <!-- Agrega más campos aquí -->
+  
+        </mat-expansion-panel>
+  
+        <!-- Información Laboral -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Información Laboral
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>No.Nomina</mat-label>
+            <input matInput formControlName="noNomina">
+          </mat-form-field>
+          <!-- Agrega más campos aquí -->
+  
+        </mat-expansion-panel>
+  
+        <!-- Domicilio -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Domicilio
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="correoElectronico">
+          </mat-form-field>
+          <!-- Agrega más campos aquí -->
+  
+        </mat-expansion-panel>
+  
+        <!-- Contacto de Emergencia -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Contacto de Emergencia
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Beneficiario</mat-label>
+            <input matInput formControlName="beneficiario">
+          </mat-form-field>
+          <!-- Agrega más campos aquí -->
+  
+        </mat-expansion-panel>
+  
+      </mat-accordion>
+  
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </form>
+
+  </mat-card>
+  

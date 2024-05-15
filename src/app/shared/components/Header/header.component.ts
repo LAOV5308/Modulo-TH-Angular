@@ -14,6 +14,9 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
 
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import {MatMenuModule} from '@angular/material/menu';
 //import { CoreService } from './core/core.service';
 
 @Component({
@@ -28,13 +31,20 @@ import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.compon
     MatIcon,
     NgIf,
     NgFor,
-    DatosComponent
+    DatosComponent,
+    FormsModule,
+    MatMenuModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
 
+  public items: { field: string }[] = [
+    { field: 'Option 1' },
+    { field: 'Option 2' },
+    { field: 'Option 3' }
+];
 
   constructor(public dialog: MatDialog,
     private router: Router,

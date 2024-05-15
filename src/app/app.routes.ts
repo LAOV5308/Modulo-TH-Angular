@@ -5,6 +5,7 @@ import { DatosComponent } from '../../frontend/Datos/datos/datos.component';
 import { SystemComponent } from './shared/components/system/system.component';
 import { EmpleadosComponent } from './shared/components/empleados/empleados.component';
 import { ComponentDepartamentoComponent } from './shared/components/Departamentos/component-departamento.component';
+import { AddEmpleadoComponent } from './shared/components/empleados/add-empleado/add-empleado.component';
 
 
 
@@ -13,7 +14,7 @@ import { ComponentDepartamentoComponent } from './shared/components/Departamento
 
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
-    {path: 'data', component: DatosComponent},
+    {path: 'data', component: AddEmpleadoComponent},
     {path: 'home', component: LoginComponent},
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},
