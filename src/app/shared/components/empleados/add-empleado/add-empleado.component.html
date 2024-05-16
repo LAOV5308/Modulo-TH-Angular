@@ -1,10 +1,12 @@
+<app-header></app-header>
+<br/>
 
 
-<h1>Agregar Empleado</h1>
-
-<mat-card>
+<mat-card class="matcard">
+  <h1>Agregar Empleado</h1>
+  <mat-card-header class="matcardheader">
+    
     <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-  
       <mat-accordion>
   
         <!-- Información Personal -->
@@ -77,8 +79,9 @@
   
       </mat-accordion>
   
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
+      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Guardar</button>
     </form>
+  </mat-card-header>
 
   </mat-card>
   

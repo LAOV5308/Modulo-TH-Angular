@@ -13,6 +13,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
+import { HeaderComponent } from '../../header/header.component';
+
 
 
 @Component({
@@ -29,7 +31,8 @@ import {MatCardModule} from '@angular/material/card';
     ReactiveFormsModule,
     MatButtonModule,
     MatExpansionModule,
-    MatCardModule
+    MatCardModule,
+    HeaderComponent
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './add-empleado.component.html',

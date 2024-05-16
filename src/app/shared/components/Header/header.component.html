@@ -13,7 +13,7 @@
     <button mat-button [matMenuTriggerFor]="menuEmpleados"><mat-icon>people</mat-icon>Empleados</button>
   <mat-menu #menuEmpleados="matMenu">
     <button mat-menu-item (click)="empleados()"><mat-icon>people</mat-icon>Consultar Empleados</button>
-    <button mat-menu-item><mat-icon>add_circle</mat-icon>Crear Empleado</button>
+    <button mat-menu-item (click)="addempleado()"><mat-icon>add_circle</mat-icon>Crear Empleado</button>
     <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
   </mat-menu>
     <!--<button mat-button><mat-icon>business</mat-icon>Departamentos</button>-->
@@ -22,7 +22,7 @@
     <button mat-button [matMenuTriggerFor]="menuDepartamentos"><mat-icon>business</mat-icon>Departamentos</button>
   <mat-menu #menuDepartamentos="matMenu">
     <button mat-menu-item (click)="departamentos()"><mat-icon> list_alt</mat-icon>Consultar Departamentos</button>
-    <button mat-menu-item><mat-icon>add_circle</mat-icon>Crear Departamento</button>
+    <!--<button mat-menu-item><mat-icon>add_circle</mat-icon>Crear Departamento</button>-->
     <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
   </mat-menu>
 

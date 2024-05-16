@@ -73,6 +73,7 @@ empleados(){
 }
 
 addempleado(){
+  this.router.navigate(['/addEmpleado']);
   //const dialog = this._dialog.open(ConfirmDialogComponent);
 }
 
