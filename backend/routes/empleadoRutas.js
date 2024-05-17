@@ -6,7 +6,7 @@ const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js export
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('exec stp_empleado_getall');
+        const result = await sql.query('Select * from V_empleadosActive');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');

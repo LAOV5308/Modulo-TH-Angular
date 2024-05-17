@@ -44,7 +44,8 @@ export class AddDepartamentoComponent implements OnInit{
     private _coreService: CoreService
   ){
     this.Form = this._fb.group({
-      NombreDepartamento: ''
+      NombreDepartamento: '',
+      NombreResponsable: ''
     });
   }
 

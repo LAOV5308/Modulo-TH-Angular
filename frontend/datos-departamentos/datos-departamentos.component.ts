@@ -32,6 +32,7 @@ export class DatosDepartamentosComponent implements OnInit{
   displayedColumns: string[] = [
     'IdDepartamento',
     'NombreDepartamento',
+    'NombreResponsable',
     'EstadoDepartamento',
     'Acciones'
   ];

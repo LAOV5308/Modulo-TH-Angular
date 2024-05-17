@@ -25,6 +25,56 @@
             <mat-label>Apellidos</mat-label>
             <input matInput formControlName="apellidos">
           </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Sexo</mat-label>
+            <input matInput formControlName="sexo">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>EstadoCivil</mat-label>
+            <input matInput formControlName="estadocivil">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Fecha de Ingreso</mat-label>
+            <input matInput [matDatepicker]="pickerfechanacimiento" formControlName="fechanacimiento">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerfechanacimiento"></mat-datepicker-toggle>
+            <mat-datepicker #pickerfechanacimiento></mat-datepicker>
+          </mat-form-field>  
+
+         <!-- <mat-form-field appearance="fill">
+            <mat-label>FechaNacimiento</mat-label>
+            <input matInput formControlName="fechanacimiento">
+          </mat-form-field>-->
+
+          <mat-form-field appearance="fill">
+            <mat-label>EntidadNacimiento</mat-label>
+            <input matInput formControlName="entidadnacimiento">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>CiudadNacimiento</mat-label>
+            <input matInput formControlName="ciudadnacimiento">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>CURP</mat-label>
+            <input matInput formControlName="curp">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>RFC</mat-label>
+            <input matInput formControlName="rfc">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>NSS</mat-label>
+            <input matInput formControlName="nss">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>UMF</mat-label>
+            <input matInput formControlName="umf">
+          </mat-form-field>
+
           <!-- Agrega más campos aquí -->
   
         </mat-expansion-panel>
@@ -41,6 +91,34 @@
             <mat-label>No.Nomina</mat-label>
             <input matInput formControlName="noNomina">
           </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Nivel</mat-label>
+            <input matInput formControlName="nivel">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>IdDepartamento</mat-label>
+            <input matInput formControlName="iddepartamento">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>IdPuesto</mat-label>
+            <input matInput formControlName="idpuesto">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Responsable</mat-label>
+            <input matInput formControlName="responsable">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>TipoIngreso</mat-label>
+            <input matInput formControlName="tipoingreso">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Fecha Ingreso</mat-label>
+            <input matInput formControlName="ingreso">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>HorarioSemanal</mat-label>
+            <input matInput formControlName="horariosemanal">
+          </mat-form-field>
           <!-- Agrega más campos aquí -->
   
         </mat-expansion-panel>
@@ -52,10 +130,34 @@
               Domicilio
             </mat-panel-title>
           </mat-expansion-panel-header>
+          <mat-form-field appearance="fill">
+            <mat-label>Domicilio INE</mat-label>
+            <input matInput formControlName="domicilioine">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Poblacion</mat-label>
+            <input matInput formControlName="poblacion">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Entidad Direccion</mat-label>
+            <input matInput formControlName="entidaddireccion">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>CP</mat-label>
+            <input matInput formControlName="cp">
+          </mat-form-field>
   
           <mat-form-field appearance="fill">
             <mat-label>Correo electrónico</mat-label>
             <input matInput formControlName="correoElectronico">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Numero Telefono 1</mat-label>
+            <input matInput formControlName="numerotelefono1">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Numero Telefono 2</mat-label>
+            <input matInput formControlName="numerotelefono2">
           </mat-form-field>
           <!-- Agrega más campos aquí -->
   
@@ -72,6 +174,18 @@
           <mat-form-field appearance="fill">
             <mat-label>Beneficiario</mat-label>
             <input matInput formControlName="beneficiario">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Parentesco</mat-label>
+            <input matInput formControlName="parentesco">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Fecha Nacimiento Beneficiario</mat-label>
+            <input matInput formControlName="fechanacimientobeneficiario">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Numero Telefono Emergencia</mat-label>
+            <input matInput formControlName="numerotelefonoemergencia">
           </mat-form-field>
           <!-- Agrega más campos aquí -->
   

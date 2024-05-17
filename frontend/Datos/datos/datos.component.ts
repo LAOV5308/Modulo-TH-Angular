@@ -35,8 +35,9 @@ import { CreateEmpleadoComponent } from '../../../src/app/shared/components/empl
 })
 export class DatosComponent implements OnInit{
   displayedColumns: string[] = [
-    'NumeroNomina',
-    'NombreEmpleado',
+    'NoNomina',
+    'Nombre',
+    'Apellidos',
     'NombreDepartamento',
     'NombrePuesto',
     'Ingreso',

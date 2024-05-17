@@ -7,7 +7,7 @@ const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js export
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('exec stp_departamento_getall');
+        const result = await sql.query('exec stp_departamento_getactive');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener departamentos');
@@ -17,11 +17,12 @@ router.get('/', async (req, res) => {
 //Guardar Departamento
 router.post('/', async (req, res) => {
     const { NombreDepartamento } = req.body;
+    const { NombreResponsable } = req.body;
     
     try {
         
         const sql = await db.getConnection();
-        const result = await sql.query('EXEC stp_departamento_add '+ NombreDepartamento);
+        const result = await sql.query('EXEC stp_departamento_add '+ NombreDepartamento + ', '+NombreResponsable);
         //res.status(201).send("Departamento creado con éxito");
         res.status(201).json({ message: "Departamento creado con éxito" });
 
@@ -67,6 +68,8 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { NombreDepartamento } = req.body;
+    const { NombreResponsable } = req.body;
+
     if (!NombreDepartamento) {
         return res.status(400).json({ message: "Datos de entrada no válidos" });
     }
@@ -79,7 +82,7 @@ router.put('/:id', async (req, res) => {
         request.input('NombreDepartamento', sql.VarChar, NombreDepartamento);
         const result = await request.execute('stp_departamento_update');*/
 
-        const result = await sql.query('EXEC stp_departamento_update '+ id +' , '+NombreDepartamento);
+        const result = await sql.query('EXEC stp_departamento_update '+ id +' , '+NombreDepartamento+' , '+NombreResponsable);
         
         if (result.rowsAffected[0] > 0) {
             res.status(200).json({ message: "Departamento actualizado con éxito" });

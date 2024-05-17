@@ -3,8 +3,8 @@ const sql = require('mssql');
 const poolPromise = new sql.ConnectionPool({
     user: 'UsuarioFamo',
     password: 'Famo2024',
-    //server: 'ACER-TM3109',
-    server: 'DESKTOP-LAOV530',
+    server: 'ACER-TM3109',
+    //server: 'DESKTOP-LAOV530',
     database: 'EmpleadosDB',
     options: {
         encrypt: true,

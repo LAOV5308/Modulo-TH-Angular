@@ -14,8 +14,25 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
 import { HeaderComponent } from '../../header/header.component';
+import { CoreService } from '../../../../Core/core.service';
+import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
 
+import { CommonModule } from '@angular/common';
 
+import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
+import 'moment/locale/fr';
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-add-empleado',
@@ -32,9 +49,15 @@ import { HeaderComponent } from '../../header/header.component';
     MatButtonModule,
     MatExpansionModule,
     MatCardModule,
-    HeaderComponent
+    HeaderComponent,
+    CommonModule,
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    provideMomentDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  EmpleadosService, provideNativeDateAdapter(),CoreService],
+    
   templateUrl: './add-empleado.component.html',
   styleUrl: './add-empleado.component.css'
 })
@@ -43,12 +66,43 @@ export class AddEmpleadoComponent implements OnInit {
 
   constructor(private fb: FormBuilder) { 
     this.employeeForm = this.fb.group({
+      //Informacion Personal
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
+      sexo:[''],
+      estadocivil:[''],
+      fechanacimiento:[''],
+      entidadnacimiento:[''],
+      ciudadnacimiento:[''],
+      curp:[''],
+      rfc:[''],
+      nss:[''],
+      umf:[''],
+      //Informacion Laboral
       // Define otros controles de formulario aquí
       noNomina: ['', Validators.required],
+      nivel:[''],
+      iddepartamento:[''],
+      idpuesto:[''],
+      responsable:[''],
+      tipoingreso:[''],
+      ingreso:[''],
+      horariosemanal:[''],
+
+      //Domicilio
+      domicilioine:['', Validators.required],
+      poblacion:[''],
+      entidaddireccion:[''],
+      cp:[''],
       correoElectronico: ['', [Validators.required, Validators.email]],
+      numerotelefono1:[''],
+      numerotelefono2:[''],
+
+      //Contacto de Emergencia
       beneficiario: ['', Validators.required],
+      parentesco:[''],
+      fechanacimientobeneficiario:[''],
+      numerotelefonoemergencia:[''],
       // Añadir más controles de formulario aquí
     });
   }
@@ -61,6 +115,6 @@ export class AddEmpleadoComponent implements OnInit {
     if (this.employeeForm.valid) {
       console.log(this.employeeForm.value);
     }
-
 }
+
 }
