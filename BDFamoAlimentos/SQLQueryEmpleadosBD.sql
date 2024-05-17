@@ -96,19 +96,21 @@ CREATE TABLE Empleados (
 	EstadoEmpleado BIT,
 );
 
+
 Create Table tblDomicilio(
-	NoNomina int,
-	CorreoElectronico VARCHAR(50),
-    NumeroTelefono1 VARCHAR(15),
-    NumeroTelefono2 VARCHAR(15),
-	DomicilioIne VARCHAR(50),
+	IdPersona int,
+  DomicilioIne VARCHAR(50),
     Poblacion VARCHAR(50),
     EntidadDireccion VARCHAR(50),
-	CP VARCHAR(50),
+	  CP VARCHAR(50),
+	  CorreoElectronico VARCHAR(50),
+    NumeroTelefono1 VARCHAR(15),
+    NumeroTelefono2 VARCHAR(15),
+	
 );
 
 Create Table tblContactoEmergencia(
-	NoNomina int,
+	IdPersona int,
 	NombreBeneficiario VARCHAR(50),
 	Parentesco VARCHAR(30),
 	FechaNacimientoBeneficiario DATE,
@@ -121,7 +123,7 @@ Create Table tblContactoEmergencia(
 
 -- Insertar datos de ejemplo en la tabla Departamentos
 INSERT INTO Departamentos (Nombre, Ubicacion)
-VALUES ('Ventas', 'Nueva York'), ('Marketing', 'Los ¡ngeles'), ('Finanzas', 'Chicago');
+VALUES ('Ventas', 'Nueva York'), ('Marketing', 'Los √Ångeles'), ('Finanzas', 'Chicago');
 
 -- Insertar datos de ejemplo en la tabla Puestos
 INSERT INTO Puestos (Titulo, Salario)
@@ -129,9 +131,9 @@ VALUES ('Gerente de Ventas', 80000.00), ('Representante de Ventas', 50000.00), (
 
 -- Insertar datos de ejemplo en la tabla Empleados
 INSERT INTO Empleados (Nombre, Apellido, Direccion, Ciudad, Estado, CodigoPostal, Telefono, Email, FechaNacimiento, FechaContratacion, DepartamentoId, PuestoId)
-VALUES ('Juan', 'PÈrez', '123 Calle Principal', 'Nueva York', 'NY', '10001', '555-1234', 'juan.perez@ejemplo.com', '1985-05-15', '2010-03-01', 1, 1),
-       ('MarÌa', 'GarcÌa', '456 Avenida Central', 'Los ¡ngeles', 'CA', '90001', '555-5678', 'maria.garcia@ejemplo.com', '1990-09-20', '2015-07-01', 2, 3),
-       ('Carlos', 'RamÌrez', '789 Calle Secundaria', 'Chicago', 'IL', '60601', '555-9012', 'carlos.ramirez@ejemplo.com', '1988-02-10', '2012-11-15', 3, 2);
+VALUES ('Juan', 'P√©rez', '123 Calle Principal', 'Nueva York', 'NY', '10001', '555-1234', 'juan.perez@ejemplo.com', '1985-05-15', '2010-03-01', 1, 1),
+       ('Mar√≠a', 'Garc√≠a', '456 Avenida Central', 'Los √Ångeles', 'CA', '90001', '555-5678', 'maria.garcia@ejemplo.com', '1990-09-20', '2015-07-01', 2, 3),
+       ('Carlos', 'Ram√≠rez', '789 Calle Secundaria', 'Chicago', 'IL', '60601', '555-9012', 'carlos.ramirez@ejemplo.com', '1988-02-10', '2012-11-15', 3, 2);
 
 
 /*Consulta de Nombre de empleado su puesto y el Departamento con JOIN*/
@@ -211,6 +213,7 @@ ON EP.NumeroNomina = D.NumeroNomina
 INNER JOIN tblPersonal PRS
 ON EP.IdPersona = PRS.IdPersona
 
+--Drop View V_empleadosgral
 
 Select * from tblEmpleado
 
@@ -330,8 +333,8 @@ EXEC stp_personaydireccion_add 'Ortiz Varelas Daniel', 'M', '2004-06-28', 'Guana
 'Leon', 'Soltero', '1223123','OIVL09', 'OIVL021125HGTRRSA6', '12', 'Ortiz Acosta Paciano',
 'Padre', '1975-03-09', 'Puerta de Jalpa', 'Purisima del Rincon', 'Guanajuato', '36430', 'varelasantobnio5308@gmail.com', '47613560', '47634', '476454'
 
-EXEC stp_personaydireccion_add 'Juan PÈrez','Masculino','1985-04-15','Ciudad de MÈxico','CDMX','Soltero','12345678901','JUPE850415123','JUPE850415HDFRNN09','55',
-    'Ana PÈrez','Esposa','1990-08-25','Calle Falsa 123','Ciudad de MÈxico','CDMX','01000','juan.perez@example.com','5555555555','5555555556','5555555557';
+EXEC stp_personaydireccion_add 'Juan P√©rez','Masculino','1985-04-15','Ciudad de M√©xico','CDMX','Soltero','12345678901','JUPE850415123','JUPE850415HDFRNN09','55',
+    'Ana P√©rez','Esposa','1990-08-25','Calle Falsa 123','Ciudad de M√©xico','CDMX','01000','juan.perez@example.com','5555555555','5555555556','5555555557';
 
 	select * from tblPersonal
 
@@ -559,13 +562,13 @@ EXEC stp_empleado_getactive
 
 
 
-EXEC stp_puestos_add 'Coordinador del Sistema de GestiÛn de Calidad e Inocuidad'
+EXEC stp_puestos_add 'Coordinador del Sistema de Gesti√≥n de Calidad e Inocuidad'
 EXEC stp_puestos_add 'Gestor documental'
 EXEC stp_puestos_add 'Coordinador de Sanidad'
 EXEC stp_puestos_add 'Analista de Sanidad '
 EXEC stp_puestos_add 'Coordinador de Control de Calidad'
-EXEC stp_puestos_add 'Fisico QuÌmico'
-EXEC stp_puestos_add 'MicrobiologÌa'
+EXEC stp_puestos_add 'Fisico Qu√≠mico'
+EXEC stp_puestos_add 'Microbiolog√≠a'
 EXEC stp_puestos_add 'Analista de Calidad de Puestos'
 EXEC stp_puestos_add 'Promotoria'
 
