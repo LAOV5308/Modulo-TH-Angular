@@ -19,6 +19,9 @@ import { FormsModule } from "@angular/forms";
 import {MatMenuModule} from '@angular/material/menu';
 //import { CoreService } from './core/core.service';
 
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -33,7 +36,9 @@ import {MatMenuModule} from '@angular/material/menu';
     NgFor,
     DatosComponent,
     FormsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -50,6 +55,11 @@ export class HeaderComponent {
     private router: Router,
     //private _dialog: MatDialog,
   ) {}
+  navbarCollapsed = true;
+
+  toggleNavbar() {
+    this.navbarCollapsed = !this.navbarCollapsed;
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

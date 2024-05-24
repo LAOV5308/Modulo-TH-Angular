@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js exporta una función para obtener el pool de conexiones
+const {sql, getConnection} = require('../ConexionDB/dbConfig');
+
 //const Departamento = require('../models/empleado.model')
 
 // Obtener todos los departamentos
@@ -16,13 +18,18 @@ router.get('/', async (req, res) => {
 
 //Guardar Departamento
 router.post('/', async (req, res) => {
-    const { NombreDepartamento } = req.body;
-    const { NombreResponsable } = req.body;
+    const { NombreDepartamento, NombreResponsable } = req.body;
     
     try {
         
-        const sql = await db.getConnection();
-        const result = await sql.query('EXEC stp_departamento_add '+ NombreDepartamento + ', '+NombreResponsable);
+        /*const sql = await db.getConnection();
+        const result = await sql.query('EXEC stp_departamento_add '+ NombreDepartamento + ', '+NombreResponsable);*/
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('NombreDepartamento', sql.VarChar, NombreDepartamento);
+        request.input('NombreResponsable', sql.VarChar, NombreResponsable);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_departamento_add');
         //res.status(201).send("Departamento creado con éxito");
         res.status(201).json({ message: "Departamento creado con éxito" });
 

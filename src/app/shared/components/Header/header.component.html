@@ -1,28 +1,28 @@
 <!-- header.component.html -->
-<mat-toolbar color="primary">
-  <!--
-  <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+
+  
+  <!--<button mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item>Item 1</button>
     <button mat-menu-item>Item 2</button>
   </mat-menu>-->
-
+  
+  <!--
+  <mat-toolbar color="primary">
     <button mat-button> <mat-icon>dashboard</mat-icon>Dashboard</button>
-    <!--<button mat-button (click)="empleados()"><mat-icon>people</mat-icon>Empleados</button>-->
-
+   
     <button mat-button [matMenuTriggerFor]="menuEmpleados"><mat-icon>people</mat-icon>Empleados</button>
   <mat-menu #menuEmpleados="matMenu">
     <button mat-menu-item (click)="empleados()"><mat-icon>people</mat-icon>Consultar Empleados</button>
     <button mat-menu-item (click)="addempleado()"><mat-icon>add_circle</mat-icon>Crear Empleado</button>
     <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
   </mat-menu>
-    <!--<button mat-button><mat-icon>business</mat-icon>Departamentos</button>-->
-
+    
 
     <button mat-button [matMenuTriggerFor]="menuDepartamentos"><mat-icon>business</mat-icon>Departamentos</button>
   <mat-menu #menuDepartamentos="matMenu">
     <button mat-menu-item (click)="departamentos()"><mat-icon> list_alt</mat-icon>Consultar Departamentos</button>
-    <!--<button mat-menu-item><mat-icon>add_circle</mat-icon>Crear Departamento</button>-->
+    
     <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
   </mat-menu>
 
@@ -30,5 +30,40 @@
     <button mat-button><mat-icon>account_circle</mat-icon> Usuarios</button>
     <span class="spacer"></span>
     <button mat-button (click)="openDialog()"><mat-icon>exit_to_app</mat-icon>Cerrar sesión</button>
-    <!--<button mat-button routerLink="/home">Cerrar sesión</button>-->
-  </mat-toolbar>
+  </mat-toolbar>-->
+
+
+
+
+  <!--<button mat-button routerLink="/home">Cerrar sesión</button>-->
+
+<!-- header.component.html -->
+<!-- header.component.html -->
+<!-- header.component.html -->
+<mat-toolbar color="primary">
+  <button mat-icon-button class="hamburger" (click)="toggleNavbar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <div class="navbar" [class.collapsed]="navbarCollapsed">
+    <button mat-button><mat-icon>dashboard</mat-icon>Dashboard</button>
+    <button mat-button [matMenuTriggerFor]="menuEmpleados"><mat-icon>people</mat-icon>Empleados</button>
+    <mat-menu #menuEmpleados="matMenu">
+      <button mat-menu-item (click)="empleados()"><mat-icon>people</mat-icon>Consultar Empleados</button>
+      <button mat-menu-item (click)="addempleado()"><mat-icon>add_circle</mat-icon>Crear Empleado</button>
+      <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="menuDepartamentos"><mat-icon>business</mat-icon>Departamentos</button>
+    <mat-menu #menuDepartamentos="matMenu">
+      <button mat-menu-item (click)="departamentos()"><mat-icon>list_alt</mat-icon>Consultar Departamentos</button>
+      <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
+    </mat-menu>
+    <button mat-button><mat-icon>assignment</mat-icon>Puestos</button>
+    <!--<button mat-button><mat-icon>account_circle</mat-icon>Usuarios</button>-->
+    <span class="spacer"></span>
+    <button mat-button (click)="openDialog()" class="Cerrarsesion"><mat-icon>exit_to_app</mat-icon>Cerrar sesión</button>
+  </div>
+</mat-toolbar>
+
+
+
+

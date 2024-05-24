@@ -67,7 +67,7 @@ export class DatosComponent implements OnInit{
         this.empleados = data;
       },
       error: (error) => {
-        console.error('Error al cargar los departamentos', error);
+        console.error('Error al cargar los Empleados', error);
       }
     });
 
@@ -104,8 +104,17 @@ export class DatosComponent implements OnInit{
     window.alert("Editar");
   }
   eliminar(id: number){
-    window.alert("Elimina");
-    console.log("Eliminar");
+    window.alert("Elimina"+id);
+    //Eliminar
+    this.empleadosService.deleteEmpleados(id).subscribe({
+      next: (res) => {
+        this.actualizar();
+        this._coreService.openSnackBar('Employee deleted!', 'done');
+      },
+      error: (error) => {
+        console.error('Error al cargar los empleados', error);
+      }
+    });
   }
 
 
