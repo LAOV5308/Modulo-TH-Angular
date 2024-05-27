@@ -91,4 +91,8 @@ departamentos(){
   this.router.navigate(['/departamentos']);
 }
 
+puestos(){
+  this.router.navigate(['/puestos']);
+}
+
 }

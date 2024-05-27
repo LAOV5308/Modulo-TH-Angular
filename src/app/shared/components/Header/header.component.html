@@ -57,7 +57,13 @@
       <button mat-menu-item (click)="departamentos()"><mat-icon>list_alt</mat-icon>Consultar Departamentos</button>
       <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
     </mat-menu>
-    <button mat-button><mat-icon>assignment</mat-icon>Puestos</button>
+
+    <button mat-button [matMenuTriggerFor]="menuPuestos"><mat-icon>assignment</mat-icon>Puestos</button>
+    <mat-menu #menuPuestos="matMenu">
+      <button mat-menu-item (click)="puestos()"><mat-icon>assignment</mat-icon>Consultar Puestos</button>
+      <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
+    </mat-menu>
+    
     <!--<button mat-button><mat-icon>account_circle</mat-icon>Usuarios</button>-->
     <span class="spacer"></span>
     <button mat-button (click)="openDialog()" class="Cerrarsesion"><mat-icon>exit_to_app</mat-icon>Cerrar sesión</button>

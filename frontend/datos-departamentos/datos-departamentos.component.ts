@@ -94,12 +94,12 @@ export class DatosDepartamentosComponent implements OnInit{
   }
 
   eliminar(id: number){
-    window.alert("Elimina"+id);
+    //window.alert("Elimina"+id);
     //Eliminar
     this._departamentosService.deleteDepartamentos(id).subscribe({
       next: (res) => {
         this.actualizar();
-        this._coreService.openSnackBar('Employee deleted!', 'done');
+        this._coreService.openSnackBar('Departamento Eliminado!', 'done');
       },
       error: (error) => {
         console.error('Error al cargar los departamentos', error);
