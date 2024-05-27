@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
 */
 
     const { Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, NSS, UMF,
-        NoNomina, Nivel, departamento, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,
+        NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
         NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia
     } = req.body;
@@ -68,30 +68,22 @@ router.post('/', async (req, res) => {
     try {
         const pool = await getConnection();
         const request = pool.request();
-
-        // Convertir las fechas y los números enteros
-        const fechaNacimiento = new Date(FechaNacimiento);
-        const ingreso = new Date(Ingreso);
-        const fechaNacimientoBeneficiario = new Date(FechaNacimientoBeneficiario);
-        const noNomina = parseInt(NoNomina, 10);
-
-        // Agregar parámetros a la solicitud
         request.input('Nombre', sql.VarChar, Nombre);
         request.input('Apellidos', sql.VarChar, Apellidos);
         request.input('Sexo', sql.VarChar, Sexo);
         request.input('EstadoCivil', sql.VarChar, EstadoCivil);
-        request.input('FechaNacimiento', sql.Date, fechaNacimiento);
+        request.input('FechaNacimiento', sql.Date, FechaNacimiento);
         request.input('EntidadNacimiento', sql.VarChar, EntidadNacimiento);
         request.input('CiudadNacimiento', sql.VarChar, CiudadNacimiento);
         request.input('CURP', sql.VarChar, CURP);
         request.input('RFC', sql.VarChar, RFC);
         request.input('NSS', sql.VarChar, NSS);
         request.input('UMF', sql.VarChar, UMF);
-        request.input('NoNomina', sql.Int, noNomina);
+        request.input('NoNomina', sql.Int, NoNomina);
         request.input('Nivel', sql.VarChar, Nivel);
         request.input('NombrePuesto', sql.VarChar, NombrePuesto);
         request.input('TipoIngreso', sql.VarChar, TipoIngreso);
-        request.input('Ingreso', sql.Date, ingreso);
+        request.input('Ingreso', sql.Date, Ingreso);
         request.input('HorarioSemanal', sql.VarChar, HorarioSemanal);
         request.input('DomicilioIne', sql.VarChar, DomicilioIne);
         request.input('Poblacion', sql.VarChar, Poblacion);
@@ -102,12 +94,12 @@ router.post('/', async (req, res) => {
         request.input('NumeroTelefono2', sql.VarChar, NumeroTelefono2);
         request.input('NombreBeneficiario', sql.VarChar, NombreBeneficiario);
         request.input('Parentesco', sql.VarChar, Parentesco);
-        request.input('FechaNacimientoBeneficiario', sql.Date, fechaNacimientoBeneficiario);
+        request.input('FechaNacimientoBeneficiario', sql.Date, FechaNacimientoBeneficiario);
         request.input('NumeroTelefonoEmergencia', sql.VarChar, NumeroTelefonoEmergencia);
 
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_personaall_add');
-        
+        //const result = await request.execute('stp_prueba_add');
         res.status(201).json({ message: "Empleado creado con éxito" });
 
 
@@ -146,22 +138,65 @@ router.post('/', async (req, res) => {
     }
 });*/
 
-/*
+
 
 // Actualizar un empleado
 router.put('/:id', async (req, res) => {
-    const { nombre, puesto, salario } = req.body;
+
     const { id } = req.params;
+
+    const { Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, NSS, UMF,
+        NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,
+        DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
+        NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia
+    } = req.body;
+
+
     try {
-        const sql = await db.getConnection();
-        const result = await sql.query(`UPDATE tblEmpleados SET nombre = '${nombre}', puesto = '${puesto}', salario = ${salario} WHERE id = ${id}`);
-        res.send('Empleado actualizado correctamente');
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('Nombre', sql.VarChar, Nombre);
+        request.input('Apellidos', sql.VarChar, Apellidos);
+        request.input('Sexo', sql.VarChar, Sexo);
+        request.input('EstadoCivil', sql.VarChar, EstadoCivil);
+        request.input('FechaNacimiento', sql.Date, FechaNacimiento);
+        request.input('EntidadNacimiento', sql.VarChar, EntidadNacimiento);
+        request.input('CiudadNacimiento', sql.VarChar, CiudadNacimiento);
+        request.input('CURP', sql.VarChar, CURP);
+        request.input('RFC', sql.VarChar, RFC);
+        request.input('NSS', sql.VarChar, NSS);
+        request.input('UMF', sql.VarChar, UMF);
+        request.input('NoNomina', sql.Int, id);
+        request.input('Nivel', sql.VarChar, Nivel);
+        request.input('NombrePuesto', sql.VarChar, NombrePuesto);
+        request.input('TipoIngreso', sql.VarChar, TipoIngreso);
+        request.input('Ingreso', sql.Date, Ingreso);
+        request.input('HorarioSemanal', sql.VarChar, HorarioSemanal);
+        request.input('DomicilioIne', sql.VarChar, DomicilioIne);
+        request.input('Poblacion', sql.VarChar, Poblacion);
+        request.input('EntidadDireccion', sql.VarChar, EntidadDireccion);
+        request.input('CP', sql.VarChar, CP);
+        request.input('CorreoElectronico', sql.VarChar, CorreoElectronico);
+        request.input('NumeroTelefono1', sql.VarChar, NumeroTelefono1);
+        request.input('NumeroTelefono2', sql.VarChar, NumeroTelefono2);
+        request.input('NombreBeneficiario', sql.VarChar, NombreBeneficiario);
+        request.input('Parentesco', sql.VarChar, Parentesco);
+        request.input('FechaNacimientoBeneficiario', sql.Date, FechaNacimientoBeneficiario);
+        request.input('NumeroTelefonoEmergencia', sql.VarChar, NumeroTelefonoEmergencia);
+
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_personaall_update');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Empleado Actualizado con éxito" });
+
+
     } catch (err) {
-        res.status(500).send('Error al actualizar el empleado');
+        res.status(500).json({ message: 'Error al actualizar el empleado: ' + err.message });
     }
+    
 });
 
 
-*/
+
 
 module.exports = router;

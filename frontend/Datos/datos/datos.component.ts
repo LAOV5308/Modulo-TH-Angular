@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CoreService } from '../../../src/app/Core/core.service';
 import { HeaderComponent } from '../../../src/app/shared/components/header/header.component';
 import { CreateEmpleadoComponent } from '../../../src/app/shared/components/empleados/create-empleado/create-empleado.component';
+import { UpdateEmpleadoComponent } from '../../../src/app/shared/components/empleados/update-empleado/update-empleado.component';
 
 
 //import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
@@ -27,7 +28,8 @@ import { CreateEmpleadoComponent } from '../../../src/app/shared/components/empl
     NgFor, DatePipe, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
     HeaderComponent,
-    CreateEmpleadoComponent
+    CreateEmpleadoComponent,
+    UpdateEmpleadoComponent
   ],
   providers: [EmpleadosService, CoreService],
   templateUrl: './datos.component.html',
@@ -85,6 +87,7 @@ export class DatosComponent implements OnInit{
   }
 
   agregar(){
+    /*
     const dialog = this._dialog.open(CreateEmpleadoComponent);
     dialog.afterClosed().subscribe({
       next:(val)=>{
@@ -92,7 +95,7 @@ export class DatosComponent implements OnInit{
           this.actualizar();
         }
       }
-    });
+    });*/
 
 
   }
@@ -101,7 +104,17 @@ export class DatosComponent implements OnInit{
     window.alert("Se ha Guardado");
   }
   editar(data: any){
-    window.alert("Editar");
+      const dialogU = this._dialog.open(UpdateEmpleadoComponent,{
+        data
+      });
+      dialogU.afterClosed().subscribe({
+        next:(val)=>{
+          if(val){
+            this.actualizar();
+          }
+        }
+      });
+    
   }
   eliminar(id: number){
     window.alert("Elimina"+id);

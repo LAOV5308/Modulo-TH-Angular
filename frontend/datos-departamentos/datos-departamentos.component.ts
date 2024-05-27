@@ -13,6 +13,8 @@ import { CoreService } from '../../src/app/Core/core.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
 import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
+import { MatPaginator } from '@angular/material/paginator';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 
@@ -21,7 +23,8 @@ import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Dep
   standalone: true,
   imports: [HttpClientModule,
     NgFor, DatePipe, MatButton, MatExpansionModule,
-    MatSort, MatTableModule, MatIcon
+    MatSort, MatTableModule, MatIcon,
+    MatPaginator, MatFormFieldModule
   ],
   providers: [DepartamentosService, CoreService],
   templateUrl: './datos-departamentos.component.html',
@@ -40,6 +43,7 @@ export class DatosDepartamentosComponent implements OnInit{
   departamentos: Departamento[] = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private _departamentosService: DepartamentosService,
       private _coreService: CoreService,
@@ -51,15 +55,18 @@ export class DatosDepartamentosComponent implements OnInit{
     //Traer a todos los empleados
     this._departamentosService.getDepartamentos().subscribe({
       next: (data) => {
+        this.departamentos = data;
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
-        this.departamentos = data;
+        this.dataSource.paginator = this.paginator;
+        
       },
       error: (error) => {
         console.error('Error al cargar los departamentos', error);
       }
     });
   }
+
 
   agregar(){
     const dialog = this._dialog.open(AddDepartamentoComponent);
@@ -103,6 +110,15 @@ export class DatosDepartamentosComponent implements OnInit{
 
   actualizar(){
       this.ngOnInit();
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   

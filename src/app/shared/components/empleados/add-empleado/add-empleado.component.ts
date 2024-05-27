@@ -226,6 +226,8 @@ export class AddEmpleadoComponent implements OnInit {
 
     if (this.employeeForm.valid) {
       console.log(this.employeeForm.value);
+      console.log(this.employeeForm.value.FechaNacimiento);
+      console.log(this.employeeForm.value.Ingreso);
       this._empleadosService.addEmpleados(this.employeeForm.value).subscribe({
         next: (resp: any) => {
             this._coreService.openSnackBar('Empleados added successfully', resp);
