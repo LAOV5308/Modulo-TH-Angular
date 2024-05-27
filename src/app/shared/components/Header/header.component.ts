@@ -45,16 +45,12 @@ import {MatListModule} from '@angular/material/list';
 })
 export class HeaderComponent {
 
-  public items: { field: string }[] = [
-    { field: 'Option 1' },
-    { field: 'Option 2' },
-    { field: 'Option 3' }
-];
 
   constructor(public dialog: MatDialog,
     private router: Router,
     //private _dialog: MatDialog,
   ) {}
+
   navbarCollapsed = true;
 
   toggleNavbar() {
@@ -76,6 +72,7 @@ export class HeaderComponent {
       }
     });
 }
+
 
 empleados(){
   //window.alert('Empleados');

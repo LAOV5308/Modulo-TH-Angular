@@ -1,37 +1,28 @@
-
-  /* styles.css o en el archivo CSS de tu componente */
-  /*
-  mat-toolbar {
-    background-color: #00823b; /* Ajusta el color de fondo */
-  /*  color: white;
-    margin-right: 8px; /* Espacio entre el ícono y el texto */
-  /*vertical-align: middle; /* Alinea verticalmente el ícono con el texto */
-  /*}
-  
-  .spacer {
-    flex: 1 1 auto;
-  } aqui*/
-
 /* styles.css o en el archivo CSS de tu componente */
-/* styles.css o en el archivo CSS de tu componente */
+/*
 mat-toolbar {
   background-color: #00823b; /* Ajusta el color de fondo */
-  color: white;
+ /* color: white;
   display: flex;
-  flex-direction: row;
+  flex-direction: column; /* Cambia a column para permitir que crezca verticalmente */
+ /* align-items: flex-start;
+  justify-content: flex-start;
+  transition: height 0.3s ease-out, max-height 0.3s ease-out; /* Agrega transición para suavizar */
+/*}
+
+.mat-toolbar-row {
+  display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
 }
 
 .navbar {
   display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: max-height 0.3s ease-out;
-}
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+  /*align-items: flex-start;
+  transition: max-height 0.3s ease-out; /* Transición para suavizar el cambio de altura */
+/*}
 
 .navbar button {
   margin: 4px;
@@ -52,12 +43,15 @@ mat-toolbar {
   }
 
   .navbar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     max-height: 0;
     overflow: hidden;
     width: 100%;
+  }
+
+  .navbar.collapsed {
+    max-height: 500px; /* Ajusta según la altura de tu contenido */
+ /*   flex-flow: row nowrap;
+    justify-content: flex-start;
   }
 
   .navbar button {
@@ -65,17 +59,68 @@ mat-toolbar {
     text-align: left;
   }
 
+  .spacer {
+    display: none;
+  }
+}
+*/
+
+/* styles.css o en el archivo CSS de tu componente */
+mat-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  transition: max-height 0.3s ease-out;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  transition: max-height 0.3s ease-out;
+}
+
+.navbar.collapsed {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.navbar button {
+  margin: 0 8px;
+}
+
+.hamburger {
+  display: none;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 800px) {
+  .hamburger {
+    display: block;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
   .navbar.collapsed {
-    max-height: 500px; /* Ajusta según la altura de tu contenido */
+    max-height: 200px; /* Ajusta según la altura de tu contenido */
+  }
+
+  .navbar button {
+    width: 100%;
+    text-align: left;
+    margin: 4px 0;
   }
 
   .spacer {
     display: none;
   }
-  
 }
-
-
-
-
-
