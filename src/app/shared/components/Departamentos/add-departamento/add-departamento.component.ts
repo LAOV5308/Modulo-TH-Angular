@@ -67,4 +67,6 @@ export class AddDepartamentoComponent implements OnInit{
       this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
     }
 }
+
+
 }

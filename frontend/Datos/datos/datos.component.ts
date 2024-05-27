@@ -14,7 +14,8 @@ import { CoreService } from '../../../src/app/Core/core.service';
 import { HeaderComponent } from '../../../src/app/shared/components/header/header.component';
 import { CreateEmpleadoComponent } from '../../../src/app/shared/components/empleados/create-empleado/create-empleado.component';
 import { UpdateEmpleadoComponent } from '../../../src/app/shared/components/empleados/update-empleado/update-empleado.component';
-
+import { MatPaginator } from '@angular/material/paginator';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 //import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
 //import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
@@ -29,7 +30,8 @@ import { UpdateEmpleadoComponent } from '../../../src/app/shared/components/empl
     MatSort, MatTableModule, MatIcon,
     HeaderComponent,
     CreateEmpleadoComponent,
-    UpdateEmpleadoComponent
+    UpdateEmpleadoComponent,
+    MatPaginator
   ],
   providers: [EmpleadosService, CoreService],
   templateUrl: './datos.component.html',
@@ -53,6 +55,7 @@ export class DatosComponent implements OnInit{
   empleados: Empleado[] = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   
 
@@ -66,6 +69,7 @@ export class DatosComponent implements OnInit{
       next: (data) => {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
         this.empleados = data;
       },
       error: (error) => {
@@ -130,8 +134,17 @@ export class DatosComponent implements OnInit{
     });
   }
 
-
   actualizar(){
     this.ngOnInit();
+  }
+
+  
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
