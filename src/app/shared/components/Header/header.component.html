@@ -1,73 +1,36 @@
-<!--
-<mat-toolbar [class.collapsed]="navbarCollapsed" color="primary">
-  <div class="mat-toolbar-row">
-    <button mat-icon-button class="hamburger" (click)="toggleNavbar()">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <span class="spacer"></span>
-    <button mat-button (click)="openDialog()" class="Cerrarsesion">
-      <mat-icon>exit_to_app</mat-icon>Cerrar sesión
-    </button>
-  </div>
-
-  <div class="navbar" [class.collapsed]="navbarCollapsed">
-    <button mat-button><mat-icon>dashboard</mat-icon>Dashboard</button>
-    <button mat-button [matMenuTriggerFor]="menuEmpleados">
-      <mat-icon>people</mat-icon>Empleados
-    </button>
-
-    <mat-menu #menuEmpleados="matMenu">
-      <button mat-menu-item (click)="empleados()">
-        <mat-icon>people</mat-icon>Consultar Empleados
-      </button>
-      <button mat-menu-item (click)="addempleado()">
-        <mat-icon>add_circle</mat-icon>Crear Empleado
-      </button>
-      <button mat-menu-item>
-        <mat-icon>library_books</mat-icon>Reportes
-      </button>
-    </mat-menu>
-
-    <button mat-button [matMenuTriggerFor]="menuDepartamentos">
-      <mat-icon>business</mat-icon>Departamentos
-    </button>
-    <mat-menu #menuDepartamentos="matMenu">
-      <button mat-menu-item (click)="departamentos()">
-        <mat-icon>list_alt</mat-icon>Consultar Departamentos
-      </button>
-      <button mat-menu-item>
-        <mat-icon>library_books</mat-icon>Reportes
-      </button>
-    </mat-menu>
-
-    <button mat-button [matMenuTriggerFor]="menuPuestos">
-      <mat-icon>assignment</mat-icon>Puestos
-    </button>
-    <mat-menu #menuPuestos="matMenu">
-      <button mat-menu-item (click)="puestos()">
-        <mat-icon>assignment</mat-icon>Consultar Puestos
-      </button>
-      <button mat-menu-item>
-        <mat-icon>library_books</mat-icon>Reportes
-      </button>
-    </mat-menu>
-  </div>
-</mat-toolbar>
--->
-
+<!-- header.component.html -->
 <mat-toolbar color="primary">
   <button mat-icon-button class="hamburger" (click)="toggleNavbar()">
     <mat-icon>menu</mat-icon>
   </button>
-
   <div class="navbar" [class.collapsed]="navbarCollapsed">
-    <button mat-button><mat-icon>home</mat-icon>Inicio</button>
-    <button mat-button><mat-icon>info</mat-icon>Acerca de</button>
-    <button mat-button><mat-icon>contact_mail</mat-icon>Contacto</button>
-    <button mat-button><mat-icon>help</mat-icon>Ayuda</button>
-  </div>
+    <button mat-button><mat-icon>dashboard</mat-icon>Dashboard</button>
+    
+    <button mat-button [matMenuTriggerFor]="menuEmpleados"><mat-icon>people</mat-icon>Empleados</button>
+    <mat-menu #menuEmpleados="matMenu">
+      <button mat-menu-item (click)="empleados()"><mat-icon>people</mat-icon>Consultar Empleados</button>
+      <button mat-menu-item (click)="addempleado()"><mat-icon>add_circle</mat-icon>Crear Empleado</button>
+      <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
+    </mat-menu>
 
-  <span class="spacer"></span>
-  <button mat-button><mat-icon>account_circle</mat-icon>Perfil</button>
+    <button mat-button [matMenuTriggerFor]="menuDepartamentos"><mat-icon>business</mat-icon>Departamentos</button>
+    <mat-menu #menuDepartamentos="matMenu">
+      <button mat-menu-item (click)="departamentos()"><mat-icon>list_alt</mat-icon>Consultar Departamentos</button>
+      <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="menuPuestos"><mat-icon>assignment</mat-icon>Puestos</button>
+    <mat-menu #menuPuestos="matMenu">
+      <button mat-menu-item (click)="puestos()"><mat-icon>list_alt</mat-icon>Consultar Puestos</button>
+      <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
+    </mat-menu>
+
+
+
+    <span class="spacer"></span>
+
+
+    <button mat-button (click)="openDialog()"><mat-icon>exit_to_app</mat-icon>Cerrar sesión</button>
+  </div>
 </mat-toolbar>
+

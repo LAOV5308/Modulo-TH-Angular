@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -25,6 +25,7 @@ import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import { HttpClientModule} from '@angular/common/http';
 import { MatIcon } from '@angular/material/icon';
+
 
 import 'moment/locale/fr';
 import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
@@ -60,14 +61,13 @@ export const MY_DATE_FORMATS = {
     CommonModule,
     HttpClientModule,
     MatIcon
-
-
-],
-providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
-  provideMomentDateAdapter(),
-  { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService
-],
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    provideMomentDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService
+  ],
   templateUrl: './update-empleado.component.html',
   styleUrl: './update-empleado.component.css'
 })
@@ -147,10 +147,7 @@ export class UpdateEmpleadoComponent implements OnInit{
 
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
-    private _coreService: CoreService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-
-
+    private _coreService: CoreService
   ) { 
     this.employeeForm = this.fb.group({
       //Informacion Personal
@@ -167,7 +164,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       UMF:[''],
       //Informacion Laboral
       // Define otros controles de formulario aquí
-      NoNomina: [{value:'', disabled: true}, Validators.required],
+      NoNomina: ['', Validators.required],
       Nivel:[''],
       departamento:[''],
       NombrePuesto:[''],
@@ -206,7 +203,6 @@ export class UpdateEmpleadoComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.employeeForm.patchValue(this.data);
     //Traer a todos los empleados
     this._departamentosService.getDepartamentos().subscribe({
       next: (data) => {
@@ -217,6 +213,10 @@ export class UpdateEmpleadoComponent implements OnInit{
       }
     });
 
+    
+
+
+    
   }
 
   onSubmit(): void {
@@ -226,23 +226,23 @@ export class UpdateEmpleadoComponent implements OnInit{
     }*/
 
     if (this.employeeForm.valid) {
-      if(this.data){
-        this._empleadosService.updateEmpleados(this.data.NoNomina, this.employeeForm.value).subscribe({
-          next: (resp: any) => {
-              this._coreService.openSnackBar('Empleados updated successfully', resp);
-          },
-          error: (err: any) => {
-              console.error('Error: ' + err);
-              this._coreService.openSnackBar('Error al agregar Empleado');
-          }
-      });
-      }
-      
+      console.log(this.employeeForm.value);
+      console.log(this.employeeForm.value.FechaNacimiento);
+      console.log(this.employeeForm.value.Ingreso);
+      this._empleadosService.addEmpleados(this.employeeForm.value).subscribe({
+        next: (resp: any) => {
+            this._coreService.openSnackBar('Empleados added successfully', resp);
+        },
+        error: (err: any) => {
+            console.error('Error: ' + err);
+            this._coreService.openSnackBar('Error al agregar Empleado');
+        }
+    });
     }else{
       this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
     }
+
 }
 
 
-
-};
+}

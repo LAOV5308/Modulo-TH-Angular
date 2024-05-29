@@ -1,1 +1,28 @@
-<p>update-puesto works!</p>
+<div mat-dialog-title>
+    <h1>Formulario Puesto</h1>
+</div>
+<form [formGroup]="Form" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+
+        <div class="row">
+            <mat-form-field color="accent">
+                <mat-label>Nombre de Puesto</mat-label>
+                <input matInput type="text" placeholder="Auxiliar" formControlName="NombrePuesto">
+            </mat-form-field>
+        </div>
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Departamento</mat-label>
+            <mat-select formControlName="NombreDepartamento">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of NombreDepart" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Actualizar</button>
+    </div>
+</form>

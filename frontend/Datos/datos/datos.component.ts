@@ -30,8 +30,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatSort, MatTableModule, MatIcon,
     HeaderComponent,
     CreateEmpleadoComponent,
-    UpdateEmpleadoComponent,
-    MatPaginator
+    //UpdateEmpleadoComponent,
+    MatPaginator,
+    MatFormFieldModule
   ],
   providers: [EmpleadosService, CoreService],
   templateUrl: './datos.component.html',
@@ -107,17 +108,16 @@ export class DatosComponent implements OnInit{
   hola(){
     window.alert("Se ha Guardado");
   }
-  editar(data: any){
-      const dialogU = this._dialog.open(UpdateEmpleadoComponent,{
-        data
-      });
+  editar(id: number){
+    /*
+      const dialogU = this._dialog.open(UpdateEmpleadoComponent);
       dialogU.afterClosed().subscribe({
         next:(val)=>{
           if(val){
             this.actualizar();
           }
         }
-      });
+      });*/
     
   }
   eliminar(id: number){

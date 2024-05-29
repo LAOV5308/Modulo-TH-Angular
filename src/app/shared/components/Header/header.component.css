@@ -1,28 +1,24 @@
 /* styles.css o en el archivo CSS de tu componente */
-/*
+
+/* styles.css o en el archivo CSS de tu componente */
 mat-toolbar {
   background-color: #00823b; /* Ajusta el color de fondo */
- /* color: white;
+  color: white;
   display: flex;
-  flex-direction: column; /* Cambia a column para permitir que crezca verticalmente */
- /* align-items: flex-start;
-  justify-content: flex-start;
-  transition: height 0.3s ease-out, max-height 0.3s ease-out; /* Agrega transición para suavizar */
-/*}
-
-.mat-toolbar-row {
-  display: flex;
-  width: 100%;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 .navbar {
   display: flex;
-  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
-  /*align-items: flex-start;
-  transition: max-height 0.3s ease-out; /* Transición para suavizar el cambio de altura */
-/*}
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-height 0.3s ease-out;
+}
 
 .navbar button {
   margin: 4px;
@@ -43,66 +39,7 @@ mat-toolbar {
   }
 
   .navbar {
-    max-height: 0;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .navbar.collapsed {
-    max-height: 500px; /* Ajusta según la altura de tu contenido */
- /*   flex-flow: row nowrap;
-    justify-content: flex-start;
-  }
-
-  .navbar button {
-    width: 100%;
-    text-align: left;
-  }
-
-  .spacer {
-    display: none;
-  }
-}
-*/
-
-/* styles.css o en el archivo CSS de tu componente */
-mat-toolbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  transition: max-height 0.3s ease-out;
-}
-
-.navbar {
-  display: flex;
-  align-items: center;
-  transition: max-height 0.3s ease-out;
-}
-
-.navbar.collapsed {
-  max-height: 0;
-  overflow: hidden;
-}
-
-.navbar button {
-  margin: 0 8px;
-}
-
-.hamburger {
-  display: none;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-@media (max-width: 800px) {
-  .hamburger {
-    display: block;
-  }
-
-  .navbar {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     max-height: 0;
@@ -110,17 +47,65 @@ mat-toolbar {
     width: 100%;
   }
 
-  .navbar.collapsed {
-    max-height: 200px; /* Ajusta según la altura de tu contenido */
-  }
-
   .navbar button {
     width: 100%;
     text-align: left;
-    margin: 4px 0;
+  }
+
+  .navbar.collapsed {
+    max-height: 500px; /* Ajusta según la altura de tu contenido */
   }
 
   .spacer {
     display: none;
   }
 }
+
+
+
+/*
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #00823b;
+  color: white;
+  padding: 10px 20px;
+}
+
+.header .logo a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.header .login-section {
+  display: flex;
+  gap: 5px;
+}
+
+.header .login-section button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.header .login-section button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 800px) {
+  .header .login-section {
+    flex-direction: column; /* Cambia la disposición a una columna */
+ /*   align-items: center; /* Alinea los botones al centro */
+/*    width: 100%; /* Opcional: Ajusta el ancho al 100% del contenedor padre */
+ /* }
+
+  .header {
+    flex-direction: column; /* Ajusta también el contenedor principal a columna */
+ /*   align-items: center;
+  }
+}
+*/

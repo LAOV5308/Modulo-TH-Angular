@@ -14,6 +14,8 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import { NgFor } from '@angular/common';
 import { CoreService } from '../../../../Core/core.service';
 
+
+
 @Component({
   selector: 'app-update-departamento',
   standalone: true,
@@ -53,7 +55,7 @@ export class UpdateDepartamentoComponent implements OnInit{
   onFormSubmit() {
     if (this.Form.valid) {
       if(this.data){
-        console.log(this.data.IdDepartamento, this.Form.value.NombreDepartamento);
+        //console.log(this.data.IdDepartamento, this.Form.value.NombreDepartamento);
         this._departamentoService.updateDepartamentos(this.data.IdDepartamento, this.Form.value)
         .subscribe({
           next: (val: any) => {

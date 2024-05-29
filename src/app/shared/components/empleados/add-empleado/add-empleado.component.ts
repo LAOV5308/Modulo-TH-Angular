@@ -44,7 +44,8 @@ export const MY_DATE_FORMATS = {
 @Component({
   selector: 'app-add-empleado',
   standalone: true,
-  imports: [MatFormFieldModule,
+  imports: [
+    MatFormFieldModule,
     MatDialogModule,
     MatDialogModule,
     MatInputModule,

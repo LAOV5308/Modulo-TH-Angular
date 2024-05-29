@@ -51,10 +51,16 @@ export class HeaderComponent {
     //private _dialog: MatDialog,
   ) {}
 
-  navbarCollapsed = true;
+  navbarCollapsed = false;
 
   toggleNavbar() {
     this.navbarCollapsed = !this.navbarCollapsed;
+  }
+
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
   openDialog(): void {
@@ -73,6 +79,25 @@ export class HeaderComponent {
     });
 }
 
+isLoggedIn = false; // Asumimos que el usuario no está logueado inicialmente
+
+  login(): void {
+    // Aquí iría la lógica para iniciar sesión
+    this.isLoggedIn = true;
+  }
+
+  logout(): void {
+    // Aquí iría la lógica para cerrar sesión
+    this.isLoggedIn = false;
+  }
+
+  register(): void {
+    // Aquí iría la lógica para registrar un nuevo usuario
+  }
+  addUser(): void {
+    // Lógica para añadir un nuevo usuario
+    alert('Agregar usuario');
+  }
 
 empleados(){
   //window.alert('Empleados');

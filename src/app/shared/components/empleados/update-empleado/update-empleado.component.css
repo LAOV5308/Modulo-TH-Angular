@@ -1,0 +1,23 @@
+mat-form-field {
+    width: 100%;
+  }
+  
+  @media (min-width: 600px) {
+    mat-form-field {
+      width: 30%;
+      margin-right: 2%;
+    }
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  
+  mat-card{
+    background-color: aliceblue;
+
+  }
+  h2{
+    color: #00823b;
+    background-color: lightcyan;
+  }
