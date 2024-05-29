@@ -29,6 +29,12 @@ export class PuestosService {
   getPuestos(): Observable<Puesto[]> {
     return this.http.get<Puesto[]>(this.apiUrl);
   }
+  
+
+  getPuestosByDepartamento(departamentoId: number){
+    return this.http.get<Puesto[]>(this.apiUrl+'/'+departamentoId);
+  }
+
 
   deletePuestos(id: number): Observable<any> {
     return this.http.delete(this.apiUrl+'/'+id);

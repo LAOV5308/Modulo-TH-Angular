@@ -5,6 +5,8 @@ import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
 import { Empleado } from '../models/empleado.model';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,10 @@ export class EmpleadosService {
   private apiUrl = 'http://localhost:3000/empleados';
  // https://5xc79jbt-3000.usw3.devtunnels.ms/empleados
 
-  constructor(private http: HttpClient) { }
+ 
+  constructor(private http: HttpClient) {
+    
+   }
 
   addEmpleados(data: any): Observable<any> {
     return this.http.post(this.apiUrl, data).pipe(
@@ -22,7 +27,7 @@ export class EmpleadosService {
   }
   
   updateEmpleados(id: number, data: any): Observable<any> {
-    return this.http.post(this.apiUrl+'/'+id, data).pipe(
+    return this.http.put(this.apiUrl+'/'+id, data).pipe(
       catchError(this.handleError)
     );
   }
@@ -34,8 +39,11 @@ export class EmpleadosService {
     );
   }*/
 
-  getEmpleado(id: number): Observable<any> {
+  /*getEmpleado(id: number): Observable<any> {
     return this.http.get(this.apiUrl+'/'+id);
+  }*/
+  getEmpleado(id: number): Observable<Empleado[]> {
+    return this.http.get<Empleado[]>(this.apiUrl+'/'+id);
   }
 
   getEmpleados(): Observable<Empleado[]> {

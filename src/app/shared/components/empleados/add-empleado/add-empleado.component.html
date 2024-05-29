@@ -128,7 +128,10 @@
 
           <mat-form-field appearance="fill">
             <mat-label>Puesto</mat-label>
-            <input matInput formControlName="NombrePuesto">
+            <mat-select formControlName="NombrePuesto">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of filteredPuestos" [value]="value">{{ value.NombrePuesto }}</mat-option>
+            </mat-select>
           </mat-form-field>
 
 

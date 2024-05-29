@@ -3,7 +3,7 @@
 
 
 <mat-card class="matcard">
-  <h1>Agregar Empleado</h1>
+  <h1>Actualizar Empleado</h1>
   <mat-card-header class="matcardheader">
     
     <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
@@ -120,7 +120,7 @@
 
           <mat-form-field appearance="fill">
             <mat-label>Departamento</mat-label>
-            <mat-select formControlName="departamento">
+            <mat-select formControlName="NombreDepartamento">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let value of departamentos" [value]="value">{{ value.NombreDepartamento }}</mat-option>
             </mat-select>
@@ -261,7 +261,7 @@
   
       </mat-accordion>
   
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
+      <button mat-raised-button color="primary" type="submit">Actualizar</button>
        <!--Le quite aqui lo del darle click-->
     </form>
   </mat-card-header>

@@ -17,6 +17,8 @@ import { UpdateEmpleadoComponent } from '../../../src/app/shared/components/empl
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
+import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
+
 //import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
 //import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
 
@@ -39,6 +41,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   styleUrl: './datos.component.css'
 })
 export class DatosComponent implements OnInit{
+  NoNomina: number = 0;
+ 
+
+  
   displayedColumns: string[] = [
     'NoNomina',
     'Nombre',
@@ -58,11 +64,13 @@ export class DatosComponent implements OnInit{
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  
-
   constructor(private empleadosService: EmpleadosService, 
     private _coreService: CoreService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private router: Router) { 
+  
+
+    }
 
   ngOnInit() {
     //Traer a todos los empleados
@@ -108,9 +116,13 @@ export class DatosComponent implements OnInit{
   hola(){
     window.alert("Se ha Guardado");
   }
+
   editar(id: number){
+    this.router.navigate(['updateEmpleado'+'/'+id]);
+    
     /*
       const dialogU = this._dialog.open(UpdateEmpleadoComponent);
+
       dialogU.afterClosed().subscribe({
         next:(val)=>{
           if(val){

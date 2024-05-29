@@ -145,8 +145,8 @@ router.put('/:id', async (req, res) => {
 
     const { id } = req.params;
 
-    const { Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, NSS, UMF,
-        NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,
+    const { Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, NSS, UMF, 
+        Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
         NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia
     } = req.body;

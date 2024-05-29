@@ -29,6 +29,8 @@ import { MatIcon } from '@angular/material/icon';
 
 import 'moment/locale/fr';
 import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
+
+import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -66,7 +68,7 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService],
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService],
     
   templateUrl: './add-empleado.component.html',
   styleUrl: './add-empleado.component.css'
@@ -76,6 +78,7 @@ export class AddEmpleadoComponent implements OnInit {
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
   puestos: Puesto[] = [];
+  filteredPuestos: Puesto[] = [];
   //estados1: string[] = [];
 
   //Opciones de Eleccion
@@ -147,7 +150,8 @@ export class AddEmpleadoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
-    private _coreService: CoreService
+    private _coreService: CoreService,
+    private _puestosService: PuestosService
   ) { 
     this.employeeForm = this.fb.group({
       //Informacion Personal
@@ -196,10 +200,20 @@ export class AddEmpleadoComponent implements OnInit {
       this.employeeForm.get('CiudadNacimiento')!.setValue('');
     });
 
+    this.employeeForm.get('departamento')!.valueChanges.subscribe(departamentoId => {
+      this.filterPuestos(departamentoId);
+    });
+
+
     /*this.employeeForm.get('departamento')!.valueChanges.subscribe(state => {
       this.departamentos1 = this.
     });*/
   
+  }
+
+  filterPuestos(departamentoId: number): void {
+    this.filteredPuestos = this.puestos.filter(puesto => puesto.IdDepartamento === departamentoId);
+    this.employeeForm.get('NombrePuesto')!.setValue('');
   }
 
   ngOnInit(): void {
@@ -212,6 +226,17 @@ export class AddEmpleadoComponent implements OnInit {
         console.error('Error al cargar los departamentos', error);
       }
     });
+
+    this._puestosService.getPuestos().subscribe({
+      next: (data) => {
+        this.puestos = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar los departamentos', error);
+      }
+    });
+
+    
 
     
 

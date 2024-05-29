@@ -23,6 +23,7 @@ export const routes: Routes = [
     {path: 'puestos', component: PuestoComponentComponent},
     {path: 'departamentos', component: ComponentDepartamentoComponent},
     {path: 'addEmpleado', component: AddEmpleadoComponent},
+    {path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent},
     
 
     { path: '', redirectTo: '/home', pathMatch: 'full' },

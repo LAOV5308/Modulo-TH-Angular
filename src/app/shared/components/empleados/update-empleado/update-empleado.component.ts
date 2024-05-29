@@ -18,13 +18,16 @@ import { CoreService } from '../../../../Core/core.service';
 import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
 import { Departamento } from '../../../../../../backend/models/departamento.model';
 import { Puesto } from '../../../../../../backend/models/puesto.model';
-
+import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
 import { CommonModule } from '@angular/common';
 
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import { HttpClientModule} from '@angular/common/http';
 import { MatIcon } from '@angular/material/icon';
+import { Empleado } from '../../../../../../backend/models/empleado.model';
+import { ActivatedRoute, ParamMap } from "@angular/router";
+
 
 
 import 'moment/locale/fr';
@@ -76,6 +79,8 @@ export class UpdateEmpleadoComponent implements OnInit{
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
   puestos: Puesto[] = [];
+  empleados: Empleado[] = [];
+  NoNomina1!: number;
   //estados1: string[] = [];
 
   //Opciones de Eleccion
@@ -147,7 +152,9 @@ export class UpdateEmpleadoComponent implements OnInit{
 
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
-    private _coreService: CoreService
+    private _coreService: CoreService,
+    public route: ActivatedRoute
+    
   ) { 
     this.employeeForm = this.fb.group({
       //Informacion Personal
@@ -164,9 +171,10 @@ export class UpdateEmpleadoComponent implements OnInit{
       UMF:[''],
       //Informacion Laboral
       // Define otros controles de formulario aquí
-      NoNomina: ['', Validators.required],
+      //NoNomina: ['', Validators.required],
+      NoNomina: [{value: ' ', disabled: true}, Validators.required],
       Nivel:[''],
-      departamento:[''],
+      NombreDepartamento:[''],
       NombrePuesto:[''],
       TipoIngreso:[''],
       Ingreso:[''],
@@ -199,6 +207,13 @@ export class UpdateEmpleadoComponent implements OnInit{
     /*this.employeeForm.get('departamento')!.valueChanges.subscribe(state => {
       this.departamentos1 = this.
     });*/
+
+    /*
+    this._empleadosService.number$.subscribe(value => {
+      this.NoNomina1 = value;
+    });*/
+
+    
   
   }
 
@@ -212,6 +227,121 @@ export class UpdateEmpleadoComponent implements OnInit{
         console.error('Error al cargar los departamentos', error);
       }
     });
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) =>{
+      console.log(paramMap.has('NoNomina'));
+    if(paramMap.has('NoNomina')){
+      this.NoNomina1 = Number(paramMap.get('NoNomina'));
+      }
+    });
+
+
+    this._empleadosService.getEmpleado(this.NoNomina1).subscribe({
+      next: (data) => {
+        //this.employeeForm.patchValue(data);
+        //console.log(data);
+        this.empleados = data;
+        //this.empleados.push(data);
+        this.employeeForm.setValue({
+          Nombre: this.empleados[0].Nombre,
+          Apellidos: this.empleados[0].Apellidos,
+          Sexo:this.empleados[0].Sexo,
+      EstadoCivil: this.empleados[0].EstadoCivil,
+      FechaNacimiento:this.empleados[0].FechaNacimiento,
+      EntidadNacimiento:this.empleados[0].EntidadNacimiento,
+      CiudadNacimiento:this.empleados[0].CiudadNacimiento,
+      CURP:this.empleados[0].CURP,
+      RFC:this.empleados[0].RFC,
+      NSS:this.empleados[0].NSS,
+      UMF:this.empleados[0].UMF,
+      //Informacion Laboral
+      // Define otros controles de formulario aquí
+      NoNomina: this.empleados[0].NoNomina,
+      Nivel:this.empleados[0].Nivel,
+      NombreDepartamento:this.empleados[0].NombreDepartamento,
+      NombrePuesto:this.empleados[0].NombrePuesto,
+      TipoIngreso:this.empleados[0].TipoIngreso,
+      Ingreso:this.empleados[0].Ingreso,
+      HorarioSemanal:this.empleados[0].HorarioSemanal,
+
+      //Domicilio
+      DomicilioIne:this.empleados[0].DomicilioIne,
+      Poblacion:this.empleados[0].Poblacion,
+      EntidadDireccion:this.empleados[0].EntidadDireccion,
+      CP:this.empleados[0].CP,
+      CorreoElectronico: this.empleados[0].CorreoElectronico,
+      NumeroTelefono1:this.empleados[0].NumeroTelefono1,
+      NumeroTelefono2:this.empleados[0].NumeroTelefono2,
+
+      //Contacto de Emergencia
+      NombreBeneficiario: this.empleados[0].NombreBeneficiario,
+      Parentesco:this.empleados[0].Parentesco,
+      FechaNacimientoBeneficiario:this.empleados[0].FechaNacimientoBeneficiario,
+      NumeroTelefonoEmergencia:this.empleados[0].NumeroTelefonoEmergencia,
+        })
+        
+      },
+      error: (error) => {
+        console.error('Error al cargar los departamentos', error);
+      }
+    });
+
+
+        //console.log('Paso a ParamMap');
+        /*
+        this.route.paramMap.subscribe((paramMap: ParamMap) => {
+          console.log(paramMap.has('NoNomina'));
+          if(paramMap.has('NoNomina')){
+            //this.NoNomina = paramMap.get('NoNomina');
+            this._empleadosService.getEmpleado(1008).subscribe(empleadoData =>{
+              console.log(empleadoData.NoNomina);
+              this.employeeForm.setValue({
+                //Informacion Personal
+              Nombre: empleadoData.Nombre,
+              Apellidos: empleadoData.Apellidos,
+              Sexo: empleadoData.Sexo,
+              EstadoCivil: empleadoData.EstadoCivil,
+              FechaNacimiento: empleadoData.FechaNacimiento,
+              EntidadNacimiento: empleadoData.EntidadNacimiento,
+              CiudadNacimiento: empleadoData.CiudadNacimiento,
+              CURP: empleadoData.CURP,
+              RFC: empleadoData.RFC,
+              NSS: empleadoData.NSS,
+              UMF: empleadoData.UMF,
+              //Informacion Laboral
+              // Define otros controles de formulario aquí
+              NoNomina: empleadoData.NoNomina,
+              Nivel: empleadoData.Nivel,
+              NombreDepartamento: empleadoData.NombreDepartamento,
+              NombrePuesto: empleadoData.NombrePuesto,
+              TipoIngreso: empleadoData.TipoIngreso,
+              Ingreso: empleadoData.Ingreso,
+              HorarioSemanal: empleadoData.HorarioSemanal,
+        
+              //Domicilio
+              DomicilioIne: empleadoData.DomicilioIne,
+              Poblacion: empleadoData.Poblacion,
+              EntidadDireccion: empleadoData.EntidadDireccion,
+              CP: empleadoData.CP,
+              CorreoElectronico: empleadoData.CorreoElectronico,
+              NumeroTelefono1: empleadoData.NumeroTelefono1,
+              NumeroTelefono2: empleadoData.NumeroTelefono2,
+        
+              //Contacto de Emergencia
+              NombreBeneficiario: empleadoData.NombreBeneficiario,
+              Parentesco: empleadoData.Parentesco,
+              FechaNacimientoBeneficiario: empleadoData.FechaNacimientoBeneficiario,
+              NumeroTelefonoEmergencia: empleadoData.NumeroTelefonoEmergencia,
+              });
+              }
+            )
+            
+          }else{
+           console.log('Error');
+          }
+        })*/
+    
+
 
     
 
@@ -227,11 +357,10 @@ export class UpdateEmpleadoComponent implements OnInit{
 
     if (this.employeeForm.valid) {
       console.log(this.employeeForm.value);
-      console.log(this.employeeForm.value.FechaNacimiento);
-      console.log(this.employeeForm.value.Ingreso);
-      this._empleadosService.addEmpleados(this.employeeForm.value).subscribe({
+      console.log(this.empleados[0].NoNomina);
+      this._empleadosService.updateEmpleados(this.empleados[0].NoNomina,this.employeeForm.value).subscribe({
         next: (resp: any) => {
-            this._coreService.openSnackBar('Empleados added successfully', resp);
+            this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
         },
         error: (err: any) => {
             console.error('Error: ' + err);

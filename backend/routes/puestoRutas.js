@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 //Obtener solamente el puesto por Id
+/*
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -25,7 +26,21 @@ router.get('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).send('Error al encontrar Los Puestos');
     }
+});*/
+
+//Obtener todos los puestos solamente el puesto por Id
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * from tblPuestos Where IdDepartamento = ' + id);
+        res.json(result.recordset);
+        //res.send('Empleado Encontrado Correctamente');
+    } catch (err) {
+        res.status(500).send('Error al encontrar Los Puestos');
+    }
 });
+
 
 // Eliminar un Puesto
 router.delete('/:id', async (req, res) => {
