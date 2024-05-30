@@ -32,6 +32,9 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 
 import 'moment/locale/fr';
 import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
+import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
+import { inputEmpleado } from '../../../../../../backend/models/inputEmpleado.model';
+
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -69,7 +72,7 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService
   ],
   templateUrl: './update-empleado.component.html',
   styleUrl: './update-empleado.component.css'
@@ -79,8 +82,10 @@ export class UpdateEmpleadoComponent implements OnInit{
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
   puestos: Puesto[] = [];
-  empleados: Empleado[] = [];
+  empleados: inputEmpleado[] = [];
   NoNomina1!: number;
+  filteredPuestos: Puesto[] = [];
+
   //estados1: string[] = [];
 
   //Opciones de Eleccion
@@ -153,7 +158,9 @@ export class UpdateEmpleadoComponent implements OnInit{
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
     private _coreService: CoreService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private _puestosService: PuestosService
+
     
   ) { 
     this.employeeForm = this.fb.group({
@@ -204,18 +211,34 @@ export class UpdateEmpleadoComponent implements OnInit{
       this.employeeForm.get('CiudadNacimiento')!.setValue('');
     });
 
+    
+    this.employeeForm.get('NombreDepartamento')!.valueChanges.subscribe(departamentoId => {
+      this.filterPuestos(departamentoId);
+    });
+
+
     /*this.employeeForm.get('departamento')!.valueChanges.subscribe(state => {
       this.departamentos1 = this.
     });*/
 
-    /*
-    this._empleadosService.number$.subscribe(value => {
-      this.NoNomina1 = value;
-    });*/
-
-    
-  
   }
+
+  filterPuestos(departamentoId: number): void {
+    if (departamentoId) {
+      this._puestosService.getPuestosByDepartamento(departamentoId).subscribe({
+        next: (data) => {
+          this.filteredPuestos = data;
+        },
+        error: (error) => {
+          console.error('Error al cargar los puestos filtrados', error);
+        }
+      });
+    } else {
+      this.filteredPuestos = [];
+    }
+    this.employeeForm.get('NombrePuesto')!.setValue('');
+  }
+
 
   ngOnInit(): void {
     //Traer a todos los empleados
@@ -229,7 +252,7 @@ export class UpdateEmpleadoComponent implements OnInit{
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) =>{
-      console.log(paramMap.has('NoNomina'));
+      //console.log(paramMap.has('NoNomina'));
     if(paramMap.has('NoNomina')){
       this.NoNomina1 = Number(paramMap.get('NoNomina'));
       }
@@ -242,6 +265,8 @@ export class UpdateEmpleadoComponent implements OnInit{
         //console.log(data);
         this.empleados = data;
         //this.empleados.push(data);
+
+        
         this.employeeForm.setValue({
           Nombre: this.empleados[0].Nombre,
           Apellidos: this.empleados[0].Apellidos,
@@ -258,7 +283,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       // Define otros controles de formulario aquí
       NoNomina: this.empleados[0].NoNomina,
       Nivel:this.empleados[0].Nivel,
-      NombreDepartamento:this.empleados[0].NombreDepartamento,
+      NombreDepartamento: this.empleados[0].IdDepartamento,
       NombrePuesto:this.empleados[0].NombrePuesto,
       TipoIngreso:this.empleados[0].TipoIngreso,
       Ingreso:this.empleados[0].Ingreso,
@@ -279,11 +304,13 @@ export class UpdateEmpleadoComponent implements OnInit{
       FechaNacimientoBeneficiario:this.empleados[0].FechaNacimientoBeneficiario,
       NumeroTelefonoEmergencia:this.empleados[0].NumeroTelefonoEmergencia,
         })
-        
       },
       error: (error) => {
         console.error('Error al cargar los departamentos', error);
       }
+      
+
+
     });
 
 
@@ -356,8 +383,12 @@ export class UpdateEmpleadoComponent implements OnInit{
     }*/
 
     if (this.employeeForm.valid) {
-      console.log(this.employeeForm.value);
-      console.log(this.empleados[0].NoNomina);
+      console.log(this.employeeForm.value.NombrePuesto.NombrePuesto);
+
+      this.employeeForm.patchValue({
+        NombrePuesto: this.employeeForm.value.NombrePuesto.NombrePuesto
+      });
+
       this._empleadosService.updateEmpleados(this.empleados[0].NoNomina,this.employeeForm.value).subscribe({
         next: (resp: any) => {
             this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
