@@ -1,3 +1,5 @@
+import { Departamento } from "./departamento.model";
+
 export interface Empleado {
   Nombre: string;
   Apellidos: string; 
@@ -12,6 +14,7 @@ export interface Empleado {
   UMF: string;
   NoNomina: number;
   Nivel: string;
+  Departamento:Departamento;
   NombreDepartamento: string;
   NombrePuesto: string;
   NombreResponsable: string;

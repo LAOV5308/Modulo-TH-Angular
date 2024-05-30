@@ -36,6 +36,7 @@ export class DatosPuestosComponent implements OnInit{
     'EstadoPuesto',
     'Acciones'
   ];
+  algo: any;
   puestos: Puesto[] = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatSort) sort!: MatSort;

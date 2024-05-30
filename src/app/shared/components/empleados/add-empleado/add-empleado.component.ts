@@ -154,6 +154,20 @@ export class AddEmpleadoComponent implements OnInit {
     private _puestosService: PuestosService
   ) { 
     this.employeeForm = this.fb.group({
+      
+      //Informacion Laboral
+      // Define otros controles de formulario aquí
+      NoNomina: ['', Validators.required],
+      Nivel:[''],
+      departamento:[''],
+      NombrePuesto:[''],
+      TipoIngreso:[''],
+      Ingreso:[''],
+      HorarioSemanal:[''],
+      NSS:[''],
+      UMF:[''],
+      Sueldo:[''],
+
       //Informacion Personal
       //Nombre: ['', Validators.required],
       //Apellidos: ['', Validators.required],
@@ -166,24 +180,13 @@ export class AddEmpleadoComponent implements OnInit {
       CiudadNacimiento:[''],
       CURP:[''],
       RFC:[''],
-      NSS:[''],
-      UMF:[''],
-      //Informacion Laboral
-      // Define otros controles de formulario aquí
-      NoNomina: ['', Validators.required],
-      Nivel:[''],
-      departamento:[''],
-      NombrePuesto:[''],
-      TipoIngreso:[''],
-      Ingreso:[''],
-      HorarioSemanal:[''],
-
       //Domicilio
       //DomicilioIne:['', Validators.required],
       DomicilioIne:[''],
       Poblacion:[''],
       EntidadDireccion:[''],
-      CP:[''],
+      CP: ['', [Validators.required, Validators.pattern('^[0-9]{5}$')]], // Validación de solo números con 5 dígitos
+      //CP:[''],
       //CorreoElectronico: ['', [Validators.required, Validators.email]],
       CorreoElectronico:[''],
       NumeroTelefono1:[''],
@@ -214,6 +217,16 @@ export class AddEmpleadoComponent implements OnInit {
       this.departamentos1 = this.
     });*/
   
+  }
+  onCPInput(event: any): void {
+    let input = event.target.value;
+    // Eliminar cualquier carácter no numérico
+    input = input.replace(/[^0-9]/g, '');
+    // Limitar la longitud a 5 caracteres
+    if (input.length > 5) {
+      input = input.substring(0, 5);
+    }
+    this.employeeForm.patchValue({ CP: input });
   }
 
   filterPuestos(departamentoId: number): void {
@@ -265,6 +278,7 @@ export class AddEmpleadoComponent implements OnInit {
     if (this.employeeForm.valid) {
       console.log(this.employeeForm.value);
     }*/
+    
 
     if (this.employeeForm.valid) {
 
