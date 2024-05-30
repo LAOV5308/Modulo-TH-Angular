@@ -32,8 +32,12 @@ router.get('/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const sql = await db.getConnection();
-        const result = await sql.query('Select * from tblPuestos Where IdDepartamento = ' + id);
+        const pool = await getConnection();
+        const request = pool.request();
+        //const sql = await db.getConnection();
+        request.input('IdDepartamento', sql.Int, id);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_puesto_getDepartamentobyid');
         res.json(result.recordset);
         //res.send('Empleado Encontrado Correctamente');
     } catch (err) {

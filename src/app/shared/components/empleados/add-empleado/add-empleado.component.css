@@ -7,10 +7,14 @@ mat-form-field {
       width: 30%;
       margin-right: 2%;
     }
+
   }
   
   button {
-    margin-top: 20px;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+
   }
   
   mat-card{
@@ -20,4 +24,14 @@ mat-form-field {
   h2{
     color: #00823b;
     background-color: lightcyan;
+  }
+  h1{
+    color: #00823b;
+    padding-top: 10px;
+    padding-left: 20px;
+  }
+  mat-icon{
+    color: black;
+    padding-left: 10px;
+    padding-top: 10px;
   }

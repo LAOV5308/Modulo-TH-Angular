@@ -19,6 +19,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
 
+import { FlexLayoutModule } from '@angular/flex-layout';
 //import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
 //import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
 
@@ -34,7 +35,8 @@ import { Router, RouterModule } from '@angular/router';// Importante para maneja
     CreateEmpleadoComponent,
     //UpdateEmpleadoComponent,
     MatPaginator,
-    MatFormFieldModule
+    MatFormFieldModule,
+    FlexLayoutModule
   ],
   providers: [EmpleadosService, CoreService],
   templateUrl: './datos.component.html',
@@ -48,14 +50,14 @@ export class DatosComponent implements OnInit{
   displayedColumns: string[] = [
     'NoNomina',
     'Nombre',
-    'Apellidos',
+    //'Apellidos',
     'NombreDepartamento',
     'NombrePuesto',
     'Ingreso',
     'Antiguedad',
     'HorarioSemanal',
     'TipoIngreso',
-    'EstadoEmpleado',
+    //'EstadoEmpleado',
     'Acciones'
   ];
 

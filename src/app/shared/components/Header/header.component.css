@@ -1,14 +1,15 @@
 /* styles.css o en el archivo CSS de tu componente */
 
-/* styles.css o en el archivo CSS de tu componente */
 mat-toolbar {
   background-color: #00823b; /* Ajusta el color de fondo */
   color: white;
+}
+
+.mat-toolbar-row {
   display: flex;
-  flex-direction: row;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
 }
 
 .navbar {
@@ -30,7 +31,7 @@ mat-toolbar {
 }
 
 .spacer {
-  flex: 1 1 auto;
+  flex: 1;
 }
 
 @media (max-width: 800px) {

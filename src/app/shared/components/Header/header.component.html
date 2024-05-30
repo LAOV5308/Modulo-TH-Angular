@@ -1,5 +1,6 @@
 <!-- header.component.html -->
 <mat-toolbar color="primary">
+  <mat-toolbar-row>
   <button mat-icon-button class="hamburger" (click)="toggleNavbar()">
     <mat-icon>menu</mat-icon>
   </button>
@@ -24,6 +25,7 @@
       <button mat-menu-item (click)="puestos()"><mat-icon>list_alt</mat-icon>Consultar Puestos</button>
       <button mat-menu-item><mat-icon>library_books</mat-icon>Reportes</button>
     </mat-menu>
+  </div>
 
 
 
@@ -31,6 +33,7 @@
 
 
     <button mat-button (click)="openDialog()"><mat-icon>exit_to_app</mat-icon>Cerrar sesión</button>
-  </div>
+  
+</mat-toolbar-row>
 </mat-toolbar>
 

@@ -1,7 +1,28 @@
-body{
-      background-image: url("https://www.quesossnroque.com/img/bg.jpg");
-      background-size: cover;
-      background-repeat:no-repeat;
-      background-position: center center;
-      background-attachment: fixed;
-    }
+.table-container {
+  padding: 15px;
+  overflow-x: auto; /* Permite desplazamiento horizontal en dispositivos pequeños */
+}
+
+.mat-elevation-z8 {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  min-width: 600px; /* Asegura un mínimo ancho para mantener la legibilidad */
+}
+
+th.mat-header-cell, td.mat-cell {
+  white-space: nowrap; /* Evita el quiebre de texto en las celdas */
+}
+
+@media (max-width: 600px) {
+  th.mat-header-cell, td.mat-cell {
+    font-size: 12px; /* Ajusta el tamaño de fuente en dispositivos pequeños */
+  }
+}
+
+  .Acciones{
+    display: flex;
+    gap: 5px;
+  }

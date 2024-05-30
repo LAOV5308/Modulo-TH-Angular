@@ -1,9 +1,10 @@
 
 <button 
+class="agregar"
     mat-raised-button 
-    color = "primary"
+    color = "accent"
     (click)="agregar()"
-    type="submit">Agregar Puesto
+    type="submit"><mat-icon>add_circle</mat-icon> Agregar Puesto
     </button>
 
 
@@ -11,8 +12,8 @@
 <!-- lista-empleados.component.html -->
 <!--Aplicar el filtro-->
 
-<mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+<mat-label>Filtro: </mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Produccion" #input>
   
 
   
@@ -21,25 +22,25 @@
 
       <!-- ID Column -->
       <ng-container matColumnDef="IdPuesto">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>IdPuesto</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Numero Puesto</th>
         <td mat-cell *matCellDef="let row"> {{row.IdPuesto}} </td>
       </ng-container>
 
 
       <ng-container matColumnDef="NombrePuesto">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>NombrePuesto</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Puesto</th>
         <td mat-cell *matCellDef="let row"> {{row.NombrePuesto}}</td>
       </ng-container>
 
       
       <!-- Progress Column -->
       <ng-container matColumnDef="NombreDepartamento">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>NombreDepartamento</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Departamento</th>
         <td mat-cell *matCellDef="let row"> {{row.NombreDepartamento}}</td>
       </ng-container>
 
       <ng-container matColumnDef="EstadoPuesto">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>EstadoPuesto</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Estatus</th>
         <td mat-cell *matCellDef="let row"> {{row.EstadoPuesto}}</td>
       </ng-container>
 

@@ -155,8 +155,10 @@ export class AddEmpleadoComponent implements OnInit {
   ) { 
     this.employeeForm = this.fb.group({
       //Informacion Personal
-      Nombre: ['', Validators.required],
-      Apellidos: ['', Validators.required],
+      //Nombre: ['', Validators.required],
+      //Apellidos: ['', Validators.required],
+      Nombre:[''],
+      Apellidos:[''],
       Sexo:[''],
       EstadoCivil:[''],
       FechaNacimiento:[''],
@@ -177,16 +179,19 @@ export class AddEmpleadoComponent implements OnInit {
       HorarioSemanal:[''],
 
       //Domicilio
-      DomicilioIne:['', Validators.required],
+      //DomicilioIne:['', Validators.required],
+      DomicilioIne:[''],
       Poblacion:[''],
       EntidadDireccion:[''],
       CP:[''],
-      CorreoElectronico: ['', [Validators.required, Validators.email]],
+      //CorreoElectronico: ['', [Validators.required, Validators.email]],
+      CorreoElectronico:[''],
       NumeroTelefono1:[''],
       NumeroTelefono2:[''],
 
       //Contacto de Emergencia
-      NombreBeneficiario: ['', Validators.required],
+      //NombreBeneficiario: ['', Validators.required],
+      NombreBeneficiario:[''],
       Parentesco:[''],
       FechaNacimientoBeneficiario:[''],
       NumeroTelefonoEmergencia:[''],
@@ -212,7 +217,18 @@ export class AddEmpleadoComponent implements OnInit {
   }
 
   filterPuestos(departamentoId: number): void {
-    this.filteredPuestos = this.puestos.filter(puesto => puesto.IdDepartamento === departamentoId);
+    if (departamentoId) {
+      this._puestosService.getPuestosByDepartamento(departamentoId).subscribe({
+        next: (data) => {
+          this.filteredPuestos = data;
+        },
+        error: (error) => {
+          console.error('Error al cargar los puestos filtrados', error);
+        }
+      });
+    } else {
+      this.filteredPuestos = [];
+    }
     this.employeeForm.get('NombrePuesto')!.setValue('');
   }
 
@@ -251,9 +267,19 @@ export class AddEmpleadoComponent implements OnInit {
     }*/
 
     if (this.employeeForm.valid) {
+
+      /*this.employeeForm.patchValue({
+        NombrePuesto: this.employeeForm.value.NombrePuesto.NombrePuesto
+      });*/
+      //console.log(this.employeeForm.value);
+      
+      console.log(this.employeeForm.value.NombrePuesto.NombrePuesto);
+
+      this.employeeForm.patchValue({
+        NombrePuesto: this.employeeForm.value.NombrePuesto.NombrePuesto
+      })
+      
       console.log(this.employeeForm.value);
-      console.log(this.employeeForm.value.FechaNacimiento);
-      console.log(this.employeeForm.value.Ingreso);
       this._empleadosService.addEmpleados(this.employeeForm.value).subscribe({
         next: (resp: any) => {
             this._coreService.openSnackBar('Empleados added successfully', resp);
