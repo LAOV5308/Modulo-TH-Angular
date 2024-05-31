@@ -57,6 +57,7 @@ export class DatosComponent implements OnInit{
     'Antiguedad',
     'HorarioSemanal',
     'TipoIngreso',
+    'Sueldo',
     //'EstadoEmpleado',
     'Acciones'
   ];

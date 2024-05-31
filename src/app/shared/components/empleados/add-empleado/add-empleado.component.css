@@ -24,6 +24,8 @@ mat-form-field {
   h2{
     color: #00823b;
     background-color: lightcyan;
+    margin-top: 10px;
+    padding: 10px;
   }
   h1{
     color: #00823b;
@@ -34,4 +36,13 @@ mat-form-field {
     color: black;
     padding-left: 10px;
     padding-top: 10px;
+  }
+
+  .edad-empleado {
+    font-size: 14px;
+    color: #3f51b5; /* Color accent de Angular Material */
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    display: flex;
   }

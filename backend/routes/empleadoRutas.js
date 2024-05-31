@@ -38,7 +38,7 @@ router.delete('/:id', async (req, res) => {
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_empleado_delete');
         
-        res.status(201).json({ message: "Empleado creado con éxito" });
+        res.status(201).json({ message: "Empleado eliminado con éxito" });
     } catch (err) {
         res.status(500).json({ message: 'Error al eliminar el empleado: ' + err.message });
     }
@@ -59,8 +59,8 @@ router.post('/', async (req, res) => {
         res.status(201).json({ message: "Departamento creado con éxito" });
 */
 
-    const { Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, NSS, UMF,
-        NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,
+    const { NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,NSS, UMF, Sueldo,
+        Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, 
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
         NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia
     } = req.body;
@@ -96,7 +96,7 @@ router.post('/', async (req, res) => {
         request.input('Parentesco', sql.VarChar, Parentesco);
         request.input('FechaNacimientoBeneficiario', sql.Date, FechaNacimientoBeneficiario);
         request.input('NumeroTelefonoEmergencia', sql.VarChar, NumeroTelefonoEmergencia);
-
+        request.input('Sueldo', sql.Decimal, Sueldo);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_personaall_add');
         //const result = await request.execute('stp_prueba_add');
@@ -145,8 +145,8 @@ router.put('/:id', async (req, res) => {
 
     const { id } = req.params;
 
-    const { Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, NSS, UMF, 
-        Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,
+    const { NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,NSS, UMF, Sueldo,
+        Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, 
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
         NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia
     } = req.body;
@@ -183,7 +183,7 @@ router.put('/:id', async (req, res) => {
         request.input('Parentesco', sql.VarChar, Parentesco);
         request.input('FechaNacimientoBeneficiario', sql.Date, FechaNacimientoBeneficiario);
         request.input('NumeroTelefonoEmergencia', sql.VarChar, NumeroTelefonoEmergencia);
-
+        request.input('Sueldo', sql.Decimal, Sueldo);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_personaall_update');
         //const result = await request.execute('stp_prueba_add');

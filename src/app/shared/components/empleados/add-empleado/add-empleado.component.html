@@ -19,17 +19,22 @@
             <mat-panel-title>
               Información Laboral
             </mat-panel-title>
-          </mat-expansion-panel-header>-->
+          </mat-expansion-panel-header>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Edad</mat-label>
+          <input matInput  disabled>
+        </mat-form-field>
+        -->
           
   
           <mat-form-field appearance="fill" color="accent">
             <mat-label>No.Nomina</mat-label>
-            <input type="number" matInput formControlName="NoNomina">
+            <input type="number" matInput formControlName="NoNomina" maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </mat-form-field>
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Nivel</mat-label>
-            <input type="number" matInput formControlName="Nivel">
+            <input type="number" matInput formControlName="Nivel" maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </mat-form-field>
 
           <mat-form-field appearance="fill" color="accent">
@@ -82,13 +87,13 @@
           
           <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="accent">
             <mat-label>NSS</mat-label>
-            <input type="number" matInput formControlName="NSS" #inputnss maxlength="11">
+            <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
           </mat-form-field>
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>UMF</mat-label>
-            <input type="number" matInput formControlName="UMF" #inputumf maxlength="3">
+            <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
           </mat-form-field>
 
@@ -106,7 +111,11 @@
             <mat-panel-title>
               Información Personal
             </mat-panel-title>--> 
-            <h2>Información Personal</h2>
+            <h2>Información Personal
+              <p *ngIf="edad !== null" class="edad-empleado">Edad Colaborador: {{ edad }} años</p>
+            </h2>
+            
+
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="Nombre">
@@ -135,11 +144,13 @@
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Fecha de Nacimiento</mat-label>
-            <input matInput [matDatepicker]="pickerfechanacimiento" formControlName="FechaNacimiento">
+            <input matInput [matDatepicker]="pickerfechanacimiento" formControlName="FechaNacimiento" (dateChange)="calculateAge()">
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="pickerfechanacimiento"></mat-datepicker-toggle>
             <mat-datepicker #pickerfechanacimiento></mat-datepicker>
           </mat-form-field>  
+
+          
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Entidad de Nacimiento</mat-label>
@@ -210,13 +221,18 @@
             <input type='number' matInput formControlName="CP" #inputcp maxlength="5">
             <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
           </mat-form-field>-->
-          <mat-form-field appearance="fill" color="accent">
+        <!--  <mat-form-field appearance="fill" color="accent">
             <mat-label>CP</mat-label>
             <input type="text" matInput formControlName="CP" #inputcp maxlength="5" pattern="[0-9]*" (input)="onCPInput($event)">
             <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
             <mat-error *ngIf="employeeForm.get('CP')?.invalid && (employeeForm.get('CP')?.dirty || employeeForm.get('CP')?.touched)">
               Por favor ingrese un código postal válido (solo números).
             </mat-error>
+          </mat-form-field>-->
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>CP</mat-label>
+            <input type="number" matInput formControlName="CP" #inputcp maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+            <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
           </mat-form-field>
   
           <mat-form-field appearance="fill" color="accent">
@@ -226,13 +242,13 @@
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Numero Telefono 1</mat-label>
-            <input type="number" matInput formControlName="NumeroTelefono1" placeholder="4771232312" #inputn1 maxlength="10">
+            <input type="number" matInput formControlName="NumeroTelefono1" placeholder="4771232312" #inputn1 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputn1.value.length}}/10</mat-hint>
           </mat-form-field>
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Numero Telefono 2</mat-label>
-            <input type="number" matInput formControlName="NumeroTelefono2" placeholder="4771232312" #inputn2 maxlength="10">
+            <input type="number" matInput formControlName="NumeroTelefono2" placeholder="4771232312" #inputn2 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputn2.value.length}}/10</mat-hint>
           </mat-form-field>
 
@@ -272,7 +288,7 @@
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Numero Telefono Emergencia</mat-label>
-            <input type="number" matInput formControlName="NumeroTelefonoEmergencia" placeholder="4771232312" #inputn3 maxlength="10">
+            <input type="number" matInput formControlName="NumeroTelefonoEmergencia" placeholder="4771232312" #inputn3 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputn3.value.length}}/10</mat-hint>
           </mat-form-field>
           <!-- Agrega más campos aquí -->
