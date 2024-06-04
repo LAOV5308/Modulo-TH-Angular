@@ -26,6 +26,12 @@ export class EmpleadosService {
       catchError(this.handleError)
     );
   }
+
+  addBajaEmpleado(id: number, data: any): Observable<any> {
+    return this.http.put(this.apiUrl+'/bajas/'+id, data).pipe(
+      catchError(this.handleError)
+    );
+  }
   
   updateEmpleados(id: number, data: any): Observable<any> {
     return this.http.put(this.apiUrl+'/'+id, data).pipe(

@@ -3,15 +3,25 @@
 </div>
 <form [formGroup]="Form" (ngSubmit)="onFormSubmit()">
     <div mat-dialog-content class="content">
-        <div class="row">
 
+        <div class="row">
+            <!--<mat-form-field color="accent">
+                <mat-label>NoNomina</mat-label>
+                <input matInput type="number" formControlName="NoNomina">
+            </mat-form-field>-->
+
+            <p *ngIf="NoNomina !== null" class="NoNomina">NoNomina: {{ NoNomina }}</p>
+        </div>
+
+
+        <div class="row">
             <mat-form-field appearance="fill" color="accent">
-                <mat-label>Fecha Baja</mat-label>
-                <input matInput [matDatepicker]="pickerfechaBaja" formControlName="FechaBaja">
+                <mat-label>Fecha Salida</mat-label>
+                <input matInput [matDatepicker]="pickerFechaSalida" formControlName="FechaSalida">
                 <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="pickerfechaBaja"></mat-datepicker-toggle>
-                <mat-datepicker #pickerfechaBaja></mat-datepicker>
-              </mat-form-field> 
+                <mat-datepicker-toggle matIconSuffix [for]="pickerFechaSalida"></mat-datepicker-toggle>
+                <mat-datepicker #pickerFechaSalida></mat-datepicker>
+              </mat-form-field>  
         </div>
 
         <div class="row">
@@ -23,7 +33,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-        </div>-
+        </div>
 
         <div class="row">
             <mat-form-field color="accent">
@@ -36,6 +46,6 @@
     </div>
     <div mat-dialog-actions class="action">
         <button mat-raised-button type="button" [mat-dialog-close]="false">Cancelar</button>
-        <button mat-raised-button color="primary" type="submit">Guardar</button>
+        <button mat-raised-button color="primary" type="submit">Dar Baja</button>
     </div>
 </form>

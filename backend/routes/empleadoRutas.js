@@ -7,7 +7,7 @@ const {sql, getConnection} = require('../ConexionDB/dbConfig');
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_EmpleadosActive Order by NoNomina');
+        const result = await sql.query('Select * from V_Prueba Order by NoNomina');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -121,34 +121,6 @@ router.post('/', async (req, res) => {
 
 });
 
-/*
-router.post('/', async (req, res) => {
-    const { NumeroNomina, 
-        NombreEmpleado, 
-        NombreDepartamento,
-        NombrePuesto,
-        Ingreso,
-        HorarioSemanal,
-        TipoIngreso
-     } = req.body;
-
-     var Numeronomina1 = parseInt(NumeroNomina, 10);
-     console.log(Ingreso, Numeronomina1);
-
-    try {
-        const sql = await db.getConnection();
-        const result = await sql.query(`EXEC stp_empleado_add ${Numeronomina1}, 
-        '${NombreEmpleado}', 
-        '${NombreDepartamento}', 
-        '${NombrePuesto}',
-        '2024-03-04',
-        '${HorarioSemanal}',   
-        '${TipoIngreso}', `);
-        res.status(201).send('Empleado creado correctamente');
-    } catch (err) {
-        res.status(500).send('Error al crear el empleado');
-    }
-});*/
 
 
 
@@ -208,7 +180,37 @@ router.put('/:id', async (req, res) => {
     
 });
 
+router.put('/bajas/:id', async (req, res) => {
 
+    const { id } = req.params;
+
+    const { 
+        FechaSalida, TipoBaja, Finiquito
+    } = req.body;
+
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+
+        // Convertir la fecha a un formato adecuado para SQL Server
+        //const formattedFechaSalida = new Date(FechaSalida).toISOString().split('T')[0];
+
+        request.input('NoNomina', sql.Int, id);
+        request.input('FechaSalida', sql.Date, FechaSalida);
+        request.input('TipoBaja', sql.VarChar, TipoBaja);
+        request.input('Finiquito', sql.Decimal, Finiquito);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_baja_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Empleado Dado De Baja Con exito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al dar de baja empleado: ' + err.message });
+    }
+    
+});
 
 
 module.exports = router;

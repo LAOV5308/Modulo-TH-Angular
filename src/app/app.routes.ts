@@ -9,7 +9,7 @@ import { AddEmpleadoComponent } from './shared/components/empleados/add-empleado
 import { PuestoComponentComponent } from './shared/components/Puestos/puesto-component.component';
 import { UpdateEmpleadoComponent } from './shared/components/empleados/update-empleado/update-empleado.component';
 import { AddBajaComponent } from './shared/components/Bajas/add-baja/add-baja.component';
-
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 
 
 
@@ -17,7 +17,7 @@ import { AddBajaComponent } from './shared/components/Bajas/add-baja/add-baja.co
 
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
-    {path: 'data', component: AddBajaComponent},
+    {path: 'data', component: SidebarComponent},
     {path: 'home', component: LoginComponent},
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},

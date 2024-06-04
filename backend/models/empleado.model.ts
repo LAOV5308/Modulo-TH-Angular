@@ -20,6 +20,7 @@ export interface Empleado {
   NombreResponsable: string;
   TipoIngreso: string;
   Ingreso: Date;
+  Antiguedad: Number;//aQUIMOVI
   HorarioSemanal: string;
   DomicilioIne: string;
   Poblacion: string;

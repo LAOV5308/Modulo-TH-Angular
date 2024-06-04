@@ -137,21 +137,20 @@ export class DatosComponent implements OnInit{
       });*/
     
   }
-  eliminar(data: number){
+  eliminar(data: any){
 
-    /*const dialogU = this._dialog.open(AddBajaComponent,{
+    const dialogU = this._dialog.open(AddBajaComponent,{
       data
-    });*/
-    const dialogU = this._dialog.open(AddBajaComponent);
+    });
 
-    /*
+    
     dialogU.afterClosed().subscribe({
       next:(val)=>{
         if(val){
           this.actualizar();
         }
       }
-    });*/
+    });
 
 /*
     window.alert("Elimina"+id);
