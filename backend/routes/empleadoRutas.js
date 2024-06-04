@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js exporta una función para obtener el pool de conexiones
 const {sql, getConnection} = require('../ConexionDB/dbConfig');
 
-// Obtener todos los empleados
+// Obtener todos los empleados Activos
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
@@ -13,6 +13,18 @@ router.get('/', async (req, res) => {
         res.status(500).send('Error al obtener datos de la base de datos');
     }
 });
+// Obtener todos los empleados all
+router.get('/all', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * from V_EmpleadosAll Order by NoNomina');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener datos de la base de datos');
+    }
+});
+
+
 //Obtener solamente el empleado por Id
 router.get('/:id', async (req, res) => {
     const { id } = req.params;

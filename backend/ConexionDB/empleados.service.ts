@@ -51,6 +51,10 @@ export class EmpleadosService {
     return this.http.get<Empleado[]>(this.apiUrl);
   }
 
+  getEmpleadosAll(): Observable<Empleado[]> {
+    return this.http.get<Empleado[]>(this.apiUrl+'/all');
+  }
+
   deleteEmpleados(id: number): Observable<any> {
     return this.http.delete(this.apiUrl+'/'+id).pipe(
       catchError(this.handleError));

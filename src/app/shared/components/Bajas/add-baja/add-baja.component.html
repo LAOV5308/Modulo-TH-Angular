@@ -1,0 +1,41 @@
+<div mat-dialog-title>
+    <h1>Baja Empleado</h1>
+</div>
+<form [formGroup]="Form" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content class="content">
+        <div class="row">
+
+            <mat-form-field appearance="fill" color="accent">
+                <mat-label>Fecha Baja</mat-label>
+                <input matInput [matDatepicker]="pickerfechaBaja" formControlName="FechaBaja">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="pickerfechaBaja"></mat-datepicker-toggle>
+                <mat-datepicker #pickerfechaBaja></mat-datepicker>
+              </mat-form-field> 
+        </div>
+
+        <div class="row">
+            <mat-form-field appearance="fill" color="accent">
+                <mat-label>Tipo Baja</mat-label>
+                <mat-select formControlName="TipoBaja">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let val of tipoBaja" [value]="val">{{val}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>-
+
+        <div class="row">
+            <mat-form-field color="accent">
+                <mat-label>Finiquito</mat-label>
+                <input matInput type="number" formControlName="Finiquito">
+            </mat-form-field>
+        </div>
+        
+
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-raised-button type="button" [mat-dialog-close]="false">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </div>
+</form>

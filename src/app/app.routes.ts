@@ -8,6 +8,7 @@ import { ComponentDepartamentoComponent } from './shared/components/Departamento
 import { AddEmpleadoComponent } from './shared/components/empleados/add-empleado/add-empleado.component';
 import { PuestoComponentComponent } from './shared/components/Puestos/puesto-component.component';
 import { UpdateEmpleadoComponent } from './shared/components/empleados/update-empleado/update-empleado.component';
+import { AddBajaComponent } from './shared/components/Bajas/add-baja/add-baja.component';
 
 
 
@@ -16,7 +17,7 @@ import { UpdateEmpleadoComponent } from './shared/components/empleados/update-em
 
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
-    {path: 'data', component: UpdateEmpleadoComponent},
+    {path: 'data', component: AddBajaComponent},
     {path: 'home', component: LoginComponent},
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},

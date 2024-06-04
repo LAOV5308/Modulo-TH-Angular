@@ -88,9 +88,6 @@ export class CreateEmpleadoComponent implements OnInit {
     '9:00- 14:00'
   ];
 
-
-
-  
   ngOnInit(): void {
     //this.empForm.patchValue(this.data);
   }

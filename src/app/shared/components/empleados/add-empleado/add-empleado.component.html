@@ -174,13 +174,13 @@
 
           <mat-form-field appearance="fill" hintLabel="Max 18 characters" color="accent">
             <mat-label>CURP</mat-label>
-            <input matInput formControlName="CURP" #inputcurp maxlength="18">
+            <input matInput formControlName="CURP" #inputcurp maxlength="18" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
             <mat-hint align="end">{{inputcurp.value.length}}/18</mat-hint>
           </mat-form-field>
 
           <mat-form-field appearance="fill" hintLabel="Max 13 characters" color="accent" >
             <mat-label>RFC</mat-label>
-            <input matInput formControlName="RFC" #inputrfc maxlength="13">
+            <input matInput formControlName="RFC" #inputrfc maxlength="13" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
             <mat-hint align="end">{{inputrfc.value.length}}/13</mat-hint>
           </mat-form-field>
 

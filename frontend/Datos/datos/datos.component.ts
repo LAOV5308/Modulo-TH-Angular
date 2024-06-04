@@ -20,6 +20,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AddBajaComponent } from '../../../src/app/shared/components/Bajas/add-baja/add-baja.component';
 //import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
 //import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
 
@@ -36,7 +37,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     //UpdateEmpleadoComponent,
     MatPaginator,
     MatFormFieldModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    AddBajaComponent
   ],
   providers: [EmpleadosService, CoreService],
   templateUrl: './datos.component.html',
@@ -135,7 +137,23 @@ export class DatosComponent implements OnInit{
       });*/
     
   }
-  eliminar(id: number){
+  eliminar(data: number){
+
+    /*const dialogU = this._dialog.open(AddBajaComponent,{
+      data
+    });*/
+    const dialogU = this._dialog.open(AddBajaComponent);
+
+    /*
+    dialogU.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.actualizar();
+        }
+      }
+    });*/
+
+/*
     window.alert("Elimina"+id);
     //Eliminar
     this.empleadosService.deleteEmpleados(id).subscribe({
@@ -146,7 +164,8 @@ export class DatosComponent implements OnInit{
       error: (error) => {
         console.error('Error al cargar los empleados', error);
       }
-    });
+    });*/
+
   }
 
   actualizar(){
