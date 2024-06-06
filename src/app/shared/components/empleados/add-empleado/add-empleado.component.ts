@@ -34,6 +34,7 @@ import { DepartamentosService } from '../../../../../../backend/ConexionDB/depar
 import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
 import { MensajeGuardarEmpleadoComponent } from '../messages/mensaje-guardar-empleado/mensaje-guardar-empleado.component';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
+import { Router } from '@angular/router';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -160,7 +161,8 @@ export class AddEmpleadoComponent implements OnInit {
     private _empleadosService: EmpleadosService,
     private _coreService: CoreService,
     private _puestosService: PuestosService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) { 
     this.employeeForm = this.fb.group({
       
@@ -364,6 +366,8 @@ export class AddEmpleadoComponent implements OnInit {
             next: (resp: any) => {
                 this._coreService.openSnackBar('Empleado Agregado Satisfactoriamente  *o*', resp);
                 this.limpiarCampos();
+                this.router.navigate(['/empleados'])
+
             },
             error: (err: any) => {
                 console.error('Error: ' + err);

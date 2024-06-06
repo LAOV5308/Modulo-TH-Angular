@@ -1,4 +1,18 @@
 export interface inputEmpleado {
+  NoNomina: number;
+  Nivel: string;
+  //Departamento:Departamento;
+  IdDepartamento: number;
+  NombrePuesto: string;
+  NombreResponsable: string;
+  TipoIngreso: string;
+  Ingreso: Date;
+  Antiguedad: Number;//aQUIMOVI
+  HorarioSemanal: string;
+  NSS: string;
+  UMF: string;
+  Sueldo: Number;
+
   Nombre: string;
   Apellidos: string; 
   Sexo: string; 
@@ -8,16 +22,7 @@ export interface inputEmpleado {
   CiudadNacimiento: string;
   CURP: string;
   RFC: string;
-  NSS: string;
-  UMF: string;
-  NoNomina: number;
-  Nivel: string;
-  IdDepartamento: string;
-  NombrePuesto: string;
-  NombreResponsable: string;
-  TipoIngreso: string;
-  Ingreso: Date;
-  HorarioSemanal: string;
+
   DomicilioIne: string;
   Poblacion: string;
   EntidadDireccion: string;
@@ -28,5 +33,7 @@ export interface inputEmpleado {
   NombreBeneficiario: string;
   Parentesco: string;
   FechaNacimientoBeneficiario: Date;
-  NumeroTelefonoEmergencia: string  
+  NumeroTelefonoEmergencia: string;
+  
+
 }

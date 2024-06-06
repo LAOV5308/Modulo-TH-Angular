@@ -5,6 +5,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';  // Importante para manejar la navegación
 import { HeaderComponent } from '../header/header.component';
 import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { RouterOutlet } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 
 
 @Component({
@@ -15,7 +18,10 @@ import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.compon
     MatToolbarModule,
     RouterModule,
     HeaderComponent,
-    DatosComponent
+    DatosComponent,
+    SidebarComponent,
+    RouterOutlet,
+    HttpClientModule
   ],
   templateUrl: './system.component.html',
   styleUrl: './system.component.css'

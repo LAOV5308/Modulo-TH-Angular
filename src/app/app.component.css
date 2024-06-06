@@ -1,8 +1,37 @@
-body{
-height: 900px;
-  background-image: url("https://www.quesossnroque.com/img/bg.jpg");
-  background-size: cover;
-  background-repeat:no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
+.main-container {
+  display: flex;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.main-container.sidebar-hidden .sidebar {
+  transform: translateX(-100%);
+}
+
+.main-container.sidebar-hidden .content {
+  margin-left: 0;
+}
+
+.content {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease-in-out;
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.hamburger-button:focus {
+  outline: none;
+}
+
+.hamburger-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }

@@ -10,6 +10,7 @@ import { PuestoComponentComponent } from './shared/components/Puestos/puesto-com
 import { UpdateEmpleadoComponent } from './shared/components/empleados/update-empleado/update-empleado.component';
 import { AddBajaComponent } from './shared/components/Bajas/add-baja/add-baja.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { AppComponent } from './app.component';
 
 
 
@@ -18,7 +19,9 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
     {path: 'data', component: SidebarComponent},
-    {path: 'home', component: LoginComponent},
+    //{path: 'home', component: AppComponent},
+    {path: 'login', component: LoginComponent},
+    
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},
     {path: 'puestos', component: PuestoComponentComponent},
@@ -27,8 +30,8 @@ export const routes: Routes = [
     {path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent},
     
 
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
-    {path: '**', redirectTo: '/home' }
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    {path: '**', redirectTo: '/login' }
     //{ path: '', redirectTo: '/data', pathMatch: 'full' }, // Redirecciona las rutas vacías a '/home'
     //{ path: '**', redirectTo: '/data' }  // Redirecciona las rutas no encontradas a '/home'
 ];

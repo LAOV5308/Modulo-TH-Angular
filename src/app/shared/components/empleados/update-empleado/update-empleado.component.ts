@@ -34,6 +34,7 @@ import 'moment/locale/fr';
 import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
 import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
 import { inputEmpleado } from '../../../../../../backend/models/inputEmpleado.model';
+import { log } from 'console';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -85,6 +86,9 @@ export class UpdateEmpleadoComponent implements OnInit{
   empleados: inputEmpleado[] = [];
   NoNomina1!: number;
   filteredPuestos: Puesto[] = [];
+  
+  edad: number=0;
+  enter: boolean=true;
 
   //estados1: string[] = [];
 
@@ -164,9 +168,24 @@ export class UpdateEmpleadoComponent implements OnInit{
     
   ) { 
     this.employeeForm = this.fb.group({
+      //Informacion Laboral
+      // Define otros controles de formulario aquí
+      NoNomina: [{value: ' ', disabled: true}],
+      Nivel:[''],
+      NombreDepartamento:[''],
+      NombrePuesto:['', Validators.required],
+      TipoIngreso:[''],
+      Ingreso:[''],
+      HorarioSemanal:[''],
+      NSS:[''],
+      UMF:[''],
+      Sueldo:[''],
+
       //Informacion Personal
-      Nombre: ['', Validators.required],
-      Apellidos: ['', Validators.required],
+      //Nombre: ['', Validators.required],
+      //Apellidos: ['', Validators.required],
+      Nombre:[''],
+      Apellidos:[''],
       Sexo:[''],
       EstadoCivil:[''],
       FechaNacimiento:[''],
@@ -174,30 +193,21 @@ export class UpdateEmpleadoComponent implements OnInit{
       CiudadNacimiento:[''],
       CURP:[''],
       RFC:[''],
-      NSS:[''],
-      UMF:[''],
-      //Informacion Laboral
-      // Define otros controles de formulario aquí
-      //NoNomina: ['', Validators.required],
-      NoNomina: [{value: ' ', disabled: true}, Validators.required],
-      Nivel:[''],
-      NombreDepartamento:[''],
-      NombrePuesto:[''],
-      TipoIngreso:[''],
-      Ingreso:[''],
-      HorarioSemanal:[''],
-
       //Domicilio
-      DomicilioIne:['', Validators.required],
+      //DomicilioIne:['', Validators.required],
+      DomicilioIne:[''],
       Poblacion:[''],
       EntidadDireccion:[''],
-      CP:[''],
-      CorreoElectronico: ['', [Validators.required, Validators.email]],
+      CP: [''], // Validación de solo números con 5 dígitos
+      //CP:[''],
+      //CorreoElectronico: ['', [Validators.required, Validators.email]],
+      CorreoElectronico:[''],
       NumeroTelefono1:[''],
       NumeroTelefono2:[''],
 
       //Contacto de Emergencia
-      NombreBeneficiario: ['', Validators.required],
+      //NombreBeneficiario: ['', Validators.required],
+      NombreBeneficiario:[''],
       Parentesco:[''],
       FechaNacimientoBeneficiario:[''],
       NumeroTelefonoEmergencia:[''],
@@ -214,6 +224,7 @@ export class UpdateEmpleadoComponent implements OnInit{
     
     this.employeeForm.get('NombreDepartamento')!.valueChanges.subscribe(departamentoId => {
       this.filterPuestos(departamentoId);
+      console.log('Departamento id: '+ departamentoId);
     });
 
 
@@ -222,12 +233,29 @@ export class UpdateEmpleadoComponent implements OnInit{
     });*/
 
   }
+  calculateAge(): void {
+    const fechaNacimiento = this.employeeForm.get('FechaNacimiento')?.value;
+    if (fechaNacimiento) {
+      const birthDate = new Date(fechaNacimiento);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      this.edad = age;
+    } else {
+      this.edad = 0;
+    }
+  }
 
   filterPuestos(departamentoId: number): void {
+
     if (departamentoId) {
       this._puestosService.getPuestosByDepartamento(departamentoId).subscribe({
         next: (data) => {
           this.filteredPuestos = data;
+          console.log(this.filteredPuestos);
         },
         error: (error) => {
           console.error('Error al cargar los puestos filtrados', error);
@@ -236,7 +264,7 @@ export class UpdateEmpleadoComponent implements OnInit{
     } else {
       this.filteredPuestos = [];
     }
-    this.employeeForm.get('NombrePuesto')!.setValue('');
+    //this.employeeForm.get('NombrePuesto')!.setValue('');
   }
 
 
@@ -257,28 +285,31 @@ export class UpdateEmpleadoComponent implements OnInit{
       this.NoNomina1 = Number(paramMap.get('NoNomina'));
       }
     });
+    console.log(this.NoNomina1);
+    
 
 
     this._empleadosService.getEmpleado(this.NoNomina1).subscribe({
       next: (data) => {
+        
         //this.employeeForm.patchValue(data);
         //console.log(data);
         this.empleados = data;
         //this.empleados.push(data);
 
+        console.log(this.empleados[0].NombrePuesto);
+
+
         
+        
+    /*this.employeeForm.patchValue({
+      NombrePuesto: this.empleados[0].NombrePuesto
+        });*/
+
+
+
         this.employeeForm.setValue({
-          Nombre: this.empleados[0].Nombre,
-          Apellidos: this.empleados[0].Apellidos,
-          Sexo:this.empleados[0].Sexo,
-      EstadoCivil: this.empleados[0].EstadoCivil,
-      FechaNacimiento:this.empleados[0].FechaNacimiento,
-      EntidadNacimiento:this.empleados[0].EntidadNacimiento,
-      CiudadNacimiento:this.empleados[0].CiudadNacimiento,
-      CURP:this.empleados[0].CURP,
-      RFC:this.empleados[0].RFC,
-      NSS:this.empleados[0].NSS,
-      UMF:this.empleados[0].UMF,
+          
       //Informacion Laboral
       // Define otros controles de formulario aquí
       NoNomina: this.empleados[0].NoNomina,
@@ -288,6 +319,21 @@ export class UpdateEmpleadoComponent implements OnInit{
       TipoIngreso:this.empleados[0].TipoIngreso,
       Ingreso:this.empleados[0].Ingreso,
       HorarioSemanal:this.empleados[0].HorarioSemanal,
+      NSS:this.empleados[0].NSS,
+      UMF:this.empleados[0].UMF,
+      Sueldo: this.empleados[0].Sueldo,
+
+      
+      Nombre: this.empleados[0].Nombre,
+      Apellidos: this.empleados[0].Apellidos,
+      Sexo:this.empleados[0].Sexo,
+      EstadoCivil: this.empleados[0].EstadoCivil,
+      FechaNacimiento:this.empleados[0].FechaNacimiento,
+      EntidadNacimiento:this.empleados[0].EntidadNacimiento,
+      CiudadNacimiento:this.empleados[0].CiudadNacimiento,
+      CURP:this.empleados[0].CURP,
+      RFC:this.empleados[0].RFC,
+
 
       //Domicilio
       DomicilioIne:this.empleados[0].DomicilioIne,
@@ -309,69 +355,7 @@ export class UpdateEmpleadoComponent implements OnInit{
         console.error('Error al cargar los departamentos', error);
       }
       
-
-
     });
-
-
-        //console.log('Paso a ParamMap');
-        /*
-        this.route.paramMap.subscribe((paramMap: ParamMap) => {
-          console.log(paramMap.has('NoNomina'));
-          if(paramMap.has('NoNomina')){
-            //this.NoNomina = paramMap.get('NoNomina');
-            this._empleadosService.getEmpleado(1008).subscribe(empleadoData =>{
-              console.log(empleadoData.NoNomina);
-              this.employeeForm.setValue({
-                //Informacion Personal
-              Nombre: empleadoData.Nombre,
-              Apellidos: empleadoData.Apellidos,
-              Sexo: empleadoData.Sexo,
-              EstadoCivil: empleadoData.EstadoCivil,
-              FechaNacimiento: empleadoData.FechaNacimiento,
-              EntidadNacimiento: empleadoData.EntidadNacimiento,
-              CiudadNacimiento: empleadoData.CiudadNacimiento,
-              CURP: empleadoData.CURP,
-              RFC: empleadoData.RFC,
-              NSS: empleadoData.NSS,
-              UMF: empleadoData.UMF,
-              //Informacion Laboral
-              // Define otros controles de formulario aquí
-              NoNomina: empleadoData.NoNomina,
-              Nivel: empleadoData.Nivel,
-              NombreDepartamento: empleadoData.NombreDepartamento,
-              NombrePuesto: empleadoData.NombrePuesto,
-              TipoIngreso: empleadoData.TipoIngreso,
-              Ingreso: empleadoData.Ingreso,
-              HorarioSemanal: empleadoData.HorarioSemanal,
-        
-              //Domicilio
-              DomicilioIne: empleadoData.DomicilioIne,
-              Poblacion: empleadoData.Poblacion,
-              EntidadDireccion: empleadoData.EntidadDireccion,
-              CP: empleadoData.CP,
-              CorreoElectronico: empleadoData.CorreoElectronico,
-              NumeroTelefono1: empleadoData.NumeroTelefono1,
-              NumeroTelefono2: empleadoData.NumeroTelefono2,
-        
-              //Contacto de Emergencia
-              NombreBeneficiario: empleadoData.NombreBeneficiario,
-              Parentesco: empleadoData.Parentesco,
-              FechaNacimientoBeneficiario: empleadoData.FechaNacimientoBeneficiario,
-              NumeroTelefonoEmergencia: empleadoData.NumeroTelefonoEmergencia,
-              });
-              }
-            )
-            
-          }else{
-           console.log('Error');
-          }
-        })*/
-    
-
-
-    
-
 
     
   }
@@ -383,11 +367,45 @@ export class UpdateEmpleadoComponent implements OnInit{
     }*/
 
     if (this.employeeForm.valid) {
-      console.log(this.employeeForm.value.NombrePuesto.NombrePuesto);
+      console.log(this.employeeForm.value);
 
-      this.employeeForm.patchValue({
-        NombrePuesto: this.employeeForm.value.NombrePuesto.NombrePuesto
-      });
+      console.log(this.employeeForm.value.NombrePuesto);
+
+
+      if(this.employeeForm.value.Sueldo == 0){
+        this.employeeForm.patchValue({
+          Sueldo: null
+        })
+      }
+      if(this.employeeForm.value.Ingreso == ''){
+        this.employeeForm.patchValue({
+          Ingreso: null
+        })
+          }
+          if(this.employeeForm.value.FechaNacimiento == ''){
+            this.employeeForm.patchValue({
+              FechaNacimiento: null
+            })
+              }
+              if(this.employeeForm.value.FechaNacimientoBeneficiario == ''){
+                this.employeeForm.patchValue({
+                  FechaNacimientoBeneficiario: null
+                })
+                  }
+
+                  //Conversiones de Number a String
+          this.employeeForm.patchValue({
+            Nivel: this.employeeForm.value.Nivel+'',
+            NSS: this.employeeForm.value.NSS+"",
+            UMF: this.employeeForm.value.UMF+"",
+            CP: this.employeeForm.value.CP+"",
+            NombrePuesto: this.employeeForm.value.NombrePuesto,
+            //NombreDepartamento: this.employeeForm.value.NombrePuesto.NombreDepartamento,
+            NumeroTelefono1: this.employeeForm.value.NumeroTelefono1+'',
+            NumeroTelefono2: this.employeeForm.value.NumeroTelefono2+'',
+            NumeroTelefonoEmergencia: this.employeeForm.value.NumeroTelefonoEmergencia+'',
+          })
+          console.log(this.employeeForm.value);
 
       this._empleadosService.updateEmpleados(this.empleados[0].NoNomina,this.employeeForm.value).subscribe({
         next: (resp: any) => {

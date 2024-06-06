@@ -1,23 +1,15 @@
-/* sidebar.component.css */
 .sidebar {
     width: 250px;
     background-color: #00823b;
     padding: 20px;
     position: fixed;
     height: 100%;
-    transition: width 0.3s;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(0);
   }
   
-  .sidebar.collapsed {
-    width: 80px;
-  }
-  
-  .sidebar.collapsed ul li a span {
-    display: none; /* Esconde el texto cuando está colapsado */
-  }
-  
-  .sidebar.collapsed ul li {
-    text-align: center; /* Centro los íconos */
+  .sidebar.hidden {
+    transform: translateX(-100%);
   }
   
   .sidebar ul {
@@ -29,13 +21,22 @@
     margin: 10px 0;
   }
   
-  .sidebar a {
+  .sidebar a, .sidebar button {
     text-decoration: none;
     color: #ffffff;
     font-weight: bold;
     display: flex;
     align-items: center;
+    width: 100%;
+    text-align: left;
   }
+
+  .sidebar button {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  
   
   .sidebar a mat-icon {
     margin-right: 10px;
@@ -44,4 +45,34 @@
   .sidebar.collapsed a mat-icon {
     margin-right: 0;
   }
+
+  .siderbar li a:hover{
+    background-color: #0bad54;
+  }
+  
+  .siderbar li ul{
+    position: absolute;
+    background-color: aqua;
+
+  }
+
+  .sidebar a mat-icon, .sidebar button mat-icon {
+    margin-right: 10px;
+  }
+  
+  .sidebar ul ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  .sidebar ul ul li {
+    margin: 5px 0;
+  }
+  
+  .expand-icon {
+    margin-left: auto;
+  }
+
+  /*> */
+  
   

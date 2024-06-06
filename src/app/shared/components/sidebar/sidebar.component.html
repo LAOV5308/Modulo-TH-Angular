@@ -1,30 +1,37 @@
-<app-header></app-header>
 
 <!-- sidebar.component.html -->
 <nav class="sidebar">
     <ul>
       <li>
-        <a href="#/tareas">
-          <mat-icon>check_circle</mat-icon>
-          Tareas
+        <a href="javascript:void(0)" (click)="toggleSubmenu('empleados')">
+          <mat-icon>people</mat-icon>
+          Empleados
+          <mat-icon class="expand-icon">{{ submenus['empleados'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </a>
+        <ul *ngIf="submenus['empleados']">
+          <li><a href="/empleados"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
+          <li><a href="/addEmpleado"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
+          
+        </ul>
+      </li>
+
+
+      <li>
+        <a href="/departamentos">
+          <mat-icon>business</mat-icon>
+          Departamentos
         </a>
       </li>
       <li>
-        <a href="#/revisiones">
-          <mat-icon>history</mat-icon>
-          Revisiones
+        <a href="/puestos">
+          <mat-icon>list_alt</mat-icon>
+          Puestos
         </a>
       </li>
       <li>
-        <a href="#/calendarios">
-          <mat-icon>calendar_today</mat-icon>
-          Calendarios de Ausencias
-        </a>
-      </li>
-      <li>
-        <a href="#/perfil">
-          <mat-icon>person</mat-icon>
-          Mi Perfil
+        <a href="/incidencias">
+          <mat-icon>event_note</mat-icon>
+          Incidencias
         </a>
       </li>
       <li>
@@ -63,6 +70,7 @@
           Administración
         </a>
       </li>
+
     </ul>
   </nav>
   

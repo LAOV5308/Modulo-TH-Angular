@@ -1,6 +1,21 @@
 import { Departamento } from "./departamento.model";
 
 export interface Empleado {
+  
+  NoNomina: number;
+  Nivel: string;
+  //Departamento:Departamento;
+  NombreDepartamento: string;
+  NombrePuesto: string;
+  NombreResponsable: string;
+  TipoIngreso: string;
+  Ingreso: Date;
+  Antiguedad: Number;//aQUIMOVI
+  HorarioSemanal: string;
+  NSS: string;
+  UMF: string;
+  Sueldo: Number;
+
   Nombre: string;
   Apellidos: string; 
   Sexo: string; 
@@ -10,18 +25,7 @@ export interface Empleado {
   CiudadNacimiento: string;
   CURP: string;
   RFC: string;
-  NSS: string;
-  UMF: string;
-  NoNomina: number;
-  Nivel: string;
-  Departamento:Departamento;
-  NombreDepartamento: string;
-  NombrePuesto: string;
-  NombreResponsable: string;
-  TipoIngreso: string;
-  Ingreso: Date;
-  Antiguedad: Number;//aQUIMOVI
-  HorarioSemanal: string;
+
   DomicilioIne: string;
   Poblacion: string;
   EntidadDireccion: string;
@@ -32,5 +36,5 @@ export interface Empleado {
   NombreBeneficiario: string;
   Parentesco: string;
   FechaNacimientoBeneficiario: Date;
-  NumeroTelefonoEmergencia: string  
+  NumeroTelefonoEmergencia: string;
 }

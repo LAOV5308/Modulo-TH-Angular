@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +21,8 @@ import {MatMenuModule} from '@angular/material/menu';
 
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
+import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
+
 
 @Component({
   selector: 'app-header',
@@ -38,7 +40,8 @@ import {MatListModule} from '@angular/material/list';
     FormsModule,
     MatMenuModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    HttpClientModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -52,11 +55,16 @@ export class HeaderComponent {
   ) {}
 
   navbarCollapsed = false;
+  
+  @Output() sidebarToggle = new EventEmitter<void>();
 
-  toggleNavbar() {
-    this.navbarCollapsed = !this.navbarCollapsed;
+  toggleSidebar() {
+    this.sidebarToggle.emit();
   }
 
+toggleNavbar() {
+    this.navbarCollapsed = !this.navbarCollapsed;
+  }
   menuOpen = false;
 
   toggleMenu() {
