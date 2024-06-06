@@ -4,6 +4,7 @@ const app = express();
 const empleadosRutas = require('./backend/routes/empleadoRutas')
 const departamentosRutas = require('./backend/routes/departamentoRutas')
 const puestosRutas = require('./backend/routes/puestoRutas')
+const incidenciasRutas = require('./backend/routes/incidenciasRutas')
 const getConnection = require('./backend/ConexionDB/dbConfig');
 const port = 3000;
 
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use('/departamentos', departamentosRutas);
 app.use('/empleados', empleadosRutas);
 app.use('/puestos', puestosRutas);
+app.use('/incidencias', incidenciasRutas);
 
 
 app.listen(port, () => {

@@ -19,6 +19,7 @@ import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados
 import { Departamento } from '../../../../../../backend/models/departamento.model';
 import { Puesto } from '../../../../../../backend/models/puesto.model';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
+
 import { CommonModule } from '@angular/common';
 
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
@@ -97,6 +98,12 @@ export class UpdateEmpleadoComponent implements OnInit{
     'Masculino',
     'Femenino'
   ];
+
+  nivel: string[] = [
+    '1',
+    '2',
+    '3'
+  ];
   
   estadocivil: string[] = [
     'Casado',
@@ -163,7 +170,8 @@ export class UpdateEmpleadoComponent implements OnInit{
     private _empleadosService: EmpleadosService,
     private _coreService: CoreService,
     public route: ActivatedRoute,
-    private _puestosService: PuestosService
+    private _puestosService: PuestosService,
+    private router: Router
 
     
   ) { 
@@ -184,8 +192,8 @@ export class UpdateEmpleadoComponent implements OnInit{
       //Informacion Personal
       //Nombre: ['', Validators.required],
       //Apellidos: ['', Validators.required],
-      Nombre:[''],
-      Apellidos:[''],
+      Nombre:['', Validators.required],
+      Apellidos:['', Validators.required],
       Sexo:[''],
       EstadoCivil:[''],
       FechaNacimiento:[''],
@@ -410,6 +418,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       this._empleadosService.updateEmpleados(this.empleados[0].NoNomina,this.employeeForm.value).subscribe({
         next: (resp: any) => {
             this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
+            this.router.navigate(['/empleados'])
         },
         error: (err: any) => {
             console.error('Error: ' + err);

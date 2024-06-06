@@ -74,7 +74,8 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService],
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService
+],
     
   templateUrl: './add-empleado.component.html',
   styleUrl: './add-empleado.component.css'
@@ -94,6 +95,11 @@ export class AddEmpleadoComponent implements OnInit {
   sexo: string[] = [
     'Masculino',
     'Femenino'
+  ];
+  nivel: string[] = [
+    '1',
+    '2',
+    '3'
   ];
   
   estadocivil: string[] = [
@@ -182,8 +188,8 @@ export class AddEmpleadoComponent implements OnInit {
       //Informacion Personal
       //Nombre: ['', Validators.required],
       //Apellidos: ['', Validators.required],
-      Nombre:[''],
-      Apellidos:[''],
+      Nombre:['', Validators.required],
+      Apellidos:['', Validators.required],
       Sexo:[''],
       EstadoCivil:[''],
       FechaNacimiento:[''],

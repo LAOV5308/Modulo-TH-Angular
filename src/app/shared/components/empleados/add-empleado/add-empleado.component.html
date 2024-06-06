@@ -30,10 +30,20 @@
             <input type="number" matInput formControlName="NoNomina" maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <!--<mat-form-field appearance="fill" color="accent">
             <mat-label>Nivel</mat-label>
             <input type="number" matInput formControlName="Nivel" maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          </mat-form-field>-->
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Nivel</mat-label>
+            <mat-select formControlName="Nivel">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of nivel" [value]="value">{{ value }}</mat-option>
+            </mat-select>
           </mat-form-field>
+
+
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Departamento</mat-label>

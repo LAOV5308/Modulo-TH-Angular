@@ -25,17 +25,24 @@
         -->
           
   
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>No.Nomina</mat-label>
             <input type="number" matInput formControlName="NoNomina" maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <!--<mat-form-field appearance="fill" color="accent">
             <mat-label>Nivel</mat-label>
             <input type="number" matInput formControlName="Nivel" maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          </mat-form-field>-->
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Nivel</mat-label>
+            <mat-select formControlName="Nivel">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of nivel" [value]="value">{{ value }}</mat-option>
+            </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Departamento</mat-label>
             <mat-select formControlName="NombreDepartamento">
               <mat-option>None</mat-option>
@@ -44,7 +51,7 @@
           </mat-form-field>
 
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Puesto</mat-label>
             <mat-select formControlName="NombrePuesto">
               <mat-option>None</mat-option>
@@ -57,7 +64,7 @@
             <input matInput formControlName="responsable">
           </mat-form-field>-->
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>TipoIngreso</mat-label>
             <mat-select formControlName="TipoIngreso">
               <mat-option>None</mat-option>
@@ -65,7 +72,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Fecha de Ingreso</mat-label>
             <input matInput [matDatepicker]="pickeringreso" formControlName="Ingreso">
             <mat-hint>DD/MM/YYYY</mat-hint>
@@ -74,7 +81,7 @@
           </mat-form-field>  
 
          
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>HorarioSemanal</mat-label>
             <mat-select formControlName="HorarioSemanal">
               <mat-option>None</mat-option>
@@ -83,19 +90,19 @@
           </mat-form-field>
 
           
-          <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="accent">
+          <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="primary">
             <mat-label>NSS</mat-label>
             <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>UMF</mat-label>
             <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>$ Sueldo </mat-label>
             <input type="number" matInput formControlName="Sueldo">
           </mat-form-field>
@@ -114,17 +121,17 @@
             </h2>
             
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="Nombre">
           </mat-form-field>
           
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Apellidos</mat-label>
             <input matInput formControlName="Apellidos">
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Sexo</mat-label>
             <mat-select formControlName="Sexo">
                 <mat-option *ngFor="let val of sexo" [value]="val">{{val}}
@@ -132,7 +139,7 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" color="accent">
+        <mat-form-field appearance="fill" color="primary">
           <mat-label>Estado Civil</mat-label>
           <mat-select formControlName="EstadoCivil">
               <mat-option *ngFor="let val of estadocivil" [value]="val">{{val}}
@@ -140,7 +147,7 @@
           </mat-select>
       </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Fecha de Nacimiento</mat-label>
             <input matInput [matDatepicker]="pickerfechanacimiento" formControlName="FechaNacimiento" (dateChange)="calculateAge()">
             <mat-hint>DD/MM/YYYY</mat-hint>
@@ -150,14 +157,14 @@
 
           
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Entidad de Nacimiento</mat-label>
             <mat-select formControlName="EntidadNacimiento">
               <mat-option *ngFor="let val of estados" [value]="val">{{val}}</mat-option>
           </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Ciudad de Nacimiento</mat-label>
             <mat-select formControlName="CiudadNacimiento">
               <mat-option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad }}</mat-option>
@@ -170,13 +177,13 @@
           </mat-form-field>-->
 
 
-          <mat-form-field appearance="fill" hintLabel="Max 18 characters" color="accent">
+          <mat-form-field appearance="fill" hintLabel="Max 18 characters" color="primary">
             <mat-label>CURP</mat-label>
             <input matInput formControlName="CURP" #inputcurp maxlength="18" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
             <mat-hint align="end">{{inputcurp.value.length}}/18</mat-hint>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" hintLabel="Max 13 characters" color="accent" >
+          <mat-form-field appearance="fill" hintLabel="Max 13 characters" color="primary">
             <mat-label>RFC</mat-label>
             <input matInput formControlName="RFC" #inputrfc maxlength="13" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
             <mat-hint align="end">{{inputrfc.value.length}}/13</mat-hint>
@@ -195,17 +202,17 @@
             </mat-panel-title>
           </mat-expansion-panel-header>-->
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Domicilio INE</mat-label>
             <input matInput formControlName="DomicilioIne">
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Poblacion</mat-label>
             <input matInput formControlName="Poblacion">
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Entidad Direccion</mat-label>
             <mat-select formControlName="EntidadDireccion">
               <mat-option>None</mat-option>
@@ -227,24 +234,24 @@
               Por favor ingrese un código postal válido (solo números).
             </mat-error>
           </mat-form-field>-->
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>CP</mat-label>
             <input type="number" matInput formControlName="CP" #inputcp maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
           </mat-form-field>
   
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Correo electrónico</mat-label>
             <input matInput formControlName="CorreoElectronico">
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Numero Telefono 1</mat-label>
             <input type="number" matInput formControlName="NumeroTelefono1" placeholder="4771232312" #inputn1 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputn1.value.length}}/10</mat-hint>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Numero Telefono 2</mat-label>
             <input type="number" matInput formControlName="NumeroTelefono2" placeholder="4771232312" #inputn2 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputn2.value.length}}/10</mat-hint>
@@ -263,20 +270,20 @@
             </mat-panel-title>
           </mat-expansion-panel-header>-->
   
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Nombre Beneficiario</mat-label>
             <input matInput formControlName="NombreBeneficiario">
           </mat-form-field>
 
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Parentesco</mat-label>
             <mat-select formControlName="Parentesco">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let value of parentesco" [value]="value">{{ value }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Fecha Nacimiento Beneficiario</mat-label>
             <input matInput [matDatepicker]="pickerfechanacimientobeneficiario" formControlName="FechaNacimientoBeneficiario">
             <mat-hint>DD/MM/YYYY</mat-hint>
@@ -284,7 +291,7 @@
             <mat-datepicker #pickerfechanacimientobeneficiario></mat-datepicker>
           </mat-form-field>  
 
-          <mat-form-field appearance="fill" color="accent">
+          <mat-form-field appearance="fill" color="primary">
             <mat-label>Numero Telefono Emergencia</mat-label>
             <input type="number" matInput formControlName="NumeroTelefonoEmergencia" placeholder="4771232312" #inputn3 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             <mat-hint align="end">{{inputn3.value.length}}/10</mat-hint>
@@ -295,7 +302,7 @@
   
       <!--</mat-accordion>-->
   
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
+      <button mat-raised-button color="primary" type="submit">Actualizar</button>
        <!--Le quite aqui lo del darle click-->
     </form>
   </mat-card-header>

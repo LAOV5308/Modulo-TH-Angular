@@ -11,6 +11,9 @@ import { UpdateEmpleadoComponent } from './shared/components/empleados/update-em
 import { AddBajaComponent } from './shared/components/Bajas/add-baja/add-baja.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { AppComponent } from './app.component';
+import { IncidenciasComponent } from './shared/components/incidencias/incidencias.component';
+import { AddIncidenciaComponent } from './shared/components/incidencias/add-incidencia/add-incidencia.component';
+
 
 
 
@@ -18,9 +21,10 @@ import { AppComponent } from './app.component';
 
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
-    {path: 'data', component: SidebarComponent},
+    {path: 'data', component: AddIncidenciaComponent},
     //{path: 'home', component: AppComponent},
     {path: 'login', component: LoginComponent},
+    {path: 'incidencias', component: IncidenciasComponent},
     
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},
@@ -28,6 +32,7 @@ export const routes: Routes = [
     {path: 'departamentos', component: ComponentDepartamentoComponent},
     {path: 'addEmpleado', component: AddEmpleadoComponent},
     {path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent},
+    
     
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
