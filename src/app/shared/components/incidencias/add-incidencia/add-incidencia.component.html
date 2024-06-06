@@ -5,7 +5,7 @@
         <div class="form-group">
           <mat-form-field appearance="outline">
             <mat-label>No. Nomina</mat-label>
-            <input matInput formControlName="NoNomina">
+            <input type="number" matInput formControlName="NoNomina">
           </mat-form-field>
   
           <mat-form-field appearance="outline">
@@ -37,19 +37,19 @@
     </div>
   
     <div class="info-section">
-      <h2>Informacion</h2>
-      <div class="info-item">
-        <span>Nombre Completo</span>
+        <h2>Informacion Empleado</h2>
+        <div class="info-item">
+          <span>{{ selectedEmpleado?.Nombre }} {{ selectedEmpleado?.Apellidos }}</span>
+        </div>
+        <div class="info-item">
+          <span>{{ selectedEmpleado?.NombrePuesto }}</span>
+        </div>
+        <div class="info-item">
+          <span>{{ selectedEmpleado?.NombreDepartamento }}</span>
+        </div>
+        <div class="info-item">
+          <span>{{ selectedEmpleado?.NombreResponsable }}</span>
+        </div>
       </div>
-      <div class="info-item">
-        <span>Nombre Puesto</span>
-      </div>
-      <div class="info-item">
-        <span>Nombre Departamento</span>
-      </div>
-      <div class="info-item">
-        <span>Nombre Responsable</span>
-      </div>
-    </div>
   </mat-card>
   

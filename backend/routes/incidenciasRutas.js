@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Obtener todos los empleados all
+/*
 router.get('/all', async (req, res) => {
     try {
         const sql = await db.getConnection();
@@ -23,7 +24,7 @@ router.get('/all', async (req, res) => {
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
     }
-});
+});*/
 
 
 //Obtener solamente el empleado por Id
@@ -31,7 +32,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * FROM V_Incidencias WHERE NoNomina = ' + id);
+        const result = await sql.query('Select * FROM V_Incidencias WHERE IdIncidencias = ' + id);
         res.json(result.recordset);
         //res.send('Empleado Encontrado Correctamente');
     } catch (err) {
@@ -40,6 +41,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Eliminar un empleado
+/*
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -56,13 +58,12 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ message: 'Error al eliminar el empleado: ' + err.message });
     }
 });
-
-// Crear un nuevo empleado
-
+*/
+// Crear una Nueva Incidencia
 router.post('/', async (req, res) => {
 
 
-    const { NoNomina, Motivo, FechaInicio, FechaFin, Estatus} = req.body;
+    const { NoNomina, Motivo, FechaInicio, FechaFin} = req.body;
 
     try {
         const pool = await getConnection();
@@ -71,7 +72,6 @@ router.post('/', async (req, res) => {
         request.input('Motivo', sql.VarChar, Motivo);
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
-        request.input('Estatus', sql.Bit, Estatus);
 
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_incidencias_add');
@@ -80,7 +80,7 @@ router.post('/', async (req, res) => {
 
 
     } catch (err) {
-        res.status(500).json({ message: 'Error al crear el empleado: ' + err.message });
+        res.status(500).json({ message: 'Error al crear la Incidencia: ' + err.message });
     }
 
 });
@@ -88,62 +88,79 @@ router.post('/', async (req, res) => {
 
 
 
-// Actualizar un empleado
+// Cerrar Incidencia
+/*
 router.put('/:id', async (req, res) => {
 
     const { id } = req.params;
 
-    const { NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,NSS, UMF, Sueldo,
-        Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, 
-        DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
-        NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia
-    } = req.body;
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdIncidencias', sql.Int, id);
 
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_incidencias_close');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Incidencia dada de baja con exito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al cerrar la Incidencia: ' + err.message });
+    }
+});*/
+
+// cerrar Incidencia
+router.put('/close/:id', async (req, res) => {
+
+    const { id } = req.params;
 
     try {
         const pool = await getConnection();
         const request = pool.request();
-        request.input('Nombre', sql.VarChar, Nombre);
-        request.input('Apellidos', sql.VarChar, Apellidos);
-        request.input('Sexo', sql.VarChar, Sexo);
-        request.input('EstadoCivil', sql.VarChar, EstadoCivil);
-        request.input('FechaNacimiento', sql.Date, FechaNacimiento);
-        request.input('EntidadNacimiento', sql.VarChar, EntidadNacimiento);
-        request.input('CiudadNacimiento', sql.VarChar, CiudadNacimiento);
-        request.input('CURP', sql.VarChar, CURP);
-        request.input('RFC', sql.VarChar, RFC);
-        request.input('NSS', sql.VarChar, NSS);
-        request.input('UMF', sql.VarChar, UMF);
-        request.input('NoNomina', sql.Int, id);
-        request.input('Nivel', sql.VarChar, Nivel);
-        request.input('NombrePuesto', sql.VarChar, NombrePuesto);
-        request.input('TipoIngreso', sql.VarChar, TipoIngreso);
-        request.input('Ingreso', sql.Date, Ingreso);
-        request.input('HorarioSemanal', sql.VarChar, HorarioSemanal);
-        request.input('DomicilioIne', sql.VarChar, DomicilioIne);
-        request.input('Poblacion', sql.VarChar, Poblacion);
-        request.input('EntidadDireccion', sql.VarChar, EntidadDireccion);
-        request.input('CP', sql.VarChar, CP);
-        request.input('CorreoElectronico', sql.VarChar, CorreoElectronico);
-        request.input('NumeroTelefono1', sql.VarChar, NumeroTelefono1);
-        request.input('NumeroTelefono2', sql.VarChar, NumeroTelefono2);
-        request.input('NombreBeneficiario', sql.VarChar, NombreBeneficiario);
-        request.input('Parentesco', sql.VarChar, Parentesco);
-        request.input('FechaNacimientoBeneficiario', sql.Date, FechaNacimientoBeneficiario);
-        request.input('NumeroTelefonoEmergencia', sql.VarChar, NumeroTelefonoEmergencia);
-        request.input('Sueldo', sql.Decimal, Sueldo);
+        request.input('IdIncidencias', sql.Int, id);
+
         // Ejecutar el procedimiento almacenado
-        const result = await request.execute('stp_personaall_update');
+        const result = await request.execute('stp_incidencias_close');
         //const result = await request.execute('stp_prueba_add');
-        res.status(201).json({ message: "Empleado Actualizado con éxito" });
+        res.status(201).json({ message: "Incidencia dada de baja con exito" });
 
 
     } catch (err) {
-        res.status(500).json({ message: 'Error al actualizar el empleado: ' + err.message });
+        res.status(500).json({ message: 'Error al cerrar la Incidencia: ' + err.message });
     }
-    
 });
 
+// Actualizar Incidencia
+router.put('/:id', async (req, res) => {
+
+    const { id } = req.params;
+    const { 
+        Motivo, FechaInicio, FechaFin
+    } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdIncidencias', sql.Int, id);
+        request.input('Motivo', sql.VarChar, Motivo);
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        
+
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_incidencias_update');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Incidencia actualizada con exito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al actualizar la Incidencia: ' + err.message });
+    }
+});
+
+
+/*
 router.put('/bajas/:id', async (req, res) => {
 
     const { id } = req.params;
@@ -174,7 +191,7 @@ router.put('/bajas/:id', async (req, res) => {
         res.status(500).json({ message: 'Error al dar de baja empleado: ' + err.message });
     }
     
-});
+});*/
 
 
 module.exports = router;

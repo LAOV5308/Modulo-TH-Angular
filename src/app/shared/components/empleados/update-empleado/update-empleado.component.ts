@@ -295,8 +295,6 @@ export class UpdateEmpleadoComponent implements OnInit{
     });
     console.log(this.NoNomina1);
     
-
-
     this._empleadosService.getEmpleado(this.NoNomina1).subscribe({
       next: (data) => {
         

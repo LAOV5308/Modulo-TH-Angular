@@ -23,7 +23,13 @@ export class IncidenciasService {
   updateIncidencia(IdIncidencia: number, data: any): Observable<any> {
     return this.http.put(this.apiUrl+'/'+IdIncidencia, data).pipe(
       catchError(this.handleError)
-    );;
+    );
+  }
+
+  closeIncidencia(IdIncidencia: number, data: any): Observable<any> {
+    return this.http.put(this.apiUrl+'/close/'+IdIncidencia, data).pipe(
+      catchError(this.handleError)
+    );
   }
 
   

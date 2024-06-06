@@ -37,4 +37,5 @@ export interface Empleado {
   Parentesco: string;
   FechaNacimientoBeneficiario: Date;
   NumeroTelefonoEmergencia: string;
+  //disabled?: boolean; 
 }

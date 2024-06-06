@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { Incidencia } from '../../../../../../backend/models/incidencia.model';
+import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 
 
@@ -21,6 +22,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
 import { AddIncidenciaComponent } from '../add-incidencia/add-incidencia.component';
+import { MessageConfirmCheckBoxComponent } from '../add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
+import { UpdateIncidenciaComponent } from '../update-incidencia/update-incidencia.component';
+
 
 
 
@@ -34,7 +38,9 @@ import { AddIncidenciaComponent } from '../add-incidencia/add-incidencia.compone
     MatCheckboxModule,
     MatCardModule,
     FormsModule,
-    AddIncidenciaComponent
+    AddIncidenciaComponent,
+    MessageConfirmCheckBoxComponent,
+    UpdateIncidenciaComponent
   
   ],
     providers:[EmpleadosService, CoreService, IncidenciasService],
@@ -44,8 +50,6 @@ import { AddIncidenciaComponent } from '../add-incidencia/add-incidencia.compone
 export class DatosIncidenciaComponent implements OnInit{
 
   checked = false;
-  indeterminate = false;
-  labelPosition: 'before' | 'after' = 'after';
   disabled = false;
 
   displayedColumns: string[] = [
@@ -60,7 +64,7 @@ export class DatosIncidenciaComponent implements OnInit{
   'FechaFin',
   'DiasSubsidios',
   'Estatus',
-    'Acciones'
+  'Acciones'
   ];
 
   incidencias: Incidencia[] = [];
@@ -70,7 +74,10 @@ export class DatosIncidenciaComponent implements OnInit{
 
   constructor(private _incidenciasService: IncidenciasService,
     private _coreService: CoreService,
-    private _dialog: MatDialog,){}
+    private _dialog: MatDialog,
+    private _empleadosService: EmpleadosService
+  
+  ){}
 
   ngOnInit(): void {
     //Traer a todas las incidencias
@@ -101,6 +108,16 @@ export class DatosIncidenciaComponent implements OnInit{
   }
 
   editar(data: any){
+    const dialogU = this._dialog.open(UpdateIncidenciaComponent,{
+      data
+    });
+    dialogU.afterClosed().subscribe({
+      next:(val)=>{
+        if(val){
+          this.actualizar();
+        }
+      }
+    });
 
   }
   eliminar(Id: number){
@@ -119,6 +136,53 @@ export class DatosIncidenciaComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
+
+  /*seleccionar(){
+    const dialogRef = this._dialog.open(MessageConfirmCheckBoxComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        window.alert('Se ha dado de Baja');
+        // Aquí puedes agregar la lógica para manejar el cierre de sesión
+      } else {
+        window.alert('Aun sigue activa');
+      }
+    });
+  }*/
+
+  seleccionar(IdIncidencias: number): void {
+    const dialogRef = this._dialog.open(MessageConfirmCheckBoxComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._incidenciasService.closeIncidencia(IdIncidencias, null).subscribe({
+          next: (resp: any) => {
+            this._coreService.openSnackBar('Incidencia Cerrada con exito', resp);
+            this.actualizar();
+            //this.router.navigate(['/empleados'])
+        },
+        error: (err: any) => {
+            console.error('Error: ' + err);
+            this._coreService.openSnackBar('Error al cerrar incidencia');
+        }
+    });
+
+        
+        // Aquí puedes agregar la lógica para manejar el cierre de sesión
+      } else {
+        //row.disabled = !row.disabled;
+        this.actualizar();
+      }
+    });
+
+  }
+    
+
+
 
 
 }

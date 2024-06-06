@@ -19,7 +19,6 @@ import { CoreService } from '../../../../Core/core.service';
 import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
 import { Departamento } from '../../../../../../backend/models/departamento.model';
 import { Puesto } from '../../../../../../backend/models/puesto.model';
-
 import { CommonModule } from '@angular/common';
 
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
@@ -35,6 +34,7 @@ import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.ser
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { Router } from '@angular/router';
 import { IncidenciasService } from '../../../../../../backend/ConexionDB/incidencias.service';
+import { MessageConfirmCheckBoxComponent } from './message-confirm-check-box/message-confirm-check-box.component';
 
 
 export const MY_DATE_FORMATS = {
@@ -69,6 +69,7 @@ export const MY_DATE_FORMATS = {
     CommonModule,
     HttpClientModule,
     MatIcon,
+    MessageConfirmCheckBoxComponent
   ],
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -81,6 +82,10 @@ export const MY_DATE_FORMATS = {
 })
 export class AddIncidenciaComponent implements OnInit{
   incidenciaForm: FormGroup;
+  empleados: Empleado[]=[];
+  enter: boolean = false;
+  selectedEmpleado: Empleado | null = null;
+
   motivos: string[] = [
     'Maternidad', 
     'Trayecto', 
@@ -91,7 +96,9 @@ export class AddIncidenciaComponent implements OnInit{
 
   constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,
     private _dialogRef: MatDialogRef<AddIncidenciaComponent>,
-    private router: Router
+    private router: Router,
+    private _empleadoService: EmpleadosService,
+    private dialog: MatDialog
   ) {
     this.incidenciaForm = this.fb.group({
       NoNomina: ['', Validators.required],
@@ -102,27 +109,69 @@ export class AddIncidenciaComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this._empleadoService.getEmpleados().subscribe({
+      next: (data) => {
+        this.empleados = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar los empleados', error);
+      }
+
+    });
+
+    this.incidenciaForm.get('NoNomina')!.valueChanges.subscribe(value => {
+      this.updateEmployeeInfo(value);
+    });
     
   }
 
-  onSubmit(): void {
-    if (this.incidenciaForm.valid) {
-      console.log(this.incidenciaForm.value);
+  updateEmployeeInfo(nomina: number): void {
+    const empleado = this.empleados.find(emp => emp.NoNomina === nomina);
+    this.selectedEmpleado = empleado ? empleado : null;
+  }
 
-      this._incidenciasService.addIncidencias(this.incidenciaForm.value).subscribe({
-        next: (resp: any) => {
-            this._coreService.openSnackBar('Incidencia added successfully', resp);
-            this._dialogRef.close(true);
-            //this.router.navigate(['/empleados'])
-        },
-        error: (err: any) => {
-            console.error('Error: ' + err);
-            this._coreService.openSnackBar('Error al agregar Incidencia');
-        }
+  onSubmit(): void {
+    this.enter = false;
+
+    this.empleados.forEach(element => {
+      if(element.NoNomina == this.incidenciaForm.value.NoNomina){
+        this.enter = true;
+      }
     });
+
+    
+      if (this.incidenciaForm.valid) {
+        console.log(this.incidenciaForm.value);
+
+        if(this.enter){
+
+  
+        this._incidenciasService.addIncidencias(this.incidenciaForm.value).subscribe({
+          next: (resp: any) => {
+              this._coreService.openSnackBar('Incidencia added successfully', resp);
+              this._dialogRef.close(true);
+              //this.router.navigate(['/empleados'])
+          },
+          error: (err: any) => {
+              console.error('Error: ' + err);
+              this._coreService.openSnackBar('Error al agregar Incidencia');
+          }
+      });
+      
     }else{
-      this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+      this._coreService.openSnackBar('NoNomina NO-Encontrado/No-Activo');
+      this.incidenciaForm.patchValue({
+        NoNomina: null,
+      });
+
+
     }
+      }else{
+        this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+      }
+
 
   }
+
+  
 }

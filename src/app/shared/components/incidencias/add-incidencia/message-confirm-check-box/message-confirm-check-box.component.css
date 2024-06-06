@@ -1,0 +1,36 @@
+/* confirm-dialog.component.css */
+.dialog-actions {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    padding: 20px; /* Añade un poco de espacio alrededor de los botones */
+  }
+
+  .buttonsi:hover {
+    background-color: #b30000ae; /* Color más oscuro al pasar el mouse*/
+  }
+  
+  .buttonsi {
+    margin: 0 10px; /* Espacio horizontal entre los botones */
+    background-color: #d10303; /* Color de fondo rojo */
+    color: white; /* Texto blanco */
+    border: none; /* Sin bordes */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px 20px; /* Padding más grande para un botón más grande */
+    transition: background-color 0.3s; /* Transición suave del color de fondo */
+  }
+  
+  .buttonno:hover {
+    background-color: #00421e; ; /* Color más oscuro al pasar el mouse*/
+  }
+  .buttonno {
+    margin: 0 10px; /* Espacio horizontal entre los botones */
+    background-color: #00823b; ; /* Color de fondo azul */
+    color: white; /* Texto blanco */
+    border: none; /* Sin bordes */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px 20px; /* Padding más grande para un botón más grande */
+    transition: background-color 0.3s; /* Transición suave del color de fondo */
+  }
+  
+  
+  
