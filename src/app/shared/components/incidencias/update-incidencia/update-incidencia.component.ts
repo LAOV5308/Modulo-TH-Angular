@@ -54,7 +54,6 @@ export const MY_DATE_FORMATS = {
   selector: 'app-update-incidencia',
   standalone: true,
   imports: [
-    
     MatFormFieldModule,
     MatDialogModule,
     MatDialogModule,
@@ -77,7 +76,7 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, IncidenciasService
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, IncidenciasService,
   ],
   templateUrl: './update-incidencia.component.html',
   styleUrl: './update-incidencia.component.css'
@@ -122,10 +121,15 @@ export class UpdateIncidenciaComponent implements OnInit{
       }
 
     });
-    this.incidenciaForm.patchValue(this.data);
+
+    //this.incidenciaForm.patchValue(this.data);
+
 
     this.incidenciaForm.patchValue({
-      NoNomina: this.data.NoNomina
+      NoNomina: this.data.NoNomina,
+      Motivo: this.data.Motivo,
+      FechaInicio: this.incrementarUnDia(new Date(this.data.FechaInicio)),
+        FechaFin: this.incrementarUnDia(new Date(this.data.FechaFin))
     });
 
     console.log(this.data.NoNomina);
@@ -146,6 +150,13 @@ export class UpdateIncidenciaComponent implements OnInit{
     const empleado = this.empleados.find(emp => emp.NoNomina === nomina);
     this.selectedEmpleado = empleado ? empleado : null;
   }
+
+  //Incrementar un dia
+  incrementarUnDia(fecha: Date): Date {
+    fecha.setDate(fecha.getDate() + 1);
+    return fecha;
+  }
+
 
   onSubmit(): void {
     

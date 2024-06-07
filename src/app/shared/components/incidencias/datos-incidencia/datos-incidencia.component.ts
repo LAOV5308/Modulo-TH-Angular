@@ -84,6 +84,7 @@ export class DatosIncidenciaComponent implements OnInit{
     this._incidenciasService.getIncidencias().subscribe({
       next: (data) => {
         this.incidencias = data;
+        console.log(this.incidencias);
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -94,6 +95,13 @@ export class DatosIncidenciaComponent implements OnInit{
       }
     });
     
+  }
+
+  ajustarFecha(fecha: string): string {
+    let date = new Date(fecha);
+    let userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    date = new Date(date.getTime() + userTimezoneOffset); // Ajuste para corregir la zona horaria
+    return date.toISOString().split('T')[0]; // Devuelve solo la parte de la fecha (YYYY-MM-DD)
   }
 
   agregar(){

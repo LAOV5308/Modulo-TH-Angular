@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { NgFor } from '@angular/common';
 import { CoreService } from '../../../../Core/core.service';
+import {MatButtonModule} from '@angular/material/button';
 
 
 
@@ -27,7 +28,8 @@ import { CoreService } from '../../../../Core/core.service';
     MatRadioModule,
     MatSelectModule,
     ReactiveFormsModule,
-    NgFor],
+    NgFor,
+  MatButtonModule],
     providers: [DepartamentosService, provideNativeDateAdapter(), CoreService],
   templateUrl: './update-departamento.component.html',
   styleUrl: './update-departamento.component.css'

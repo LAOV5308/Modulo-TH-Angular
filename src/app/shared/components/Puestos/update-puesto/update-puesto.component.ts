@@ -18,6 +18,7 @@ import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.ser
 import { Departamento } from '../../../../../../backend/models/departamento.model';
 import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
 import { HttpClientModule} from '@angular/common/http';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-update-puesto',
@@ -31,7 +32,8 @@ import { HttpClientModule} from '@angular/common/http';
     MatSelectModule,
     ReactiveFormsModule,
     NgFor,
-    HttpClientModule],
+    HttpClientModule,
+  MatButtonModule],
     providers: [DepartamentosService, PuestosService, provideNativeDateAdapter(), CoreService],
   templateUrl: './update-puesto.component.html',
   styleUrl: './update-puesto.component.css'

@@ -14,6 +14,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import { NgFor, NgIf } from '@angular/common';
 import { CoreService } from '../../../../Core/core.service';
 import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
+import {MatButtonModule} from '@angular/material/button';
 
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 
@@ -47,7 +48,8 @@ export const MY_DATE_FORMATS = {
     ReactiveFormsModule,
     NgFor,
     NgIf,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule
   ],
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },

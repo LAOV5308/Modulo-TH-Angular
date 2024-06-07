@@ -141,6 +141,7 @@ export class AddIncidenciaComponent implements OnInit{
 
     
       if (this.incidenciaForm.valid) {
+        console.log('Form Incidencia');
         console.log(this.incidenciaForm.value);
 
         if(this.enter){

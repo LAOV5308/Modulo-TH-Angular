@@ -58,12 +58,12 @@
 
       <ng-container matColumnDef="FechaInicio">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Inicio</th>
-        <td mat-cell *matCellDef="let row"> {{row.FechaInicio | date: 'dd/MM/yyyy'}}</td>
+        <td mat-cell *matCellDef="let row"> {{ajustarFecha(row.FechaInicio) | date: 'dd/MM/yyyy'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="FechaFin">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Fin</th>
-        <td mat-cell *matCellDef="let row"> {{row.FechaFin | date: 'dd/MM/yyyy'}}</td>
+        <td mat-cell *matCellDef="let row"> {{ajustarFecha(row.FechaFin) | date: 'dd/MM/yyyy'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="DiasSubsidios">

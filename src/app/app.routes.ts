@@ -13,6 +13,7 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 import { AppComponent } from './app.component';
 import { IncidenciasComponent } from './shared/components/incidencias/incidencias.component';
 import { AddIncidenciaComponent } from './shared/components/incidencias/add-incidencia/add-incidencia.component';
+import { ComponentHistorialComponent } from './shared/components/empleados/historial/component-historial.component';
 
 
 
@@ -21,10 +22,11 @@ import { AddIncidenciaComponent } from './shared/components/incidencias/add-inci
 
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
-    {path: 'data', component: AddIncidenciaComponent},
+    {path: 'data', component: ComponentHistorialComponent},
     //{path: 'home', component: AppComponent},
     {path: 'login', component: LoginComponent},
     {path: 'incidencias', component: IncidenciasComponent},
+    {path: 'capacitaciones', component: IncidenciasComponent},
     
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},
