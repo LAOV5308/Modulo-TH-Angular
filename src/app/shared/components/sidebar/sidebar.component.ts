@@ -16,11 +16,13 @@ export class SidebarComponent {
 
   submenus: { [key: string]: boolean } = {
     empleados: false,
+    capacitaciones: false
     // Agrega otros submenús aquí si es necesario
   };
 
   toggleSubmenu(menu: string) {
     this.submenus[menu] = !this.submenus[menu];
+
   }
 
 

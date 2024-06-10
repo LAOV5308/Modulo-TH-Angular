@@ -38,3 +38,7 @@ th.mat-header-cell, td.mat-cell {
  .agregar{
   background-color: aqua;
  }
+ .columns{
+  background-color: rgb(95, 95, 95);
+  color: white;
+ }

@@ -26,3 +26,8 @@ th.mat-header-cell, td.mat-cell {
     display: flex;
     gap: 5px;
   }
+
+  .custom-header {
+    background-color: #6DA5C0; /* Cambia esto al color que desees */
+    color: white; /* Cambia esto al color del texto que desees */
+  }

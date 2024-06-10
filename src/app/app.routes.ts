@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { IncidenciasComponent } from './shared/components/incidencias/incidencias.component';
 import { AddIncidenciaComponent } from './shared/components/incidencias/add-incidencia/add-incidencia.component';
 import { ComponentHistorialComponent } from './shared/components/empleados/historial/component-historial.component';
+import { CapacitacionesComponent } from './shared/components/capacitaciones/capacitaciones.component';
 
 
 
@@ -26,7 +27,7 @@ export const routes: Routes = [
     //{path: 'home', component: AppComponent},
     {path: 'login', component: LoginComponent},
     {path: 'incidencias', component: IncidenciasComponent},
-    {path: 'capacitaciones', component: IncidenciasComponent},
+    {path: 'capacitaciones', component: CapacitacionesComponent},
     
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},
@@ -36,7 +37,6 @@ export const routes: Routes = [
     {path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent},
     
     
-
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     {path: '**', redirectTo: '/login' }
     //{ path: '', redirectTo: '/data', pathMatch: 'full' }, // Redirecciona las rutas vacías a '/home'

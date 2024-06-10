@@ -6,6 +6,7 @@ import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
 import { Empleado } from '../models/empleado.model';
 import { inputEmpleado } from '../models/inputEmpleado.model';
+import { Capacitacion } from '../models/capacitacion.model';
 import { BehaviorSubject } from 'rxjs';
 
 
@@ -32,6 +33,13 @@ export class EmpleadosService {
       catchError(this.handleError)
     );
   }
+
+  getCapacitaciones(): Observable<Capacitacion[]> {
+    return this.http.get<Capacitacion[]>(this.apiUrl+'/capacitaciones').pipe(
+      catchError(this.handleError)
+    );
+  }
+  
   
   updateEmpleados(id: number, data: any): Observable<any> {
     return this.http.put(this.apiUrl+'/'+id, data).pipe(

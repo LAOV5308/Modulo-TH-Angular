@@ -34,3 +34,24 @@ th.mat-header-cell, td.mat-cell {
  h1{
   padding-top: 10px;
  }
+
+ .header-container {
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  align-items: center;
+  margin-bottom: 15px; /* Añade un margen inferior para separar del contenido siguiente */
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+}
+
+.filter-container mat-label {
+  margin-right: 10px;
+}
+
+.columns{
+  background-color: rgb(95, 95, 95);
+  color: white;
+ }

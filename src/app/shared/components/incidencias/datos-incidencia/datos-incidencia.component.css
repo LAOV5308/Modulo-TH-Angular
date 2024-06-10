@@ -43,3 +43,8 @@
   .mat-checkbox .mat-checkbox-input:disabled {
     cursor: not-allowed;
   }
+
+  .columns{
+    background-color: #7455d1;
+    color: white;
+   }
