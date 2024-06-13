@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Empleado } from '../../../backend/models/empleado.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 import { EmpleadosService } from '../../../backend/ConexionDB/empleados.service';
@@ -44,7 +44,7 @@ import { AddBajaComponent } from '../../../src/app/shared/components/Bajas/add-b
   templateUrl: './datos.component.html',
   styleUrl: './datos.component.css'
 })
-export class DatosComponent implements OnInit{
+export class DatosComponent implements OnInit, AfterViewInit{
   NoNomina: number = 0;
  
 
@@ -75,6 +75,14 @@ export class DatosComponent implements OnInit{
     private router: Router) { 
   
 
+    }
+
+    ngAfterViewInit(): void {
+      // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
+      if (this.dataSource) {
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      }
     }
 
   ngOnInit() {

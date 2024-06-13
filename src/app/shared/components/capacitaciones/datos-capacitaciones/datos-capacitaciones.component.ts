@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { Incidencia } from '../../../../../../backend/models/incidencia.model';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
@@ -40,7 +40,7 @@ import { MessageConfirmCheckBoxComponent } from '../../incidencias/add-incidenci
   styleUrl: './datos-capacitaciones.component.css'
 })
 
-export class DatosCapacitacionesComponent implements OnInit{
+export class DatosCapacitacionesComponent implements OnInit, AfterViewInit{
 
   checked = false;
   disabled = false;
@@ -69,6 +69,14 @@ export class DatosCapacitacionesComponent implements OnInit{
     private _empleadosService: EmpleadosService
   
   ){}
+
+  ngAfterViewInit(): void {
+    // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
+    if (this.dataSource) {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }
+  }
 
   ngOnInit(): void {
     //Traer a todas las incidencias

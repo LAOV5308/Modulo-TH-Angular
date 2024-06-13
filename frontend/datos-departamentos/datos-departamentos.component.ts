@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { Departamento } from '../../backend/models/departamento.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 import { DepartamentosService } from '../../backend/ConexionDB/departamentos.service';
@@ -30,7 +30,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   templateUrl: './datos-departamentos.component.html',
   styleUrl: './datos-departamentos.component.css'
 })
-export class DatosDepartamentosComponent implements OnInit{
+export class DatosDepartamentosComponent implements OnInit, AfterViewInit{
 
   displayedColumns: string[] = [
     'IdDepartamento',
@@ -49,6 +49,14 @@ export class DatosDepartamentosComponent implements OnInit{
       private _coreService: CoreService,
       private _dialog: MatDialog,
   ) { }
+
+  ngAfterViewInit(): void {
+    // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
+    if (this.dataSource) {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }
+  }
 
   ngOnInit() {
     //window.alert('actualizo');

@@ -42,3 +42,25 @@ th.mat-header-cell, td.mat-cell {
   background-color: rgb(95, 95, 95);
   color: white;
  }
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  align-items: center;
+  margin-bottom: 15px; /* Añade un margen inferior para separar del contenido siguiente */
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Empuja el contenedor del filtro hacia la derecha */
+}
+
+.filter-container mat-form-field {
+  width: 300px; /* Ajusta el ancho del campo de filtro según sea necesario */
+}
+
+.filter-container mat-label {
+  margin-right: 10px;
+}

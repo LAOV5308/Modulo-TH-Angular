@@ -15,7 +15,7 @@ import { IncidenciasComponent } from './shared/components/incidencias/incidencia
 import { AddIncidenciaComponent } from './shared/components/incidencias/add-incidencia/add-incidencia.component';
 import { ComponentHistorialComponent } from './shared/components/empleados/historial/component-historial.component';
 import { CapacitacionesComponent } from './shared/components/capacitaciones/capacitaciones.component';
-
+import { DatosCapacitacionCatalogoComponent } from './shared/components/capacitacionesCatalogo/datos-capacitacion-catalogo/datos-capacitacion-catalogo.component';
 
 
 
@@ -23,11 +23,12 @@ import { CapacitacionesComponent } from './shared/components/capacitaciones/capa
 
 export const routes: Routes = [
     /*{path: 'login', component: LoginComponent},*/
-    {path: 'data', component: ComponentHistorialComponent},
+    {path: 'data', component: DatosCapacitacionCatalogoComponent},
     //{path: 'home', component: AppComponent},
     {path: 'login', component: LoginComponent},
     {path: 'incidencias', component: IncidenciasComponent},
     {path: 'capacitaciones', component: CapacitacionesComponent},
+    {path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent},
     
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},

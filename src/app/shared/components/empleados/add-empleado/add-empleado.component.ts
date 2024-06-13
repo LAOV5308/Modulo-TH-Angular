@@ -170,6 +170,7 @@ export class AddEmpleadoComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router
   ) { 
+    
     this.employeeForm = this.fb.group({
       
       //Informacion Laboral

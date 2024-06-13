@@ -1,0 +1,49 @@
+.table-container {
+    padding: 15px;
+    overflow-x: auto; /* Permite desplazamiento horizontal en dispositivos pequeños */
+  }
+  
+  .mat-elevation-z8 {
+    width: 100%;
+  }
+  
+  table {
+    width: 100%;
+    min-width: 600px; /* Asegura un mínimo ancho para mantener la legibilidad */
+  }
+  
+  th.mat-header-cell, td.mat-cell {
+    white-space: nowrap; /* Evita el quiebre de texto en las celdas */
+  }
+  
+  @media (max-width: 600px) {
+    th.mat-header-cell, td.mat-cell {
+      font-size: 12px; /* Ajusta el tamaño de fuente en dispositivos pequeños */
+    }
+  }
+  
+    .Acciones{
+      display: flex;
+      gap: 5px;
+    }
+  
+    .custom-header {
+      background-color: #669599; /* Cambia esto al color que desees */
+      color: white; /* Cambia esto al color del texto que desees */
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between; /* Distribuye el espacio entre los elementos */
+      align-items: center;
+      margin-bottom: 15px; /* Añade un margen inferior para separar del contenido siguiente */
+    }
+    
+    .filter-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .filter-container mat-label {
+      margin-right: 10px;
+    }

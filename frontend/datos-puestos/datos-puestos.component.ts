@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Puesto } from '../../backend/models/puesto.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 import { NgFor, DatePipe, NgIf } from '@angular/common';
@@ -28,7 +28,7 @@ import { UpdatePuestoComponent } from '../../src/app/shared/components/Puestos/u
   templateUrl: './datos-puestos.component.html',
   styleUrl: './datos-puestos.component.css'
 })
-export class DatosPuestosComponent implements OnInit{
+export class DatosPuestosComponent implements OnInit, AfterViewInit{
   displayedColumns: string[] = [
     'IdPuesto',
     'NombrePuesto',
@@ -45,23 +45,38 @@ export class DatosPuestosComponent implements OnInit{
   constructor(private _puestosService: PuestosService,
       private _coreService: CoreService,
       private _dialog: MatDialog,
-  ) { }
+  ) { this.cargarPuestos()}
 
 ngOnInit(): void {
+
+  this.cargarPuestos();
+  
+}
+
+ngAfterViewInit(): void {
+  // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
+  if (this.dataSource) {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+}
+
+
+cargarPuestos(): void {
   this._puestosService.getPuestos().subscribe({
     next: (data) => {
       this.puestos = data;
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      
     },
     error: (error) => {
-      console.error('Error al cargar los departamentos', error);
+      console.error('Error al cargar los puestos', error);
     }
   });
-  
 }
+
+
 
 agregar(){
   const dialog = this._dialog.open(AddPuestoComponent);
@@ -104,7 +119,7 @@ eliminar(id: number){
 }
 
 actualizar(){
-    this.ngOnInit();
+    this.cargarPuestos();
 }
 
 applyFilter(event: Event) {

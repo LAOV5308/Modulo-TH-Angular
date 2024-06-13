@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { Incidencia } from '../../../../../../backend/models/incidencia.model';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
-
 
 import { NgFor, DatePipe, NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
@@ -26,8 +25,6 @@ import { MessageConfirmCheckBoxComponent } from '../add-incidencia/message-confi
 import { UpdateIncidenciaComponent } from '../update-incidencia/update-incidencia.component';
 
 
-
-
 @Component({
   selector: 'app-datos-incidencia',
   standalone: true,
@@ -47,7 +44,7 @@ import { UpdateIncidenciaComponent } from '../update-incidencia/update-incidenci
   templateUrl: './datos-incidencia.component.html',
   styleUrl: './datos-incidencia.component.css'
 })
-export class DatosIncidenciaComponent implements OnInit{
+export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
 
   checked = false;
   disabled = false;
@@ -78,6 +75,14 @@ export class DatosIncidenciaComponent implements OnInit{
     private _empleadosService: EmpleadosService
   
   ){}
+
+  ngAfterViewInit(): void {
+    // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
+    if (this.dataSource) {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }
+  }
 
   ngOnInit(): void {
     //Traer a todas las incidencias
