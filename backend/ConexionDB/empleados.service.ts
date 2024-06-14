@@ -35,7 +35,13 @@ export class EmpleadosService {
   }
 
   getCapacitaciones(): Observable<Capacitacion[]> {
-    return this.http.get<Capacitacion[]>(this.apiUrl+'/capacitaciones').pipe(
+    return this.http.get<Capacitacion[]>(this.apiUrl+'/capacitacion').pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addCapacitaciones(data: any): Observable<any> {
+    return this.http.post(this.apiUrl+'/capacitacion', data).pipe(
       catchError(this.handleError)
     );
   }

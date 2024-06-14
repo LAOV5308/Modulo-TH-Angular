@@ -3,6 +3,44 @@ const router = express.Router();
 const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js exporta una función para obtener el pool de conexiones
 const {sql, getConnection} = require('../ConexionDB/dbConfig');
 
+// Obtener todos los empleados all
+router.get('/capacitacion', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * from V_Capacitaciones');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener datos de la base de datos');
+    }
+});
+
+router.post('/capacitacion', async (req, res) => {
+    const { NoNomina, NombreCapacitacion, FechaCapacitacion, CalificacionCapacitacion,
+        ValoracionCapacitacion
+    } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
+        request.input('FechaCapacitacion', sql.Date, FechaCapacitacion);
+        request.input('CalificacionCapacitacion', sql.Decimal, CalificacionCapacitacion);
+        request.input('ValoracionCapacitacion', sql.VarChar, ValoracionCapacitacion);
+
+
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_capacitacionEmpleado_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Capacitacion del Empleado agregado con éxito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al agregar la capacitacion: ' + err.message });
+    }
+
+});
+
 // Obtener todos los empleados Activos
 router.get('/', async (req, res) => {
     try {
@@ -23,18 +61,9 @@ router.get('/all', async (req, res) => {
         res.status(500).send('Error al obtener datos de la base de datos');
     }
 });
-// Obtener todos los empleados all
-router.get('/capacitaciones', async (req, res) => {
-    try {
-        const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_Capacitaciones');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send('Error al obtener datos de la base de datos');
-    }
-});
 
 //Obtener solamente el empleado por Id
+
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -69,6 +98,7 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
 
+    
     /*
     const { NombreDepartamento } = req.body;
     const { NombreResponsable } = req.body;
@@ -79,7 +109,6 @@ router.post('/', async (req, res) => {
         //res.status(201).send("Departamento creado con éxito");
         res.status(201).json({ message: "Departamento creado con éxito" });
 */
-
     const { NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,NSS, UMF, Sueldo,
         Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, 
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
@@ -220,6 +249,11 @@ router.put('/bajas/:id', async (req, res) => {
     }
     
 });
+
+
+///Capacitaciones
+
+
 
 
 module.exports = router;

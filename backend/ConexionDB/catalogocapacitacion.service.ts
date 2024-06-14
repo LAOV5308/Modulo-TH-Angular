@@ -23,8 +23,8 @@ export class CatalogoCapacitacionServiceService {
     );
   }
   
-  updateCatalogoCapacitacion(IdPuesto: number, data: any): Observable<any> {
-    return this.http.put(this.apiUrl+'/'+IdPuesto, data).pipe(
+  updateCatalogoCapacitacion(CodigoCapacitacion: string, data: any): Observable<any> {
+    return this.http.put(this.apiUrl+'/'+CodigoCapacitacion, data).pipe(
       catchError(this.handleError)
     );
   }
@@ -32,6 +32,12 @@ export class CatalogoCapacitacionServiceService {
   getCatalogoCapacitaciones(): Observable<CapacitacionCatalogo[]> {
     return this.http.get<CapacitacionCatalogo[]>(this.apiUrl);
   }
+
+  getsingleCatalogo(CodigoCapacitacion: String): Observable<CapacitacionCatalogo[]> {
+    return this.http.get<CapacitacionCatalogo[]>(this.apiUrl+'/single/'+"'"+CodigoCapacitacion+"'"
+    );
+  }
+
   
   /*getPuestosByDepartamento(departamentoId: number){
     return this.http.get<Cat[]>(this.apiUrl+'/'+departamentoId);

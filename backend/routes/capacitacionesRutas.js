@@ -17,17 +17,24 @@ router.get('/', async (req, res) => {
 });
 
 // Obtener solo uno 
-/*
-router.get('/:id', async (req, res) => {
+
+router.get('/single/:id', async (req, res) => {
     const { id } = req.params;
+
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from tblNombreCapacitaciones where CodigoCapacitacion = '+id);
+        const result = await sql.query('select * from V_CatalogoCapacitacionesActive where CodigoCapacitacion = '+id);
         res.json(result.recordset);
+
+        /*
+        request.input('CodigoCapacitacion', sql.VarChar, id);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_capacitacionnombre_getbyCodigoCapacitacion');
+        res.json(result.recordset);*/
     } catch (err) {
-        res.status(500).send('Error al obtener el catalogo de Capacitaciones');
+        res.status(500).send('Error al obtener el single de catalogo de Capacitaciones');
     }
-});*/
+});
 
 
 
@@ -87,8 +94,6 @@ router.put('/:id', async (req, res) => {
     const { NombreCapacitacion, Origen, Estatus, 
         TipoCapacitacion, Duracion
      } = req.body;
-
-
 
     try {
         const pool = await getConnection();

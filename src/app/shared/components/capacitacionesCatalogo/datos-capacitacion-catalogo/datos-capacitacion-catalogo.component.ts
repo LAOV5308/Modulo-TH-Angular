@@ -91,7 +91,6 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
      this._catalogoCapacitacionesService.getCatalogoCapacitaciones().subscribe({
       next: (data) => {
         this.capacitaciones = data;
-        console.log(this.capacitaciones);
         this.dataSource = new MatTableDataSource(data);
         //this.actualizar();
         
@@ -116,7 +115,9 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
 
   agregar(){
     
-    const dialog = this._dialog.open(AddCapacitacionCatalogoComponent);
+    const dialog = this._dialog.open(AddCapacitacionCatalogoComponent
+      );
+
     dialog.afterClosed().subscribe({
       next:(val)=>{
         if(val){
@@ -126,9 +127,8 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
     });
   }
 
-  editar(data: any){
+  editar(data: string){
 
-    
     const dialogU = this._dialog.open(UpdateCapacitacionCatalogoComponent,{
       data
     });

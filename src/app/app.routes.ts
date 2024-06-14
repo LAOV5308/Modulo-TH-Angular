@@ -30,6 +30,7 @@ export const routes: Routes = [
     {path: 'capacitaciones', component: CapacitacionesComponent},
     {path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent},
     
+
     {path: 'system', component: SystemComponent},
     {path: 'empleados', component: EmpleadosComponent},
     {path: 'puestos', component: PuestoComponentComponent},

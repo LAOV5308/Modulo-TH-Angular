@@ -23,6 +23,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
 import { MessageConfirmCheckBoxComponent } from '../../incidencias/add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
+import { AddCapacitacionesComponent } from '../add-capacitaciones/add-capacitaciones.component';
 
 
 @Component({
@@ -34,7 +35,7 @@ import { MessageConfirmCheckBoxComponent } from '../../incidencias/add-incidenci
     MatPaginator, MatFormFieldModule,
     MatCheckboxModule,
     MatCardModule,
-    FormsModule,MessageConfirmCheckBoxComponent],
+    FormsModule,MessageConfirmCheckBoxComponent, AddCapacitacionesComponent],
     providers:[EmpleadosService, CoreService],
   templateUrl: './datos-capacitaciones.component.html',
   styleUrl: './datos-capacitaciones.component.css'
@@ -104,15 +105,15 @@ export class DatosCapacitacionesComponent implements OnInit, AfterViewInit{
   }
 
   agregar(){
-    /*
-    const dialog = this._dialog.open();
+    
+    const dialog = this._dialog.open(AddCapacitacionesComponent);
     dialog.afterClosed().subscribe({
       next:(val)=>{
         if(val){
           this.actualizar();
         }
       }
-    });*/
+    });
   }
 
   editar(data: any){

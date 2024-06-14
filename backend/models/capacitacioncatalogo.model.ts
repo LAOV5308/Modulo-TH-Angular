@@ -6,4 +6,5 @@ CodigoCapacitacion: string;
   TipoCapacitacion: string;
   Duracion: number;
   EstadoNombreCapacitacion: boolean;
+  IdNombreCapacitacion: number;
 }

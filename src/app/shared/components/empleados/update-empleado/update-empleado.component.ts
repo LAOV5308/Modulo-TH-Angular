@@ -175,6 +175,7 @@ export class UpdateEmpleadoComponent implements OnInit{
 
     
   ) { 
+    
     this.employeeForm = this.fb.group({
       //Informacion Laboral
       // Define otros controles de formulario aquí

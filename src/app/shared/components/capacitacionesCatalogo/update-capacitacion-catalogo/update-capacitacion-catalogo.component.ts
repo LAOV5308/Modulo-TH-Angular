@@ -16,6 +16,8 @@ import { CoreService } from '../../../../Core/core.service';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CatalogoCapacitacionServiceService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { error } from 'node:console';
+import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
 
 @Component({
   selector: 'app-update-capacitacion-catalogo',
@@ -36,19 +38,31 @@ import { CatalogoCapacitacionServiceService } from '../../../../../../backend/Co
 })
 export class UpdateCapacitacionCatalogoComponent implements OnInit {
   Form: FormGroup;
+  CatalogoCapacitaciones: CapacitacionCatalogo[]=[];
   
   ngOnInit(): void {
+    this._catalogoCapacitacionesService.getsingleCatalogo(this.data).subscribe({
+      next: (data) => {
+        this.CatalogoCapacitaciones = data;
+        this.Form.patchValue(this.CatalogoCapacitaciones[0]);
+
+      },
+      error: (error) => {
+        console.error('Error al cargar el catalogo seleccionado', error);
+      }
+    })
+
     
   }
   constructor(
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<UpdateCapacitacionCatalogoComponent>,
     private _catalogoCapacitacionesService: CatalogoCapacitacionServiceService,
-    //@Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService
   ){
     this.Form = this._fb.group({
-      CodigoCapacitacion: ['', Validators.required],
+      CodigoCapacitacion: [{value: '', disabled: true}],
       NombreCapacitacion: ['', Validators.required],
       Origen: [''],
       Estatus: [''],
@@ -68,30 +82,26 @@ export class UpdateCapacitacionCatalogoComponent implements OnInit {
     'Interna', 'Externa'
   ];
   Duracion: number[] = [
-    1,2,3,4,5,6
+    1,2,3,4,5,6,7,8,9,10
   ];
 
   onFormSubmit() {
     
     if (this.Form.valid) {
-      this._catalogoCapacitacionesService.updateCatalogoCapacitacion
-
-
-      this._catalogoCapacitacionesService.addCatalogoCapacitacion(this.Form.value).subscribe({
+      this._catalogoCapacitacionesService.updateCatalogoCapacitacion(this.CatalogoCapacitaciones[0].CodigoCapacitacion, this.Form.value).subscribe({
         next: (resp: any) => {
-            this._coreService.openSnackBar('Agregado al Catalogo successfully', resp);
-  
-            this._dialogRef.close(true);
-        },
-        error: (err: any) => {
-            console.error('Error: ' + err);
-            this._coreService.openSnackBar('Error al agregarlo');
-        }
-    });
-    }else{
-      this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
-    }
-}
+          this._coreService.openSnackBar('Actualizado al Catalogo successfully', resp);
+          this._dialogRef.close(true);
+      },
+      error: (err: any) => {
+          console.error('Error: ' + err);
+          this._coreService.openSnackBar('Error al agregarlo');
+      }
+  });
+  }else{
+    this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+  }
 
+  }
 
 }

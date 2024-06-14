@@ -1,58 +1,48 @@
 <div mat-dialog-title>
-    <h1>Agregar Nueva Capacitacion Al Catalogo</h1>
+    <h1>Agregar Nueva Capacitación Al Catálogo</h1>
 </div>
 <form [formGroup]="Form" (ngSubmit)="onFormSubmit()">
     <div mat-dialog-content class="content">
-
         <div class="row">
-            <mat-form-field color="accent">
-                <mat-label>Codigo Capacitacion</mat-label>
+            <mat-form-field class="form-field" color="accent">
+                <mat-label>Código Capacitación</mat-label>
                 <input matInput type="text" formControlName="CodigoCapacitacion">
             </mat-form-field>
-        </div>
-
-        <div class="row">
-            <mat-form-field color="accent">
-                <mat-label>Nombre Capacitacion</mat-label>
+            <mat-form-field class="form-field" color="accent">
+                <mat-label>Nombre Capacitación</mat-label>
                 <input matInput type="text" formControlName="NombreCapacitacion">
             </mat-form-field>
         </div>
 
         <div class="row">
-            <mat-form-field appearance="fill" color="accent">
+            <mat-form-field class="form-field" appearance="fill" color="accent">
                 <mat-label>Origen</mat-label>
                 <mat-select formControlName="Origen">
-                    <mat-option *ngFor="let val of Origen" [value]="val">{{val}}
-                    </mat-option>
+                    <mat-option *ngFor="let val of Origen" [value]="val">{{val}}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="fill" color="accent">
-                <mat-label>Status</mat-label>
+            <mat-form-field class="form-field" appearance="fill" color="accent">
+                <mat-label>Estatus</mat-label>
                 <mat-select formControlName="Estatus">
-                    <mat-option *ngFor="let val of Estatus" [value]="val">{{val}}
-                    </mat-option>
+                    <mat-option *ngFor="let val of Estatus" [value]="val">{{val}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
 
         <div class="row">
-            <mat-form-field appearance="fill" color="accent">
+            <mat-form-field class="form-field" appearance="fill" color="accent">
                 <mat-label>Tipo</mat-label>
                 <mat-select formControlName="TipoCapacitacion">
-                    <mat-option *ngFor="let val of TipoCapacitacion" [value]="val">{{val}}
-                    </mat-option>
+                    <mat-option *ngFor="let val of TipoCapacitacion" [value]="val">{{val}}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="fill" color="accent">
-                <mat-label>Duracion</mat-label>
+            <mat-form-field class="form-field" appearance="fill" color="accent">
+                <mat-label>Duración</mat-label>
                 <mat-select formControlName="Duracion">
-                    <mat-option *ngFor="let val of Duracion" [value]="val">{{val}}
-                    </mat-option>
+                    <mat-option *ngFor="let val of Duracion" [value]="val">{{val}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-
-
     </div>
     <div mat-dialog-actions class="action">
         <button mat-raised-button color="accent" type="button" [mat-dialog-close]="false">Cancelar</button>
