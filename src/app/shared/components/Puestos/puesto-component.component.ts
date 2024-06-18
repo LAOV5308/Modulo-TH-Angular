@@ -3,7 +3,6 @@ import { HeaderComponent } from '../header/header.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginComponent } from '../../../../../frontend/login/login.component';
 import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
 import { DatosPuestosComponent } from '../../../../../frontend/datos-puestos/datos-puestos.component';
 

@@ -1,5 +1,4 @@
 import { Routes, RouterModule} from '@angular/router';
-import { LoginComponent } from '../../frontend/login/login.component';
 import { NgModule } from '@angular/core';
 import { DatosComponent } from '../../frontend/Datos/datos/datos.component';
 import { SystemComponent } from './shared/components/system/system.component';
@@ -16,13 +15,13 @@ import { AddIncidenciaComponent } from './shared/components/incidencias/add-inci
 import { ComponentHistorialComponent } from './shared/components/empleados/historial/component-historial.component';
 import { CapacitacionesComponent } from './shared/components/capacitaciones/capacitaciones.component';
 import { DatosCapacitacionCatalogoComponent } from './shared/components/capacitacionesCatalogo/datos-capacitacion-catalogo/datos-capacitacion-catalogo.component';
-
-
+import { LoginComponent } from './shared/components/Login/login.component';
+import { authGuard } from './auth/Guards/auth.guard';
 
 
 
 export const routes: Routes = [
-    /*{path: 'login', component: LoginComponent},*/
+    /*{path: 'login', component: LoginComponent},
     {path: 'data', component: DatosCapacitacionCatalogoComponent},
     //{path: 'home', component: AppComponent},
     {path: 'login', component: LoginComponent},
@@ -43,4 +42,24 @@ export const routes: Routes = [
     {path: '**', redirectTo: '/login' }
     //{ path: '', redirectTo: '/data', pathMatch: 'full' }, // Redirecciona las rutas vacías a '/home'
     //{ path: '**', redirectTo: '/data' }  // Redirecciona las rutas no encontradas a '/home'
+    */
+
+
+    { path: 'system',
+        loadComponent:()=> import('./shared/components/system/system.component').then((c) => c.SystemComponent),
+        canActivate: [authGuard] },
+    { path: 'login', component: LoginComponent },
+    { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
+    { path: 'incidencias', component: IncidenciasComponent, canActivate: [authGuard] },
+    { path: 'capacitaciones', component: CapacitacionesComponent, canActivate: [authGuard] },
+    { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
+    { path: 'system', component: SystemComponent, canActivate: [authGuard] },
+    { path: 'empleados', component: EmpleadosComponent, canActivate: [authGuard] },
+    { path: 'puestos', component: PuestoComponentComponent, canActivate: [authGuard] },
+    { path: 'departamentos', component: ComponentDepartamentoComponent, canActivate: [authGuard]},
+    { path: 'addEmpleado', component: AddEmpleadoComponent, canActivate: [authGuard] },
+    { path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent, canActivate: [authGuard] },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' }
+
 ];

@@ -1,18 +1,10 @@
- 
+<app-header (sidebarToggle)="toggleSidebar()"></app-header>
+<div class="main-container" [class.sidebar-hidden]="!sidebarVisible">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <!-- Aquí va el resto de tu aplicación 
+    <router-outlet></router-outlet>-->
+    
+  </div>
+</div>
 
- <!--
-  <app-header></app-header>
-
-  
- 
-<mat-card class="custom-jumbotron">
-    <mat-card-title>Custom jumbotron</mat-card-title>
-    <mat-card-subtitle>Using a series of utilities, you can create this jumbotron...</mat-card-subtitle>
-    <mat-card-content>
-      <p>Check out the examples below for how you can remix and restyle it to your liking.</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary">Example button</button>
-    </mat-card-actions>
-  </mat-card>
-  -->

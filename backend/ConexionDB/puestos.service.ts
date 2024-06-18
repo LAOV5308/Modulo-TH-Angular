@@ -22,7 +22,7 @@ export class PuestosService {
   updatePuestos(IdPuesto: number, data: any): Observable<any> {
     return this.http.put(this.apiUrl+'/'+IdPuesto, data).pipe(
       catchError(this.handleError)
-    );;
+    );
   }
 
 

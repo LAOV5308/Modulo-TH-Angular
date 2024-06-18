@@ -1,8 +1,1 @@
-<app-header (sidebarToggle)="toggleSidebar()"></app-header>
-<div class="main-container" [class.sidebar-hidden]="!sidebarVisible">
-  <app-sidebar></app-sidebar>
-  <div class="content">
-    <!-- Aquí va el resto de tu aplicación -->
-    <router-outlet></router-outlet>
-  </div>
-</div>
+<router-outlet></router-outlet>

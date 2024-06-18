@@ -1,0 +1,67 @@
+<div class="login-background">
+  <div class="login-container">
+    <img SRC="https://quesossnroque.com/img/logh.png" alt="San Roque Quesos" class="logo">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Acceder</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="NombreUsuario">Nombre de Usuario</label>
+            <input id="NombreUsuario" matInput formControlName="NombreUsuario" placeholder="Nombre de Usuario">
+          </div>
+          <div class="form-group">
+            <label for="Password">Contraseña</label>
+            <input id="Password" matInput type="password" formControlName="Password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <re-captcha (resolved)="onCaptchaResolved($event)" siteKey="6LeH8fspAAAAALh8ktjGmtZNymfq5U7apn5gxjBv"></re-captcha>
+          </div>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!recaptchaResolved">Ingresar</button>
+          <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
+<!--
+    <mat-toolbar class="toolbar">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Sn Roque</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" (click)="hola()">
+        <mat-icon>favorite</mat-icon>
+      </button>
+    </mat-toolbar>
+
+      <div class="center">
+<title>Login</title>
+<img SRC="https://quesossnroque.com/img/logh.png">
+<div class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre de Usuario</mat-label>
+          <input matInput formControlName="NombreUsuario">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="Password">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Login</button>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </form>
+
+</div>
+</div>
+
+            
+  <div *ngIf="show" @slideNotification class="notification success">
+    Accediste con Exito, Bienvenido Empleado Fulanito
+  </div>
+
+-->
