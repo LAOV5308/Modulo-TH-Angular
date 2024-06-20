@@ -37,5 +37,29 @@ export class AppComponent {
   isLoggedIn(){
     return false;
   }
+  sidebarVisible: boolean = true;
+
+  toggleSidebar() {
+    this.sidebarVisible = !this.sidebarVisible;
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+      if (this.sidebarVisible) {
+        sidebar.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('hidden');
+      }
+    }
+  }
+  
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const sidebar = document.querySelector('.sidebar');
+    const header = document.querySelector('app-header');
+  
+    if (sidebar && header && !sidebar.contains(event.target as Node) && !header.contains(event.target as Node)) {
+      this.sidebarVisible = false;
+      sidebar.classList.add('hidden');
+    }
+  }
 
 }

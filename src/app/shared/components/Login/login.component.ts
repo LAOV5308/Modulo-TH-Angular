@@ -137,7 +137,7 @@ onSubmit(): void {
         
         //console.log(data);
 
-        console.log(this._authService.isLoggedIn());
+        //console.log(this._authService.isLoggedIn());
         this.router.navigate(['/system']);
       },
       error: (err) => {

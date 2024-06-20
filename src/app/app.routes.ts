@@ -48,18 +48,24 @@ export const routes: Routes = [
     { path: 'system',
         loadComponent:()=> import('./shared/components/system/system.component').then((c) => c.SystemComponent),
         canActivate: [authGuard] },
-    { path: 'login', component: LoginComponent },
+    
     { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
     { path: 'incidencias', component: IncidenciasComponent, canActivate: [authGuard] },
     { path: 'capacitaciones', component: CapacitacionesComponent, canActivate: [authGuard] },
     { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
-    { path: 'system', component: SystemComponent, canActivate: [authGuard] },
+    { path: 'system', component: SystemComponent, canActivate: [authGuard],
+        children:[
+            {path:'empleados', component: EmpleadosComponent}
+        ]
+     },
     { path: 'empleados', component: EmpleadosComponent, canActivate: [authGuard] },
     { path: 'puestos', component: PuestoComponentComponent, canActivate: [authGuard] },
     { path: 'departamentos', component: ComponentDepartamentoComponent, canActivate: [authGuard]},
     { path: 'addEmpleado', component: AddEmpleadoComponent, canActivate: [authGuard] },
     { path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent, canActivate: [authGuard] },
+    { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: '**', redirectTo: '/login' }
+    { path: '**', redirectTo: '/login' },
+    
 
 ];

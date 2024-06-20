@@ -4,11 +4,13 @@ import { HeaderComponent } from '../header/header.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [MatIconModule, HeaderComponent, MatMenuModule, MatButtonModule, NgIf],
+  imports: [MatIconModule, HeaderComponent, MatMenuModule, MatButtonModule, NgIf, RouterModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
