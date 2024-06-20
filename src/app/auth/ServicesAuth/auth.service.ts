@@ -9,12 +9,15 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
 
   
   private apiUrl = 'http://localhost:3000/usuarios';
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { 
+
+  }
 
 
 
@@ -22,33 +25,48 @@ export class AuthService {
     return this.http.post<{ token: string }>(this.apiUrl+'/login', { NombreUsuario: NombreUsuario, Password: Password })
       .pipe(
         tap(response => {
-          localStorage.setItem('token', response.token);
+          if (this.isLocalStorageAvailable()) {
+            localStorage.setItem('token', response.token);
+          }
         })
       );
   }
 
-  hola(): boolean{
-    return true;
-  }
 
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    if (this.isLocalStorageAvailable()) {
+      return !!localStorage.getItem('token');
+    }
+    return false;
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (this.isLocalStorageAvailable()) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   
   logout(): void {
-    localStorage.removeItem('token');
+    if (this.isLocalStorageAvailable()) {
+      localStorage.removeItem('token');
+      //this.router.navigate(['/login']);
+    }
     this.router.navigate(['/login']);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    // Puedes personalizar el mensaje de error basándote en el error.status o error.error
-    return throwError(() => new Error(`An error occurred: ${error.status}, ${error.message}`));
+
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const test = '__test__';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
 }

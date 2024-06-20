@@ -9,6 +9,7 @@ import { CreateEmpleadoComponent } from './shared/components/empleados/create-em
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 import { LoginComponent } from './shared/components/Login/login.component';
+import { NgIf } from '@angular/common';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { LoginComponent } from './shared/components/Login/login.component';
     HeaderComponent,
     CreateEmpleadoComponent,
     SidebarComponent,
-    HttpClientModule
+    HttpClientModule,
+    NgIf
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -32,5 +34,8 @@ export class AppComponent {
   title = 'modulo-th';
 
   
+  isLoggedIn(){
+    return false;
+  }
 
 }

@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit{
   onCaptchaResolved(token: string | null) {
     this.recaptchaResolved = true;
     this.recaptchaToken = token;
-    console.log(this.recaptchaToken);
+    //console.log(this.recaptchaToken);
   }
 
 
@@ -142,7 +142,8 @@ onSubmit(): void {
       },
       error: (err) => {
         this.errorMessage = 'Login failed. Por Favor Checa tu Nombre de Usuario y Contraseña';
-        this.recaptchaResolved = false; // Reset the captcha if login fails
+        //this.recaptchaResolved = false; // Reset the captcha if login fails
+
       }
     });
   }

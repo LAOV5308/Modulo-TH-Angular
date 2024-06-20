@@ -36,6 +36,9 @@ import { Router } from '@angular/router';
 import { IncidenciasService } from '../../../../../../backend/ConexionDB/incidencias.service';
 import { MessageConfirmCheckBoxComponent } from './message-confirm-check-box/message-confirm-check-box.component';
 
+import {FormsModule} from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -69,7 +72,9 @@ export const MY_DATE_FORMATS = {
     CommonModule,
     HttpClientModule,
     MatIcon,
-    MessageConfirmCheckBoxComponent
+    MessageConfirmCheckBoxComponent,
+    FormsModule,
+    MatCheckboxModule
   ],
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -85,13 +90,12 @@ export class AddIncidenciaComponent implements OnInit{
   empleados: Empleado[]=[];
   enter: boolean = false;
   selectedEmpleado: Empleado | null = null;
+  selectedValue: string | null = null;
 
   motivos: string[] = [
     'Maternidad', 
     'Trayecto', 
-    'Enfermedad General', 
-    'ST2 (Alta)', 
-    'ST7'
+    'Enfermedad General'
   ];
 
   constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,
@@ -105,6 +109,7 @@ export class AddIncidenciaComponent implements OnInit{
       Motivo: ['', Validators.required],
       FechaInicio: ['', Validators.required],
       FechaFin: ['', Validators.required],
+      CategoriaIncidencia: ['']
     });
   }
 
@@ -129,6 +134,7 @@ export class AddIncidenciaComponent implements OnInit{
     const empleado = this.empleados.find(emp => emp.NoNomina === nomina);
     this.selectedEmpleado = empleado ? empleado : null;
   }
+  
 
   onSubmit(): void {
     this.enter = false;
@@ -143,8 +149,7 @@ export class AddIncidenciaComponent implements OnInit{
       if (this.incidenciaForm.valid) {
 
         if(this.enter){
-
-  
+        console.log(this.incidenciaForm.value);
         this._incidenciasService.addIncidencias(this.incidenciaForm.value).subscribe({
           next: (resp: any) => {
               this._coreService.openSnackBar('Incidencia added successfully', resp);

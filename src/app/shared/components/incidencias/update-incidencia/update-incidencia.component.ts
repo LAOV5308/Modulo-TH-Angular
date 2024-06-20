@@ -90,9 +90,7 @@ export class UpdateIncidenciaComponent implements OnInit{
   motivos: string[] = [
     'Maternidad', 
     'Trayecto', 
-    'Enfermedad General', 
-    'ST2 (Alta)', 
-    'ST7'
+    'Enfermedad General'
   ];
 
   constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,
@@ -108,6 +106,7 @@ export class UpdateIncidenciaComponent implements OnInit{
       Motivo: ['', Validators.required],
       FechaInicio: ['', Validators.required],
       FechaFin: ['', Validators.required],
+      CategoriaIncidencia:['']
     });
   }
 
@@ -129,7 +128,8 @@ export class UpdateIncidenciaComponent implements OnInit{
       NoNomina: this.data.NoNomina,
       Motivo: this.data.Motivo,
       FechaInicio: this.incrementarUnDia(new Date(this.data.FechaInicio)),
-        FechaFin: this.incrementarUnDia(new Date(this.data.FechaFin))
+        FechaFin: this.incrementarUnDia(new Date(this.data.FechaFin)),
+        CategoriaIncidencia: this.data.CategoriaIncidencia
     });
 
     console.log(this.data.NoNomina);

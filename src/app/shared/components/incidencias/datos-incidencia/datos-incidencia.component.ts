@@ -55,7 +55,7 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
   'NombreCompleto',
   'NombrePuesto',
   'NombreDepartamento',
-  'NombreResponsable',
+  'CategoriaIncidencia',
   'Motivo',
   'FechaInicio',
   'FechaFin',

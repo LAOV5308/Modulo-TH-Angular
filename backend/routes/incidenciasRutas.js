@@ -63,7 +63,7 @@ router.delete('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
 
 
-    const { NoNomina, Motivo, FechaInicio, FechaFin} = req.body;
+    const { NoNomina, Motivo, FechaInicio, FechaFin, CategoriaIncidencia} = req.body;
 
     try {
         const pool = await getConnection();
@@ -72,6 +72,7 @@ router.post('/', async (req, res) => {
         request.input('Motivo', sql.VarChar, Motivo);
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
+        request.input('CategoriaIncidencia', sql.VarChar, CategoriaIncidencia);
 
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_incidencias_add');
@@ -136,7 +137,7 @@ router.put('/:id', async (req, res) => {
 
     const { id } = req.params;
     const { 
-        Motivo, FechaInicio, FechaFin
+        Motivo, FechaInicio, FechaFin, CategoriaIncidencia
     } = req.body;
 
     try {
@@ -146,7 +147,7 @@ router.put('/:id', async (req, res) => {
         request.input('Motivo', sql.VarChar, Motivo);
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
-        
+        request.input('CategoriaIncidencia', sql.VarChar, CategoriaIncidencia);
 
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_incidencias_update');

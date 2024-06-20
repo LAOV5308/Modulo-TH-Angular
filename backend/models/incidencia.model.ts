@@ -10,4 +10,5 @@ export interface Incidencia {
   FechaFin: Date;
   DiasSubsidios: number;
   Estatus: Boolean;
+  CategoriaIncidencia: String;
 }

@@ -22,6 +22,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
+import { AuthService } from '../../../auth/ServicesAuth/auth.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ import { HttpClientModule } from '@angular/common/http';  // Asegúrate de impor
     MatListModule,
     HttpClientModule
   ],
+  providers:[AuthService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -51,6 +53,7 @@ export class HeaderComponent {
 
   constructor(public dialog: MatDialog,
     private router: Router,
+    private authService: AuthService
     //private _dialog: MatDialog,
   ) {}
 
@@ -96,7 +99,22 @@ isLoggedIn = false; // Asumimos que el usuario no está logueado inicialmente
 
   logout(): void {
     // Aquí iría la lógica para cerrar sesión
-    this.isLoggedIn = false;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Aquí puedes agregar la lógica para manejar el cierre de sesión
+        this.authService.logout();
+      } else {
+        window.alert('El usuario canceló la acción');
+      }
+    });
+    
+
+    //this.isLoggedIn = false;
+
   }
 
   register(): void {
