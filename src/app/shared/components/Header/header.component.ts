@@ -102,19 +102,16 @@ isLoggedIn = false; // Asumimos que el usuario no está logueado inicialmente
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px'
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Aquí puedes agregar la lógica para manejar el cierre de sesión
         this.authService.logout();
       } else {
-        window.alert('El usuario canceló la acción');
+        /*
+        window.alert('El usuario canceló la acción');*/
       }
     });
-    
-
     //this.isLoggedIn = false;
-
   }
 
   register(): void {

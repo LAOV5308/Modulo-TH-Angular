@@ -23,8 +23,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddBajaComponent } from '../../../src/app/shared/components/Bajas/add-baja/add-baja.component';
 //import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
 //import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
-
-
+import {MatTabsModule} from '@angular/material/tabs';
+import { MessageRecuperarComponent } from '../../../src/app/shared/components/Messages/message-recuperar/message-recuperar.component';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-datos',
@@ -38,7 +39,9 @@ import { AddBajaComponent } from '../../../src/app/shared/components/Bajas/add-b
     MatPaginator,
     MatFormFieldModule,
     FlexLayoutModule,
-    AddBajaComponent
+    AddBajaComponent,
+    MatTabsModule,
+    MessageRecuperarComponent
   ],
   providers: [EmpleadosService, CoreService],
   templateUrl: './datos.component.html',
@@ -46,33 +49,40 @@ import { AddBajaComponent } from '../../../src/app/shared/components/Bajas/add-b
 })
 export class DatosComponent implements OnInit, AfterViewInit{
   NoNomina: number = 0;
+  Form: FormGroup;
  
 
   
   displayedColumns: string[] = [
     'NoNomina',
     'Nombre',
-    //'Apellidos',
+    'Edad',
     'NombreDepartamento',
     'NombrePuesto',
     'Ingreso',
     'Antiguedad',
     'HorarioSemanal',
     'TipoIngreso',
-    'Sueldo',
+    //'Sueldo',
     //'EstadoEmpleado',
     'Acciones'
   ];
 
   empleados: Empleado[] = [];
   dataSource!: MatTableDataSource<any>;
+  dataInactive!: MatTableDataSource<any>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private empleadosService: EmpleadosService, 
     private _coreService: CoreService,
     private _dialog: MatDialog,
-    private router: Router) { 
+    private router: Router,
+    private _fb: FormBuilder
+  ) { 
+      this.Form = this._fb.group({
+        NoNomina: ''
+      });
   
 
     }
@@ -83,6 +93,11 @@ export class DatosComponent implements OnInit, AfterViewInit{
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       }
+      if (this.dataInactive) {
+        this.dataInactive.sort = this.sort;
+        this.dataInactive.paginator = this.paginator;
+      }
+
     }
 
   ngOnInit() {
@@ -98,6 +113,20 @@ export class DatosComponent implements OnInit, AfterViewInit{
         console.error('Error al cargar los Empleados', error);
       }
     });
+
+    this.empleadosService.getEmpleadosInactive().subscribe({
+      next: (data) => {
+        this.dataInactive = new MatTableDataSource(data);
+        this.dataInactive.sort = this.sort;
+        this.dataInactive.paginator = this.paginator;
+        //this.empleados = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar los Empleados Inactivos', error);
+      }
+    });
+
+
 
     /*
     this.empleadosService.getEmpleados().subscribe({
@@ -130,8 +159,51 @@ export class DatosComponent implements OnInit, AfterViewInit{
     window.alert("Se ha Guardado");
   }
 
+  consultar(idEmpleado: number){
+    this.router.navigate(['system/consultarEmpleado'+'/'+idEmpleado]);
+  }
+
+  recuperar(NoNomina1: number, NombreEmpleado: string){
+
+    //Mensaje de confirmar para eliminar
+    const dialogRef = this._dialog.open(MessageRecuperarComponent, {
+      width: '400px', height: '250px', 
+      data: {
+        description: '¿Está seguro que desea recuperar el empleado?',
+        item: NombreEmpleado
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        /*
+        let datos = [{
+          NoNomina: NoNomina1
+        }];*/
+
+        this.Form.patchValue({
+          NoNomina: NoNomina1
+        })
+
+    this.empleadosService.recuperarEmpleado(this.Form.value).subscribe({
+      next: (resp: any) => {
+        this._coreService.openSnackBar('Empleado Recuperado successfully', resp);
+        this.actualizar();
+
+    },
+    error: (err: any) => {
+        console.error('Error: ' + err);
+        this._coreService.openSnackBar('Error al recuperar Empleado');
+    }
+    });
+        
+      }
+    });
+  }
+  
+
   editar(id: number){
-    this.router.navigate(['updateEmpleado'+'/'+id]);
+    this.router.navigate(['system/updateEmpleado'+'/'+id]);
     
     /*
       const dialogU = this._dialog.open(UpdateEmpleadoComponent);
@@ -145,6 +217,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
       });*/
     
   }
+
   eliminar(data: any){
 
     const dialogU = this._dialog.open(AddBajaComponent,{
@@ -188,4 +261,14 @@ export class DatosComponent implements OnInit, AfterViewInit{
       this.dataSource.paginator.firstPage();
     }
   }
+
+
+applyFilterInactive(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.dataInactive.filter = filterValue.trim().toLowerCase();
+
+  if (this.dataInactive.paginator) {
+    this.dataInactive.paginator.firstPage();
+  }
+}
 }

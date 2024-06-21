@@ -45,7 +45,7 @@ router.post('/capacitacion', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_Prueba Order by NoNomina');
+        const result = await sql.query('Select * from V_Prueba2 Order by NoNomina');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -56,6 +56,17 @@ router.get('/all', async (req, res) => {
     try {
         const sql = await db.getConnection();
         const result = await sql.query('Select * from V_EmpleadosAll Order by NoNomina');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener datos de la base de datos');
+    }
+});
+
+// Obtener todos los empleados all
+router.get('/inactive', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * from V_EmpleadosInactive Order by NoNomina');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -95,7 +106,6 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Crear un nuevo empleado
-
 router.post('/', async (req, res) => {
 
     
@@ -159,6 +169,27 @@ router.post('/', async (req, res) => {
 
 });
 
+//Recuperar Empleado
+router.post('/recuperar', async (req, res) => {
+   
+    const { NoNomina
+    } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_empleado_recuperar');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Empleado Recuperado con éxito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al recuperar el empleado: ' + err.message });
+    }
+
+});
 
 
 

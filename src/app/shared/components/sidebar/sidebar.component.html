@@ -10,26 +10,26 @@
           <mat-icon class="expand-icon">{{ submenus['empleados'] ? 'expand_less' : 'expand_more' }}</mat-icon>
         </a>
         <ul *ngIf="submenus['empleados']">
-          <li ><a [routerLink]="['/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
-          <li><a [routerLink]="['/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
+          <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
           
         </ul>
       </li>
       
       <li>
-        <a [routerLink]="['/departamentos']">
+        <a [routerLink]="['/system/departamentos']">
           <mat-icon>business</mat-icon>
           Departamentos
         </a>
       </li>
       <li>
-        <a [routerLink]="['/puestos']">
+        <a [routerLink]="['/system/puestos']">
           <mat-icon>list_alt</mat-icon>
           Puestos
         </a>
       </li>
       <li>
-        <a [routerLink]="['/incidencias']">
+        <a [routerLink]="['/system/incidencias']">
           <mat-icon>event_note</mat-icon>
           Incidencias
         </a>
@@ -52,8 +52,8 @@
             <mat-icon class="expand-icon">{{ submenus['capacitaciones'] ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
           <ul *ngIf="submenus['capacitaciones']">
-            <li><a [routerLink]="['/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Capacitaciones</a></li>
-            <li><a [routerLink]="['/catalogocapacitaciones']"><mat-icon>settings</mat-icon>Catalogo De Capacitaciones</a></li>
+            <li><a [routerLink]="['/system/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Capacitaciones</a></li>
+            <li><a [routerLink]="['/system/catalogocapacitaciones']"><mat-icon>settings</mat-icon>Catalogo De Capacitaciones</a></li>
             
           </ul>
         </li>

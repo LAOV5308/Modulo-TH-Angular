@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Confirmación de Eliminación</h1>
+<div mat-dialog-content>
+  <mat-divider></mat-divider>
+  <div class="dialog-content">
+    <p class="description">{{ data.description }}</p>
+    <p class="item">{{ data.item }}</p>
+  </div>
+  <mat-divider></mat-divider>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button color="primary" (click)="onCancel()" class="buttonno">Cancelar</button>
+  <button mat-flat-button color="warn" (click)="onConfirm()" class="buttonsi">Recuperar</button>
+</div>

@@ -31,3 +31,8 @@ th.mat-header-cell, td.mat-cell {
     background-color: #6DA5C0; /* Cambia esto al color que desees */
     color: white; /* Cambia esto al color del texto que desees */
   }
+
+  .custom-headerInactive {
+    background-color: #ba3bd0; /* Cambia esto al color que desees */
+    color: white; /* Cambia esto al color del texto que desees */
+  }

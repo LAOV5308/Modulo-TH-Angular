@@ -20,7 +20,7 @@ import { Departamento } from '../../../../../../backend/models/departamento.mode
 import { Puesto } from '../../../../../../backend/models/puesto.model';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
@@ -68,7 +68,8 @@ export const MY_DATE_FORMATS = {
     HeaderComponent,
     CommonModule,
     HttpClientModule,
-    MatIcon
+    MatIcon,
+    NgFor
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -84,7 +85,7 @@ export class UpdateEmpleadoComponent implements OnInit{
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
   puestos: Puesto[] = [];
-  empleados: inputEmpleado[] = [];
+  empleados: inputEmpleado[] | null = null;
   NoNomina1!: number;
   filteredPuestos: Puesto[] = [];
   
@@ -288,6 +289,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       }
     });
 
+
     this.route.paramMap.subscribe((paramMap: ParamMap) =>{
       //console.log(paramMap.has('NoNomina'));
     if(paramMap.has('NoNomina')){
@@ -296,70 +298,75 @@ export class UpdateEmpleadoComponent implements OnInit{
     });
     console.log(this.NoNomina1);
     
-    this._empleadosService.getEmpleado(this.NoNomina1).subscribe({
+    this._empleadosService.getEmpleadoI(this.NoNomina1).subscribe({
       next: (data) => {
         
-        //this.employeeForm.patchValue(data);
+        this.employeeForm.patchValue(data);
         //console.log(data);
         this.empleados = data;
+        console.log(this.empleados);
         //this.empleados.push(data);
+        console.log(this.empleados[0].Apellidos);
 
-        console.log(this.empleados[0].NombrePuesto);
+        //console.log(this.empleados[0].NombrePuesto);
+
+        this.employeeForm.patchValue(this.empleados[0]);
+        
+        
+    this.employeeForm.patchValue({
+      NombreDepartamento: this.empleados[0].IdDepartamento,
+      NombrePuesto:this.empleados[0].NombrePuesto,
+        });
+
 
 
         
-        
-    /*this.employeeForm.patchValue({
-      NombrePuesto: this.empleados[0].NombrePuesto
-        });*/
-
-
-
+        /*
         this.employeeForm.setValue({
           
       //Informacion Laboral
       // Define otros controles de formulario aquí
-      NoNomina: this.empleados[0].NoNomina,
-      Nivel:this.empleados[0].Nivel,
-      NombreDepartamento: this.empleados[0].IdDepartamento,
-      NombrePuesto:this.empleados[0].NombrePuesto,
-      TipoIngreso:this.empleados[0].TipoIngreso,
-      Ingreso:this.empleados[0].Ingreso,
-      HorarioSemanal:this.empleados[0].HorarioSemanal,
-      NSS:this.empleados[0].NSS,
-      UMF:this.empleados[0].UMF,
-      Sueldo: this.empleados[0].Sueldo,
+      NoNomina: this.empleados.NoNomina,
+      Nivel:this.empleados.Nivel,
+      NombreDepartamento: this.empleados.IdDepartamento,
+      NombrePuesto:this.empleados.NombrePuesto,
+      TipoIngreso:this.empleados.TipoIngreso,
+      Ingreso:this.empleados.Ingreso,
+      HorarioSemanal:this.empleados.HorarioSemanal,
+      NSS:this.empleados.NSS,
+      UMF:this.empleados.UMF,
+      Sueldo: this.empleados.Sueldo,
 
       
-      Nombre: this.empleados[0].Nombre,
-      Apellidos: this.empleados[0].Apellidos,
-      Sexo:this.empleados[0].Sexo,
-      EstadoCivil: this.empleados[0].EstadoCivil,
-      FechaNacimiento:this.empleados[0].FechaNacimiento,
-      EntidadNacimiento:this.empleados[0].EntidadNacimiento,
-      CiudadNacimiento:this.empleados[0].CiudadNacimiento,
-      CURP:this.empleados[0].CURP,
-      RFC:this.empleados[0].RFC,
+      Nombre: this.empleados.Nombre,
+      Apellidos: this.empleados.Apellidos,
+      Sexo:this.empleados.Sexo,
+      EstadoCivil: this.empleados.EstadoCivil,
+      FechaNacimiento:this.empleados.FechaNacimiento,
+      EntidadNacimiento:this.empleados.EntidadNacimiento,
+      CiudadNacimiento:this.empleados.CiudadNacimiento,
+      CURP:this.empleados.CURP,
+      RFC:this.empleados.RFC,
 
 
       //Domicilio
-      DomicilioIne:this.empleados[0].DomicilioIne,
-      Poblacion:this.empleados[0].Poblacion,
-      EntidadDireccion:this.empleados[0].EntidadDireccion,
-      CP:this.empleados[0].CP,
-      CorreoElectronico: this.empleados[0].CorreoElectronico,
-      NumeroTelefono1:this.empleados[0].NumeroTelefono1,
-      NumeroTelefono2:this.empleados[0].NumeroTelefono2,
+      DomicilioIne:this.empleados.DomicilioIne,
+      Poblacion:this.empleados.Poblacion,
+      EntidadDireccion:this.empleados.EntidadDireccion,
+      CP:this.empleados.CP,
+      CorreoElectronico: this.empleados.CorreoElectronico,
+      NumeroTelefono1:this.empleados.NumeroTelefono1,
+      NumeroTelefono2:this.empleados.NumeroTelefono2,
 
       //Contacto de Emergencia
-      NombreBeneficiario: this.empleados[0].NombreBeneficiario,
-      Parentesco:this.empleados[0].Parentesco,
-      FechaNacimientoBeneficiario:this.empleados[0].FechaNacimientoBeneficiario,
-      NumeroTelefonoEmergencia:this.empleados[0].NumeroTelefonoEmergencia,
-        })
+      NombreBeneficiario: this.empleados.NombreBeneficiario,
+      Parentesco:this.empleados.Parentesco,
+      FechaNacimientoBeneficiario:this.empleados.FechaNacimientoBeneficiario,
+      NumeroTelefonoEmergencia:this.empleados.NumeroTelefonoEmergencia,
+        })*/
       },
       error: (error) => {
-        console.error('Error al cargar los departamentos', error);
+        console.error('Error al cargar los Empleados', error);
       }
       
     });
@@ -414,10 +421,10 @@ export class UpdateEmpleadoComponent implements OnInit{
           })
           console.log(this.employeeForm.value);
 
-      this._empleadosService.updateEmpleados(this.empleados[0].NoNomina,this.employeeForm.value).subscribe({
+      this._empleadosService.updateEmpleados(this.NoNomina1,this.employeeForm.value).subscribe({
         next: (resp: any) => {
             this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
-            this.router.navigate(['/empleados'])
+            this.router.navigate(['/system/empleados'])
         },
         error: (err: any) => {
             console.error('Error: ' + err);
