@@ -53,6 +53,7 @@ router.post('/login', async (req, res) => {
         if (isMatch) {
             const nombreRol = result.recordset[0].NombreRol;
             const token = jwt.sign({ NombreUsuario, NombreRol: nombreRol }, secretKey, { expiresIn: '1h' });
+            //res.status(200).json({ nombreRol });
             res.status(200).json({ token });
         } else {
             res.status(404).send('Contraseña incorrecta');

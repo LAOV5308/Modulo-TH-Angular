@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
+import { jwtDecode } from 'jwt-decode';
 
 
 @Injectable({
@@ -11,6 +12,7 @@ import { catchError } from 'rxjs/operators';
 })
 
 export class AuthService {
+  private userRole: string = '';
 
   
   private apiUrl = 'http://localhost:3000/usuarios';
@@ -33,7 +35,6 @@ export class AuthService {
   }
 
 
-
   isLoggedIn(): boolean {
     if (this.isLocalStorageAvailable()) {
       return !!localStorage.getItem('token');
@@ -48,10 +49,21 @@ export class AuthService {
     return null;
   }
 
+  getUserRole(): string | null {
+    
+    const token = this.getToken();
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.userRole = decoded.NombreRol;
+      return this.userRole;
+    }
+    return null;
+  }
   
   logout(): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.removeItem('token');
+      this.userRole = '';
       //this.router.navigate(['/login']);
     }
     this.router.navigate(['/login']);

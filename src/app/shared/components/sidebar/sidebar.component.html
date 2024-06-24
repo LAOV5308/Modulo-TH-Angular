@@ -4,7 +4,7 @@
     <ul>
       
       <li>
-        <a href="javascript:void(0)" (click)="toggleSubmenu('th')">
+        <a *ngIf="isAdmin()" href="javascript:void(0)" (click)="toggleSubmenu('th')">
           <mat-icon>supervised_user_circle</mat-icon>
           Talento Humano
           <mat-icon class="expand-icon">{{ submenus['th'] ? 'expand_less' : 'expand_more' }}</mat-icon>
@@ -67,7 +67,7 @@
 
 
         <li>
-          <a href="javascript:void(0)" (click)="toggleSubmenu('capacitaciones')">
+          <a *ngIf="isCapacitaciones()" href="javascript:void(0)" (click)="toggleSubmenu('capacitaciones')">
             <mat-icon>contacts</mat-icon>
             Capacitaciones
             <mat-icon class="expand-icon">{{ submenus['capacitaciones'] ? 'expand_less' : 'expand_more' }}</mat-icon>
@@ -80,7 +80,7 @@
         </li>
 
         <li>
-          <a href="javascript:void(0)" (click)="toggleSubmenu('reclutamiento')">
+          <a *ngIf="isReclutamiento()" href="javascript:void(0)" (click)="toggleSubmenu('reclutamiento')">
             <mat-icon>assignment_ind</mat-icon>
             Reclutamiento
             <mat-icon class="expand-icon">{{ submenus['reclutamiento'] ? 'expand_less' : 'expand_more' }}</mat-icon>
@@ -93,7 +93,7 @@
         </li>
 
         <li>
-          <a href="javascript:void(0)" (click)="toggleSubmenu('catalogo')">
+          <a *ngIf="isAdmin()" href="javascript:void(0)" (click)="toggleSubmenu('catalogo')">
             <mat-icon>settings</mat-icon>
             Catalogo
             <mat-icon class="expand-icon">{{ submenus['catalogo'] ? 'expand_less' : 'expand_more' }}</mat-icon>

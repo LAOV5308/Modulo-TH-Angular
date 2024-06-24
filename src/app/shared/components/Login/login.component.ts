@@ -58,6 +58,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 export class LoginComponent implements OnInit{
   empleados: Empleado[] = [];
   loginForm: FormGroup;
+  NombreRol: string = '';
   errorMessage: string | null = null;
   recaptchaResolved: boolean = false;
   recaptchaToken: string | null = null;
@@ -129,6 +130,8 @@ entrar(){
 }
 
 onSubmit(): void {
+  
+  
   if (this.loginForm.valid && this.recaptchaResolved) {
     //if (this.loginForm.valid) {
     const { NombreUsuario, Password } = this.loginForm.value;
@@ -139,7 +142,9 @@ onSubmit(): void {
         //console.log(data);
 
         //console.log(this._authService.isLoggedIn());
+        //alert(this._authService.getUserRole());
         this.router.navigate(['/system']);
+        
       },
       error: (err) => {
         this.errorMessage = 'Login failed. Por Favor Checa tu Nombre de Usuario y Contraseña';
@@ -147,6 +152,7 @@ onSubmit(): void {
 
       }
     });
+    
   }
 }
 
