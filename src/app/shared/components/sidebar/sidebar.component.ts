@@ -18,7 +18,10 @@ export class SidebarComponent {
 
   submenus: { [key: string]: boolean } = {
     empleados: false,
-    capacitaciones: false
+    capacitaciones: false,
+    catalogo: false,
+    reclutamiento: false,
+    th: false,
     // Agrega otros submenús aquí si es necesario
   };
 

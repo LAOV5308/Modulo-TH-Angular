@@ -130,6 +130,7 @@ entrar(){
 
 onSubmit(): void {
   if (this.loginForm.valid && this.recaptchaResolved) {
+    //if (this.loginForm.valid) {
     const { NombreUsuario, Password } = this.loginForm.value;
 
     this._authService.login(NombreUsuario, Password).subscribe({

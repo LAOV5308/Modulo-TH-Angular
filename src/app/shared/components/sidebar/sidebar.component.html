@@ -4,6 +4,44 @@
     <ul>
       
       <li>
+        <a href="javascript:void(0)" (click)="toggleSubmenu('th')">
+          <mat-icon>supervised_user_circle</mat-icon>
+          Talento Humano
+          <mat-icon class="expand-icon">{{ submenus['th'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </a>
+        <ul *ngIf="submenus['th']">
+          <li>
+            <a href="javascript:void(0)" (click)="toggleSubmenu('empleados')">
+              <mat-icon>people</mat-icon>
+              Empleados
+              <mat-icon class="expand-icon">{{ submenus['empleados'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </a>
+            <ul *ngIf="submenus['empleados']">
+              <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
+              <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
+              <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
+              
+            </ul>
+          </li>
+          
+      <li>
+        <a [routerLink]="['/system/incidencias']">
+          <mat-icon>event_note</mat-icon>
+          Incidencias
+        </a>
+      </li>
+
+
+          <!--
+          <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
+          -->
+        </ul>
+      </li>
+
+      <!--
+      <li>
         <a href="javascript:void(0)" (click)="toggleSubmenu('empleados')">
           <mat-icon>people</mat-icon>
           Empleados
@@ -12,29 +50,12 @@
         <ul *ngIf="submenus['empleados']">
           <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
           <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
           
         </ul>
       </li>
+      -->
       
-      <li>
-        <a [routerLink]="['/system/departamentos']">
-          <mat-icon>business</mat-icon>
-          Departamentos
-        </a>
-      </li>
-      <li>
-        <a [routerLink]="['/system/puestos']">
-          <mat-icon>list_alt</mat-icon>
-          Puestos
-        </a>
-      </li>
-      <li>
-        <a [routerLink]="['/system/incidencias']">
-          <mat-icon>event_note</mat-icon>
-          Incidencias
-        </a>
-      </li>
-
       
       <!--<li>
         <a href="/capacitaciones  ">
@@ -54,6 +75,43 @@
           <ul *ngIf="submenus['capacitaciones']">
             <li><a [routerLink]="['/system/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Capacitaciones</a></li>
             <li><a [routerLink]="['/system/catalogocapacitaciones']"><mat-icon>settings</mat-icon>Catalogo De Capacitaciones</a></li>
+            
+          </ul>
+        </li>
+
+        <li>
+          <a href="javascript:void(0)" (click)="toggleSubmenu('reclutamiento')">
+            <mat-icon>assignment_ind</mat-icon>
+            Reclutamiento
+            <mat-icon class="expand-icon">{{ submenus['reclutamiento'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </a>
+          <ul *ngIf="submenus['reclutamiento']">
+            <li><a [routerLink]="['/system/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Capacitaciones</a></li>
+            <li><a [routerLink]="['/system/catalogocapacitaciones']"><mat-icon>settings</mat-icon>Catalogo De Capacitaciones</a></li>
+            
+          </ul>
+        </li>
+
+        <li>
+          <a href="javascript:void(0)" (click)="toggleSubmenu('catalogo')">
+            <mat-icon>settings</mat-icon>
+            Catalogo
+            <mat-icon class="expand-icon">{{ submenus['catalogo'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </a>
+          <ul *ngIf="submenus['catalogo']">
+            <li>
+              <a [routerLink]="['/system/departamentos']">
+                <mat-icon>business</mat-icon>
+                Departamentos
+              </a>
+            </li>
+      
+            <li>
+              <a [routerLink]="['/system/puestos']">
+                <mat-icon>list_alt</mat-icon>
+                Puestos
+              </a>
+            </li>
             
           </ul>
         </li>
