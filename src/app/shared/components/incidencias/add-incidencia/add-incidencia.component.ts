@@ -109,7 +109,9 @@ export class AddIncidenciaComponent implements OnInit{
       Motivo: ['', Validators.required],
       FechaInicio: ['', Validators.required],
       FechaFin: ['', Validators.required],
-      CategoriaIncidencia: ['']
+      CategoriaIncidencia: ['', Validators.required],
+      FolioAlta: [''],
+      FolioBaja: ['']
     });
   }
 

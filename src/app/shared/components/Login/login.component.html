@@ -11,10 +11,14 @@
             <label for="NombreUsuario">Nombre de Usuario</label>
             <input id="NombreUsuario" matInput formControlName="NombreUsuario" placeholder="Nombre de Usuario">
           </div>
-          <div class="form-group">
+          <div class="form-group password-group">
             <label for="Password">Contraseña</label>
-            <input id="Password" matInput type="password" formControlName="Password" placeholder="Password">
+            <input id="Password" matInput [type]="hide ? 'password' : 'text'" formControlName="Password" placeholder="Password">
+            <button type="button" mat-icon-button (click)="togglePasswordVisibility()">
+              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
           </div>
+
           <div class="form-group">
             <re-captcha (resolved)="onCaptchaResolved($event)" siteKey="6LeH8fspAAAAALh8ktjGmtZNymfq5U7apn5gxjBv"></re-captcha>
           </div>

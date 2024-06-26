@@ -23,7 +23,9 @@ import {FormsModule} from '@angular/forms';
 import { AddIncidenciaComponent } from '../add-incidencia/add-incidencia.component';
 import { MessageConfirmCheckBoxComponent } from '../add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
 import { UpdateIncidenciaComponent } from '../update-incidencia/update-incidencia.component';
-
+import {MatTabsModule} from '@angular/material/tabs';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-datos-incidencia',
@@ -37,7 +39,9 @@ import { UpdateIncidenciaComponent } from '../update-incidencia/update-incidenci
     FormsModule,
     AddIncidenciaComponent,
     MessageConfirmCheckBoxComponent,
-    UpdateIncidenciaComponent
+    UpdateIncidenciaComponent,
+    MatTabsModule,
+    MatProgressSpinnerModule
   
   ],
     providers:[EmpleadosService, CoreService, IncidenciasService],
@@ -61,11 +65,14 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
   'FechaFin',
   'DiasSubsidios',
   'Estatus',
+  'FolioAlta',
+  'FolioBaja',
   'Acciones'
   ];
 
   incidencias: Incidencia[] = [];
   dataSource!: MatTableDataSource<any>;
+  dataInactive!: MatTableDataSource<any>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -81,6 +88,10 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
     if (this.dataSource) {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+    }
+    if (this.dataInactive) {
+      this.dataInactive.sort = this.sort;
+      this.dataInactive.paginator = this.paginator;
     }
   }
 
@@ -121,6 +132,7 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
   }
 
   editar(data: any){
+
     const dialogU = this._dialog.open(UpdateIncidenciaComponent,{
       data
     });
@@ -147,6 +159,14 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+  applyFilterInactive(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataInactive.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataInactive.paginator) {
+      this.dataInactive.paginator.firstPage();
     }
   }
 

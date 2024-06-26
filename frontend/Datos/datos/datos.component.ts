@@ -71,8 +71,11 @@ export class DatosComponent implements OnInit, AfterViewInit{
   empleados: Empleado[] = [];
   dataSource!: MatTableDataSource<any>;
   dataInactive!: MatTableDataSource<any>;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+    // Cambiar identificadores de ViewChild
+    @ViewChild('sortActive') sortActive!: MatSort;
+    @ViewChild('paginatorActive') paginatorActive!: MatPaginator;
+    @ViewChild('sortInactive') sortInactive!: MatSort;
+    @ViewChild('paginatorInactive') paginatorInactive!: MatPaginator;
 
   constructor(private empleadosService: EmpleadosService, 
     private _coreService: CoreService,
@@ -90,12 +93,13 @@ export class DatosComponent implements OnInit, AfterViewInit{
     ngAfterViewInit(): void {
       // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
       if (this.dataSource) {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sortActive;
+        this.dataSource.paginator = this.paginatorActive;
       }
+
       if (this.dataInactive) {
-        this.dataInactive.sort = this.sort;
-        this.dataInactive.paginator = this.paginator;
+        this.dataInactive.sort = this.sortInactive;
+        this.dataInactive.paginator = this.paginatorInactive;
       }
 
     }
@@ -105,8 +109,8 @@ export class DatosComponent implements OnInit, AfterViewInit{
     this.empleadosService.getEmpleados().subscribe({
       next: (data) => {
         this.dataSource = new MatTableDataSource(data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sortActive;
+        this.dataSource.paginator = this.paginatorActive;
         this.empleados = data;
       },
       error: (error) => {
@@ -117,8 +121,8 @@ export class DatosComponent implements OnInit, AfterViewInit{
     this.empleadosService.getEmpleadosInactive().subscribe({
       next: (data) => {
         this.dataInactive = new MatTableDataSource(data);
-        this.dataInactive.sort = this.sort;
-        this.dataInactive.paginator = this.paginator;
+        this.dataInactive.sort = this.sortInactive;
+        this.dataInactive.paginator = this.paginatorInactive;
         //this.empleados = data;
       },
       error: (error) => {

@@ -2,8 +2,8 @@
 <br/>
 <mat-card class="matcard">
   <h1>Agregar Empleado<mat-icon>people</mat-icon></h1>
+  
   <mat-card-header class="matcardheader">
-    
     <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
       <!--<mat-accordion>-->
          <!-- Agrega más campos aquí -->
@@ -27,7 +27,7 @@
   
           <mat-form-field appearance="fill" color="accent">
             <mat-label>No.Nomina</mat-label>
-            <input type="number" matInput formControlName="NoNomina" maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+            <input [disabled]="disabled" type="number" matInput formControlName="NoNomina" maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </mat-form-field>
 
           <!--<mat-form-field appearance="fill" color="accent">
@@ -92,18 +92,6 @@
             </mat-select>
           </mat-form-field>
 
-          
-          <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="accent">
-            <mat-label>NSS</mat-label>
-            <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-            <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" color="accent">
-            <mat-label>UMF</mat-label>
-            <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-            <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
-          </mat-form-field>
 
           <mat-form-field appearance="fill" color="accent">
             <mat-label>$ Sueldo </mat-label>
@@ -111,7 +99,37 @@
           </mat-form-field>
 
           <!-- Agrega más campos aquí -->
+          <h2>Seguro Social</h2>
         <!--</mat-expansion-panel>-->
+        
+        
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Fecha de Inscripcion al Seguro</mat-label>
+          <input matInput [matDatepicker]="pickeringresoimss" formControlName="IngresoImss">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="pickeringresoimss"></mat-datepicker-toggle>
+          <mat-datepicker #pickeringresoimss></mat-datepicker>
+        </mat-form-field>  
+          
+        <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="accent">
+          <mat-label>NSS</mat-label>
+          <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>UMF</mat-label>
+          <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Fecha de Baja del Seguro</mat-label>
+          <input matInput [matDatepicker]="pickerbajaimss" formControlName="BajaImss">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="pickerbajaimss"></mat-datepicker-toggle>
+          <mat-datepicker #pickerbajaimss></mat-datepicker>
+        </mat-form-field>  
   
         <!-- Información Personal -->
        <!--<mat-expansion-panel>--> 
@@ -204,7 +222,8 @@
               Domicilio
             </mat-panel-title>
           </mat-expansion-panel-header>-->
-
+            
+          
           <mat-form-field appearance="fill" color="accent">
             <mat-label>Domicilio INE</mat-label>
             <input matInput formControlName="DomicilioIne">

@@ -11,4 +11,6 @@ export interface Incidencia {
   DiasSubsidios: number;
   Estatus: Boolean;
   CategoriaIncidencia: String;
+  FolioAlta: String;
+  FolioBaja: String;
 }

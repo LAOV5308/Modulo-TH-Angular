@@ -99,6 +99,7 @@ export class UpdateIncidenciaComponent implements OnInit{
     private _empleadoService: EmpleadosService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    
   ) {
     this.incidenciaForm = this.fb.group({
       NoNomina: [{value: '', disabled:true}],
@@ -106,7 +107,9 @@ export class UpdateIncidenciaComponent implements OnInit{
       Motivo: ['', Validators.required],
       FechaInicio: ['', Validators.required],
       FechaFin: ['', Validators.required],
-      CategoriaIncidencia:['']
+      CategoriaIncidencia:['', Validators.required],
+      FolioAlta: [''],
+      FolioBaja: ['']
     });
   }
 
@@ -129,7 +132,9 @@ export class UpdateIncidenciaComponent implements OnInit{
       Motivo: this.data.Motivo,
       FechaInicio: this.incrementarUnDia(new Date(this.data.FechaInicio)),
         FechaFin: this.incrementarUnDia(new Date(this.data.FechaFin)),
-        CategoriaIncidencia: this.data.CategoriaIncidencia
+        CategoriaIncidencia: this.data.CategoriaIncidencia,
+        FolioAlta: this.data.FolioAlta,
+        FolioBaja: this.data.FolioBaja
     });
 
     console.log(this.data.NoNomina);

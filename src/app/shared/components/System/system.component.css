@@ -1,30 +1,137 @@
-.custom-jumbotron {
+/*.custom-jumbotron {
     margin: 20px;
     padding: 20px;
-    background-color: #ffffff; /* Ajusta el color de fondo según necesites */
-    box-shadow: 0 6px 10px rgba(0,0,0,0.1); /* Añade sombra para un efecto elevado */
+    background-color: #ffffff; 
+    box-shadow: 0 6px 10px rgba(0,0,0,0.1); 
   }
   
   mat-card-title {
-    color: #333333; /* Color del título */
+    color: #333333; 
   }
   
   mat-card-subtitle {
-    color: #666666; /* Color del subtítulo */
+    color: #666666; 
   }
   
   mat-card-content p {
-    color: #444444; /* Color del texto */
+    color: #444444; 
   }
   
 
-  /* styles.css o en el archivo CSS de tu componente */
+
 mat-toolbar {
-    background-color: #00823b; /* Ajusta el color de fondo */
+    background-color: #36b3a0; 
     color: white;
   }
   
   .spacer {
     flex: 1 1 auto;
-  }
+  }*/
   
+/* header.component.css */
+.hamburger-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  margin-right: 5px;
+}
+
+.hamburger-button:focus {
+  outline: none;
+}
+
+.hamburger-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header {
+  background-color: #36b3a0;
+  color: white;
+  padding: 10px 0;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.search-bar {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 300px;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.user-info span {
+  margin-right: 10px;
+}
+
+
+/*
+  .toolbar {
+    height:20%;
+    background-color: #BF55EC;
+}
+
+.biggerbutton {
+    width:  150px!important;
+    height: 100px!important;
+    font-size: 30px!important;
+}
+
+.toolBarButton, .drawerButton {
+    padding: 20px;
+}
+
+.container {
+    height: 80%;
+}
+
+.drawer {
+    background-color: #BF55EC;
+    width: 200px; 
+}
+
+.burger {
+    color: white;
+}
+
+
+@media all and (max-width: 500px) {
+
+    .toolBarButton {
+        display: none;
+    }
+
+    .toolbar {
+        height:5%;
+    }
+
+    .container {
+        height: 95%;
+    }
+
+}*/

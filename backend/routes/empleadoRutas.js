@@ -122,7 +122,8 @@ router.post('/', async (req, res) => {
     const { NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,NSS, UMF, Sueldo,
         Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, 
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
-        NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia
+        NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia,
+        IngresoImss, BajaImss
     } = req.body;
 
     try {
@@ -157,6 +158,8 @@ router.post('/', async (req, res) => {
         request.input('FechaNacimientoBeneficiario', sql.Date, FechaNacimientoBeneficiario);
         request.input('NumeroTelefonoEmergencia', sql.VarChar, NumeroTelefonoEmergencia);
         request.input('Sueldo', sql.Decimal, Sueldo);
+        request.input('IngresoImss', sql.Date, IngresoImss);
+        request.input('BajaImss', sql.Date, BajaImss);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_personaall_add');
         //const result = await request.execute('stp_prueba_add');

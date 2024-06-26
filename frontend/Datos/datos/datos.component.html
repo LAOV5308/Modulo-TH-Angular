@@ -18,7 +18,7 @@ type="submit">Agregar Empleado
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
 
 <div class="table-container">
-<table mat-table [dataSource]="dataSource" matSort>
+<table mat-table [dataSource]="dataSource" matSort matSortActive #sortActive="matSort">
 
   <!-- ID Column -->
   <ng-container matColumnDef="NoNomina">
@@ -103,9 +103,6 @@ type="submit">Agregar Empleado
       <button mat-icon-button color="warn" (click)="eliminar(row)">
         <mat-icon>not_interested</mat-icon>
       </button>
-
-      
-
     </td>
   </ng-container>
 
@@ -113,17 +110,15 @@ type="submit">Agregar Empleado
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   <!-- Row shown when there is no matching data. -->
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    <td class="mat-cell" colspan="10">No data matching the filter "{{input.value}}"</td>
   </tr>
 
 </table>
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of departamentos"></mat-paginator>
+<mat-paginator #paginatorActive [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of departamentos"></mat-paginator>
 
 </div>
 
    
-  
-  
   </mat-tab>
   <mat-tab label="Empleados Inactivos"> 
 
@@ -132,10 +127,10 @@ type="submit">Agregar Empleado
 <h1>Datos de los Empleados Inactivos</h1>
 <!-- lista-empleados.component.html -->
 <mat-label>Filter: </mat-label>
-  <input matInput (keyup)="applyFilterInactive($event)" placeholder="Ex. Mia" #input>
+  <input matInput (keyup)="applyFilterInactive($event)" placeholder="Ex. Mia" #inputInactive>
 
 <div class="table-container">
-<table mat-table [dataSource]="dataInactive" matSort>
+<table mat-table [dataSource]="dataInactive" matSort matSortInactive #sortInactive="matSort">
 
   <!-- ID Column -->
   <ng-container matColumnDef="NoNomina">
@@ -222,11 +217,13 @@ type="submit">Agregar Empleado
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   <!-- Row shown when there is no matching data. -->
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    <td class="mat-cell" colspan="4">No data matching the filter "{{inputInactive.value}}"</td>
   </tr>
 
 </table>
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of departamentos"></mat-paginator>
+
+
+<mat-paginator #paginatorInactive [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of departamentos"></mat-paginator>
 
 </div>
     

@@ -64,10 +64,12 @@ export class HeaderComponent {
   toggleSidebar() {
     this.sidebarToggle.emit();
   }
+  
 
 toggleNavbar() {
     this.navbarCollapsed = !this.navbarCollapsed;
   }
+
   menuOpen = false;
 
   toggleMenu() {

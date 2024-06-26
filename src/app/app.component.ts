@@ -33,10 +33,11 @@ import { NgIf } from '@angular/common';
 export class AppComponent {
   title = 'modulo-th';
 
-  
+  /*
   isLoggedIn(){
     return false;
   }
+
   sidebarVisible: boolean = true;
 
   toggleSidebar() {
@@ -60,6 +61,6 @@ export class AppComponent {
       this.sidebarVisible = false;
       sidebar.classList.add('hidden');
     }
-  }
+  }*/
 
 }

@@ -52,6 +52,7 @@ router.post('/login', async (req, res) => {
 
         if (isMatch) {
             const nombreRol = result.recordset[0].NombreRol;
+            ///Creo que aqui se puede tambien obtener el nombre
             const token = jwt.sign({ NombreUsuario, NombreRol: nombreRol }, secretKey, { expiresIn: '1h' });
             //res.status(200).json({ nombreRol });
             res.status(200).json({ token });

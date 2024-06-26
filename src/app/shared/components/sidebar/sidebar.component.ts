@@ -6,17 +6,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/ServicesAuth/auth.service';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [MatIconModule, HeaderComponent, MatMenuModule, MatButtonModule, NgIf, RouterModule],
+  imports: [MatIconModule, HeaderComponent, MatMenuModule, MatButtonModule, NgIf, RouterModule, MatSidenavModule],
   providers:[AuthService],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+
   constructor(private authService: AuthService){}
 
   submenus: { [key: string]: boolean } = {

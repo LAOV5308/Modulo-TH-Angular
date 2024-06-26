@@ -86,9 +86,7 @@
             <mat-icon class="expand-icon">{{ submenus['reclutamiento'] ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
           <ul *ngIf="submenus['reclutamiento']">
-            <li><a [routerLink]="['/system/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Capacitaciones</a></li>
-            <li><a [routerLink]="['/system/catalogocapacitaciones']"><mat-icon>settings</mat-icon>Catalogo De Capacitaciones</a></li>
-            
+            <li><a [routerLink]="['/system/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Reclutamiento</a></li>
           </ul>
         </li>
 
@@ -150,3 +148,31 @@
     </ul>
   </nav>
   
+
+
+
+
+
+
+
+<!-- Todo el Cuadro de container
+  <mat-drawer-container class="example-container" autosize>
+El menu 
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+
+      <p>Auto-resizing sidenav</p>
+
+    </mat-drawer>
+
+  El contenido
+    <div class="example-sidenav-content">
+
+      <button type="button" mat-button (click)="drawer.toggle()">
+        Toggle sidenav
+      </button>
+
+      
+    </div>
+
+  
+  </mat-drawer-container>-->

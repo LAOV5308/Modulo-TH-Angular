@@ -1,11 +1,77 @@
-<app-header (sidebarToggle)="toggleSidebar()"></app-header>
+<!--<app-header (sidebarToggle)="toggleSidebar()"></app-header>
+
 <div class="main-container" [class.sidebar-hidden]="!sidebarVisible">
   <app-sidebar></app-sidebar>
+
   <div class="content">
-     <!--Aquí va el resto de tu aplicación -->
+     Aquí va el resto de tu aplicación 
+     <h1>Hola</h1>
      <router-outlet></router-outlet>
     
   </div>
 </div>
 
+-->
 
+
+<!---->
+<!---
+<mat-drawer-container 
+    class="container" 
+    autosize>-->
+    <!--Sidebar-->
+    <!---
+   <mat-drawer #drawer class="drawer" mode="side">
+
+        <div class="sidenav-content">
+          <p>Auto-resizing sidenav</p>
+          </div>
+    </mat-drawer>-->
+    <!--Contenido del SideBar-->
+    
+    <!--<mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>-->
+
+<!--Toolbar-->
+
+<mat-toolbar class="header">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <button class="hamburger-button"
+            (click)="drawer.toggle()"
+            mat-icon-button>
+            <mat-icon>menu</mat-icon>
+        </button>
+    <div class="logo">
+      <img src="https://quesossnroque.com/img/logh.png" alt="Logo" class="img-fluid">
+    </div>
+    <div class="search-bar d-flex align-items-center">
+      <input type="text" class="form-control" placeholder="Buscar" />
+      <button type="button" class="btn btn-light ml-2">Búsqueda</button>
+    </div>
+    <div class="user-info d-flex align-items-center">
+      <div class="user">
+        <strong>Usuario: </strong>{{ nombre}}
+      </div>
+      
+    </div>
+    <button mat-button color="accent" (click)="logout()"><mat-icon>exit_to_app</mat-icon>Cerrar sesión</button>
+  </div>
+</mat-toolbar>
+
+
+  <mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+
+
+      <app-sidebar></app-sidebar>
+    </mat-drawer>
+    <mat-drawer-content>
+      
+
+      <router-outlet></router-outlet>
+  </mat-drawer-content>
+  </mat-drawer-container>
+    
+  

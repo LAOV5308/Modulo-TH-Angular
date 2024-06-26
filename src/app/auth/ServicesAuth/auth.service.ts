@@ -13,6 +13,7 @@ import { jwtDecode } from 'jwt-decode';
 
 export class AuthService {
   private userRole: string = '';
+  private NombreUser: string = '';
 
   
   private apiUrl = 'http://localhost:3000/usuarios';
@@ -58,6 +59,17 @@ export class AuthService {
       return this.userRole;
     }
     return null;
+  }
+
+  getNombreUser(): string | null{
+    const token = this.getToken();
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.NombreUser = decoded.NombreUsuario;
+      return this.NombreUser;
+    }
+    return null;
+
   }
   
   logout(): void {

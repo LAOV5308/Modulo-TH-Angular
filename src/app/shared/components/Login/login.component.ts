@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit{
   errorMessage: string | null = null;
   recaptchaResolved: boolean = false;
   recaptchaToken: string | null = null;
+  hide: boolean = true;
 
   constructor(private empleadosService: EmpleadosService, private router: Router,
     private _authService: AuthService,
@@ -154,6 +155,10 @@ onSubmit(): void {
     });
     
   }
+}
+
+togglePasswordVisibility(): void {
+  this.hide = !this.hide;
 }
 
 }

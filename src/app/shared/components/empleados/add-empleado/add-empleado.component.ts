@@ -35,7 +35,9 @@ import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.ser
 import { MensajeGuardarEmpleadoComponent } from '../messages/mensaje-guardar-empleado/mensaje-guardar-empleado.component';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { Router } from '@angular/router';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {FormsModule} from '@angular/forms';
+import { estados, estados1, estadosConCiudades } from '../../../recursos/estados';
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -69,6 +71,8 @@ export const MY_DATE_FORMATS = {
     HttpClientModule,
     MatIcon,
     MensajeGuardarEmpleadoComponent,
+    MatCheckboxModule,
+    FormsModule
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -81,6 +85,7 @@ export const MY_DATE_FORMATS = {
   styleUrl: './add-empleado.component.css'
 })
 export class AddEmpleadoComponent implements OnInit {
+  disabled = false;
   employeeForm: FormGroup;
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
@@ -89,6 +94,8 @@ export class AddEmpleadoComponent implements OnInit {
   filteredPuestos: Puesto[] = [];
   edad: number=0;
   enter: boolean=true;
+  estados: string[] = estados;
+  estados1: string[] = estados1;
   //estados1: string[] = [];
 
   //Opciones de Eleccion
@@ -131,38 +138,6 @@ export class AddEmpleadoComponent implements OnInit {
     'Hermano/a'
   ];
 
-  estados: string[] = [
-    'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche',
-    'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Ciudad de México', 'Durango',
-    'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán',
-    'Morelos', 'Nayarit', 'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro',
-    'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco',
-    'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'
-  ];
-  estados1: string[] = [
-    'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche',
-    'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Ciudad de México', 'Durango',
-    'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán',
-    'Morelos', 'Nayarit', 'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro',
-    'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco',
-    'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'
-  ];
-  estadosConCiudades: { [key: string]: string[] } = {
-    'Aguascalientes': ['Aguascalientes', 'Asientos', 'Calvillo'],
-    'Baja California': ['Mexicali', 'Tijuana', 'Ensenada'],
-    'Baja California Sur': ['La Paz', 'Los Cabos', 'Loreto'],
-    'Guanajuato': ['Abasolo', 'Acámbaro', 'Apaseo el Alto', 'Apaseo el Grande', 'Atarjea', 'Celaya', 'Comonfort',
-    'Coroneo', 'Cortazar', 'Cuerámaro', 'Doctor Mora' , 'Dolores Hidalgo Cuna de la Independencia Nacional', 'Guanajuato',
-    'Huanímaro', 'Irapuato', 'Jaral del Progreso' , 'Jerécuaro', 'León', 'Manuel Doblado', 'Moroleón', 'Ocampo', 'Pénjamo',
-    'Pueblo Nuevo', 'Purísima del Rincón', 'Romita', 'Salamanca', 'Salvatierra', 'San Diego de la Unión', 'San Felipe',
-    'San Francisco del Rincón', 'San José Iturbide', 'San Luis de la Paz', 'San Miguel de Allende', 'Santa Catarina', 'Santa Cruz de Juventino Rosas',
-    'Santiago Maravatío', 'Silao de la Victoria', 'Tarandacuao', 'Tarimoro', 'Tierra Blanca', 'Uriangato', 'Valle de Santiago', 'Victoria',
-    'Villagrán', 'Xichú', 'Yuriria'
-  ],
-    // Agrega el resto de los estados y sus ciudades
-    // ...
-  };
-
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
     private _coreService: CoreService,
@@ -182,9 +157,11 @@ export class AddEmpleadoComponent implements OnInit {
       TipoIngreso:[''],
       Ingreso:[''],
       HorarioSemanal:[''],
+      Sueldo:[''],
+      IngresoImss:[''],
       NSS:[''],
       UMF:[''],
-      Sueldo:[''],
+      BajaImss:[''],
 
       //Informacion Personal
       //Nombre: ['', Validators.required],
@@ -221,9 +198,9 @@ export class AddEmpleadoComponent implements OnInit {
     this._adapter.setLocale('en-GB'); // Esto configura el adaptador de fecha para usar el formato de fecha correcto
 
     //Condicion para la opcion de ciudad
-    this.employeeForm.get('EntidadNacimiento')!.valueChanges.subscribe(state => {
-      this.ciudades = this.estadosConCiudades[state] || [];
-      this.employeeForm.get('CiudadNacimiento')!.setValue('');
+    this.employeeForm.get('EntidadNacimiento')?.valueChanges.subscribe(state => {
+      this.ciudades = estadosConCiudades[state] || [];
+      this.employeeForm.get('CiudadNacimiento')?.setValue('');
     });
 
     this.employeeForm.get('departamento')!.valueChanges.subscribe(departamentoId => {
@@ -302,6 +279,15 @@ export class AddEmpleadoComponent implements OnInit {
       }
     })
 
+    this.employeeForm.get('disabled')?.valueChanges.subscribe(disabled => {
+      if (disabled) {
+        this.employeeForm.get('DomicilioIne')?.disable();
+        this.employeeForm.get('Poblacion')?.disable();
+      } else {
+        this.employeeForm.get('DomicilioIne')?.enable();
+        this.employeeForm.get('Poblacion')?.enable();
+      }
+    });
 
   }
 
@@ -355,6 +341,14 @@ export class AddEmpleadoComponent implements OnInit {
                       FechaNacimientoBeneficiario: null
                     })
                       }
+                      if(this.employeeForm.value.IngresoImss == ''){
+                        this.employeeForm.patchValue({
+                          IngresoImss: null
+                        })
+                          }if(this.employeeForm.value.BajaImss == ''){
+                            this.employeeForm.patchValue({
+                              BajaImss: null
+                            })}
     
           //Conversiones de Number a String
           this.employeeForm.patchValue({
@@ -373,7 +367,7 @@ export class AddEmpleadoComponent implements OnInit {
             next: (resp: any) => {
                 this._coreService.openSnackBar('Empleado Agregado Satisfactoriamente  *o*', resp);
                 this.limpiarCampos();
-                this.router.navigate(['/empleados'])
+                this.router.navigate(['/system/empleados']);
 
             },
             error: (err: any) => {
