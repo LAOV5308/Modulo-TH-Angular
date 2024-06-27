@@ -89,24 +89,45 @@
             </mat-select>
           </mat-form-field>
 
-          
-          <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="primary">
-            <mat-label>NSS</mat-label>
-            <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-            <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" color="primary">
-            <mat-label>UMF</mat-label>
-            <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-            <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
-          </mat-form-field>
 
           <mat-form-field appearance="fill" color="primary">
             <mat-label>$ Sueldo </mat-label>
             <input type="number" matInput formControlName="Sueldo">
           </mat-form-field>
 
+
+           <!-- Agrega más campos aquí -->
+           <h2>Seguro Social</h2>
+           <!--</mat-expansion-panel>-->
+           
+           
+           <mat-form-field appearance="fill" color="accent">
+             <mat-label>Fecha de Inscripcion al Seguro</mat-label>
+             <input matInput [matDatepicker]="pickeringresoimss" formControlName="IngresoImss">
+             <mat-hint>DD/MM/YYYY</mat-hint>
+             <mat-datepicker-toggle matIconSuffix [for]="pickeringresoimss"></mat-datepicker-toggle>
+             <mat-datepicker #pickeringresoimss></mat-datepicker>
+           </mat-form-field>  
+             
+           <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="accent">
+             <mat-label>NSS</mat-label>
+             <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+             <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
+           </mat-form-field>
+   
+           <mat-form-field appearance="fill" color="accent">
+             <mat-label>UMF</mat-label>
+             <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+             <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
+           </mat-form-field>
+   
+           <mat-form-field appearance="fill" color="accent">
+             <mat-label>Fecha de Baja del Seguro</mat-label>
+             <input matInput [matDatepicker]="pickerbajaimss" formControlName="BajaImss">
+             <mat-hint>DD/MM/YYYY</mat-hint>
+             <mat-datepicker-toggle matIconSuffix [for]="pickerbajaimss"></mat-datepicker-toggle>
+             <mat-datepicker #pickerbajaimss></mat-datepicker>
+           </mat-form-field>  
           <!-- Agrega más campos aquí -->
         <!--</mat-expansion-panel>-->
   
@@ -189,6 +210,14 @@
             <mat-hint align="end">{{inputrfc.value.length}}/13</mat-hint>
           </mat-form-field>
 
+          <h2>Información Escolar</h2>
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Escolaridad</mat-label>
+            <mat-select formControlName="Escolaridad">
+                <mat-option *ngFor="let val of escolaridad" [value]="val">{{val}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
          
   

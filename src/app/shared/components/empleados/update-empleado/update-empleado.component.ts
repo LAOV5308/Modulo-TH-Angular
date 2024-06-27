@@ -137,6 +137,24 @@ export class UpdateEmpleadoComponent implements OnInit{
     'Papá',
     'Hermano/a'
   ];
+  escolaridad: string[] = [
+    'Sin escolaridad',
+    'Preescolar',
+    'Primaria incompleta',
+    'Primaria completa',
+    'Secundaria incompleta',
+    'Secundaria completa',
+    'Preparatoria o bachillerato incompleto',
+    'Preparatoria o bachillerato completo',
+    'Educación técnica o comercial incompleta',
+    'Educación técnica o comercial completa',
+    'Licenciatura incompleta',
+    'Licenciatura completa',
+    'Maestría incompleta',
+    'Maestría completa',
+    'Doctorado incompleto',
+    'Doctorado completo',
+];
 
 
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
@@ -159,9 +177,11 @@ export class UpdateEmpleadoComponent implements OnInit{
       TipoIngreso:[''],
       Ingreso:[''],
       HorarioSemanal:[''],
+      Sueldo:[''],
+      IngresoImss:[''],
       NSS:[''],
       UMF:[''],
-      Sueldo:[''],
+      BajaImss:[''],
 
       //Informacion Personal
       //Nombre: ['', Validators.required],
@@ -175,6 +195,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       CiudadNacimiento:[''],
       CURP:[''],
       RFC:[''],
+      Escolaridad:[''],
       //Domicilio
       //DomicilioIne:['', Validators.required],
       DomicilioIne:[''],
@@ -277,7 +298,7 @@ export class UpdateEmpleadoComponent implements OnInit{
         this.empleados = data;
         console.log(this.empleados);
         //this.empleados.push(data);
-        console.log(this.empleados[0].Apellidos);
+        console.log(this.empleados[0].Escolaridad);
 
         //console.log(this.empleados[0].NombrePuesto);
 

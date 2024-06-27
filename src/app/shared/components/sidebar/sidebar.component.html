@@ -19,7 +19,7 @@
             <ul *ngIf="submenus['empleados']">
               <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
               <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
-              <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
+              
               
             </ul>
           </li>
@@ -29,6 +29,9 @@
           <mat-icon>event_note</mat-icon>
           Incidencias
         </a>
+      </li>
+      <li><a [routerLink]="['/system/dashboard']">
+        <mat-icon>dashboard</mat-icon>DashBoard</a>
       </li>
 
 
@@ -86,7 +89,7 @@
             <mat-icon class="expand-icon">{{ submenus['reclutamiento'] ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
           <ul *ngIf="submenus['reclutamiento']">
-            <li><a [routerLink]="['/system/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Reclutamiento</a></li>
+            <li><a [routerLink]="['/system/reclutamiento']"><mat-icon>contacts</mat-icon>Consultar Reclutamiento</a></li>
           </ul>
         </li>
 

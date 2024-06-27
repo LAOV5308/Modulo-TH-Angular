@@ -137,6 +137,24 @@ export class AddEmpleadoComponent implements OnInit {
     'Papá',
     'Hermano/a'
   ];
+  escolaridad: string[] = [
+      'Sin escolaridad',
+      'Preescolar',
+      'Primaria incompleta',
+      'Primaria completa',
+      'Secundaria incompleta',
+      'Secundaria completa',
+      'Preparatoria o bachillerato incompleto',
+      'Preparatoria o bachillerato completo',
+      'Educación técnica o comercial incompleta',
+      'Educación técnica o comercial completa',
+      'Licenciatura incompleta',
+      'Licenciatura completa',
+      'Maestría incompleta',
+      'Maestría completa',
+      'Doctorado incompleto',
+      'Doctorado completo',
+  ];
 
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
@@ -175,6 +193,7 @@ export class AddEmpleadoComponent implements OnInit {
       CiudadNacimiento:[''],
       CURP:[''],
       RFC:[''],
+      Escolaridad:[''],
       //Domicilio
       //DomicilioIne:['', Validators.required],
       DomicilioIne:[''],

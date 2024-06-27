@@ -22,6 +22,11 @@ Edad: number;
   Antiguedad: Number;//aQUIMOVI
   HorarioSemanal: string;
   Sueldo: Number;
+  IngresoImss: Date;
+  BajaImss: Date;
+  Escolaridad: string;
+
+
   DomicilioIne: string;
   Poblacion: string;
   EntidadDireccion: string;

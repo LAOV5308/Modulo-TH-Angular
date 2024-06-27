@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import { SystemComponent } from './shared/components/system/system.component';
 import { provideHttpClient } from '@angular/common/http';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 
 export const appConfig: ApplicationConfig = {
@@ -15,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(), 
     provideAnimationsAsync(), 
     provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(),
-    provideHttpClient()
+    provideHttpClient(), provideCharts(withDefaultRegisterables())
 
   ]
 };

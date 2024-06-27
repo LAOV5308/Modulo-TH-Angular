@@ -123,7 +123,7 @@ router.post('/', async (req, res) => {
         Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, 
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,
         NombreBeneficiario, Parentesco, FechaNacimientoBeneficiario, NumeroTelefonoEmergencia,
-        IngresoImss, BajaImss
+        IngresoImss, BajaImss, Escolaridad
     } = req.body;
 
     try {
@@ -160,6 +160,7 @@ router.post('/', async (req, res) => {
         request.input('Sueldo', sql.Decimal, Sueldo);
         request.input('IngresoImss', sql.Date, IngresoImss);
         request.input('BajaImss', sql.Date, BajaImss);
+        request.input('Escolaridad', sql.VarChar, Escolaridad);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_personaall_add');
         //const result = await request.execute('stp_prueba_add');
@@ -240,6 +241,10 @@ router.put('/:id', async (req, res) => {
         request.input('FechaNacimientoBeneficiario', sql.Date, FechaNacimientoBeneficiario);
         request.input('NumeroTelefonoEmergencia', sql.VarChar, NumeroTelefonoEmergencia);
         request.input('Sueldo', sql.Decimal, Sueldo);
+///Actualizacion
+        request.input('IngresoImss', sql.Date, IngresoImss);
+        request.input('BajaImss', sql.Date, BajaImss);
+        request.input('Escolaridad', sql.VarChar, Escolaridad);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_personaall_update');
         //const result = await request.execute('stp_prueba_add');

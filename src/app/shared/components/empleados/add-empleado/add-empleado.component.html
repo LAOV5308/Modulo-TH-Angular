@@ -210,9 +210,16 @@
             <mat-hint align="end">{{inputrfc.value.length}}/13</mat-hint>
           </mat-form-field>
 
+          <h2>Escolaridad</h2>
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Escolaridad</mat-label>
+            <mat-select formControlName="Escolaridad">
+                <mat-option *ngFor="let val of escolaridad" [value]="val">{{val}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-         
-  
+
         <!-- Domicilio -->
         <h2>Información Domicilio</h2>
         <!---
