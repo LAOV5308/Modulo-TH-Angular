@@ -1,1 +1,318 @@
-<p>add-reclutamiento works!</p>
+
+<br/>
+<mat-card class="matcard">
+  <h1>Agregar Nueva Solicitud<mat-icon>people</mat-icon></h1>
+  
+  <mat-card-header class="matcardheader">
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <!--<mat-accordion>-->
+         <!-- Agrega más campos aquí -->
+
+         
+        <mat-form-field appearance="fill" color="accent">
+            <mat-label>Fecha De Solicitud</mat-label>
+            <input matInput [matDatepicker]="pickerfechasolicitud" formControlName="FechaSolicitud" (dateChange)="calculateAge()">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerfechasolicitud"></mat-datepicker-toggle>
+            <mat-datepicker #pickerfechasolicitud></mat-datepicker>
+          </mat-form-field>  
+          
+         <h2>Información Personal
+            <p *ngIf="edad !== null" class="edad-empleado">Edad Colaborador: {{ edad }} años</p>
+          </h2>
+          
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="Nombre">
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="Apellidos">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Sexo</mat-label>
+          <mat-select formControlName="Sexo">
+              <mat-option *ngFor="let val of sexo" [value]="val">{{val}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" color="accent">
+        <mat-label>Estado Civil</mat-label>
+        <mat-select formControlName="EstadoCivil">
+            <mat-option *ngFor="let val of estadocivil" [value]="val">{{val}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Fecha de Nacimiento</mat-label>
+          <input matInput [matDatepicker]="pickerfechanacimiento" formControlName="FechaNacimiento" (dateChange)="calculateAge()">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="pickerfechanacimiento"></mat-datepicker-toggle>
+          <mat-datepicker #pickerfechanacimiento></mat-datepicker>
+        </mat-form-field>  
+
+        
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Entidad de Nacimiento</mat-label>
+          <mat-select formControlName="EntidadNacimiento">
+            <mat-option *ngFor="let val of estados" [value]="val">{{val}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Ciudad de Nacimiento</mat-label>
+          <mat-select formControlName="CiudadNacimiento">
+            <mat-option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!--<mat-form-field appearance="fill">
+          <mat-label>CiudadNacimiento</mat-label>
+          <input matInput formControlName="ciudadnacimiento">
+        </mat-form-field>-->
+
+
+        <mat-form-field appearance="fill" hintLabel="Max 18 characters" color="accent">
+          <mat-label>CURP</mat-label>
+          <input matInput formControlName="CURP" #inputcurp maxlength="18" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <mat-hint align="end">{{inputcurp.value.length}}/18</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" hintLabel="Max 13 characters" color="accent" >
+          <mat-label>RFC</mat-label>
+          <input matInput formControlName="RFC" #inputrfc maxlength="13" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <mat-hint align="end">{{inputrfc.value.length}}/13</mat-hint>
+        </mat-form-field>
+
+        <h2>Escolaridad</h2>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Escolaridad</mat-label>
+          <mat-select formControlName="Escolaridad">
+              <mat-option *ngFor="let val of escolaridad" [value]="val">{{val}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+  
+       
+  
+        <!-- Información Laboral -->
+        <h2>Información Laboral</h2>
+       <!-- <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Información Laboral
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Edad</mat-label>
+          <input matInput  disabled>
+        </mat-form-field>
+        -->
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Experiencia Laboral</mat-label>
+            <input matInput formControlName="Experiencia">
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>Puesto Solicitado</mat-label>
+            <input type="text"
+                   matInput
+                   [(ngModel)]="puestoSolicitado"
+                   (ngModelChange)="filterPuestosSolicitados()"
+                   formControlName="PuestoSolicitado"
+                   [matAutocomplete]="autoPuestosSolicitados">
+            <mat-autocomplete #autoPuestosSolicitados="matAutocomplete">
+              <mat-option *ngFor="let puesto of filteredPuestosSolicitados" [value]="puesto.NombrePuesto">
+                {{ puesto.NombrePuesto }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill">
+            <mat-label>Puesto Ofrecido</mat-label>
+            <input type="text"
+                   matInput
+                   [(ngModel)]="puestoOfrecido"
+                   (ngModelChange)="filterPuestosOfrecidos()"
+                   formControlName="PuestoOfrecido"
+                   [matAutocomplete]="autoPuestosOfrecidos">
+            <mat-autocomplete #autoPuestosOfrecidos="matAutocomplete">
+              <mat-option *ngFor="let puesto of filteredPuestosOfrecidos" [value]="puesto.NombrePuesto">
+                {{ puesto.NombrePuesto }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+  
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>HorarioSemanal</mat-label>
+            <mat-select formControlName="HorarioSemanal">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of horariosemanal" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!--<mat-form-field appearance="fill" color="accent">
+            <mat-label>Nivel</mat-label>
+            <input type="number" matInput formControlName="Nivel" maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          </mat-form-field>-->
+
+
+          <!--<mat-form-field appearance="fill">
+            <mat-label>Responsable</mat-label>
+            <input matInput formControlName="responsable">
+          </mat-form-field>-->
+
+         
+
+
+
+          <!-- Agrega más campos aquí -->
+          <h2>Seguro Social</h2>
+        <!--</mat-expansion-panel>--> 
+          
+        <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="accent">
+          <mat-label>NSS</mat-label>
+          <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>UMF</mat-label>
+          <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
+        </mat-form-field>
+
+        <!-- Información Personal -->
+       <!--<mat-expansion-panel>--> 
+        <!--  <mat-expansion-panel-header>
+            <mat-panel-title>
+              Información Personal
+            </mat-panel-title>--> 
+
+
+        <!-- Domicilio -->
+        <h2>Información Domicilio</h2>
+        <!---
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Domicilio
+            </mat-panel-title>
+          </mat-expansion-panel-header>-->
+            
+          
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Domicilio INE</mat-label>
+            <input matInput formControlName="DomicilioIne">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Poblacion</mat-label>
+            <input matInput formControlName="Poblacion">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Entidad Direccion</mat-label>
+            <mat-select formControlName="EntidadDireccion">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of estados1" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <!--<mat-form-field appearance="fill" color="accent">
+            <mat-label>CP</mat-label>
+            <input type='number' matInput formControlName="CP" #inputcp maxlength="5">
+            <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
+          </mat-form-field>-->
+        <!--  <mat-form-field appearance="fill" color="accent">
+            <mat-label>CP</mat-label>
+            <input type="text" matInput formControlName="CP" #inputcp maxlength="5" pattern="[0-9]*" (input)="onCPInput($event)">
+            <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
+            <mat-error *ngIf="employeeForm.get('CP')?.invalid && (employeeForm.get('CP')?.dirty || employeeForm.get('CP')?.touched)">
+              Por favor ingrese un código postal válido (solo números).
+            </mat-error>
+          </mat-form-field>-->
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>CP</mat-label>
+            <input type="number" matInput formControlName="CP" #inputcp maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+            <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="CorreoElectronico">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Numero Telefono 1</mat-label>
+            <input type="number" matInput formControlName="NumeroTelefono1" placeholder="4771232312" #inputn1 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+            <mat-hint align="end">{{inputn1.value.length}}/10</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Numero Telefono 2</mat-label>
+            <input type="number" matInput formControlName="NumeroTelefono2" placeholder="4771232312" #inputn2 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+            <mat-hint align="end">{{inputn2.value.length}}/10</mat-hint>
+          </mat-form-field>
+
+          <!-- Agrega más campos aquí -->
+       <!-- </mat-expansion-panel>-->
+  
+        <!-- Contacto de Emergencia -->
+        <h2>Contacto de Emergencia</h2>
+        <!--
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Contacto de Emergencia
+            </mat-panel-title>
+          </mat-expansion-panel-header>-->
+  
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Nombre Beneficiario</mat-label>
+            <input matInput formControlName="NombreBeneficiario">
+          </mat-form-field>
+
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Parentesco</mat-label>
+            <mat-select formControlName="Parentesco">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of parentesco" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Fecha Nacimiento Beneficiario</mat-label>
+            <input matInput [matDatepicker]="pickerfechanacimientobeneficiario" formControlName="FechaNacimientoBeneficiario">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerfechanacimientobeneficiario"></mat-datepicker-toggle>
+            <mat-datepicker #pickerfechanacimientobeneficiario></mat-datepicker>
+          </mat-form-field>  
+
+          <mat-form-field appearance="fill" color="accent">
+            <mat-label>Numero Telefono Emergencia</mat-label>
+            <input type="number" matInput formControlName="NumeroTelefonoEmergencia" placeholder="4771232312" #inputn3 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+            <mat-hint align="end">{{inputn3.value.length}}/10</mat-hint>
+          </mat-form-field>
+          <!-- Agrega más campos aquí -->
+  
+        <!--</mat-expansion-panel>-->
+  
+      <!--</mat-accordion>-->
+  
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+       <!--Le quite aqui lo del darle click-->
+    </form>
+  </mat-card-header>
+
+  </mat-card>
+  

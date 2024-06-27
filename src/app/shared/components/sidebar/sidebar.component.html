@@ -89,7 +89,8 @@
             <mat-icon class="expand-icon">{{ submenus['reclutamiento'] ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
           <ul *ngIf="submenus['reclutamiento']">
-            <li><a [routerLink]="['/system/reclutamiento']"><mat-icon>contacts</mat-icon>Consultar Reclutamiento</a></li>
+            <li><a [routerLink]="['/system/solicitudes']"><mat-icon>contacts</mat-icon>Consultar Reclutamiento</a></li>
+            <li><a [routerLink]="['/system/addreclutamiento']"><mat-icon>add_comment</mat-icon>Agregar Nueva Solicitud</a></li>
           </ul>
         </li>
 

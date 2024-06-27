@@ -20,6 +20,8 @@ import { authGuard } from './auth/Guards/auth.guard';
 import { ConsultarEmpleadoComponent } from './shared/components/empleados/consultar-empleado/consultar-empleado.component';
 import { ReclutamientoComponent } from './shared/components/reclutamiento/reclutamiento.component';
 import { DashboardComponent } from './shared/components/dashboard/dashboard.component';
+import { AddReclutamientoComponent } from './shared/components/reclutamiento/add-reclutamiento/add-reclutamiento.component';
+import { DatosReclutamientoComponent } from './shared/components/reclutamiento/datos-reclutamiento/datos-reclutamiento.component';
 
 
 
@@ -45,7 +47,11 @@ export const routes: Routes = [
             { path: 'addEmpleado', component: AddEmpleadoComponent},
             { path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent},
             { path: 'consultarEmpleado/:NoNomina', component: ConsultarEmpleadoComponent},
-            { path: 'reclutamiento', component: ReclutamientoComponent},
+            //{ path: 'reclutamiento', component: ReclutamientoComponent},
+            { path: 'addreclutamiento', component: AddReclutamientoComponent},
+            { path: 'solicitudes', component: DatosReclutamientoComponent},
+
+
         ]
      },
     { path: 'login', component: LoginComponent },
