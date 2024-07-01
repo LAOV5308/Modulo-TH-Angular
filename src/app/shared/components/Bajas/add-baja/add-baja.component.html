@@ -1,20 +1,17 @@
-<div mat-dialog-title>
-    <h1>Baja Empleado</h1>
-</div>
+
+   <mat-card class="container"> 
+    <div class="form-section">
+        <h2>Baja Empleado</h2>
+
 <form [formGroup]="Form" (ngSubmit)="onFormSubmit()">
     <div mat-dialog-content class="content">
-
-        <div class="row">
             <!--<mat-form-field color="accent">
                 <mat-label>NoNomina</mat-label>
                 <input matInput type="number" formControlName="NoNomina">
             </mat-form-field>-->
-
-            <p *ngIf="NoNomina !== null" class="NoNomina">NoNomina: {{ NoNomina }}</p>
-        </div>
-
-
+           
         <div class="row">
+            <p *ngIf="NoNomina !== null" class="NoNomina">NoNomina: {{ NoNomina }}</p>
             <mat-form-field appearance="fill" color="accent">
                 <mat-label>Fecha Salida</mat-label>
                 <input matInput [matDatepicker]="pickerFechaSalida" formControlName="FechaSalida">
@@ -22,9 +19,7 @@
                 <mat-datepicker-toggle matIconSuffix [for]="pickerFechaSalida"></mat-datepicker-toggle>
                 <mat-datepicker #pickerFechaSalida></mat-datepicker>
               </mat-form-field>  
-        </div>
 
-        <div class="row">
             <mat-form-field appearance="fill" color="accent">
                 <mat-label>Tipo Baja</mat-label>
                 <mat-select formControlName="TipoBaja">
@@ -41,11 +36,34 @@
                 <input matInput type="number" formControlName="Finiquito">
             </mat-form-field>
         </div>
-        
+    <div class="row">
+        <mat-checkbox formControlName="ProcesoDemanda">Proceso de Demanda</mat-checkbox>
+      </div>
 
-    </div>
+    <div class="row" *ngIf="procesoDemanda">
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Fecha Inicio</mat-label>
+          <input matInput [matDatepicker]="pickerFechaInicio" formControlName="FechaInicio">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="pickerFechaInicio"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFechaInicio></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Fecha Fin</mat-label>
+          <input matInput [matDatepicker]="pickerFechaFin" formControlName="FechaFin">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="pickerFechaFin"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFechaFin></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+
+    
     <div mat-dialog-actions class="action">
         <button mat-raised-button type="button" color="accent" [mat-dialog-close]="false">Cancelar</button>
         <button mat-raised-button color="primary" type="submit">Dar Baja</button>
     </div>
+    </div>
 </form>
+</div>
+</mat-card>  

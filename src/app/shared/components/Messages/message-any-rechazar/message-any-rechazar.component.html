@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+    <p class="description">{{ data.description }}</p>
+    <p class="item">{{ data.item }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onConfirm()" class="buttonsi">{{ data.si }}</button>
+  <button mat-button (click)="onCancel()" class="buttonno">{{ data.no }}</button>
+</div>

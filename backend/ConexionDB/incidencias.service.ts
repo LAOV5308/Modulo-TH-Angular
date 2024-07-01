@@ -36,6 +36,12 @@ export class IncidenciasService {
   getIncidencias(): Observable<Incidencia[]> {
     return this.http.get<Incidencia[]>(this.apiUrl);
   }
+  getIncidenciasClose(): Observable<Incidencia[]> {
+    return this.http.get<Incidencia[]>(this.apiUrl+'/close');
+  }
+  getIncidenciasAll(): Observable<Incidencia[]> {
+    return this.http.get<Incidencia[]>(this.apiUrl+'/all');
+  }
 
     /*
   getIncidencias(): Observable<any> {

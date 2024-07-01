@@ -50,9 +50,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class DatosComponent implements OnInit, AfterViewInit{
   NoNomina: number = 0;
   Form: FormGroup;
- 
 
-  
   displayedColumns: string[] = [
     'NoNomina',
     'Nombre',

@@ -15,7 +15,7 @@
     text-align: center;
   }
   
-  .form-group {
+  .row {
     display: flex;
     justify-content: space-between;
   }

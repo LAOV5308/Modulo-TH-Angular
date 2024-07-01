@@ -64,13 +64,44 @@ export class DatosReclutamientoComponent implements OnInit, AfterViewInit{
     'Acciones'
   ];
 
+  displayedColumnsAceptadas: string[] = [
+    'IdSolicitud',
+    'Nombre',
+    'Apellidos',
+    'Edad',
+    'PuestoAceptado',
+    'FechaAceptacion',
+    'Acciones'
+  ];
+
+  displayedColumnsRechazadas: string[] = [
+    'IdSolicitud',
+    'Nombre',
+    'Apellidos',
+    'Edad',
+    'PuestoRechazado',
+    'FechaRechazo',
+    'Acciones'
+  ];
+
   solicitudesProceso: SolicitudProceso[]=[];
+  solicitudesAceptadas: SolicitudAceptada[]=[];
+  solicitudesRechazadas: SolicitudRechazada[]=[];
 
   dataSource!: MatTableDataSource<any>;
-  dataInactive!: MatTableDataSource<any>;
+  dataAceptadas!: MatTableDataSource<any>;
+  dataRechazadas!: MatTableDataSource<any>;
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // Cambiar identificadores de ViewChild
+  @ViewChild('sortAceptadas') sortAceptadas!: MatSort;
+  @ViewChild('paginatorAceptadas') paginatorAceptadas!: MatPaginator;
+  @ViewChild('sortProceso') sortProceso!: MatSort;
+  @ViewChild('paginatorProceso') paginatorProceso!: MatPaginator;
+  @ViewChild('sortRechazadas') sortRechazadas!: MatSort;
+  @ViewChild('paginatorRechazadas') paginatorRechazadas!: MatPaginator;
+
+  //@ViewChild(MatSort) sort!: MatSort;
+  //@ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private _solicitudesService: SolicitudesService,
     private _coreService: CoreService,
@@ -83,13 +114,18 @@ export class DatosReclutamientoComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
     // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
     if (this.dataSource) {
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sortProceso;
+      this.dataSource.paginator = this.paginatorProceso;
     }
-    if (this.dataInactive) {
-      this.dataInactive.sort = this.sort;
-      this.dataInactive.paginator = this.paginator;
+    if (this.dataAceptadas) {
+      this.dataAceptadas.sort = this.sortAceptadas;
+      this.dataAceptadas.paginator = this.paginatorAceptadas;
     }
+    if(this.dataRechazadas){
+      this.dataRechazadas.sort = this.sortRechazadas;
+      this.dataRechazadas.paginator = this.paginatorRechazadas
+    }
+
   }
 
   ngOnInit(): void {
@@ -99,14 +135,41 @@ export class DatosReclutamientoComponent implements OnInit, AfterViewInit{
         this.solicitudesProceso = data;
         console.log(this.solicitudesProceso);
         this.dataSource = new MatTableDataSource(data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sortProceso;
+        this.dataSource.paginator = this.paginatorProceso;
         
       },
       error: (error) => {
         console.error('Error al cargar las solicitudes', error);
       }
     });
+
+    this._solicitudesService.getSolicitudesAceptadas().subscribe({
+      next: (data) => {
+        this.solicitudesAceptadas = data;
+        console.log(this.solicitudesAceptadas);
+        this.dataAceptadas = new MatTableDataSource(data);
+        this.dataAceptadas.sort = this.sortAceptadas;
+        this.dataAceptadas.paginator = this.paginatorAceptadas;
+      },
+      error: (error) => {
+        console.error('Error al cargar las solicitudes', error);
+      }
+    });
+
+    this._solicitudesService.getSolicitudesRechazadas().subscribe({
+      next: (data) => {
+        this.solicitudesRechazadas = data;
+        console.log(this.solicitudesRechazadas);
+        this.dataRechazadas = new MatTableDataSource(data);
+        this.dataRechazadas.sort = this.sortRechazadas;
+        this.dataRechazadas.paginator = this.paginatorRechazadas;
+      },
+      error: (error) => {
+        console.error('Error al cargar las solicitudes', error);
+      }
+    });
+
     
   }
 
@@ -164,12 +227,20 @@ this.router.navigate(['/system/addreclutamiento']);
     }
   }
 
-  applyFilterInactive(event: Event) {
+  applyFilterAceptada(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataInactive.filter = filterValue.trim().toLowerCase();
+    this.dataAceptadas.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataInactive.paginator) {
-      this.dataInactive.paginator.firstPage();
+    if (this.dataAceptadas.paginator) {
+      this.dataAceptadas.paginator.firstPage();
+    }
+  }
+  applyFilterRechazada(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataRechazadas.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataRechazadas.paginator) {
+      this.dataRechazadas.paginator.firstPage();
     }
   }
 

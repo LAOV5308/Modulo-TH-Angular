@@ -80,6 +80,7 @@ export interface SolicitudAceptada {
         UMF: string;
         PuestoRechazado: string;
         FechaRechazado: Date;
+        DescripcionRechazo: string;
         HorarioSemanal: string;
         Escolaridad: string;
         DomicilioIne: string;

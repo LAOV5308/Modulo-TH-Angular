@@ -262,7 +262,7 @@ router.put('/bajas/:id', async (req, res) => {
     const { id } = req.params;
 
     const { 
-        FechaSalida, TipoBaja, Finiquito
+        FechaSalida, TipoBaja, Finiquito, FechaInicio, FechaFin
     } = req.body;
 
 
@@ -277,6 +277,8 @@ router.put('/bajas/:id', async (req, res) => {
         request.input('FechaSalida', sql.Date, FechaSalida);
         request.input('TipoBaja', sql.VarChar, TipoBaja);
         request.input('Finiquito', sql.Decimal, Finiquito);
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_baja_add');
         //const result = await request.execute('stp_prueba_add');

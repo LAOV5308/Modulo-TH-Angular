@@ -48,3 +48,11 @@
     background-color: #7455d1;
     color: white;
    }
+   .columnsAceptado{
+    background-color: #55bbbb;
+    color: white;
+   }
+   .columnsRechazado{
+    background-color: #971e59;
+    color: white;
+   }

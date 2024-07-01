@@ -20,7 +20,8 @@ import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -49,7 +50,9 @@ export const MY_DATE_FORMATS = {
     NgFor,
     NgIf,
     HttpClientModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatCardModule
   ],
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -62,6 +65,7 @@ export const MY_DATE_FORMATS = {
 export class AddBajaComponent implements OnInit{
   Form: FormGroup;
   NoNomina: number=0;
+  procesoDemanda: boolean = false;
   
   constructor(
     private _fb: FormBuilder,
@@ -76,7 +80,10 @@ export class AddBajaComponent implements OnInit{
     //NoNomina: [{value: ' ', disabled: true}, Validators.required],
     FechaSalida: ['', Validators.required],
     TipoBaja: ['', Validators.required],
-    Finiquito: ''
+    Finiquito: '',
+    ProcesoDemanda: [false],
+    FechaInicio: [''],
+    FechaFin: ['']
 
   });
   this._adapter.setLocale('en-GB'); // Esto configura el adaptador de fecha para usar el formato de fecha correcto
@@ -96,12 +103,40 @@ tipoBaja: string[] = [
         NoNomina: this.data.NoNomina
       })*/
       this.NoNomina = this.data.NoNomina;
+      this.onChanges();
   }
+
+  onChanges(): void {
+    this.Form.get('ProcesoDemanda')!.valueChanges.subscribe(val => {
+      this.procesoDemanda = val;
+      this.Form.get('FechaInicio')!.updateValueAndValidity();
+      this.Form.get('FechaFin')!.updateValueAndValidity();
+    });
+  }
+  
 
 
   onFormSubmit(){
     if (this.Form.valid) {
       console.log(this.Form.value);
+      
+      if(this.Form.value.Finiquito == 0){
+        this.Form.patchValue({
+          Finiquito: null
+        })
+      }
+      //
+      if(this.Form.value.FechaInicio == ''){
+        this.Form.patchValue({
+          FechaInicio: null
+        })
+      }
+      if(this.Form.value.FechaFin == ''){
+        this.Form.patchValue({
+          FechaFin: null
+        })
+      }
+
       this._empService.addBajaEmpleado(this.data.NoNomina,this.Form.value).subscribe({
         next: (resp: any) => {
           this._coreService.openSnackBar('Empleado Dado de Baja Satisfactoriamente  *o*', resp);

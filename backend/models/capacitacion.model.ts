@@ -1,5 +1,5 @@
 export interface Capacitacion {
-    NoNomina: number;
+  NoNomina: number;
   NombreCompleto: string;
   NombrePuesto: string;
   NombreDepartamento: string;

@@ -44,6 +44,8 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SolicitudesService } from '../../../../../../backend/ConexionDB/solicitudes.service';
+import { MessageAnyAceptarComponent } from '../../Messages/message-any-aceptar/message-any-aceptar.component';
+
 
 
 export const MY_DATE_FORMATS = {
@@ -84,6 +86,7 @@ export const MY_DATE_FORMATS = {
     MensajeGuardarEmpleadoComponent,
     CommonModule,
     MatAutocompleteModule,
+    MessageAnyAceptarComponent
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -358,9 +361,17 @@ export class AddReclutamientoComponent implements OnInit{
 
     if (this.employeeForm.valid) {
 
-      const dialogRef = this.dialog.open(MensajeGuardarEmpleadoComponent, {
-        width: '350px'
-      })
+      const dialogRef = this.dialog.open(MessageAnyAceptarComponent, {
+        width: '250px', height: '150px',
+      data: {
+        title: 'Guardar Solicitud',
+        description: '¿Está seguro que desea Guardar la Solicitud?',
+        item: '',
+        si: 'Guardar',
+        no: 'Cancelar',
+      }
+    });
+
 
       dialogRef.afterClosed().subscribe(result => {
 

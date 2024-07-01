@@ -10,10 +10,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-reclutamiento',
   standalone: true,
-  imports: [
-    MatAutocompleteModule,
-    MatInputModule,
-    FormsModule, ReactiveFormsModule,CommonModule
+  imports: [ CommonModule
   ],
   templateUrl: './reclutamiento.component.html',
   styleUrl: './reclutamiento.component.css'

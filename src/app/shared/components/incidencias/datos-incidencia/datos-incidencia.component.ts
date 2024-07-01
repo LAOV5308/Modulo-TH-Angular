@@ -71,10 +71,18 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
   ];
 
   incidencias: Incidencia[] = [];
+  incidenciasClose: Incidencia[]=[];
+  incidenciasAll: Incidencia[]=[];
   dataSource!: MatTableDataSource<any>;
-  dataInactive!: MatTableDataSource<any>;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataClose!: MatTableDataSource<any>;
+  dataAll!: MatTableDataSource<any>;
+  @ViewChild('sortActive') sortActive!: MatSort;
+  @ViewChild('sortClose') sortClose!: MatSort;
+  @ViewChild('sortAll') sortAll!: MatSort;
+  
+  @ViewChild('paginatorActive') paginatorActive!: MatPaginator;
+  @ViewChild('paginatorClose') paginatorClose!: MatPaginator;
+  @ViewChild('paginatorAll') paginatorAll!: MatPaginator;
 
   constructor(private _incidenciasService: IncidenciasService,
     private _coreService: CoreService,
@@ -86,12 +94,17 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
     // Configurar el dataSource con el MatSort y MatPaginator después de que se hayan inicializado
     if (this.dataSource) {
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sortActive;
+      this.dataSource.paginator = this.paginatorActive;
     }
-    if (this.dataInactive) {
-      this.dataInactive.sort = this.sort;
-      this.dataInactive.paginator = this.paginator;
+    if (this.dataClose) {
+      this.dataClose.sort = this.sortClose;
+      this.dataClose.paginator = this.paginatorClose;
+    }
+    
+    if (this.dataAll) {
+      this.dataAll.sort = this.sortAll;
+      this.dataAll.paginator = this.paginatorAll;
     }
   }
 
@@ -102,8 +115,33 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
         this.incidencias = data;
         console.log(this.incidencias);
         this.dataSource = new MatTableDataSource(data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sortActive;
+        this.dataSource.paginator = this.paginatorActive;
+        
+      },
+      error: (error) => {
+        console.error('Error al cargar las incidencias', error);
+      }
+    });
+    this._incidenciasService.getIncidenciasClose().subscribe({
+      next: (data) => {
+        this.incidenciasClose = data;
+        this.dataClose = new MatTableDataSource(data);
+        this.dataClose.sort = this.sortClose;
+        this.dataClose.paginator = this.paginatorClose;
+        
+      },
+      error: (error) => {
+        console.error('Error al cargar las incidencias', error);
+      }
+    });
+    this._incidenciasService.getIncidenciasAll().subscribe({
+      next: (data) => {
+        this.incidenciasAll = data;
+        console.log(this.incidencias);
+        this.dataAll = new MatTableDataSource(data);
+        this.dataAll.sort = this.sortAll;
+        this.dataAll.paginator = this.paginatorAll;
         
       },
       error: (error) => {
@@ -161,12 +199,20 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
       this.dataSource.paginator.firstPage();
     }
   }
-  applyFilterInactive(event: Event) {
+  applyFilterClose(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataInactive.filter = filterValue.trim().toLowerCase();
+    this.dataClose.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataInactive.paginator) {
-      this.dataInactive.paginator.firstPage();
+    if (this.dataClose.paginator) {
+      this.dataClose.paginator.firstPage();
+    }
+  }
+  applyFilterAll(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataAll.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataAll.paginator) {
+      this.dataAll.paginator.firstPage();
     }
   }
 

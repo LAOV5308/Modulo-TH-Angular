@@ -3,11 +3,33 @@ const router = express.Router();
 const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js exporta una función para obtener el pool de conexiones
 const {sql, getConnection} = require('../ConexionDB/dbConfig');
 
-// Obtener todas las incidencias
+// Obtener todas las incidencias Activas
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_Incidencias');
+        const result = await sql.query('Select * from V_IncidenciasActive');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener datos de la base de datos');
+    }
+});
+
+// Obtener todas las incidencias close
+router.get('/close/', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * from V_IncidenciasClose');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener datos de la base de datos');
+    }
+});
+
+// Obtener todas las incidencias
+router.get('/all/', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * from V_IncidenciasAll');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -32,7 +54,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * FROM V_Incidencias WHERE IdIncidencias = ' + id);
+        const result = await sql.query('Select * FROM V_Incidencias WHERE IdIncidenciasActive = ' + id);
         res.json(result.recordset);
         //res.send('Empleado Encontrado Correctamente');
     } catch (err) {
@@ -139,7 +161,7 @@ router.put('/:id', async (req, res) => {
 
     const { id } = req.params;
     const { 
-        Motivo, FechaInicio, FechaFin, CategoriaIncidencia
+        Motivo, FechaInicio, FechaFin, CategoriaIncidencia, FolioAlta, FolioBaja
     } = req.body;
 
     try {
@@ -150,6 +172,8 @@ router.put('/:id', async (req, res) => {
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
         request.input('CategoriaIncidencia', sql.VarChar, CategoriaIncidencia);
+        request.input('FolioAlta', sql.VarChar, FolioAlta);
+        request.input('FolioBaja', sql.VarChar, FolioBaja);
 
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_incidencias_update');

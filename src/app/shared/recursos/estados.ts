@@ -5,7 +5,7 @@ export const estados: string[] = [
     'Morelos', 'Nayarit', 'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro',
     'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco',
     'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas',
-    'Extrangero'
+    'Extranjero'
   ];
 
   export const estados1: string[] = [
@@ -14,12 +14,12 @@ export const estados: string[] = [
     'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán',
     'Morelos', 'Nayarit', 'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro',
     'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco',
-    'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas', 'Extrangero'
+    'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas', 'Extranjero'
   ];
   
   export const estadosConCiudades: { [key: string]: string[] } = {
-    'Extrangero': [
-        'Extrangero'
+    'Extranjero': [
+        'Extranjero'
 ],
     
     'Aguascalientes': [
