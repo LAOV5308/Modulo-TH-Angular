@@ -1,0 +1,41 @@
+<div class="card flex justify-content-center">
+    <p-password [(ngModel)]="value" [toggleMask]="true" />
+</div>
+
+<p-progressSpinner 
+    styleClass="w-4rem h-4rem" 
+    strokeWidth="8" 
+    fill="var(--surface-ground)" 
+    animationDuration=".9s" />
+
+    <div class="card flex justify-content-center">
+        <p-toast />
+        <p-confirmDialog>
+            <ng-template pTemplate="message" let-message>
+                <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border">
+                    <i class="pi pi-exclamation-circle text-6xl text-primary-500"></i>
+                    <p>{{ message.message }}</p>
+                </div>
+            </ng-template>
+        </p-confirmDialog>
+        <p-button (click)="confirm()" label="Save" />
+    </div>
+
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+<i class="pi pi-spin pi-cog" style="font-size: 2rem"></i>
+
+<i class="pi pi-check" style="color: slateblue"></i>
+<i class="pi pi-spin pi-apple" style="color: rgb(183, 55, 20)"></i>
+<i class="pi pi-search" style="color: 'var(--primary-color)'"></i>
+<i class="pi pi-user" style="color: #708090"></i>
+
+    <p-button label="prueba" />
+
+    <div class="card">
+        <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+    </div>
+
+
+    <div class="card flex justify-content-center">
+        <p-password [(ngModel)]="value" [toggleMask]="true" />
+    </div>

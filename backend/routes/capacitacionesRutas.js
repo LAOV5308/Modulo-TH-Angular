@@ -16,6 +16,80 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/programacionactive', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_CapacitacionesProgramadasActivas');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener la programacion de Capacitaciones');
+    }
+});
+
+router.get('/programacioninactive', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_CapacitacionesProgramadasInactivas');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener la programacion de Capacitaciones');
+    }
+});
+
+router.get('/programacionall', async (req, res) => {
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_CapacitacionesProgramadasAll');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener la programacion de Capacitaciones');
+    }
+});
+router.get('/programacionall/:id', async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_CapacitacionesProgramadasAll where IdProgramacionFecha = '+id);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener la programacion de Capacitaciones');
+    }
+});
+
+router.get('/programaciones/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_SuscripcionCapacitaciones where IdProgramacionFecha = '+id);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener la programacion de Capacitaciones');
+    }
+});
+
+router.post('/programaciones/', async (req, res) => {
+    const { NoNomina, IdProgramacionFecha
+     } = req.body;
+
+    try {
+        const pool = await getConnection(); 
+        const request = pool.request();
+        ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
+        request.input('NoNomina', sql.Int, NoNomina);
+        request.input('IdProgramacionFecha', sql.Int, IdProgramacionFecha);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_suscripcioncapacitacion_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Agregado ala suscrpcion de Capacitaciones con éxito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al agregar la suscripcion: ' + err.message });
+    }
+    
+});
+
+
+
 // Obtener solo uno 
 
 router.get('/single/:id', async (req, res) => {
@@ -39,21 +113,23 @@ router.get('/single/:id', async (req, res) => {
 
 
 
+
 //Guardar Una Nueva Capacitacion en el catalogo
 router.post('/', async (req, res) => {
-    const { CodigoCapacitacion, NombreCapacitacion, Origen, Estatus, 
-        TipoCapacitacion, Duracion
+    const { NombreCapacitacion, Origen, Estatus, 
+        TipoCapacitacion, Duracion, Color
      } = req.body;
 
     try {
         const pool = await getConnection();
         const request = pool.request();
-        request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
+        ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
         request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
         request.input('Origen', sql.VarChar, Origen);
         request.input('Estatus', sql.VarChar, Estatus);
         request.input('TipoCapacitacion', sql.VarChar, TipoCapacitacion);
         request.input('Duracion', sql.Decimal, Duracion);
+        request.input('Color', sql.VarChar, Color);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_capacitacionnombre_add');
         //const result = await request.execute('stp_prueba_add');
@@ -85,6 +161,29 @@ router.delete('/:id', async (req, res) => {
 
 
 });
+
+// Eliminar una suscripcion por id
+router.delete('/programaciones/:id', async (req, res) => {
+    const { id } = req.params;
+
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdSuscripcionCapacitacion', sql.Int, id);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_suscripcioncapacitacion_delete');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Eliminado con éxito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al eliminar: ' + err.message });
+    }
+
+
+});
+
 
 // Actualizar un departamento por ID
 router.put('/:id', async (req, res) => {

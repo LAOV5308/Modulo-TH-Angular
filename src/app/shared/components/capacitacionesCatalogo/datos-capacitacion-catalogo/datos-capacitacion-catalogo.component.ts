@@ -5,7 +5,7 @@ import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 import { Capacitacion } from '../../../../../../backend/models/capacitacion.model';
 
-import { NgFor, DatePipe, NgIf } from '@angular/common';
+import { NgFor, DatePipe, NgIf, CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,11 +23,14 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
 import { MessageConfirmCheckBoxComponent } from '../../incidencias/add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
-import { CatalogoCapacitacionServiceService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
 import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
-import { AddCapacitacionCatalogoComponent } from '../add-capacitacion-catalogo/add-capacitacion-catalogo.component';
+
 import { MessageDeleteComponent } from '../../Messages/message-delete/message-delete.component';
 import { UpdateCapacitacionCatalogoComponent } from '../update-capacitacion-catalogo/update-capacitacion-catalogo.component';
+import { AddCapacitacionesComponent } from '../../capacitaciones/add-capacitaciones/add-capacitaciones.component';
+import { AddCapacitacionCatalogoComponent } from '../add-capacitacion-catalogo/add-capacitacion-catalogo.component';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 
 @Component({
@@ -41,17 +44,20 @@ import { UpdateCapacitacionCatalogoComponent } from '../update-capacitacion-cata
     MatCardModule,
     FormsModule,MessageConfirmCheckBoxComponent, AddCapacitacionCatalogoComponent,
     MessageDeleteComponent,
-    UpdateCapacitacionCatalogoComponent],
-    providers:[EmpleadosService, CoreService, CatalogoCapacitacionServiceService],
+    UpdateCapacitacionCatalogoComponent, NgIf,  ColorPickerModule, CommonModule ],
+    providers:[EmpleadosService, CoreService, CatalogoCapacitacionService],
   templateUrl: './datos-capacitacion-catalogo.component.html',
   styleUrl: './datos-capacitacion-catalogo.component.css'
 })
 export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit{
   checked = false;
   disabled = false;
+  Habilitado = false;
+  color: string = '#0073ff';
 
   displayedColumns: string[] = [
-    'CodigoCapacitacion',
+    //'CodigoCapacitacion',
+    'Color',
     'NombreCapacitacion',
     'Origen',
     'Estatus',
@@ -70,7 +76,7 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
     private _coreService: CoreService,
     private _dialog: MatDialog,
     private _empleadosService: EmpleadosService,
-    private _catalogoCapacitacionesService: CatalogoCapacitacionServiceService
+    private _catalogoCapacitacionesService: CatalogoCapacitacionService
   ){}
 
   ngAfterViewInit(): void {
@@ -91,13 +97,11 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
      this._catalogoCapacitacionesService.getCatalogoCapacitaciones().subscribe({
       next: (data) => {
         this.capacitaciones = data;
+        console.log(this.capacitaciones);
         this.dataSource = new MatTableDataSource(data);
         //this.actualizar();
-        
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
-          
-        
       },
       error: (error) => {
         console.error('Error al cargar las capacitaciones', error);
@@ -148,7 +152,7 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
     const dialogRef = this._dialog.open(MessageDeleteComponent, {
       width: '400px', height: '250px', 
       data: {
-        description: '¿Está seguro que desea eliminar la Capacitacion?',
+        description: '¿Está seguro que desea dar de baja la Capacitacion?',
         item: nombreCapacitacion
       }
     });
@@ -184,6 +188,8 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
       this.dataSource.paginator.firstPage();
     }
   }
+
+  
 
   /*seleccionar(){
     const dialogRef = this._dialog.open(MessageConfirmCheckBoxComponent, {

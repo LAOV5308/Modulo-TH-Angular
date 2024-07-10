@@ -40,12 +40,34 @@ router.post('/capacitacion', async (req, res) => {
     }
 
 });
+router.post('/programarcapacitacion', async (req, res) => {
+    const { Fecha, NombreCapacitacion, Imparte
+    } = req.body;
 
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('Fecha', sql.DateTime, new Date(Fecha));
+        request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
+        request.input('Imparte', sql.VarChar, Imparte);
+
+
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_programarcapacitacion_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "éxito programacion" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error programacion: ' + err.message });
+    }
+
+});
 // Obtener todos los empleados Activos
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_Prueba2 Order by NoNomina');
+        const result = await sql.query('Select * from V_EmpleadosActive Order by NoNomina');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');

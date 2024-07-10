@@ -22,6 +22,8 @@ import { ReclutamientoComponent } from './shared/components/reclutamiento/reclut
 import { DashboardComponent } from './shared/components/dashboard/dashboard.component';
 import { AddReclutamientoComponent } from './shared/components/reclutamiento/add-reclutamiento/add-reclutamiento.component';
 import { DatosReclutamientoComponent } from './shared/components/reclutamiento/datos-reclutamiento/datos-reclutamiento.component';
+import { ProgramarCapacitacionesComponent } from './shared/components/programar-capacitaciones/programar-capacitaciones.component';
+import { ConsultarCapacitacionesComponent } from './shared/components/consultar-capacitaciones/consultar-capacitaciones.component';
 
 
 
@@ -42,18 +44,23 @@ export const routes: Routes = [
             { path: 'incidencias', component: IncidenciasComponent },
             { path: 'capacitaciones', component: CapacitacionesComponent },
             { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent},
+            { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent},
+            { path: 'consultarcapacitaciones', component: ConsultarCapacitacionesComponent},
+
             { path: 'puestos', component: PuestoComponentComponent },
             { path: 'departamentos', component: ComponentDepartamentoComponent},
             { path: 'addEmpleado', component: AddEmpleadoComponent},
             { path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent},
             { path: 'consultarEmpleado/:NoNomina', component: ConsultarEmpleadoComponent},
-            //{ path: 'reclutamiento', component: ReclutamientoComponent},
+            //{ path: 'addreclutamiento', component: ConsultarCapacitacionesComponent},
             { path: 'addreclutamiento', component: AddReclutamientoComponent},
             { path: 'solicitudes', component: DatosReclutamientoComponent},
 
 
         ]
      },
+     
+     { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent},
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' },

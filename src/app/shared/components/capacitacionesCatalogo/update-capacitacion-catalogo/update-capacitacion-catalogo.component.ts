@@ -15,7 +15,7 @@ import { NgFor } from '@angular/common';
 import { CoreService } from '../../../../Core/core.service';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CatalogoCapacitacionServiceService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
 import { error } from 'node:console';
 import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
 
@@ -32,7 +32,7 @@ import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitac
     ReactiveFormsModule,
     NgFor,
   MatButtonModule, HttpClientModule],
-    providers: [CatalogoCapacitacionServiceService, provideNativeDateAdapter(), CoreService],
+    providers: [CatalogoCapacitacionService, provideNativeDateAdapter(), CoreService],
   templateUrl: './update-capacitacion-catalogo.component.html',
   styleUrl: './update-capacitacion-catalogo.component.css'
 })
@@ -57,12 +57,11 @@ export class UpdateCapacitacionCatalogoComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<UpdateCapacitacionCatalogoComponent>,
-    private _catalogoCapacitacionesService: CatalogoCapacitacionServiceService,
+    private _catalogoCapacitacionesService: CatalogoCapacitacionService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService
   ){
     this.Form = this._fb.group({
-      CodigoCapacitacion: [{value: '', disabled: true}],
       NombreCapacitacion: ['', Validators.required],
       Origen: [''],
       Estatus: [''],
@@ -81,9 +80,7 @@ export class UpdateCapacitacionCatalogoComponent implements OnInit {
   TipoCapacitacion: string[] = [
     'Interna', 'Externa'
   ];
-  Duracion: number[] = [
-    1,2,3,4,5,6,7,8,9,10
-  ];
+  
 
   onFormSubmit() {
     

@@ -12,11 +12,20 @@ import { DataService } from '../../../../../backend/ConexionDB/data.service';
 import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
 import { AuthService } from '../../../auth/ServicesAuth/auth.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -30,9 +39,13 @@ import { RecaptchaModule } from 'ng-recaptcha';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatCardModule,
-    RecaptchaModule
+    RecaptchaModule,
+    FormsModule,
+    PasswordModule,
+    InputTextModule,
+    ToastModule, ButtonModule, RippleModule, IconFieldModule, InputIconModule, CommonModule
   ],
-  providers:[EmpleadosService, AuthService]
+  providers:[EmpleadosService, AuthService, MessageService]
   ,
   animations: [
     trigger('slideNotification', [
@@ -63,10 +76,11 @@ export class LoginComponent implements OnInit{
   recaptchaResolved: boolean = false;
   recaptchaToken: string | null = null;
   hide: boolean = true;
+  value!: string;
 
   constructor(private empleadosService: EmpleadosService, private router: Router,
     private _authService: AuthService,
-    private fb: FormBuilder,
+    private fb: FormBuilder,private messageService: MessageService
   ) { 
     this.loginForm = this.fb.group({
       NombreUsuario: ['', Validators.required],
@@ -133,9 +147,10 @@ entrar(){
 onSubmit(): void {
   
   
-  if (this.loginForm.valid && this.recaptchaResolved) {
-    //if (this.loginForm.valid) {
+  //if (this.loginForm.valid && this.recaptchaResolved) {
+    if (this.loginForm.valid) {
     const { NombreUsuario, Password } = this.loginForm.value;
+   
 
     this._authService.login(NombreUsuario, Password).subscribe({
       next: () => {
@@ -144,11 +159,18 @@ onSubmit(): void {
 
         //console.log(this._authService.isLoggedIn());
         //alert(this._authService.getUserRole());
+        
+        
         this.router.navigate(['/system']);
+        
         
       },
       error: (err) => {
-        this.errorMessage = 'Login failed. Por Favor Checa tu Nombre de Usuario y Contraseña';
+        this.showError();
+        //this.errorMessage = 'Login failed. Por Favor Checa tu Nombre de Usuario y Contraseña';
+
+        
+        //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
         //this.recaptchaResolved = false; // Reset the captcha if login fails
 
       }
@@ -159,6 +181,11 @@ onSubmit(): void {
 
 togglePasswordVisibility(): void {
   this.hide = !this.hide;
+}
+
+showError() {
+  //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
+  this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error. Por Favor Checa tu Nombre de Usuario y Contraseña' });
 }
 
 }

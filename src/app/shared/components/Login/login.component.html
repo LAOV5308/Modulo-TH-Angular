@@ -6,24 +6,27 @@
         <mat-card-title>Acceder</mat-card-title>
       </mat-card-header>
       <mat-card-content>
+        <p-toast />
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="NombreUsuario">Nombre de Usuario</label>
-            <input id="NombreUsuario" matInput formControlName="NombreUsuario" placeholder="Nombre de Usuario">
+            <p-iconField>
+              <p-inputIcon>
+                  <i class="pi pi-user"></i>
+              </p-inputIcon>
+              <input pInputText id="username" type="text" placeholder="NombreUsuario" formControlName="NombreUsuario"/>
+          </p-iconField>
           </div>
-          <div class="form-group password-group">
+          <div class="form-group">
             <label for="Password">Contraseña</label>
-            <input id="Password" matInput [type]="hide ? 'password' : 'text'" formControlName="Password" placeholder="Password">
-            <button type="button" mat-icon-button (click)="togglePasswordVisibility()">
-              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
+            <p-password [toggleMask]="true" placeholder="Contraseña" formControlName="Password" class="password-input"/>
           </div>
 
           <div class="form-group">
-            <re-captcha (resolved)="onCaptchaResolved($event)" siteKey="6LeH8fspAAAAALh8ktjGmtZNymfq5U7apn5gxjBv"></re-captcha>
+            
+            <re-captcha (resolved)="onCaptchaResolved($event)" siteKey="6LeH8fspAAAAALh8ktjGmtZNymfq5U7apn5gxjBv" class="captcha"></re-captcha>
           </div>
-          <button mat-raised-button color="primary" type="submit" [disabled]="!recaptchaResolved">Ingresar</button>
-          <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+          <button mat-raised-button color="primary" type="submit" >Ingresar</button>
         </form>
       </mat-card-content>
     </mat-card>
@@ -31,7 +34,9 @@
 </div>
 
 
-<!--
+<!--[disabled]="!recaptchaResolved"
+
+
     <mat-toolbar class="toolbar">
       <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>

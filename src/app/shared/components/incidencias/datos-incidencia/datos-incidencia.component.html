@@ -140,7 +140,7 @@ type="submit">Agregar Empleado
 
   
   </mat-tab>
-  <mat-tab label="Incidencias Cumplidas"> 
+  <mat-tab label="Incidencias Cumplidas" class="custom-tab-1"> 
     <br>
 
     <mat-label>Filtro: </mat-label>
@@ -234,7 +234,7 @@ type="submit">Agregar Empleado
         </ng-container>
       
   
-        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="columns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="columnsClose"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   
         <!-- Row shown when there is no matching data. -->
@@ -344,7 +344,7 @@ type="submit">Agregar Empleado
         </ng-container>
       
   
-        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="columns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="columnsAll"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   
         <!-- Row shown when there is no matching data. -->

@@ -76,7 +76,21 @@
             <mat-icon class="expand-icon">{{ submenus['capacitaciones'] ? 'expand_less' : 'expand_more' }}</mat-icon>
           </a>
           <ul *ngIf="submenus['capacitaciones']">
-            <li><a [routerLink]="['/system/capacitaciones']"><mat-icon>contacts</mat-icon>Consultar Capacitaciones</a></li>
+
+            <li>
+              <a href="javascript:void(0)" (click)="toggleSubmenu('programarcapacitaciones')">
+                <mat-icon>people</mat-icon>
+                Programar Capacitaciones
+                <mat-icon class="expand-icon">{{ submenus['programarcapacitaciones'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </a>
+              <ul *ngIf="submenus['programarcapacitaciones']">
+                <li><a [routerLink]="['/system/programarcapacitaciones']"><mat-icon>contacts</mat-icon>Programar Capacitaciones</a></li>
+                <li><a [routerLink]="['/system/consultarcapacitaciones']"><mat-icon>calendar_today</mat-icon>Consultar Calendario</a></li>
+              </ul>
+            </li>
+
+            
+            
             <li><a [routerLink]="['/system/catalogocapacitaciones']"><mat-icon>settings</mat-icon>Catalogo De Capacitaciones</a></li>
             
           </ul>

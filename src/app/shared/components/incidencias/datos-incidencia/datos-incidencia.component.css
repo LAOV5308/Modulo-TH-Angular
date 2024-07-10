@@ -45,6 +45,18 @@
   }
 
   .columns{
+    background-color: #64d8da;
+    color: white;
+   }
+   .columnsClose{
+    background-color: #86158e;
+    color: white;
+   }
+   .columnsAll{
     background-color: #7455d1;
     color: white;
    }
+
+   .custom-tab-1 .mat-tab-label {
+    background-color: #1dce1d; /* Color para la segunda pestaña */
+  }

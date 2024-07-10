@@ -1,0 +1,40 @@
+#calendar-container {
+  width: 100%;
+  height: 100%;
+}
+
+.full-calendar-sm {
+  max-width: 600px;
+  height: 400px;
+}
+
+.full-calendar-md {
+  max-width: 800px;
+  height: 600px;
+}
+
+.full-calendar-lg {
+  max-width: 1000px;
+  height: 800px;
+}
+
+.fc-event {
+  font-size: 0.1em;
+}
+
+.fc-event-title {
+  font-size: 0.1em;
+}
+
+.fc-event-time {
+  font-size: 0.1em;
+}
+
+  
+.agregarempleado{
+  background-color: mediumslateblue;
+}
+
+.eliminarProgramacion{
+  background-color: firebrick;
+}

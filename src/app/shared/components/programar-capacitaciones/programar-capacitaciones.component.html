@@ -1,0 +1,137 @@
+
+
+<mat-card class="container">
+    <div class="form-section">
+        
+      <h2>Formulario Nueva Programación</h2>
+  
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        
+
+        <div class="form-group">
+          <div class="small-calendar">
+            <p-calendar 
+              inputId="calendar-12h" 
+              [(ngModel)]="datetime12h" 
+              [showTime]="true" 
+              [hourFormat]="'12'"
+              formControlName="Fecha"
+            ></p-calendar>
+          </div>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Capacitaciones</mat-label>
+            <input type="text"
+                   matInput
+                   [(ngModel)]="capacitacionesFiltrada"
+                   (ngModelChange)="filterCapacitaciones()"
+                   formControlName="NombreCapacitacion"
+                   [matAutocomplete]="autoCapacitacionesSolicitadas">
+            <mat-autocomplete #autoCapacitacionesSolicitadas="matAutocomplete">
+              <mat-option *ngFor="let capacitacion of capacitacionesFiltradas" [value]="capacitacion.NombreCapacitacion">
+                {{ capacitacion.NombreCapacitacion }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Persona que Imparte</mat-label>
+            <input matInput formControlName="Imparte">
+          </mat-form-field>
+        </div>
+  
+        <br><br>
+        
+
+        
+    
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+      </form>
+    </div>
+  </mat-card>
+  
+<!--
+<div class="card flex justify-content-center">
+    <p-colorPicker 
+        [(ngModel)]="color" 
+        [disabled]="true" />
+</div>
+
+<p-autoComplete class="p-autoComplete"
+        [(ngModel)]="capacitacionSeleccionada" 
+        [dropdown]="true" 
+        [suggestions]="filteredCapacitaciones" 
+        (completeMethod)="filterCountry($event)" 
+        field="NombreCapacitacion"/>
+
+<p-pickList 
+        [source]="sourceEmpleados" 
+        [target]="targetEmpleados" 
+        sourceHeader="Empleados" 
+        targetHeader="Seleccionados" 
+        [dragdrop]="true" 
+        [responsive]="true" 
+        [sourceStyle]="{ height: '30rem' }"
+        [targetStyle]="{ height: '30rem' }" 
+        filterBy="NoNomina"
+        sourceFilterPlaceholder="Buscar por NoNomina" 
+        targetFilterPlaceholder="Buscar por NoNomina" 
+        breakpoint="1400px">
+            <ng-template let-empleado pTemplate="item">
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    
+                    <span class="font-bold text-900">
+                        {{ 'N.Nomina: '+ empleado.NoNomina}}
+                    </span>
+                    
+                    <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">
+                            {{ empleado.Apellidos+' ' +empleado.Nombre}}
+                        </span>
+                        <div class="flex align-products-center gap-2">
+                            <i class="pi pi-tag text-sm"></i>
+                            <span>
+                                {{ empleado.NombrePuesto }}
+                            </span>
+                        </div>
+                        <span class="font-bold">
+                            {{ empleado.NombreDepartamento}}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+    </p-pickList>-->
+    
+    
+
+    <!--
+<button (click)="imprimir()">Imprimir Valores Seleccionados </button>
+
+<div class="card flex justify-content-center">
+    <p-calendar 
+    [(ngModel)]="rangeDates" 
+    selectionMode="range" 
+        [touchUI]="true"
+        [readonlyInput]="true" />
+</div>
+
+
+<div class="flex-auto">
+    <label for="calendar-12h" class="font-bold block mb-2"> 12h Format </label>
+    <p-calendar 
+        inputId="calendar-12h" 
+        [(ngModel)]="datetime12h" 
+        [showTime]="true" 
+        [hourFormat]="hora"/>
+</div>
+
+<div class="flex-auto">
+    <label for="calendar-timeonly" class="font-bold block mb-2"> Time Only </label>
+    <p-calendar 
+        inputId="calendar-timeonly" 
+        [(ngModel)]="time" 
+        [timeOnly]="true" 
+        [hourFormat]="hora"/>
+</div>
+-->

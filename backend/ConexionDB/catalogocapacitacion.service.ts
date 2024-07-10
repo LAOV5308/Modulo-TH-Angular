@@ -7,10 +7,12 @@ import { catchError } from 'rxjs/operators';
 
 import { CapacitacionCatalogo } from '../models/capacitacioncatalogo.model';
 
+import { CapacitacionProgramada, CapacitacionesSuscripciones } from '../models/capacitacion.model';
+
 @Injectable({
   providedIn: 'root'
 })
-export class CatalogoCapacitacionServiceService {
+export class CatalogoCapacitacionService {
 
   
   private apiUrl = 'http://localhost:3000/capacitaciones';
@@ -46,6 +48,33 @@ export class CatalogoCapacitacionServiceService {
   deleteCatalogoCapacitacion(id: number): Observable<any> {
     return this.http.delete(this.apiUrl+'/'+id);
   }
+
+  getProgramacionCapacitaciones(): Observable<CapacitacionProgramada[]> {
+    return this.http.get<CapacitacionProgramada[]>(this.apiUrl+'/programacionall');
+  }
+
+  getsingleProgramacionCapacitacion(id: number): Observable<CapacitacionProgramada[]> {
+    return this.http.get<CapacitacionProgramada[]>(this.apiUrl+'/programacionall/'+id
+    );
+  }
+
+  getsingleProgramaciones(id: number): Observable<CapacitacionesSuscripciones[]> {
+    return this.http.get<CapacitacionesSuscripciones[]>(this.apiUrl+'/programaciones/'+id
+    );
+  }
+
+  addSuscripcion(data: any):Observable<any>{
+    return this.http.post(this.apiUrl+'/programaciones', data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteSuscripcion(id: number): Observable<any> {
+    return this.http.delete(this.apiUrl+'/programaciones/'+id).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
 
   private handleError(error: HttpErrorResponse) {
     // Puedes personalizar el mensaje de error basándote en el error.status o error.error

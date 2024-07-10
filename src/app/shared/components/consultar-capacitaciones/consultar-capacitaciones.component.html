@@ -1,0 +1,336 @@
+<p-toast />
+
+<p-confirmDialog [style]="{ width: '450px' }" />
+<button class="agregar"
+mat-raised-button 
+color = "primary"
+(click)="agregar()"
+type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
+</button>
+<br>
+<p-splitter 
+    [panelSizes]="[43, 57]" 
+    [style]="{ height: '800px' }" 
+    styleClass="mb-5">
+    <ng-template pTemplate>
+        
+        <div class="col flex align-items-center justify-content-center">
+            <div id="calendar-container" class="full-calendar-md">
+              <full-calendar [options]="calendarOptions"></full-calendar>
+            </div>
+          </div>
+          
+          
+          
+    </ng-template>
+    <ng-template pTemplate>
+        <div class="col flex align-items-center justify-content-center">
+
+            <h1>Descripcion de la Capacitacion</h1>
+            
+
+<ng-container *ngIf="programacionConsulta.length > 0">
+    <button class="agregarempleado"
+    mat-raised-button 
+    color = "primary"
+    (click)="asignar()"
+    ><mat-icon>add_circle</mat-icon>Agregar Cursantes
+    </button>
+
+    <button class="agregar"
+    mat-raised-button
+    color = "secondary" (click)="consultar()"
+    ><mat-icon>assignment_ind</mat-icon>Consultar/Actualizar
+    </button>
+
+    <button class="eliminarProgramacion"
+    mat-raised-button (click)="eliminarprogramacion(programacionConsulta[0].IdProgramacionFecha)"
+    ><mat-icon>cancel</mat-icon>Eliminar Programacion
+    </button>
+    <mat-card class="employee-card">
+      <mat-card-header>
+        <mat-card-title [ngStyle]="{'color': programacionConsulta[0].Color}">{{'Capacitacion: '+ programacionConsulta[0].NombreCapacitacion}}</mat-card-title>
+        <mat-card-subtitle>Fecha</mat-card-subtitle>
+        <mat-card-subtitle>{{programacionConsulta[0].Fecha | date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+        <mat-card-content>
+            <p>
+                {{'Persona Imparte: '+ programacionConsulta[0].Imparte}}
+            </p>
+            
+            <p-checkbox 
+            [(ngModel)]="checked" 
+            [binary]="true" 
+            inputId="binary" />
+            <p *ngIf="!checked">
+                Estado: Abierto
+            </p>
+            <p *ngIf="checked">
+                Estado: Cerrado
+            </p>
+            <p>
+                {{'Hora: '+ programacionConsulta[0].Hora}}
+            </p>
+          </mat-card-content>
+      </mat-card-header>
+    </mat-card>
+
+    
+
+    
+    <div *ngIf=consulta>
+<div class="card">
+    <p-table 
+    #dt 
+    [columns]="cols" [value]="capacitacionessuscripciones" 
+    [exportHeader]="'customExportHeader'"
+    [globalFilterFields]="['NoNomina','Nombre' ,'Apellidos','NombreDepartamento', 'Puesto'
+    ]"
+    [resizableColumns]="true" 
+    [scrollable]="true" 
+    scrollHeight="400px" 
+    [tableStyle]="{ 'min-width': '50rem' }">
+
+    <ng-template pTemplate="caption">
+        <div style="text-align: left">
+            <p-button 
+                icon="pi pi-external-link" 
+                label="Export" 
+                (click)="dt.exportCSV()" />
+        </div>
+
+        <div style="text-align: right">
+        <input 
+        pInputText 
+        type="text" 
+        (input)="filterGlobal($event)" 
+        placeholder="Buscar" />
+    </div>
+    </ng-template>
+
+    
+    
+        <ng-template pTemplate="header" let-columns>
+
+            <tr>
+            <th>NoNomina</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>NombrePuesto</th>
+            <th>NombreDepartamento</th>
+            <th>Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-empleado>
+            <tr>
+                <td>{{empleado.NoNomina}}</td>
+                <td>{{empleado.Nombre}}</td>
+                <td>{{empleado.Apellidos}}</td>
+                <td>{{empleado.NombrePuesto}}</td>
+                <td>{{empleado.NombreDepartamento}}</td>
+                <td>
+                    <p-button 
+                        pRipple 
+                        icon="pi pi-ban" 
+                        severity="danger" 
+                        [rounded]="true" 
+                        [outlined]="true"  (onClick)="eliminar(empleado.IdSuscripcionCapacitacion)"/>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+            </div>
+
+  </ng-container>
+
+
+  <p-dialog 
+        [(visible)]="productDialog" 
+        [style]="{ width: '450px' }" 
+        header="Asignar Empleados" 
+        [modal]="true" 
+        [resizable]="false"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+        [style]="{ width: '50vw' }" 
+        [draggable]="false" 
+        styleClass="p-fluid">
+
+            <ng-template pTemplate="content">
+                <div style="text-align: right">
+                    <input 
+                    pInputText 
+                    type="text" 
+                    (input)="filterGlobalEmpleado($event)" 
+                    placeholder="Buscar" />
+                </div>
+               
+            
+                <div class="field">
+                    <p-table 
+                    #dtE
+                    [globalFilterFields]="['NoNomina','Nombre' ,'Apellidos','NombreDepartamento', 'Puesto'
+    ]"
+    [scrollable]="true" 
+    scrollHeight="400px"
+        [value]="sourceEmpleados" 
+        [(selection)]="targetEmpleados" 
+        dataKey="NoNomina" 
+        [tableStyle]="{'min-width': '50rem'}"
+        [paginator]="true"
+    [rows]="10"
+        >
+            <ng-template pTemplate="header">
+                
+
+                <tr>
+                    <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+                    <th>NoNomina</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>NombrePuesto</th>
+                    <th>NombreDepartamento</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-empleado>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="empleado" />
+                    </td>
+                    <td>{{empleado.NoNomina}}</td>
+                    <td>{{empleado.Nombre}}</td>
+                    <td>{{empleado.Apellidos}}</td>
+                    <td>{{empleado.NombrePuesto}}</td>
+                    <td>{{empleado.NombreDepartamento}}</td>
+                </tr>
+            </ng-template>
+    </p-table>
+
+
+                   <!-- <p-pickList 
+        [source]="sourceEmpleados" 
+        [target]="targetEmpleados" 
+        sourceHeader="Empleados" 
+        targetHeader="Seleccionados" 
+        [dragdrop]="true" 
+        [responsive]="true" 
+        [sourceStyle]="{ height: '30rem' }"
+        [targetStyle]="{ height: '30rem' }" 
+        filterBy="NoNomina"
+        sourceFilterPlaceholder="Buscar por NoNomina" 
+        targetFilterPlaceholder="Buscar por NoNomina" 
+        breakpoint="1400px">
+            <ng-template let-empleado pTemplate="item">
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    
+                    <span class="font-bold text-900">
+                        {{ 'N.Nomina: '+ empleado.NoNomina}}
+                    </span>
+                    
+                    <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">
+                            {{ empleado.Apellidos+' ' +empleado.Nombre}}
+                        </span>
+                        <div class="flex align-products-center gap-2">
+                            <i class="pi pi-tag text-sm"></i>
+                            <span>
+                                {{ empleado.NombrePuesto }}
+                            </span>
+                        </div>
+                        <span class="font-bold">
+                            {{ empleado.NombreDepartamento}}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+    </p-pickList>-->
+
+                </div>
+                <div class="field">
+
+                </div>
+
+                <div class="field">
+                    
+                    
+                </div>
+
+                <div class="field">
+                        
+                        
+                </div>
+
+                <div class="formgrid grid">
+                   
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <p-button 
+                    pRipple 
+                    label="Guardar" 
+                    icon="pi pi-check" 
+                    [text]="true" 
+                    (click)="saveAsignacion()" />
+                <p-button 
+                    pRipple 
+                    label="Cancelar" 
+                    icon="pi pi-times" 
+                    [text]="true" 
+                    (click)="hideDialog()" />
+                
+            </ng-template>
+    </p-dialog>
+  
+  <!--
+
+  <div *ngFor="let empleado of sourceEmpleados">
+<h2>Nombre: {{empleado.Nombre}} {{ empleado.Apellidos}}</h2>
+</div>
+
+  <p-pickList 
+        [source]="sourceEmpleados" 
+        [target]="targetEmpleados" 
+        sourceHeader="Empleados" 
+        targetHeader="Seleccionados" 
+        [dragdrop]="true" 
+        [responsive]="true" 
+        [sourceStyle]="{ height: '30rem' }"
+        [targetStyle]="{ height: '30rem' }" 
+        filterBy="NoNomina"
+        sourceFilterPlaceholder="Buscar por NoNomina" 
+        targetFilterPlaceholder="Buscar por NoNomina" 
+        breakpoint="1400px">
+            <ng-template let-empleado pTemplate="item">
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    
+                    <span class="font-bold text-900">
+                        {{ 'N.Nomina: '+ empleado.NoNomina}}
+                    </span>
+                    
+                    <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">
+                            {{ empleado.Apellidos+' ' +empleado.Nombre}}
+                        </span>
+                        <div class="flex align-products-center gap-2">
+                            <i class="pi pi-tag text-sm"></i>
+                            <span>
+                                {{ empleado.NombrePuesto }}
+                            </span>
+                        </div>
+                        <span class="font-bold">
+                            {{ empleado.NombreDepartamento}}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+    </p-pickList>
+  
+-->
+
+        </div>
+    </ng-template>
+</p-splitter>
+
+
+
+

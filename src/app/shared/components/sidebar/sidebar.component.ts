@@ -27,6 +27,7 @@ export class SidebarComponent {
     catalogo: false,
     reclutamiento: false,
     th: false,
+    programarcapacitaciones: false
     // Agrega otros submenús aquí si es necesario
   };
 

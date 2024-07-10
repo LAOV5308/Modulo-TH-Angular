@@ -35,7 +35,7 @@ import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
 import { Router } from '@angular/router';
 import { IncidenciasService } from '../../../../../../backend/ConexionDB/incidencias.service';
-import { CatalogoCapacitacionServiceService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
 import { error } from 'console';
 
 
@@ -77,7 +77,7 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, CatalogoCapacitacionServiceService
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, CatalogoCapacitacionService
   ],
   templateUrl: './add-capacitaciones.component.html',
   styleUrl: './add-capacitaciones.component.css'
@@ -133,7 +133,7 @@ export class AddCapacitacionesComponent implements OnInit{
     private _dialogRef: MatDialogRef<AddCapacitacionesComponent>,
     private router: Router,
     private _empleadoService: EmpleadosService,
-    private _catalogocapacitacionesService: CatalogoCapacitacionServiceService,
+    private _catalogocapacitacionesService: CatalogoCapacitacionService,
     private dialog: MatDialog
   ) {
     this.capacitacionForm = this.fb.group({

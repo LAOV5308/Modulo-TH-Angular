@@ -3,11 +3,14 @@
 </div>
 <form [formGroup]="Form" (ngSubmit)="onFormSubmit()">
     <div mat-dialog-content class="content">
+
         <div class="row">
-            <mat-form-field class="form-field" color="accent">
-                <mat-label>Código Capacitación</mat-label>
-                <input matInput type="text" formControlName="CodigoCapacitacion">
-            </mat-form-field>
+            <label for="cp-hex" class="font-bold block mb-2"> Color </label>
+            <p-colorPicker
+            formControlName="Color" />
+          </div>
+
+        <div class="row">
             <mat-form-field class="form-field" color="accent">
                 <mat-label>Nombre Capacitación</mat-label>
                 <input matInput type="text" formControlName="NombreCapacitacion">
@@ -38,9 +41,8 @@
             </mat-form-field>
             <mat-form-field class="form-field" appearance="fill" color="accent">
                 <mat-label>Duración</mat-label>
-                <mat-select formControlName="Duracion">
-                    <mat-option *ngFor="let val of Duracion" [value]="val">{{val}}</mat-option>
-                </mat-select>
+                <input type="number" matInput formControlName="Duracion">
+
             </mat-form-field>
         </div>
     </div>

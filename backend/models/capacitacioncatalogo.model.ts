@@ -7,4 +7,5 @@ CodigoCapacitacion: string;
   Duracion: number;
   EstadoNombreCapacitacion: boolean;
   IdNombreCapacitacion: number;
+  Color: string;
 }

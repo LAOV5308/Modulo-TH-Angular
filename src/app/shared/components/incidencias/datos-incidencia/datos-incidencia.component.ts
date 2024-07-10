@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import { Incidencia } from '../../../../../../backend/models/incidencia.model';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
@@ -46,7 +46,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   ],
     providers:[EmpleadosService, CoreService, IncidenciasService],
   templateUrl: './datos-incidencia.component.html',
-  styleUrl: './datos-incidencia.component.css'
+  styleUrl: './datos-incidencia.component.css',
+  //encapsulation: ViewEncapsulation.None
 })
 export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
 

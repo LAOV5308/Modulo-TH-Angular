@@ -51,6 +51,12 @@ export class EmpleadosService {
       catchError(this.handleError)
     );
   }
+
+  postIngreso(data: any): Observable<any> {
+    return this.http.post(this.apiUrl+'/programarcapacitacion', data).pipe(
+      catchError(this.handleError)
+    );
+  }
   
   
   updateEmpleados(id: number, data: any): Observable<any> {
