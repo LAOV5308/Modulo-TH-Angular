@@ -38,3 +38,7 @@
 .eliminarProgramacion{
   background-color: firebrick;
 }
+.consultarCalificaciones{
+  background-color: rgb(34, 164, 178);
+  color: white;
+}

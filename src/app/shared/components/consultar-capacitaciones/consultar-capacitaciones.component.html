@@ -30,7 +30,8 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
             
 
 <ng-container *ngIf="programacionConsulta.length > 0">
-    <button class="agregarempleado"
+    <button *ngIf="!eval"
+    class="agregarempleado"
     mat-raised-button 
     color = "primary"
     (click)="asignar()"
@@ -43,10 +44,20 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
     ><mat-icon>assignment_ind</mat-icon>Consultar/Actualizar
     </button>
 
-    <button class="eliminarProgramacion"
+    <button class="eliminarProgramacion" *ngIf="!eval"
     mat-raised-button (click)="eliminarprogramacion(programacionConsulta[0].IdProgramacionFecha)"
     ><mat-icon>cancel</mat-icon>Eliminar Programacion
     </button>
+
+    
+        <button class="consultarCalificaciones"
+        mat-raised-button (click)="calificacionesMostrar()" *ngIf="eval"
+        ><mat-icon>assignment</mat-icon>Calificaciones
+        </button>
+    
+    
+
+
     <mat-card class="employee-card">
       <mat-card-header>
         <mat-card-title [ngStyle]="{'color': programacionConsulta[0].Color}">{{'Capacitacion: '+ programacionConsulta[0].NombreCapacitacion}}</mat-card-title>
@@ -91,6 +102,7 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
     [tableStyle]="{ 'min-width': '50rem' }">
 
     <ng-template pTemplate="caption">
+        
         <div style="text-align: left">
             <p-button 
                 icon="pi pi-external-link" 
@@ -98,7 +110,7 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                 (click)="dt.exportCSV()" />
         </div>
 
-        <div style="text-align: right">
+        <div style="text-align: left">
         <input 
         pInputText 
         type="text" 
@@ -128,13 +140,24 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                 <td>{{empleado.NombrePuesto}}</td>
                 <td>{{empleado.NombreDepartamento}}</td>
                 <td>
+                    <p-button *ngIf="eval"
+                    pRipple 
+                    icon="pi pi-clipboard" 
+                    label="Evlr"
+                    [rounded]="true" 
+                    [outlined]="true"  (onClick)="evaluar(empleado.NoNomina)" [disabled]="empleado.Evaluado"/>
+
                     <p-button 
+                    *ngIf="!eval"
                         pRipple 
                         icon="pi pi-ban" 
                         severity="danger" 
                         [rounded]="true" 
-                        [outlined]="true"  (onClick)="eliminar(empleado.IdSuscripcionCapacitacion)"/>
+                        [outlined]="true"  (onClick)="eliminar(empleado.IdSuscripcionCapacitacion)" [disabled]="empleado.Evaluado"/>
+                       
                 </td>
+                    
+                
             </tr>
         </ng-template>
     </p-table>
@@ -271,6 +294,90 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                     icon="pi pi-check" 
                     [text]="true" 
                     (click)="saveAsignacion()" />
+                <p-button 
+                    pRipple 
+                    label="Cancelar" 
+                    icon="pi pi-times" 
+                    [text]="true" 
+                    (click)="hideDialog()" />
+                
+            </ng-template>
+    </p-dialog>
+
+
+    <p-dialog 
+        [(visible)]="WEvaluar" 
+        [style]="{ width: '450px' }" 
+        header="Evaluar Empleado "
+        [modal]="true" 
+        [resizable]="false"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+        [style]="{ width: '50vw' }" 
+        [draggable]="false" 
+        styleClass="p-fluid">
+
+            <ng-template pTemplate="content">
+                
+               
+            
+                <div class="field">
+                    <label for="minmax-buttons"> Calificación </label>
+                    <p-inputNumber 
+                    [(ngModel)]="calificacionEmpleado"
+                    inputId="minmax-buttons" 
+                    [showButtons]="true" 
+                    mode="decimal"  
+                    [maxFractionDigits]="2" 
+                    [min]="0" 
+    [max]="10"
+    /> 
+
+
+                </div>
+                <div class="field">
+                    <br>
+                    <br>
+                    
+                    
+                    <label for="float-input">Comentarios (Opcional)</label>
+        
+        <textarea 
+        id="float-input"
+        rows="5"
+        cols="30"
+        pInputTextarea 
+        [(ngModel)]="comentario"
+        [autoResize]="true">
+    </textarea>
+    
+
+   
+
+                </div>
+
+                <div class="field">
+                    
+                    
+                </div>
+
+                <div class="field">
+                        
+                        
+                </div>
+
+                <div class="formgrid grid">
+                   
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <p-button 
+                    pRipple 
+                    label="Evaluar" 
+                    icon="pi pi-check" 
+                    [text]="true" 
+                    (onClick)="evaluarEmpleado()"
+                     />
                 <p-button 
                     pRipple 
                     label="Cancelar" 

@@ -57,6 +57,29 @@ router.get('/programacionall/:id', async (req, res) => {
     }
 });
 
+
+// Eliminar un departamento por ID
+router.delete('/programacionactive/:id', async (req, res) => {
+    const { id } = req.params;
+
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdProgramacionFecha', sql.Int, id);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_programarcapacitacion_delete');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Programacion Eliminada con exito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al eliminar: ' + err.message });
+    }
+
+
+});
+
 router.get('/programaciones/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -65,6 +88,17 @@ router.get('/programaciones/:id', async (req, res) => {
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener la programacion de Capacitaciones');
+    }
+});
+
+router.get('/calificaciones/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_Calificaciones where IdProgramacionFecha = '+id);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener las calificaciones');
     }
 });
 
@@ -88,6 +122,29 @@ router.post('/programaciones/', async (req, res) => {
     
 });
 
+router.post('/evaluar/', async (req, res) => {
+    const { NoNomina, IdProgramacionFecha, Calificacion, Estatus, Asistio, Comentario
+     } = req.body;
+
+    try {
+        const pool = await getConnection(); 
+        const request = pool.request();
+        ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
+        request.input('NoNomina', sql.Int, NoNomina);
+        request.input('IdProgramacionFecha', sql.Int, IdProgramacionFecha);
+        request.input('Calificacion', sql.Decimal, Calificacion);
+        request.input('Estatus', sql.Bit, Estatus);
+        request.input('Asistio', sql.Bit, Asistio);
+        request.input('Comentario', sql.VarChar, Comentario);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_evaluacion_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Evaluado con éxito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al Evaluarlo: ' + err.message });
+    }
+    
+});
 
 
 // Obtener solo uno 

@@ -33,4 +33,20 @@ export interface CapacitacionesSuscripciones {
   NombreDepartamento: string;
   IdProgramacionFecha: number;
   CodigoCapacitacion: number;
+  Evaluado: boolean;
+}
+
+export interface Calificaciones {
+  IdSuscripcionCapacitacion: number;
+  NoNomina: number;
+  Nombre: string;
+  Apellidos: string;
+  NombrePuesto: string;
+  NombreDepartamento: string;
+  IdProgramacionFecha: number;
+  CodigoCapacitacion: number;
+  Calificacion: number;
+  Asistio: boolean;
+  Estatus: boolean;
+  Comentario: string;
 }

@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 import { CapacitacionCatalogo } from '../models/capacitacioncatalogo.model';
 
-import { CapacitacionProgramada, CapacitacionesSuscripciones } from '../models/capacitacion.model';
+import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones } from '../models/capacitacion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,8 +50,15 @@ export class CatalogoCapacitacionService {
   }
 
   getProgramacionCapacitaciones(): Observable<CapacitacionProgramada[]> {
-    return this.http.get<CapacitacionProgramada[]>(this.apiUrl+'/programacionall');
+    return this.http.get<CapacitacionProgramada[]>(this.apiUrl+'/programacionactive');
   }
+
+  deleteProgramacionCapacitacion(id: number): Observable<any> {
+    return this.http.delete(this.apiUrl+'/programacionactive/'+id).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
 
   getsingleProgramacionCapacitacion(id: number): Observable<CapacitacionProgramada[]> {
     return this.http.get<CapacitacionProgramada[]>(this.apiUrl+'/programacionall/'+id
@@ -63,6 +70,11 @@ export class CatalogoCapacitacionService {
     );
   }
 
+  getsingleCalificaciones(id: number): Observable<Calificaciones[]> {
+    return this.http.get<Calificaciones[]>(this.apiUrl+'/calificaciones/'+id
+    );
+  }
+  
   addSuscripcion(data: any):Observable<any>{
     return this.http.post(this.apiUrl+'/programaciones', data).pipe(
       catchError(this.handleError)
@@ -71,6 +83,12 @@ export class CatalogoCapacitacionService {
 
   deleteSuscripcion(id: number): Observable<any> {
     return this.http.delete(this.apiUrl+'/programaciones/'+id).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addEvaluacion(data: any): Observable<any>{
+    return this.http.post(this.apiUrl+'/evaluar', data).pipe(
       catchError(this.handleError)
     );
   }

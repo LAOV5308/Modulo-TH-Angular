@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ProgramarCapacitacionesComponent } from '../programar-capacitaciones/programar-capacitaciones.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CapacitacionProgramada, CapacitacionesSuscripciones } from '../../../../../backend/models/capacitacion.model';
+import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones } from '../../../../../backend/models/capacitacion.model';
 import { CatalogoCapacitacionService } from '../../../../../backend/ConexionDB/catalogocapacitacion.service';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -30,6 +30,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 
 interface AutoCompleteCompleteEvent {
@@ -56,8 +59,8 @@ interface Suscripcion{
   standalone: true,
   imports: [CalendarModule, FormsModule, NgFor, CommonModule, FullCalendarModule,
     MatButtonModule, MatIcon, DynamicDialogModule, ToastModule, ButtonModule, SplitterModule, MatCardModule, MatGridListModule,
-    PickListModule, NgFor, TableModule,  InputTextModule, DialogModule, ConfirmDialogModule, CheckboxModule
-
+    PickListModule, NgFor, TableModule,  InputTextModule, DialogModule, ConfirmDialogModule, CheckboxModule, InputNumberModule
+    , InputTextareaModule, FloatLabelModule
   ],
   providers:[CatalogoCapacitacionService, DialogService, MessageService, EmpleadosService, ConfirmationService],
   templateUrl: './consultar-capacitaciones.component.html',
@@ -75,11 +78,18 @@ export class ConsultarCapacitacionesComponent implements OnInit, AfterViewInit{
  sourceEmpleados!: Empleado[];
  targetEmpleados!: Empleado[];
  consulta: boolean = false;
+ WEvaluar: boolean = false;
+ NoNominaEvaluar!: number;
  cols!: Column[];
  exportColumns!: ExportColumn[];
 idProgramacionFecha: number = 0;
 validarDuplicidad: number[]=[];
 suscripcionForm: FormGroup;
+evaluarForm: FormGroup;
+calificacionEmpleado: number =0;
+comentario!: string;
+eval: boolean= true;
+calificaciones: Calificaciones[]=[];
 
  ref: DynamicDialogRef | undefined;
  
@@ -97,6 +107,27 @@ checked: boolean = false;
     IdProgramacionFecha:[]
     });
 
+    this.evaluarForm = this.fb.group({
+      NoNomina:[],
+      IdProgramacionFecha:[],
+      Calificacion: [],
+      Estatus: [],
+      Asistio: [],
+      Comentario: []
+    });
+
+  }
+
+  fechaHoy(){
+    // Obtener la fecha de hoy
+const today = new Date();
+
+// Formatear la fecha en un string legible
+const day = today.getDate();
+
+alert(today);
+
+
   }
 
   ngAfterViewInit(): void {
@@ -108,7 +139,7 @@ checked: boolean = false;
     this.capacitacionesService.getProgramacionCapacitaciones().subscribe({
       next: (data) => {
         this.capacitacionesprogramadas = data;
-        console.log(data);
+       // console.log(data);
         this.updateCalendarEvents();
         
       },
@@ -243,6 +274,20 @@ checked: boolean = false;
     this.capacitacionesService.getsingleProgramacionCapacitacion(clickInfo.event.id).subscribe({
       next: (data) => {
         this.programacionConsulta = data;
+        const today = new Date();
+        const fechaDate = new Date(this.programacionConsulta[0].Fecha);
+
+
+// Formatear la fecha en un string legible
+//const day = today.getDate();
+if(fechaDate> today){
+  this.eval=false;
+  
+}else{
+  this.eval=true;
+}
+
+
       },
       error: (error) => {
         console.error('Error al cargar las Capacitaciones', error);
@@ -316,6 +361,12 @@ checked: boolean = false;
     });
 
   }
+
+  desconsulta(){
+    this.consulta = false;
+
+  }
+
   consultar(){
     this.consulta = true;
     this.validarDuplicidad = [];
@@ -341,6 +392,7 @@ checked: boolean = false;
   }
 
   asignar(){
+    this.targetEmpleados=[];
     this.productDialog = true;
 
   }
@@ -374,7 +426,33 @@ checked: boolean = false;
 
   eliminarprogramacion(id: number){
 
-    window.alert(id);
+    this.confirmationService.confirm({
+      message: '¿Está seguro de que desea Eliminar la programacion de la capacitacion?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: "p-button-text",
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      accept: () => {
+        this.capacitacionesService.deleteProgramacionCapacitacion(id).subscribe({
+          next: (resp: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Eliminado Exitosamente', life: 1500 });
+            this.programacionConsulta = [];
+            this.ngAfterViewInit();
+            this.consultar();
+            
+            
+          },
+          error: (error) => {
+            console.error('Error al eliminar', error);
+          }
+        });
+      },
+      reject: () => {
+         
+      }
+  })
+
   }
 
   actualizar(){
@@ -384,6 +462,7 @@ checked: boolean = false;
   hideDialog() {
     
     this.productDialog = false;
+    this.WEvaluar = false;
 }
 
 saveAsignacion() {
@@ -421,6 +500,116 @@ if(this.validarDuplicidad.includes(this.suscripcionForm.value.NoNomina)){
   
       this.productDialog = false;
       
+}
+
+evaluar(id: number){
+  /*
+const ruta =[{'Algo':2,
+
+}];*/
+
+this.NoNominaEvaluar = id;
+this.confirmationService.confirm({
+      message: '¿La persona Asistio a la Capacitacion? '+ this.NoNominaEvaluar + 'IdFecha:'+this.idProgramacionFecha,
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: "p-button-text",
+      rejectLabel: 'No',
+      acceptLabel: 'Sí',
+      accept: () => {
+        this.WEvaluar = true;
+        this.messageService.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Eliminado Exitosamente', life: 1500 });
+      },
+      reject: () => {
+        
+        this.evaluarForm.patchValue({
+          NoNomina: this.NoNominaEvaluar,
+          IdProgramacionFecha: this.idProgramacionFecha,
+          Calificacion: null,
+            Estatus: null,
+            Asistio: false
+        });
+      
+        this.capacitacionesService.addEvaluacion(this.evaluarForm.value).subscribe({
+          next: (resp: any) => {
+            this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Empleado No asistio', life: 1500  });
+        },
+        error: (err: any) => {
+            console.error('Error: ' + err);
+        }
+        });
+
+        
+
+      }
+  })
+}
+
+evaluarEmpleado(){
+
+  this.evaluarForm.patchValue({
+    NoNomina: this.NoNominaEvaluar,
+    IdProgramacionFecha: this.idProgramacionFecha
+  });
+
+
+  if(this.calificacionEmpleado>=7){
+    this.evaluarForm.patchValue({
+      Calificacion: this.calificacionEmpleado,
+      Estatus: true,
+      Asistio: true,
+      Comentario: this.comentario
+    });
+  }else{
+    this.evaluarForm.patchValue({
+      Calificacion: this.calificacionEmpleado,
+      Estatus: false,
+      Asistio: true,
+      Comentario: this.comentario
+    });
+
+  }
+
+  console.log(this.evaluarForm.value);
+  
+
+  try {
+    this.capacitacionesService.addEvaluacion(this.evaluarForm.value).subscribe({
+      next: (resp: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Evaluado', detail: 'Evaluado Exitosamente', life: 1500 });
+        this.WEvaluar = false;
+        this.actualizar();
+        this.consultar();
+
+    
+    },
+    error: (err: any) => {
+        console.error('Error: ' + err);
+    }
+    });
+
+    
+  } catch (error) {
+    console.log('Error', error);
+    
+  }
+  
+  
+}
+
+calificacionesMostrar(){
+
+  this.capacitacionesService.getsingleCalificaciones(3056).subscribe({
+    next: (data) => {
+      this.calificaciones = data;
+     console.log(data);
+      //this.updateCalendarEvents();
+      
+    },
+    error: (error) => {
+      console.error('Error al cargar las Capacitaciones', error);
+    }
+  });
 }
 
  
