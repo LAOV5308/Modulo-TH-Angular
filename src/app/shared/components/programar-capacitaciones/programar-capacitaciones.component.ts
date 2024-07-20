@@ -61,6 +61,7 @@ export class ProgramarCapacitacionesComponent implements OnInit{
   capacitacionesFiltradas: CapacitacionCatalogo[] = [];
   capacitacionesFiltrada: string = '';
   NombreCapacitaciones: string[] =[];
+  minDate: Date | undefined;
 
   capacitacionSeleccionada: any;
 
@@ -74,6 +75,7 @@ export class ProgramarCapacitacionesComponent implements OnInit{
     private fb: FormBuilder,
     private _dialogRef: MatDialogRef<ProgramarCapacitacionesComponent>,
   ){
+    this.minDate = new Date();
 
     this.employeeForm = this.fb.group({
       

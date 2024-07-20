@@ -97,6 +97,8 @@ calificaciones: Calificaciones[]=[];
  @ViewChild('dtE') dtE: Table | undefined;
 productDialog: boolean = false;
 checked: boolean = false;
+asistio!: boolean;
+mostrarcalificaciones: boolean = false;
 
   constructor(private _dialog: MatDialog, private capacitacionesService: CatalogoCapacitacionService, private cdr: ChangeDetectorRef,
     public dialogService: DialogService, public messageService: MessageService, private empleadoService: EmpleadosService,
@@ -172,6 +174,13 @@ alert(today);
 
   this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
+  }
+
+
+  // Método para obtener la fecha con un día añadido
+  getFechaConDiaAdicional(fecha: Date): any {
+   const newfech = new Date(fecha).toISOString().split('T')[0]
+    return newfech;
   }
 
   updateCalendarEvents() {
@@ -271,28 +280,43 @@ alert(today);
     console.log(this.idProgramacionFecha);
     this.consulta = false;
     this.programacionConsulta=[];
+    this.calificaciones = [];
     this.capacitacionesService.getsingleProgramacionCapacitacion(clickInfo.event.id).subscribe({
       next: (data) => {
         this.programacionConsulta = data;
         const today = new Date();
         const fechaDate = new Date(this.programacionConsulta[0].Fecha);
-
-
+        // Agregar un día
+        fechaDate.setDate(fechaDate.getDate() + 1);
 // Formatear la fecha en un string legible
 //const day = today.getDate();
-if(fechaDate> today){
+if(fechaDate >= today){
   this.eval=false;
   
 }else{
   this.eval=true;
 }
-
-
       },
       error: (error) => {
         console.error('Error al cargar las Capacitaciones', error);
       }
     });
+
+this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).subscribe({
+  next:(data) =>{
+    console.log('Calificaciones');
+    console.log(data);
+    this.calificaciones = data;
+    
+  },
+  error: (error) => {
+    console.error('Error al cargar las Calificaciones', error);
+  }
+
+});
+
+    this.consultar();
+
   }
 
   filterGlobal(event: Event) {
@@ -369,6 +393,7 @@ if(fechaDate> today){
 
   consultar(){
     this.consulta = true;
+    this.mostrarcalificaciones = false;
     this.validarDuplicidad = [];
 
     if(this.idProgramacionFecha){
@@ -598,7 +623,9 @@ evaluarEmpleado(){
 }
 
 calificacionesMostrar(){
-
+this.mostrarcalificaciones = true;
+this.consulta = false;
+/*
   this.capacitacionesService.getsingleCalificaciones(3056).subscribe({
     next: (data) => {
       this.calificaciones = data;
@@ -609,7 +636,7 @@ calificacionesMostrar(){
     error: (error) => {
       console.error('Error al cargar las Capacitaciones', error);
     }
-  });
+  });*/
 }
 
  
