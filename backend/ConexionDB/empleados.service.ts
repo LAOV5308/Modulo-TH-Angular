@@ -15,13 +15,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class EmpleadosService {
   private apiUrl = 'http://localhost:3000/empleados';
- // https://5xc79jbt-3000.usw3.devtunnels.ms/empleados
+  
+  //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/empleados';
 
  
   constructor(private http: HttpClient) {
-    
    }
 
+   
   addEmpleados(data: any): Observable<any> {
     return this.http.post(this.apiUrl, data).pipe(
       catchError(this.handleError)

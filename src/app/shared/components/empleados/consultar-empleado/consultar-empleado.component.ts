@@ -12,10 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { inputEmpleado } from '../../../../../../backend/models/inputEmpleado.model';
 
+
 @Component({
   selector: 'app-consultar-empleado',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatGridListModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatGridListModule, MatIconModule, MatButtonModule, RouterModule],
   providers: [EmpleadosService],
   templateUrl: './consultar-empleado.component.html',
   styleUrl: './consultar-empleado.component.css'

@@ -72,6 +72,7 @@ export class AddCapacitacionCatalogoComponent implements OnInit{
   
 
   onFormSubmit() {
+    /*
     
     if (this.Form.valid) {
       this._catalogoCapacitacionesService.addCatalogoCapacitacion(this.Form.value).subscribe({
@@ -87,7 +88,7 @@ export class AddCapacitacionCatalogoComponent implements OnInit{
     });
     }else{
       this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
-    }
+    }*/
 }
 
 

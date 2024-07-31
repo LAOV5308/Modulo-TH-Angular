@@ -27,7 +27,7 @@ mat-form-field {
   margin-left: 10px;
 }
 
-button {
+.buton1 {
   display: block;
   margin: 20px auto;
 }
@@ -40,3 +40,4 @@ button {
 .p-autoComplete{
 background-color: black;
 }
+

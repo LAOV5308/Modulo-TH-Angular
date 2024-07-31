@@ -24,6 +24,12 @@ import {MatListModule} from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 import { AuthService } from '../../../auth/ServicesAuth/auth.service';
 
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { AvatarModule } from 'primeng/avatar';
+import { StyleClassModule } from 'primeng/styleclass';
+import { Sidebar } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-header',
@@ -42,13 +48,21 @@ import { AuthService } from '../../../auth/ServicesAuth/auth.service';
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
-    HttpClientModule
+    HttpClientModule, SidebarModule, ButtonModule, RippleModule, AvatarModule, StyleClassModule
   ],
   providers:[AuthService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+
+    closeCallback(e: any): void {
+        this.sidebarRef.close(e);
+    }
+
+    sidebarVisible: boolean = false;
 
 
   constructor(public dialog: MatDialog,
@@ -62,7 +76,8 @@ export class HeaderComponent {
   @Output() sidebarToggle = new EventEmitter<void>();
 
   toggleSidebar() {
-    this.sidebarToggle.emit();
+    //this.sidebarToggle.emit();
+    this.sidebarVisible=true;
   }
   
 
@@ -98,6 +113,8 @@ isLoggedIn = false; // Asumimos que el usuario no está logueado inicialmente
     // Aquí iría la lógica para iniciar sesión
     this.isLoggedIn = true;
   }
+  
+ 
 
   logout(): void {
     // Aquí iría la lógica para cerrar sesión

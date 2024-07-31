@@ -1,3 +1,15 @@
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border: 1px solid #4CAF50;
+  background-color: #8BC34A;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
 .login-background {
   background-image: url('vacas.jpg');
   background-size: cover;
@@ -25,8 +37,11 @@ mat-card {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-mat-card-header {
+.card-header {
   text-align: center;
+  position: relative;
+  padding: 10px;
+  /*color:#388ec7;*/
 }
 
 .form-group {
@@ -41,12 +56,11 @@ mat-card-header {
 }
 
 .form-group input,
-.password-input p-password re-captcha input  {
-  width: 85%;
+.password-input p-password input {
+  width: 95%;
   padding: 10px;
   box-sizing: border-box;
 }
-
 
 .error-message {
   color: red;
@@ -60,6 +74,10 @@ mat-card-header {
   transform: translateY(-50%);
 }
 
+.captcha{
+  text-align: center;
+  position: relative;
+}
 
 /* Botón de envío 
 button {
@@ -78,15 +96,3 @@ button:hover {
 }
 */
 
-
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  border: 1px solid #4CAF50;
-  background-color: #8BC34A;
-  color: white;
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}

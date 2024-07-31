@@ -14,15 +14,21 @@ export interface Capacitacion {
 }
 
 export interface CapacitacionProgramada {
-  IdProgramacionFecha: number;
-  CodigoCapacitacion: number;
-  Fecha: Date;
-  Imparte: string;
+  IdProgramacionCapacitacion: number;//IdProgramacionFecha
   NombreCapacitacion: string;
-  EstadoProgramacionCapacitacion: boolean;
+  Origen: string;
+  Frecuencia: string;
+  FechaInicio: Date;
+  FechaFin: Date;
+  HoraInicio: any;
+  HoraFin: any;
+  PersonaImparte: string;
+  Comentarios: string;
+  IdEstadoProgramacionCapacitacion: number;
   Color: string;
-  Hora: string;
 }
+
+
 
 export interface CapacitacionesSuscripciones {
   IdSuscripcionCapacitacion: number;
@@ -34,6 +40,8 @@ export interface CapacitacionesSuscripciones {
   IdProgramacionFecha: number;
   CodigoCapacitacion: number;
   Evaluado: boolean;
+  Asistencia: boolean;
+  Estado: boolean;
 }
 
 export interface Calificaciones {

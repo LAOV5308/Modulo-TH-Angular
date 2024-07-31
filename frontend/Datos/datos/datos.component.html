@@ -8,11 +8,309 @@ type="submit">Agregar Empleado
 -->
 
 <mat-tab-group>
+  <mat-tab label="Agregar Empleados"> 
+    <br>
+      
+      <br/>
+      <mat-card class="matcard">
+        <div class="center">
+          <h1><i class="pi pi-user-plus" style="font-size: 2rem"></i>  Agregar Empleado</h1>
+        
+        </div>
+        
+        <mat-card-header class="matcardheader">
+          <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+            
+        
+             
+        
+              <!-- Información Laboral -->
+              <h2>Información Laboral</h2>
+                
+        
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>No.Nomina</mat-label>
+                  <input [disabled]="disabled" type="number" matInput formControlName="NoNomina" maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                </mat-form-field>
+      
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Nivel</mat-label>
+                  <mat-select formControlName="Nivel">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let value of nivel" [value]="value">{{ value }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+      
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Departamento</mat-label>
+                  <mat-select formControlName="departamento">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let value of departamentos" [value]="value.IdDepartamento">{{ value.NombreDepartamento }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Puesto</mat-label>
+                  <mat-select formControlName="NombrePuesto">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let value of filteredPuestos" [value]="value">{{ value.NombrePuesto }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>TipoIngreso</mat-label>
+                  <mat-select formControlName="TipoIngreso">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let value of tipoingreso" [value]="value">{{ value }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Fecha de Ingreso</mat-label>
+                  <input matInput [matDatepicker]="pickeringreso" formControlName="Ingreso">
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="pickeringreso"></mat-datepicker-toggle>
+                  <mat-datepicker #pickeringreso></mat-datepicker>
+                </mat-form-field>  
+      
+               
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>HorarioSemanal</mat-label>
+                  <mat-select formControlName="HorarioSemanal">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let value of horariosemanal" [value]="value">{{ value }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>$ Sueldo </mat-label>
+                  <input type="number" matInput formControlName="Sueldo">
+                </mat-form-field>
+      
+                <!-- Agrega más campos aquí -->
+                <h2>Seguro Social</h2>
+              <!--</mat-expansion-panel>-->
+              
+              
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>Fecha de Inscripcion al Seguro</mat-label>
+                <input matInput [matDatepicker]="pickeringresoimss" formControlName="IngresoImss">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="pickeringresoimss"></mat-datepicker-toggle>
+                <mat-datepicker #pickeringresoimss></mat-datepicker>
+              </mat-form-field>  
+                
+              <mat-form-field appearance="fill" hintLabel="Max 11 characters" color="primary">
+                <mat-label>NSS</mat-label>
+                <input type="number" matInput formControlName="NSS" #inputnss maxlength="11" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                <mat-hint align="end">{{inputnss.value.length}}/11</mat-hint>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>UMF</mat-label>
+                <input type="number" matInput formControlName="UMF" #inputumf maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                <mat-hint align="end">{{inputumf.value.length}}/3</mat-hint>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>Fecha de Baja del Seguro</mat-label>
+                <input matInput [matDatepicker]="pickerbajaimss" formControlName="BajaImss">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="pickerbajaimss"></mat-datepicker-toggle>
+                <mat-datepicker #pickerbajaimss></mat-datepicker>
+              </mat-form-field>  
+        
+                  <h2>Información Personal
+                    <p *ngIf="edad !== null" class="edad-empleado">Edad Colaborador: {{ edad }} años</p>
+                  </h2>
+                  
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="Nombre">
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Apellidos</mat-label>
+                  <input matInput formControlName="Apellidos">
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Sexo</mat-label>
+                  <mat-select formControlName="Sexo">
+                      <mat-option *ngFor="let val of sexo" [value]="val">{{val}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill" color="primary">
+                <mat-label>Estado Civil</mat-label>
+                <mat-select formControlName="EstadoCivil">
+                    <mat-option *ngFor="let val of estadocivil" [value]="val">{{val}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Fecha de Nacimiento</mat-label>
+                  <input matInput [matDatepicker]="pickerfechanacimiento" formControlName="FechaNacimiento" (dateChange)="calculateAge()">
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="pickerfechanacimiento"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerfechanacimiento></mat-datepicker>
+                </mat-form-field>  
+      
+                
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Entidad de Nacimiento</mat-label>
+                  <mat-select formControlName="EntidadNacimiento">
+                    <mat-option *ngFor="let val of estados" [value]="val">{{val}}</mat-option>
+                </mat-select>
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Ciudad de Nacimiento</mat-label>
+                  <mat-select formControlName="CiudadNacimiento">
+                    <mat-option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+                <!--<mat-form-field appearance="fill">
+                  <mat-label>CiudadNacimiento</mat-label>
+                  <input matInput formControlName="ciudadnacimiento">
+                </mat-form-field>-->
+      
+      
+                <mat-form-field appearance="fill" hintLabel="Max 18 characters" color="primary">
+                  <mat-label>CURP</mat-label>
+                  <input matInput formControlName="CURP" #inputcurp maxlength="18" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
+                  <mat-hint align="end">{{inputcurp.value.length}}/18</mat-hint>
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" hintLabel="Max 13 characters" color="primary">
+                  <mat-label>RFC</mat-label>
+                  <input matInput formControlName="RFC" #inputrfc maxlength="13" style="text-transform:uppercase;" value=""  onkeyup="javascript:this.value=this.value.toUpperCase();">
+                  <mat-hint align="end">{{inputrfc.value.length}}/13</mat-hint>
+                </mat-form-field>
+      
+                <h2>Escolaridad</h2>
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Escolaridad</mat-label>
+                  <mat-select formControlName="Escolaridad">
+                      <mat-option *ngFor="let val of escolaridad" [value]="val">{{val}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+      
+      
+              <!-- Domicilio -->
+              <h2>Información Domicilio</h2>
+                  
+                
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Domicilio INE</mat-label>
+                  <input matInput formControlName="DomicilioIne">
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Poblacion</mat-label>
+                  <input matInput formControlName="Poblacion">
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Entidad Direccion</mat-label>
+                  <mat-select formControlName="EntidadDireccion">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let value of estados1" [value]="value">{{ value }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+      
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>CP</mat-label>
+                  <input type="number" matInput formControlName="CP" #inputcp maxlength="5" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                  <mat-hint align="end">{{inputcp.value.length}}/5</mat-hint>
+                </mat-form-field>
+        
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Correo electrónico</mat-label>
+                  <input matInput formControlName="CorreoElectronico">
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Numero Telefono 1</mat-label>
+                  <input type="number" matInput formControlName="NumeroTelefono1" placeholder="4771232312" #inputn1 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                  <mat-hint align="end">{{inputn1.value.length}}/10</mat-hint>
+                </mat-form-field>
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Numero Telefono 2</mat-label>
+                  <input type="number" matInput formControlName="NumeroTelefono2" placeholder="4771232312" #inputn2 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                  <mat-hint align="end">{{inputn2.value.length}}/10</mat-hint>
+                </mat-form-field>
+      
+                <!-- Agrega más campos aquí -->
+             <!-- </mat-expansion-panel>-->
+        
+              <!-- Contacto de Emergencia -->
+              <h2>Contacto de Emergencia</h2>
+        
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Nombre Beneficiario</mat-label>
+                  <input matInput formControlName="NombreBeneficiario">
+                </mat-form-field>
+      
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Parentesco</mat-label>
+                  <mat-select formControlName="Parentesco">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let value of parentesco" [value]="value">{{ value }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Fecha Nacimiento Beneficiario</mat-label>
+                  <input matInput [matDatepicker]="pickerfechanacimientobeneficiario" formControlName="FechaNacimientoBeneficiario">
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="pickerfechanacimientobeneficiario"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerfechanacimientobeneficiario></mat-datepicker>
+                </mat-form-field>  
+      
+                <mat-form-field appearance="fill" color="primary">
+                  <mat-label>Numero Telefono Emergencia</mat-label>
+                  <input type="number" matInput formControlName="NumeroTelefonoEmergencia" placeholder="4771232312" #inputn3 maxlength="10" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                  <mat-hint align="end">{{inputn3.value.length}}/10</mat-hint>
+                </mat-form-field>
+                <!-- Agrega más campos aquí -->
+        
+              <!--</mat-expansion-panel>-->
+        
+            <!--</mat-accordion>-->
+          
+          <button mat-raised-button color="primary" type="submit">
+            <i class="pi pi-save" style="font-size: 1.5rem"></i>Guardar</button>  
+      
+             <!--Le quite aqui lo del darle click-->
+          </form>
+        </mat-card-header>
+      
+        </mat-card>
+        <p-toast />
+   
+  </mat-tab>
 
   <mat-tab label="Empleados Activos"> 
     <br>
+<div class="center">
+  <h1><i class="pi pi-users" style="font-size: 2rem"></i> Datos de los Empleados</h1>
+</div>
 
-<h1>Datos de los Empleados</h1>
 <!-- lista-empleados.component.html -->
 <mat-label>Filter: </mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
@@ -93,16 +391,10 @@ type="submit">Agregar Empleado
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Accion </th>
     <td mat-cell *matCellDef="let row">
 
-      <button mat-icon-button color="primary" (click)="consultar(row.NoNomina)">
-        <mat-icon>person_outline</mat-icon>
-      </button>
+      <p-button  icon="pi pi-user" (onClick)="consultar(row.NoNomina)" /> 
+      <p-button  icon="pi pi-user-edit" severity="info" (onClick)="editar(row.NoNomina)" /> 
+      <p-button  icon="pi pi-ban" severity="danger" (onClick)="eliminar(row)" /> 
 
-      <button mat-icon-button color="primary" (click)="editar(row.NoNomina)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="eliminar(row)">
-        <mat-icon>not_interested</mat-icon>
-      </button>
     </td>
   </ng-container>
 
@@ -123,8 +415,10 @@ type="submit">Agregar Empleado
   <mat-tab label="Empleados Inactivos"> 
 
     <br>
+<div class="center">
+  <h1><i class="pi pi-user-minus" style="font-size: 2rem"></i> Datos de los Empleados Inactivos</h1>
+</div>
 
-<h1>Datos de los Empleados Inactivos</h1>
 <!-- lista-empleados.component.html -->
 <mat-label>Filter: </mat-label>
   <input matInput (keyup)="applyFilterInactive($event)" placeholder="Ex. Mia" #inputInactive>
@@ -205,9 +499,11 @@ type="submit">Agregar Empleado
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Recuperar</th>
     <td mat-cell *matCellDef="let row">
 
-      <button mat-icon-button color="primary" (click)="recuperar(row.NoNomina, row.Nombre +' '+ row.Apellidos)">
-        <mat-icon>undo</mat-icon>
-      </button>
+      <!--<button color="primary" (click)="recuperar(row.NoNomina, row.Nombre +' '+ row.Apellidos)">
+        <i class="pi pi-undo" style="font-size: 2rem"></i>
+      </button>-->
+
+      <p-button icon="pi pi-undo" severity="info" (onClick)="recuperar(row.NoNomina, row.Nombre +' '+ row.Apellidos)" /> 
 
 
     </td>

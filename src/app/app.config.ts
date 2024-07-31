@@ -8,15 +8,18 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { SystemComponent } from './shared/components/system/system.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { MessageService } from 'primeng/api';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes, withComponentInputBinding()), 
+    provideAnimations(),
+    MessageService,
     provideClientHydration(), 
     provideAnimationsAsync(), 
-    provideAnimationsAsync(), 
-    provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(),
-    provideHttpClient(), provideCharts(withDefaultRegisterables())
+    provideHttpClient(), 
+    provideCharts(withDefaultRegisterables())
 
   ]
 };

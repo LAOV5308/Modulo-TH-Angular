@@ -1,15 +1,140 @@
-<p-toast />
+<div class="card">
+    
+</div>
+<div class="card flex justify-content-center">
+<p-dialog 
+header="Header" 
+[modal]="true"
+[(visible)]="visible" 
+[style]="{ width: '50rem' }" 
+[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+<ng-template pTemplate="header">
+    <div class="inline-flex align-items-center justify-content-center gap-2">
+        <h1>Agregar Nueva Capacitacón</h1>
+    </div>
+    </ng-template>
 
-<p-confirmDialog [style]="{ width: '450px' }" />
-<button class="agregar"
-mat-raised-button 
-color = "primary"
-(click)="agregar()"
-type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
-</button>
-<br>
+    <ng-template pTemplate="Content">
+        
+        <div class="formgrid grid">
+            <div class="field col">
+
+                <!--<mat-form-field appearance="fill" color="primary">
+                    <mat-label>Origen</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let val of orig" [value]="val">{{val}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>-->
+
+            
+                
+                <p-floatLabel>
+                    <input pInputText id="username" />
+                    <label for="username">Nombre Capacitacion</label>
+                </p-floatLabel>
+
+                
+                <p-dropdown
+                [options]="origenes" 
+                [(ngModel)]="selectedOrigen"
+                optionLabel="label"
+                placeholder="Selecciona un origen"
+                size>
+              </p-dropdown>
+
+
+              <p-dropdown 
+              [options]="frecuencias" 
+              [(ngModel)]="selectedFrecuencia"
+              optionLabel="label"
+              placeholder="Selecciona una Frecuencia">
+            </p-dropdown>
+            <br>
+
+            
+        <div class="card flex justify-content-center">
+<p-floatLabel>
+    <p-calendar 
+        inputId="birth_date" />
+    <label for="birth_date">Fecha Inicio</label>
+</p-floatLabel>
+        </div>
+
+        <div class="card flex justify-content-center">
+            <p-floatLabel>
+                <p-calendar 
+                    inputId="fechaFin" />
+                <label for="fechaFin">Fecha Fin</label>
+            </p-floatLabel>
+                    </div>
+
+
+        </div>
+            </div>
+
+        </ng-template>
+
+                <ng-template pTemplate="footer">
+                    <p-button 
+                        label="Cancel" 
+                        [text]="true" 
+                        severity="secondary" 
+                        (onClick)="visible = false" />
+                    <p-button 
+                        label="Save" 
+                        [outlined]="true" 
+                        severity="secondary" 
+                        (onClick)="visible = false" 
+                      />
+                </ng-template>
+       
+    
+</p-dialog>
+</div>
+    <p-card>
+
+        <!--<p-menubar [model]="items1" />-->
+        
+        <div style="text-align: left">
+            <button [routerLink]="['/system/programarcapacitaciones']" class="agregar"
+        mat-raised-button 
+        color = "primary"
+        type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitación
+        </button>
+        </div>
+
+
+    </p-card>
+
+<p-card>
+    
+     <!---
+<div class="card flex justify-content-center flex-wrap gap-3">
+    <p-splitButton 
+    label="Acciones" 
+    [model]="items" 
+    severity="info" />
+</div>
+
+
+   
+
+
+
+
+<div style="text-align: right">
+
+    <button class="agregar"
+    mat-raised-button 
+    color = "primary"
+    (click)="agregar()"
+    type="submit"><mat-icon>add_circle</mat-icon>Agregar Nueva Capacitacion Catalogo
+    </button>
+</div>
+--->
 <p-splitter 
-    [panelSizes]="[43, 57]" 
+    [panelSizes]="[44, 56]" 
     [style]="{ height: '800px' }" 
     styleClass="mb-5">
     <ng-template pTemplate>
@@ -24,9 +149,9 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
           
     </ng-template>
     <ng-template pTemplate>
-        <div class="col flex align-items-center justify-content-center">
+        <div class="">
 
-            <h1>Descripcion de la Capacitacion</h1>
+            <h1>Descripción de la Capacitación</h1>
             
 
 <ng-container *ngIf="programacionConsulta.length > 0">
@@ -45,8 +170,8 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
     </button>
 
     <button class="eliminarProgramacion" *ngIf="!eval"
-    mat-raised-button (click)="eliminarprogramacion(programacionConsulta[0].IdProgramacionFecha)"
-    ><mat-icon>cancel</mat-icon>Eliminar Programacion
+    mat-raised-button (click)="eliminarprogramacion(programacionConsulta[0].IdProgramacionCapacitacion)"
+    ><mat-icon>cancel</mat-icon>Eliminar Programación
     </button>
 
     
@@ -61,11 +186,14 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
     <mat-card class="employee-card">
       <mat-card-header>
         <mat-card-title [ngStyle]="{'color': programacionConsulta[0].Color}">{{'Capacitacion: '+ programacionConsulta[0].NombreCapacitacion}}</mat-card-title>
-        <mat-card-subtitle>Fecha</mat-card-subtitle>
-        <mat-card-subtitle>{{getFechaConDiaAdicional(programacionConsulta[0].Fecha)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+        <mat-card-subtitle>Fecha Inicio</mat-card-subtitle>
+        <mat-card-subtitle>{{getFechaConDiaAdicional(programacionConsulta[0].FechaInicio)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null">Fecha Fin</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null">{{getFechaConDiaAdicional(programacionConsulta[0].FechaFin)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+    
         <mat-card-content>
             <p>
-                {{'Persona Imparte: '+ programacionConsulta[0].Imparte}}
+                {{'Persona Imparte: '+ programacionConsulta[0].PersonaImparte}}
             </p>
             
             <!--<p-checkbox 
@@ -78,8 +206,11 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
             <p *ngIf="eval">
                 Estado: Cerrado
             </p>
-            <p>
-                {{'Hora: '+ programacionConsulta[0].Hora}}
+            <p *ngIf="programacionConsulta[0].FechaFin == null && programacionConsulta[0].HoraInicio!=null">
+                {{'Hora Inicio: '+ convertirFechaATiempo(programacionConsulta[0].HoraInicio)}}
+            </p>
+            <p *ngIf="programacionConsulta[0].FechaFin == null && programacionConsulta[0].HoraInicio!=null">
+                {{'Hora Fin: '+ convertirFechaATiempo(programacionConsulta[0].HoraFin)}}
             </p>
           </mat-card-content>
       </mat-card-header>
@@ -98,17 +229,17 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
     ]"
     [resizableColumns]="true" 
     [scrollable]="true" 
-    scrollHeight="400px" 
+    scrollHeight="350px" 
     [tableStyle]="{ 'min-width': '50rem' }">
 
     <ng-template pTemplate="caption">
         
-        <div style="text-align: left">
+       <!-- <div style="text-align: left">
             <p-button 
                 icon="pi pi-external-link" 
                 label="Export" 
                 (click)="dt.exportCSV()" />
-        </div>
+        </div>-->
 
         <div style="text-align: left">
         <input 
@@ -127,7 +258,6 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
             <th *ngIf="eval">Asistio</th>
             <th>NoNomina</th>
             <th>Nombre</th>
-            <th>Apellidos</th>
             <th>NombrePuesto</th>
             <th>NombreDepartamento</th>
             <th>Acciones</th>
@@ -137,14 +267,14 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
             <tr>
                 <td *ngIf="eval" > 
                     <p-checkbox 
-                    [(ngModel)]="empleado.Evaluado" 
-                    value="{{empleado.Evaluado}}"
+                    [(ngModel)]="empleado.Asistencia" 
                     [binary]="true" 
-                    variant="filled" />
+                    variant="filled" 
+                    [disabled]="empleado.Evaluado"
+                    />
                 </td>
                 <td>{{empleado.NoNomina}}</td>
-                <td>{{empleado.Nombre}}</td>
-                <td>{{empleado.Apellidos}}</td>
+                <td>{{empleado.Nombre + ' ' +empleado.Apellidos}}</td>
                 <td>{{empleado.NombrePuesto}}</td>
                 <td>{{empleado.NombreDepartamento}}</td>
                 <td>
@@ -153,7 +283,7 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                     icon="pi pi-clipboard" 
                     label="Evlr"
                     [rounded]="true" 
-                    [outlined]="true"  (onClick)="evaluar(empleado.NoNomina)" [disabled]="empleado.Evaluado"/>
+                    [outlined]="true"  (onClick)="evaluar(empleado.NoNomina, empleado.Evaluado)" [disabled]="!empleado.Asistencia"/>
 
                     <p-button 
                     *ngIf="!eval"
@@ -179,6 +309,7 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                     
                     <p-table 
                     #dt 
+                    styleClass="p-datatable-striped"    
                     [columns]="cols" [value]="calificaciones" 
                     [exportHeader]="'customExportHeader'"
                     [globalFilterFields]="['NoNomina','Nombre' ,'Apellidos','NombreDepartamento', 'Puesto'
@@ -211,39 +342,44 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                         <ng-template pTemplate="header" let-columns>
                 
                             <tr>
-                            <th>NoNomina</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>NombrePuesto</th>
-                            <th>NombreDepartamento</th>
-                            <th>Calificacion</th>
-                            <th>Asistio</th>
-                            <th>Estatus</th>
-                            <th>Comentario</th>
+                            <th style="width:10%">NoNomina</th>
+                            <th style="width:10%" >Nombre</th>
+                            <th style="width:10%">NombrePuesto</th>
+                            <th style="width:10%">NombreDepartamento</th>
+                            <th style="width:10%">Calificacion</th>
+                            <th style="width:10%">Estatus</th>
+                            <th style="width:10%">Comentario</th>
                             </tr>
+
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><p-columnFilter type="boolean" field="Estatus" /></th>
+                            </tr>
+                            
+                                    
+                                
                         </ng-template>
                         <ng-template pTemplate="body" let-calificacion>
                             <tr>
                                 <td>{{calificacion.NoNomina}}</td>
-                                <td>{{calificacion.Nombre}}</td>
-                                <td>{{calificacion.Apellidos}}</td>
+                                <td>{{calificacion.Nombre + ' '+calificacion.Apellidos}}</td>
                                 <td>{{calificacion.NombrePuesto}}</td>
                                 <td>{{calificacion.NombreDepartamento}}</td>
                                 <td>{{calificacion.Calificacion}}</td>
-                                <td>{{calificacion.Asistio}}</td>
-                                <td>{{calificacion.Estatus}}</td>
+                                <td>
+
+                                    <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': calificacion.Estatus, 'text-red-500 pi-times-circle': !calificacion.Estatus }"></i>
+                                </td>
                                 <td>{{calificacion.Comentario}}</td>
-                                
-                                    
-                                
                             </tr>
                         </ng-template>
                     </p-table>
                 </div>
                             </div>
-
-
-
   </ng-container>
 
 
@@ -274,13 +410,11 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                     [globalFilterFields]="['NoNomina','Nombre' ,'Apellidos','NombreDepartamento', 'Puesto'
     ]"
     [scrollable]="true" 
-    scrollHeight="400px"
+    scrollHeight= "300px"
         [value]="sourceEmpleados" 
         [(selection)]="targetEmpleados" 
         dataKey="NoNomina" 
         [tableStyle]="{'min-width': '50rem'}"
-        [paginator]="true"
-    [rows]="10"
         >
             <ng-template pTemplate="header">
                 
@@ -289,7 +423,6 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                     <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
                     <th>NoNomina</th>
                     <th>Nombre</th>
-                    <th>Apellidos</th>
                     <th>NombrePuesto</th>
                     <th>NombreDepartamento</th>
                 </tr>
@@ -300,8 +433,7 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                         <p-tableCheckbox [value]="empleado" />
                     </td>
                     <td>{{empleado.NoNomina}}</td>
-                    <td>{{empleado.Nombre}}</td>
-                    <td>{{empleado.Apellidos}}</td>
+                    <td>{{empleado.Nombre + ' '+empleado.Apellidos}}</td>
                     <td>{{empleado.NombrePuesto}}</td>
                     <td>{{empleado.NombreDepartamento}}</td>
                 </tr>
@@ -370,7 +502,7 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
             <ng-template pTemplate="footer">
                 <p-button 
                     pRipple 
-                    label="Guardar" 
+                    label="Agregar" 
                     icon="pi pi-check" 
                     [text]="true" 
                     (click)="saveAsignacion()" />
@@ -380,6 +512,8 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                     icon="pi pi-times" 
                     [text]="true" 
                     (click)="hideDialog()" />
+
+
                 
             </ng-template>
     </p-dialog>
@@ -395,11 +529,8 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
         [style]="{ width: '50vw' }" 
         [draggable]="false" 
         styleClass="p-fluid">
-
             <ng-template pTemplate="content">
                 
-               
-            
                 <div class="field">
                     <label for="minmax-buttons"> Calificación </label>
                     <p-inputNumber 
@@ -416,15 +547,13 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
                 </div>
                 <div class="field">
                     <br>
-                    <br>
-                    
                     
                     <label for="float-input">Comentarios (Opcional)</label>
         
         <textarea 
         id="float-input"
-        rows="5"
-        cols="30"
+        rows="1"
+        cols="10"
         pInputTextarea 
         [(ngModel)]="comentario"
         [autoResize]="true">
@@ -519,5 +648,8 @@ type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitacion
 </p-splitter>
 
 
+</p-card>
 
+<p-toast />
 
+<p-confirmDialog [style]="{ width: '450px' }" />

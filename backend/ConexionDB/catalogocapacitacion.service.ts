@@ -16,10 +16,11 @@ export class CatalogoCapacitacionService {
 
   
   private apiUrl = 'http://localhost:3000/capacitaciones';
+  //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/capacitaciones';
 
   constructor(private http: HttpClient) { }
 
-  addCatalogoCapacitacion(data: any):Observable<any>{
+  addCapacitacion(data: any):Observable<any>{
     return this.http.post(this.apiUrl, data).pipe(
       catchError(this.handleError)
     );

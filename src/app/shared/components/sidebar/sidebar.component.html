@@ -1,5 +1,11 @@
 
 <!-- sidebar.component.html -->
+
+
+
+
+
+<!--
 <nav class="sidebar">
     <ul>
       
@@ -34,39 +40,10 @@
         <mat-icon>dashboard</mat-icon>DashBoard</a>
       </li>
 
-
-          <!--
-          <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
-          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
-          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
-          -->
         </ul>
       </li>
 
-      <!--
-      <li>
-        <a href="javascript:void(0)" (click)="toggleSubmenu('empleados')">
-          <mat-icon>people</mat-icon>
-          Empleados
-          <mat-icon class="expand-icon">{{ submenus['empleados'] ? 'expand_less' : 'expand_more' }}</mat-icon>
-        </a>
-        <ul *ngIf="submenus['empleados']">
-          <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
-          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
-          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
-          
-        </ul>
-      </li>
-      -->
       
-      
-      <!--<li>
-        <a href="/capacitaciones  ">
-          <mat-icon>contacts</mat-icon>
-          Capacitaciones
-        </a>
-      </li>
-      <li> -->
 
 
         <li>
@@ -110,6 +87,15 @@
 
         <li>
           <a *ngIf="isAdmin()" href="javascript:void(0)" (click)="toggleSubmenu('catalogo')">
+            <mat-icon>calendar_today</mat-icon>
+            Vacaciones
+            <mat-icon class="expand-icon">{{ submenus['catalogo'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </a>
+         
+        </li>
+
+        <li>
+          <a *ngIf="isAdmin()" href="javascript:void(0)" (click)="toggleSubmenu('catalogo')">
             <mat-icon>settings</mat-icon>
             Catalogo
             <mat-icon class="expand-icon">{{ submenus['catalogo'] ? 'expand_less' : 'expand_more' }}</mat-icon>
@@ -131,6 +117,67 @@
             
           </ul>
         </li>
+        
+    </ul>
+  </nav>-->
+  
+
+
+  
+<!--
+      <li>
+        <a href="javascript:void(0)" (click)="toggleSubmenu('empleados')">
+          <mat-icon>people</mat-icon>
+          Empleados
+          <mat-icon class="expand-icon">{{ submenus['empleados'] ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </a>
+        <ul *ngIf="submenus['empleados']">
+          <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
+          
+        </ul>
+      </li>
+      -->
+      
+      
+      <!--<li>
+        <a href="/capacitaciones  ">
+          <mat-icon>contacts</mat-icon>
+          Capacitaciones
+        </a>
+      </li>
+      <li> -->
+
+        
+
+          <!--
+          <li ><a [routerLink]="['/system/empleados']"><mat-icon>people</mat-icon>Consultar Empleados</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>person_add</mat-icon>Agregar Nuevo Empleado</a></li>
+          <li><a [routerLink]="['/system/addEmpleado']"><mat-icon>dashboard</mat-icon>DashBoard</a></li>
+          -->
+
+           <!--
+          <ul *ngIf="submenus['catalogo']">
+            <li>
+              <a [routerLink]="['/system/departamentos']">
+                <mat-icon>business</mat-icon>
+                Departamentos
+              </a>
+            </li>
+      
+            <li>
+              <a [routerLink]="['/system/puestos']">
+                <mat-icon>list_alt</mat-icon>
+                Puestos
+              </a>
+            </li>
+            
+          </ul>
+          -->
+
+
+        
         <!--
         <a href="#/organigramas">
           <mat-icon>account_tree</mat-icon>
@@ -163,9 +210,6 @@
       </li>
       -->
 
-    </ul>
-  </nav>
-  
 
 
 

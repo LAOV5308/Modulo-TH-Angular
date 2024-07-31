@@ -3,16 +3,22 @@ import { Component } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardModule } from '@angular/material/card';
 import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { MeterGroupModule } from 'primeng/metergroup';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [MatCard, MatCardHeader, MatCardModule,
-    BaseChartDirective],
+    BaseChartDirective, MeterGroupModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  value = [
+    { label: 'Mujeres', color: '#be70e6', value: 65, icon: 'pi pi-venus' },
+    { label: 'Hombres', color: '#50b8c5', value: 43, icon: 'pi pi-mars' },
+];
+
   public barChartOptions: ChartOptions = {
     responsive: false,
   };

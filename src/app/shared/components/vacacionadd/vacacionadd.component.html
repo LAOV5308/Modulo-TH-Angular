@@ -1,0 +1,71 @@
+<div style="display: flex; justify-content: flex-start;">
+  <button [routerLink]="['/system/consultarvacaciones']" class="agregar"
+  mat-raised-button 
+  color="accent">
+  <mat-icon>keyboard_return</mat-icon>Regresar Calendario Vacaciones
+</button>
+</div>
+
+
+<div>
+  <div class="card">
+    
+    <div style="text-align: left">
+      <h2 *ngIf="selectedEmpleado?.NoNomina !=null" style="color: #388ec7;">Nombre: {{ selectedEmpleado?.Nombre + ' '+ selectedEmpleado?.Apellidos}}</h2>
+      <div style="text-align: right">
+        <h2>Dias Restantes: {{selectedEmpleado?.Antiguedad}} Dias</h2>
+            </div>
+          </div>
+
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+      <div class="p-fluid grid">
+        <div class="field col-12">
+          <label for="name">NoNomina: </label>
+          <input id="name" type="number" pInputText formControlName="NoNomina" />
+        </div>
+  
+        <!--<div class="field col-12">
+          <label for="position">Posición: </label>
+          <input id="position" type="text" pInputText formControlName="position" />
+        </div>-->
+
+
+        <div style="text-align: right">
+          <p-button icon="pi pi-calendar-times" severity="danger" (onClick)="limpiarfechas()"/>
+              </div>
+        
+       
+        <div class="field col-12">
+          <label for="startDate">Selecciona Fechas: </label>
+          <p-calendar class="max-w-full" selectionMode="multiple" [(ngModel)]="dates"
+          [inline]="true" id="startDate" formControlName="Fecha" dateFormat="yy-mm-dd"></p-calendar>
+        </div>
+
+        
+        <div class="field col-12">
+          <label for="selectedDates">Fechas Seleccionadas: </label>
+         <textarea id="selectedDates" rows="2" cols="30" pInputTextarea readonly>
+           {{ formatDateArray(dates) }}
+         </textarea>
+       </div>
+
+        
+        <div class="field col-12">
+          <label for="comentario">Comentarios: </label>
+          <input formControlName="Comentarios"
+              pInputText 
+              id="comentario" />
+      </div>
+  
+  
+        <div class="field col-12">
+          <button type="submit" pButton label="Guardar" [disabled]="employeeForm.invalid"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+
+
+</div>

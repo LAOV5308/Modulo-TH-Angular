@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones } from '../../../../../backend/models/capacitacion.model';
 import { CatalogoCapacitacionService } from '../../../../../backend/ConexionDB/catalogocapacitacion.service';
 
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, MenuItem } from 'primeng/api';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { ToastModule } from 'primeng/toast';
@@ -33,7 +33,17 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenubarModule } from 'primeng/menubar';
+import { CardModule } from 'primeng/card';
 
+import {MatMenuModule} from '@angular/material/menu';
+import { DropdownModule } from 'primeng/dropdown';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -54,15 +64,26 @@ interface Suscripcion{
   IdProgramacionFecha: number;
 }
 
+interface Origenes {
+  label: string;
+  value: string;
+}
+interface Frecuencias {
+  label: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-consultar-capacitaciones',
   standalone: true,
   imports: [CalendarModule, FormsModule, NgFor, CommonModule, FullCalendarModule,
     MatButtonModule, MatIcon, DynamicDialogModule, ToastModule, ButtonModule, SplitterModule, MatCardModule, MatGridListModule,
     PickListModule, NgFor, TableModule,  InputTextModule, DialogModule, ConfirmDialogModule, CheckboxModule, InputNumberModule
-    , InputTextareaModule, FloatLabelModule
+    , InputTextareaModule, FloatLabelModule, SplitButtonModule, MenubarModule, CardModule, MatMenuModule, DropdownModule, MatFormFieldModule,
+    MatOptionModule, MatSelectModule, MatDatepickerModule
+
   ],
-  providers:[CatalogoCapacitacionService, DialogService, MessageService, EmpleadosService, ConfirmationService],
+  providers:[CatalogoCapacitacionService, DialogService, MessageService, EmpleadosService, ConfirmationService, provideNativeDateAdapter()],
   templateUrl: './consultar-capacitaciones.component.html',
   styleUrl: './consultar-capacitaciones.component.css'
 })
@@ -90,7 +111,7 @@ calificacionEmpleado: number =0;
 comentario!: string;
 eval: boolean= true;
 calificaciones: Calificaciones[]=[];
-
+visible: boolean = false;
  ref: DynamicDialogRef | undefined;
  
  @ViewChild('dt') dt: Table | undefined;
@@ -99,6 +120,29 @@ productDialog: boolean = false;
 checked: boolean = false;
 asistio!: boolean;
 mostrarcalificaciones: boolean = false;
+items: MenuItem[];
+items1: MenuItem[] | undefined;
+selectedOrigen!: Origenes;
+selectedFrecuencia!: Frecuencias;
+fechaDate!:Date;
+
+origenes: Origenes[] = [
+  { label: 'Interna', value: 'Interna' },
+  { label: 'Externa', value: 'Externa' }
+];
+frecuencias: Frecuencias[] = [
+  { label: 'Diaria', value: 'Diari' },
+  { label: 'Semanal', value: 'Semanal' },
+  { label: 'Mensual', value: 'Mensual' },
+  { label: 'Anual', value: 'Anual' }
+];
+
+orig: string[] = [
+  'Interna',
+  'Externa'
+];
+
+
 
   constructor(private _dialog: MatDialog, private capacitacionesService: CatalogoCapacitacionService, private cdr: ChangeDetectorRef,
     public dialogService: DialogService, public messageService: MessageService, private empleadoService: EmpleadosService,
@@ -106,31 +150,92 @@ mostrarcalificaciones: boolean = false;
   ){
     this.suscripcionForm = this.fb.group({
       NoNomina:[],
-    IdProgramacionFecha:[]
+    IdProgramacionCapacitacion:[]
     });
 
     this.evaluarForm = this.fb.group({
       NoNomina:[],
-      IdProgramacionFecha:[],
+      IdProgramacionCapacitacion:[],
       Calificacion: [],
       Estatus: [],
       Asistio: [],
       Comentario: []
     });
 
+    this.items = [
+      {
+          label: 'Update',
+          icon: 'pi pi-fw pi-calendar-times',
+          command: () => {
+              //this.update();
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+
+              
+          }
+      },
+      {
+          label: 'Delete',
+          command: () => {
+              //this.delete();
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+          }
+      },
+      { label: 'Angular Website', url: 'http://angular.io' },
+      { label: 'Upload', routerLink: ['/fileupload'] }
+  ];
+
+  this.items1 = [
+    {
+        label: 'Home',
+        icon: 'pi pi-home'
+    },
+    {
+        label: 'Features',
+        icon: 'pi pi-star'
+    },
+    {
+        label: 'Projects',
+        icon: 'pi pi-search',
+        items: [
+            {
+                label: 'Components',
+                icon: 'pi pi-bolt'
+            },
+            {
+                label: 'Blocks',
+                icon: 'pi pi-server'
+            },
+            {
+                label: 'UI Kit',
+                icon: 'pi pi-pencil'
+            },
+            {
+                label: 'Templates',
+                icon: 'pi pi-palette',
+                items: [
+                    {
+                        label: 'Apollo',
+                        icon: 'pi pi-palette'
+                    },
+                    {
+                        label: 'Ultima',
+                        icon: 'pi pi-palette'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        label: 'Contact',
+        icon: 'pi pi-envelope'
+    }
+]
+
   }
+  save(severity: string) {
+    this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+}
 
-  fechaHoy(){
-    // Obtener la fecha de hoy
-const today = new Date();
-
-// Formatear la fecha en un string legible
-const day = today.getDate();
-
-alert(today);
-
-
-  }
 
   ngAfterViewInit(): void {
     this.ngOnInit();
@@ -141,7 +246,8 @@ alert(today);
     this.capacitacionesService.getProgramacionCapacitaciones().subscribe({
       next: (data) => {
         this.capacitacionesprogramadas = data;
-       // console.log(data);
+        console.log('data');
+        console.log(data);
         this.updateCalendarEvents();
         
       },
@@ -182,21 +288,70 @@ alert(today);
    const newfech = new Date(fecha).toISOString().split('T')[0]
     return newfech;
   }
+   getFechaConDiaMas(fecha: Date): any {
+   const nuevaFecha = new Date(fecha);
+   nuevaFecha.setDate(nuevaFecha.getDate() + 1); // Agregar un día
+   const newfech = nuevaFecha.toISOString().split('T')[0];
+   return newfech;
+}
+
+
+convertirFechaATiempo(fechaISO: string): string {
+  // Crear un objeto Date a partir de la cadena ISO
+  const fecha = new Date(fechaISO);
+
+  // Restar 6 horas a la fecha
+  fecha.setUTCHours(fecha.getUTCHours() - 6);
+
+  // Obtener las horas y los minutos
+  let horas: number = fecha.getUTCHours(); // Usar getUTCHours() para obtener la hora en UTC
+  const minutos: number = fecha.getUTCMinutes();
+
+  // Determinar el periodo (A.M./P.M.)
+  const periodo: string = horas >= 12 ? 'P.M.' : 'A.M.';
+
+  // Convertir la hora al formato de 12 horas
+  horas = horas % 12;
+  horas = horas ? horas : 12; // La hora 0 se debe convertir a 12
+
+  // Formatear los minutos para asegurarse de que siempre tengan dos dígitos
+  const minutosFormateados: string = minutos < 10 ? '0' + minutos : minutos.toString();
+
+  // Construir la cadena de tiempo en el formato deseado
+  const tiempoFormateado: string = `${horas}:${minutosFormateados} ${periodo}`;
+
+  return tiempoFormateado;
+}
 
   updateCalendarEvents() {
     this.events=[];
 
     this.capacitacionesprogramadas.forEach(cap => {
-      this.events.push({
-        id: cap.IdProgramacionFecha,
-        title: cap.NombreCapacitacion,
-        start: new Date(cap.Fecha).toISOString().split('T')[0], // Convertir a ISO string para FullCalendar
-            extendedProps: {
-                imparte: cap.Imparte
-            },
-        color: cap.Color
-        //color: cap.EstadoProgramacionCapacitacion ? 'green' : 'red',
-      });
+      if(cap.FechaFin!=null){
+        this.events.push({
+          id: cap.IdProgramacionCapacitacion,
+          title: cap.NombreCapacitacion,
+          start: new Date(cap.FechaInicio).toISOString().split('T')[0], // Convertir a ISO string para FullCalendar
+          end: this.getFechaConDiaMas(cap.FechaFin), 
+          extendedProps: {
+                  imparte: cap.PersonaImparte
+              },
+          color: cap.Color
+          //color: cap.EstadoProgramacionCapacitacion ? 'green' : 'red',
+        });
+      }else{
+        this.events.push({
+          id: cap.IdProgramacionCapacitacion,
+          title: cap.NombreCapacitacion,
+          start: new Date(cap.FechaInicio).toISOString().split('T')[0], // Convertir a ISO string para FullCalendar
+          extendedProps: {
+                  imparte: cap.PersonaImparte
+              },
+          color: cap.Color
+          //color: cap.EstadoProgramacionCapacitacion ? 'green' : 'red',
+        });
+      }
+      
     });
 
     this.calendarOptions = {
@@ -281,16 +436,27 @@ alert(today);
     this.consulta = false;
     this.programacionConsulta=[];
     this.calificaciones = [];
+    //AQUI
     this.capacitacionesService.getsingleProgramacionCapacitacion(clickInfo.event.id).subscribe({
       next: (data) => {
         this.programacionConsulta = data;
+        console.log('Programacion Consulta');
+        console.log(data);
         const today = new Date();
-        const fechaDate = new Date(this.programacionConsulta[0].Fecha);
+        
+        if(this.programacionConsulta[0].FechaFin == null){
+          
+          this.fechaDate = new Date(this.programacionConsulta[0].FechaInicio);
+
+        }else{
+        this.fechaDate = new Date(this.programacionConsulta[0].FechaFin);
+
+        }
         // Agregar un día
-        fechaDate.setDate(fechaDate.getDate() + 1);
+        this.fechaDate.setDate(this.fechaDate.getDate() + 1);
 // Formatear la fecha en un string legible
 //const day = today.getDate();
-if(fechaDate >= today){
+if(this.fechaDate >= today){
   this.eval=false;
   
 }else{
@@ -341,6 +507,9 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
 
 
   agregar(){
+    
+ this.visible= true;
+
  /*
     this.ref = this.dialogService.open(ProgramarCapacitacionesComponent, {
       header: 'Programar Nueva Capacitacion',
@@ -368,7 +537,7 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
     }
 })*/
 
-  
+  /*
     const dialog = this._dialog.open(ProgramarCapacitacionesComponent , {
       width: '1000px', height: '600px'
     });
@@ -382,7 +551,7 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
         }
 
       }
-    });
+    });*/
 
   }
 
@@ -490,10 +659,11 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
     this.WEvaluar = false;
 }
 
+//Asignar ProgramacionCapacitacion
 saveAsignacion() {
 
   this.suscripcionForm.patchValue({
-    IdProgramacionFecha: this.idProgramacionFecha
+    IdProgramacionCapacitacion: this.idProgramacionFecha
   })
 
   this.targetEmpleados.forEach(empleado => {
@@ -527,13 +697,22 @@ if(this.validarDuplicidad.includes(this.suscripcionForm.value.NoNomina)){
       
 }
 
-evaluar(id: number){
+evaluar(id: number, evaluado: boolean){
   /*
 const ruta =[{'Algo':2,
 
 }];*/
 
+
 this.NoNominaEvaluar = id;
+if(evaluado){
+  this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Empleado fue Evaluado', life: 1500  });
+}else{
+  //this.evaluarForm.reset();
+  this.WEvaluar = true;
+}
+
+  /*
 this.confirmationService.confirm({
       message: '¿La persona Asistio a la Capacitacion? '+ this.NoNominaEvaluar + 'IdFecha:'+this.idProgramacionFecha,
       header: 'Confirmación',
@@ -547,9 +726,10 @@ this.confirmationService.confirm({
       },
       reject: () => {
         
+      
         this.evaluarForm.patchValue({
           NoNomina: this.NoNominaEvaluar,
-          IdProgramacionFecha: this.idProgramacionFecha,
+          IdProgramacionCapacitacion: this.idProgramacionFecha,
           Calificacion: null,
             Estatus: null,
             Asistio: false
@@ -567,14 +747,14 @@ this.confirmationService.confirm({
         
 
       }
-  })
+  })*/
 }
 
 evaluarEmpleado(){
 
   this.evaluarForm.patchValue({
     NoNomina: this.NoNominaEvaluar,
-    IdProgramacionFecha: this.idProgramacionFecha
+    IdProgramacionCapacitacion: this.idProgramacionFecha
   });
 
 
@@ -595,16 +775,15 @@ evaluarEmpleado(){
 
   }
 
-  console.log(this.evaluarForm.value);
-  
-
   try {
     this.capacitacionesService.addEvaluacion(this.evaluarForm.value).subscribe({
       next: (resp: any) => {
         this.messageService.add({ severity: 'success', summary: 'Evaluado', detail: 'Evaluado Exitosamente', life: 1500 });
+        this.resetEvaluarForm();
         this.WEvaluar = false;
         this.actualizar();
         this.consultar();
+
 
     
     },
@@ -625,6 +804,21 @@ evaluarEmpleado(){
 calificacionesMostrar(){
 this.mostrarcalificaciones = true;
 this.consulta = false;
+this.calificaciones=[];
+
+this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).subscribe({
+  next:(data) =>{
+    console.log('Calificaciones');
+    console.log(data);
+    this.calificaciones = data;
+    
+  },
+  error: (error) => {
+    console.error('Error al cargar las Calificaciones', error);
+  }
+
+});
+
 /*
   this.capacitacionesService.getsingleCalificaciones(3056).subscribe({
     next: (data) => {
@@ -639,6 +833,16 @@ this.consulta = false;
   });*/
 }
 
+Asistencia(){
+  window.alert('Asistencia');
+}
  
+resetEvaluarForm(){
+  this.calificacionEmpleado = 0;
+  this.comentario = '';
+};
+
+
+
 
 }

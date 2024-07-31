@@ -27,24 +27,14 @@ th.mat-header-cell, td.mat-cell {
     gap: 5px;
   }
 
-  .editar, .eliminar{
-    border-radius: 40%;
-  }
+
 
  h1{
+  
   padding-top: 10px;
  }
- 
- .agregar{
-  background-color: aqua;
- }
- .columns{
-  background-color: rgb(95, 95, 95);
-  color: white;
- }
 
-
-.header-container {
+ .header-container {
   display: flex;
   justify-content: space-between; /* Distribuye el espacio entre los elementos */
   align-items: center;
@@ -54,13 +44,91 @@ th.mat-header-cell, td.mat-cell {
 .filter-container {
   display: flex;
   align-items: center;
-  margin-left: auto; /* Empuja el contenedor del filtro hacia la derecha */
-}
-
-.filter-container mat-form-field {
-  width: 300px; /* Ajusta el ancho del campo de filtro según sea necesario */
 }
 
 .filter-container mat-label {
   margin-right: 10px;
 }
+
+.columns{
+  background-color: rgb(120, 102, 152);
+  color: white;
+ }
+ .eliminar{
+  background-color: #c33a3a;
+  color: aliceblue;
+ }
+ .editar{
+  background-color: #3a83c3;
+  color: aliceblue;
+ }
+
+ .center{
+  text-align: center;
+  color: rgb(11, 137, 205);
+ }
+/*
+.table-container {
+  padding: 15px;
+  overflow-x: auto; 
+}
+
+.mat-elevation-z8 {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  min-width: 600px; 
+}
+
+th.mat-header-cell, td.mat-cell {
+  white-space: nowrap; 
+}
+
+@media (max-width: 600px) {
+  th.mat-header-cell, td.mat-cell {
+    font-size: 12px; 
+  }
+}
+
+  .Acciones{
+    display: flex;
+    gap: 5px;
+  }
+
+
+
+ h1{
+  padding-top: 10px;
+ }
+
+ .header-container {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 15px; 
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+}
+
+.filter-container mat-label {
+  margin-right: 10px;
+}
+
+.columns{
+  background-color: rgb(121, 122, 124);
+  color: white;
+ }
+ .eliminar{
+  background-color: #c33a3a;
+  color: aliceblue;
+ }
+ .editar{
+  background-color: #3a83c3;
+  color: aliceblue;
+ }
+*/

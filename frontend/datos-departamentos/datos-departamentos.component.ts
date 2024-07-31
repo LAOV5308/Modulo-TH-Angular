@@ -24,13 +24,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   imports: [HttpClientModule,
     NgFor, DatePipe, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
-    MatPaginator, MatFormFieldModule
+    MatPaginator, MatFormFieldModule, NgIf
   ],
   providers: [DepartamentosService, CoreService],
   templateUrl: './datos-departamentos.component.html',
   styleUrl: './datos-departamentos.component.css'
 })
 export class DatosDepartamentosComponent implements OnInit, AfterViewInit{
+  mostrar: boolean=false;
 
   displayedColumns: string[] = [
     'IdDepartamento',

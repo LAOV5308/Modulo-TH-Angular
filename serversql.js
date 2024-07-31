@@ -8,6 +8,7 @@ const incidenciasRutas = require('./backend/routes/incidenciasRutas')
 const capacitacionesRutas = require('./backend/routes/capacitacionesRutas')
 const usuariosRutas = require('./backend/routes/usuariosRutas');
 const solicitudesRutas = require('./backend/routes/solicitudesRutas');
+const vacacionesRutas = require('./backend/routes/vacacionesRutas');
 
 const {sql, getConnection}= require('./backend/ConexionDB/dbConfig');
 const port = 3000;
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 //Login
-
+//https://2vbqt1w4-3000.usw3.devtunnels.ms
 
 
 
@@ -38,6 +39,7 @@ app.use('/incidencias', incidenciasRutas);
 app.use('/capacitaciones', capacitacionesRutas);
 app.use('/usuarios', usuariosRutas);
 app.use('/solicitudes', solicitudesRutas);
+app.use('/vacaciones', vacacionesRutas);
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);

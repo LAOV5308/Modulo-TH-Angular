@@ -24,6 +24,8 @@ import { AddReclutamientoComponent } from './shared/components/reclutamiento/add
 import { DatosReclutamientoComponent } from './shared/components/reclutamiento/datos-reclutamiento/datos-reclutamiento.component';
 import { ProgramarCapacitacionesComponent } from './shared/components/programar-capacitaciones/programar-capacitaciones.component';
 import { ConsultarCapacitacionesComponent } from './shared/components/consultar-capacitaciones/consultar-capacitaciones.component';
+import { VacacionesComponent } from './shared/components/vacaciones/vacaciones.component';
+import { VacacionaddComponent } from './shared/components/vacacionadd/vacacionadd.component';
 
 
 
@@ -42,11 +44,11 @@ export const routes: Routes = [
             {path:'empleados', component: EmpleadosComponent},
             {path:'dashboard', component: DashboardComponent},
             { path: 'incidencias', component: IncidenciasComponent },
-            { path: 'capacitaciones', component: CapacitacionesComponent },
+            //{ path: 'capacitaciones', component: CapacitacionesComponent },
             { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent},
             { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent},
             { path: 'consultarcapacitaciones', component: ConsultarCapacitacionesComponent},
-
+            
             { path: 'puestos', component: PuestoComponentComponent },
             { path: 'departamentos', component: ComponentDepartamentoComponent},
             { path: 'addEmpleado', component: AddEmpleadoComponent},
@@ -55,12 +57,11 @@ export const routes: Routes = [
             //{ path: 'addreclutamiento', component: ConsultarCapacitacionesComponent},
             { path: 'addreclutamiento', component: AddReclutamientoComponent},
             { path: 'solicitudes', component: DatosReclutamientoComponent},
-
-
+            { path: 'consultarvacaciones', component: VacacionesComponent},
+            {path: 'agregarvacacion', component: VacacionaddComponent}
         ]
      },
      
-     { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent},
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' },

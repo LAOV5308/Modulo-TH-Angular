@@ -1,5 +1,5 @@
 import { Component , ChangeDetectorRef, OnInit, Inject} from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgModelGroup, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, NgModelGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { PickListModule } from 'primeng/picklist';
 import { Empleado } from '../../../../../backend/models/empleado.model';
@@ -15,7 +15,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { CapacitacionCatalogo } from '../../../../../backend/models/capacitacioncatalogo.model';
 import { CatalogoCapacitacionService } from '../../../../../backend/ConexionDB/catalogocapacitacion.service';
-import { NgFor, NgForOf } from '@angular/common';
+import { NgFor, NgForOf, NgIf } from '@angular/common';
 import { CapacitacionProgramada } from '../../../../../backend/models/capacitacion.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -26,6 +26,14 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 import { AutoCompleteModule } from 'primeng/autocomplete'
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import {MatSelectModule} from '@angular/material/select';
+import { CardModule } from 'primeng/card';
+import { SplitterModule } from 'primeng/splitter';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MessageService } from 'primeng/api';
+
 
 registerLocaleData(localeEs);
 
@@ -40,9 +48,10 @@ interface AutoCompleteCompleteEvent {
   standalone: true,
   imports: [FormsModule, CalendarModule, PickListModule,
     MatFormFieldModule, MatInputModule, MatDatepickerModule, MatButtonModule, ReactiveFormsModule,
-    MatAutocompleteModule, NgFor, NgForOf, MatOption, MatCardModule, NgxMaterialTimepickerModule, AutoCompleteModule, ColorPickerModule
+    MatAutocompleteModule, NgFor, NgIf, NgForOf, MatOption, MatCardModule, NgxMaterialTimepickerModule, AutoCompleteModule, ColorPickerModule,
+    RadioButtonModule, MatSelectModule, CardModule, SplitterModule, MatIconModule, RouterLink
   ],
-  providers:[EmpleadosService, 
+  providers:[EmpleadosService, MessageService,
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     provideMomentDateAdapter(),CatalogoCapacitacionService, { provide: LOCALE_ID, useValue: 'es' }
   ],
@@ -50,10 +59,13 @@ interface AutoCompleteCompleteEvent {
   styleUrl: './programar-capacitaciones.component.css'
 })
 export class ProgramarCapacitacionesComponent implements OnInit{
-  
+  hoy = new Date();
+  fechaStart: Date = this.hoy;
+
   sourceEmpleados!: Empleado[];
   targetEmpleados!: Empleado[];
   employeeForm: FormGroup;
+  
   //Capacitacoiones Programadas
   capacitacionesprogramadas: CapacitacionProgramada[]=[];
 
@@ -66,6 +78,18 @@ export class ProgramarCapacitacionesComponent implements OnInit{
   capacitacionSeleccionada: any;
 
     filteredCapacitaciones!: any[];
+    selectedFrecuencia: string = 'Diaria';
+
+
+    frecuencias: string[]=[
+      'Diaria',
+      'Semanal',
+      'Mensual',
+      'Anual'
+    ];
+    origen: string[]=[
+      'Interna', 'Externa'
+    ];
 
   constructor(private cdr: ChangeDetectorRef, private empleadoService: EmpleadosService,
     private catalogoCapacitacionesService: CatalogoCapacitacionService,
@@ -73,18 +97,27 @@ export class ProgramarCapacitacionesComponent implements OnInit{
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,
     private fb: FormBuilder,
-    private _dialogRef: MatDialogRef<ProgramarCapacitacionesComponent>,
+    public messageService: MessageService
+    //private _dialogRef: MatDialogRef<ProgramarCapacitacionesComponent>,
   ){
+    
     this.minDate = new Date();
 
     this.employeeForm = this.fb.group({
       
       //Informacion Laboral
       // Define otros controles de formulario aquí
-      Fecha: [''],
-      HoraInicio:[''],
-      NombreCapacitacion:[''],
-      Imparte:['']
+      NombreCapacitacion:['', Validators.required],
+      Origen:['', Validators.required],
+      Frecuencia:['', Validators.required],
+      FechaInicio: ['', Validators.required],
+      FechaFin: [''],
+      HoraInicio: [''],
+      HoraFin: [''],
+      //HoraInicio:[''],
+      Imparte:[''],
+      Comentarios:[''],
+      Color:['']
     });
   }
 
@@ -107,19 +140,14 @@ export class ProgramarCapacitacionesComponent implements OnInit{
 
  
   ngOnInit(): void {
-    this.es = {
-      firstDayOfWeek: 1,
-      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
-      dayNamesMin: ["D","L","M","M","J","V","S"],
-      monthNames: ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],
-      monthNamesShort: ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"],
-      today: 'Hoy',
-      clear: 'Borrar'
-    };
 
-    this._adapter.setLocale('es-ES');
-    this.updateCloseButtonLabel('Cerrar el calendario');
+    this.employeeForm.get('Frecuencia')?.valueChanges.subscribe(value => {
+      this.selectedFrecuencia = value;
+      this.updateFechaFieldsVisibility();
+    });
+    this.updateFechaFieldsVisibility();
+
+
 
     this.catalogoCapacitacionesService.getCatalogoCapacitaciones().subscribe({
       next: (data) => {
@@ -162,6 +190,13 @@ this.NombreCapacitaciones=[];
     });
     this.targetEmpleados = [];
   }
+
+  updateFechaFieldsVisibility() {
+    if (this.selectedFrecuencia === 'Diaria') {
+      this.employeeForm.get('FechaFin')?.reset();
+    }
+  }
+
 
 
   updateCloseButtonLabel(label: string) {
@@ -208,15 +243,16 @@ this.employeeForm.patchValue({
 
 console.log(this.employeeForm.value);
 
+/*
 this.empleadoService.postIngreso(this.employeeForm.value).subscribe({
   next: (resp: any) => {
    // alert('Se ha cerrado');
-    this._dialogRef.close(true);
+    //this._dialogRef.close(true);
 },
 error: (err: any) => {
     console.error('Error: ' + err);
 }
-});
+});*/
 
 /*
 this.targetEmpleados.forEach(empleado => {
@@ -224,6 +260,47 @@ this.targetEmpleados.forEach(empleado => {
     NoNomina: empleado.NoNomina
   });
   
+
+  console.log(`NoNominaEmpleado: ${empleado.NoNomina}`);
+  // Puedes realizar otras operaciones aquí
+});*/
+
+if(this.employeeForm.value.Origen == 'Interna'){
+  this.employeeForm.patchValue({
+    Color: '#00943e'
+  });
+  
+}else{
+  this.employeeForm.patchValue({
+    Color: '#388ec7'
+  });
+}
+if(this.employeeForm.value.HoraInicio == ''){
+  this.employeeForm.patchValue({
+    HoraInicio: null
+  });
+};
+if(this.employeeForm.value.HoraFin == ''){
+  this.employeeForm.patchValue({
+    HoraFin: null
+  });
+};
+//if(this.employeeForm.value.HoraInicio == ''){}
+
+console.log(this.employeeForm.value);
+this.catalogoCapacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
+  next: (resp: any) => {
+    window.alert('Agregado con exito');
+    //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+    this.limpiar();
+},
+error: (err: any) => {
+    console.error('Error: ' + err);
+    window.alert(err);
+}
+});
+
+    /*
   this.empleadoService.postIngreso(this.employeeForm.value).subscribe({
     next: (resp: any) => {
       window.alert('exito'+resp);
@@ -232,23 +309,23 @@ this.targetEmpleados.forEach(empleado => {
   error: (err: any) => {
       console.error('Error: ' + err);
   }
-  });
-
-  console.log(`NoNominaEmpleado: ${empleado.NoNomina}`);
-  // Puedes realizar otras operaciones aquí
-});
-    */
+  });*/
     
 
   }
 
 limpiar(){
   this.employeeForm.reset({
-    Ingreso: null,
-      HoraInicio:null,
-      HoraFin:null,
-      NombreCapacitacion:''
-
+    NombreCapacitacion:'',
+      Origen:'',
+      Frecuencia:'',
+      FechaInicio: null,
+      FechaFin: null,
+      HoraInicio: null,
+      HoraFin: null,
+      //HoraInicio:[''],
+      Imparte:'',
+      Comentarios:''
   });
 }
 

@@ -1,46 +1,160 @@
+<p-card>
+
+  
+  <div style="display: flex; justify-content: flex-start;">
+    <button [routerLink]="['/system/consultarcapacitaciones']" class="agregar"
+    mat-raised-button 
+    color="accent">
+    <mat-icon>keyboard_return</mat-icon>Regresar Calendario
+  </button>
+  </div>
+</p-card>
 
 
-<mat-card class="container">
+
+
     <div class="form-section">
-        
-      <h2>Formulario Nueva Programación</h2>
+      
+      <p-card>
+        <h2>Formulario Nueva Programación</h2>
   
-      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-        
-
-        <div class="form-group">
-          <div class="small-calendar">
-            <p-calendar 
-              inputId="calendar-12h" 
-              [(ngModel)]="datetime12h" 
-              [showTime]="true" 
-              [hourFormat]="'12'"
-              formControlName="Fecha"
-              [minDate]="minDate"
-            ></p-calendar>
-          </div>
+        <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
   
-          <mat-form-field appearance="outline">
-            <mat-label>Capacitaciones</mat-label>
-            <input type="text"
-                   matInput
-                   [(ngModel)]="capacitacionesFiltrada"
-                   (ngModelChange)="filterCapacitaciones()"
-                   formControlName="NombreCapacitacion"
-                   [matAutocomplete]="autoCapacitacionesSolicitadas">
-            <mat-autocomplete #autoCapacitacionesSolicitadas="matAutocomplete">
-              <mat-option *ngFor="let capacitacion of capacitacionesFiltradas" [value]="capacitacion.NombreCapacitacion">
-                {{ capacitacion.NombreCapacitacion }}
-              </mat-option>
-            </mat-autocomplete>
+          
+  
+          <mat-form-field class="form-field" appearance="fill" color="primary">
+            <mat-label>Nombre Capacitacion</mat-label>
+            <input matInput formControlName="NombreCapacitacion">
           </mat-form-field>
-
+         
+  
+        <mat-form-field class="form-field" appearance="fill" color="primary">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="Origen">
+              <mat-option *ngFor="let val of origen" [value]="val">{{val}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+  
+      
+      <mat-form-field class="form-field" appearance="fill" color="primary">
+        <mat-label>Frecuencia</mat-label>
+        <mat-select formControlName="Frecuencia">
+            <mat-option *ngFor="let val of frecuencias" [value]="val">{{val}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+  
+        <!--<mat-form-field appearance="outline">
+          <mat-label>Capacitaciones</mat-label>
+          <input type="text"
+                 matInput
+                 [(ngModel)]="capacitacionesFiltrada"
+                 (ngModelChange)="filterCapacitaciones()"
+                 formControlName="NombreCapacitacion"
+                 [matAutocomplete]="autoCapacitacionesSolicitadas">
+          <mat-autocomplete #autoCapacitacionesSolicitadas="matAutocomplete">
+            <mat-option *ngFor="let capacitacion of capacitacionesFiltradas" [value]="capacitacion.NombreCapacitacion">
+              {{ capacitacion.NombreCapacitacion }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>-->
+  
+          <p-splitter [style]="{ height: '400px' }" styleClass="mb-5">
+            <ng-template pTemplate>
+                <div class="col flex align-items-center justify-content-center">
+                    
+                  <div class="small-calendar">
+                    <label for="fechaInicio" class="font-bold block mb-2">Fecha Inicio</label> 
+                    <p-calendar [inline]="true" inputId="fechaInicio" formControlName="FechaInicio" 
+                    dateFormat="dd/mm/yy" [minDate]="hoy" [(ngModel)]="fechaStart"></p-calendar>
+                    
+                  </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate>
+              
+  
+                <div class="col flex align-items-center justify-content-center">
+  
+  
+                  <div class="small-calendar" *ngIf="selectedFrecuencia !== 'Diaria'">
+                    <label for="fechaFin" class="font-bold block mb-2"> Fecha Fin </label>
+                    <p-calendar [inline]="true" inputId="fechaFin" formControlName="FechaFin" 
+                  dateFormat="dd/mm/yy" [minDate]="fechaStart" />
+                  </div>
+  
+                  <div class="small-calendar" *ngIf="selectedFrecuencia === 'Diaria'">
+                    <label for="calendar-timeonly" class="font-bold block mb-2"> Hora Inicio </label>
+                    <p-calendar 
+                    [hourFormat]="'12'" 
+            inputId="calendar-timeonly" 
+            [timeOnly]="true" formControlName="HoraInicio"/>
+                  </div>
+          
+                  <div class="small-calendar" *ngIf="selectedFrecuencia === 'Diaria'">
+                    <label for="calendar-time" class="font-bold block mb-2"> Hora Fin </label>
+                    <p-calendar 
+                    [hourFormat]="'12'" 
+            inputId="calendar-time" 
+            [timeOnly]="true" formControlName="HoraFin"/>
+                  </div>
+          
+  
+                </div>
+            </ng-template>
+        </p-splitter>
+  
+          
+  
+  
+          
+  
   
           <mat-form-field appearance="outline">
             <mat-label>Persona que Imparte</mat-label>
             <input matInput formControlName="Imparte">
           </mat-form-field>
-        </div>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Comentarios *Opcional</mat-label>
+            <input matInput formControlName="Comentarios">
+          </mat-form-field>
+  
+  
+          <button class="buton1" mat-raised-button color="primary" type="submit">Guardar</button>
+  
+      </form> 
+
+      </p-card>
+        
+ 
+    </div>
+    
+
+        <!--<p-calendar 
+              class="max-w-full" 
+              [inline]="true" 
+              [showWeek]="true"
+              formControlName="Fecha"
+              dateFormat="dd/mm/yy" 
+              [(ngModel)]="datetime12h" />-
+
+        
+
+          
+          
+
+
+           
+              
+            </div>
+
+            
+          
+  
+         
+
+  
+          
   
         <br><br>
         
@@ -51,7 +165,7 @@
       </form>
     </div>
   </mat-card>
-  
+-->
 <!--
 <div class="card flex justify-content-center">
     <p-colorPicker 

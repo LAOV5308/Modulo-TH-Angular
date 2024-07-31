@@ -17,6 +17,8 @@ export class AuthService {
 
   
   private apiUrl = 'http://localhost:3000/usuarios';
+  
+  //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/usuarios';
 
   constructor(private http: HttpClient, private router: Router) { 
 

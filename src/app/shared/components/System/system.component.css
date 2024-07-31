@@ -1,3 +1,12 @@
+/* styles.css o styles.scss */
+.custom-sidebar {
+  background-color: #36b3a0 !important;
+}
+
+.text-custom-color {
+  color: #36b3a0;
+}
+
 /*.custom-jumbotron {
     margin: 20px;
     padding: 20px;

@@ -16,10 +16,11 @@ router.get('/', async (req, res) => {
     }
 });
 
+//Falta Filrtrar
 router.get('/programacionactive', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('select * from V_CapacitacionesProgramadasActivas');
+        const result = await sql.query('select * from tblProgramacionCapacitacion where IdEstadoProgramacionCapacitacion=1');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener la programacion de Capacitaciones');
@@ -50,7 +51,7 @@ router.get('/programacionall/:id', async (req, res) => {
     
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('select * from V_CapacitacionesProgramadasAll where IdProgramacionFecha = '+id);
+        const result = await sql.query('select * from tblProgramacionCapacitacion where IdEstadoProgramacionCapacitacion=1 and IdProgramacionCapacitacion = '+id);
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener la programacion de Capacitaciones');
@@ -66,7 +67,7 @@ router.delete('/programacionactive/:id', async (req, res) => {
     try {
         const pool = await getConnection();
         const request = pool.request();
-        request.input('IdProgramacionFecha', sql.Int, id);
+        request.input('IdProgramacionCapacitacion', sql.Int, id);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_programarcapacitacion_delete');
         //const result = await request.execute('stp_prueba_add');
@@ -84,7 +85,7 @@ router.get('/programaciones/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('select * from V_SuscripcionCapacitaciones where IdProgramacionFecha = '+id);
+        const result = await sql.query('select * from V_SuscripcionCapacitaciones where IdProgramacionCapacitacion = '+id);
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener la programacion de Capacitaciones');
@@ -95,15 +96,16 @@ router.get('/calificaciones/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('select * from V_Calificaciones where IdProgramacionFecha = '+id);
+        const result = await sql.query('select * from V_Calificaciones where IdProgramacionCapacitacion = '+id);
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener las calificaciones');
     }
 });
 
+
 router.post('/programaciones/', async (req, res) => {
-    const { NoNomina, IdProgramacionFecha
+    const { NoNomina, IdProgramacionCapacitacion
      } = req.body;
 
     try {
@@ -111,7 +113,7 @@ router.post('/programaciones/', async (req, res) => {
         const request = pool.request();
         ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
         request.input('NoNomina', sql.Int, NoNomina);
-        request.input('IdProgramacionFecha', sql.Int, IdProgramacionFecha);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_suscripcioncapacitacion_add');
         //const result = await request.execute('stp_prueba_add');
@@ -123,7 +125,7 @@ router.post('/programaciones/', async (req, res) => {
 });
 
 router.post('/evaluar/', async (req, res) => {
-    const { NoNomina, IdProgramacionFecha, Calificacion, Estatus, Asistio, Comentario
+    const { NoNomina, IdProgramacionCapacitacion, Calificacion, Estatus, Asistio, Comentario
      } = req.body;
 
     try {
@@ -131,7 +133,7 @@ router.post('/evaluar/', async (req, res) => {
         const request = pool.request();
         ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
         request.input('NoNomina', sql.Int, NoNomina);
-        request.input('IdProgramacionFecha', sql.Int, IdProgramacionFecha);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
         request.input('Calificacion', sql.Decimal, Calificacion);
         request.input('Estatus', sql.Bit, Estatus);
         request.input('Asistio', sql.Bit, Asistio);
@@ -172,9 +174,11 @@ router.get('/single/:id', async (req, res) => {
 
 
 //Guardar Una Nueva Capacitacion en el catalogo
+//AQUI NOS QUEDAMOS CON AGREGAR COLOR
+
 router.post('/', async (req, res) => {
-    const { NombreCapacitacion, Origen, Estatus, 
-        TipoCapacitacion, Duracion, Color
+    const { NombreCapacitacion, Origen, Frecuencia, FechaInicio,
+        FechaFin, HoraInicio, HoraFin, Imparte, Comentarios, Color
      } = req.body;
 
     try {
@@ -183,16 +187,20 @@ router.post('/', async (req, res) => {
         ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
         request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
         request.input('Origen', sql.VarChar, Origen);
-        request.input('Estatus', sql.VarChar, Estatus);
-        request.input('TipoCapacitacion', sql.VarChar, TipoCapacitacion);
-        request.input('Duracion', sql.Decimal, Duracion);
+        request.input('Frecuencia', sql.VarChar, Frecuencia);
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        request.input('HoraInicio', HoraInicio);
+        request.input('HoraFin', HoraFin);
+        request.input('PersonaImparte', sql.VarChar, Imparte);
+        request.input('Comentarios', sql.VarChar, Comentarios);
         request.input('Color', sql.VarChar, Color);
         // Ejecutar el procedimiento almacenado
-        const result = await request.execute('stp_capacitacionnombre_add');
+        const result = await request.execute('stp_programacioncapacitacion_add');
         //const result = await request.execute('stp_prueba_add');
         res.status(201).json({ message: "Agregado al catalogo de Capacitaciones con éxito" });
     } catch (err) {
-        res.status(500).json({ message: 'Error al agregar al catalogo: ' + err.message });
+        res.status(500).json({ message: 'Error al agregar al programar Capacitacion: ' + err.message });
     }
     
 });

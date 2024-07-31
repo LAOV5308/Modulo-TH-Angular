@@ -1,0 +1,20 @@
+<p-card>
+
+  <!--<p-menubar [model]="items1" />-->
+  
+  <div style="text-align: center">
+      <button [routerLink]="['/system/agregarvacacion']" class="agregar"
+  mat-raised-button 
+  color = "primary"
+  type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
+  </button>
+  </div>
+
+
+</p-card>
+<div>
+  <h1 style="color: rgb(0, 145, 255);"><strong>Calendario de Vacaciones</strong></h1>
+  <div id="calendar-container" class="full-calendar-md" style="width: 40%;">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+</div>

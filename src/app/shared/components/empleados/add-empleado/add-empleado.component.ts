@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import { HttpClientModule} from '@angular/common/http';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 
 import 'moment/locale/fr';
@@ -34,10 +34,14 @@ import { DepartamentosService } from '../../../../../../backend/ConexionDB/depar
 import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
 import { MensajeGuardarEmpleadoComponent } from '../messages/mensaje-guardar-empleado/mensaje-guardar-empleado.component';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FormsModule} from '@angular/forms';
 import { estados, estados1, estadosConCiudades } from '../../../recursos/estados';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { CardModule } from 'primeng/card';
+
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -55,6 +59,7 @@ export const MY_DATE_FORMATS = {
   selector: 'app-add-empleado',
   standalone: true,
   imports: [
+    ToastModule,
     MatFormFieldModule,
     MatDialogModule,
     MatDialogModule,
@@ -70,10 +75,12 @@ export const MY_DATE_FORMATS = {
     HeaderComponent,
     CommonModule,
     HttpClientModule,
-    MatIcon,
     MensajeGuardarEmpleadoComponent,
     MatCheckboxModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
+    MatIconModule,
+    CardModule
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -91,7 +98,7 @@ export class AddEmpleadoComponent implements OnInit {
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
   puestos: Puesto[] = [];
-  empleados: Empleado[] = [];
+  empleadosAdd: Empleado[] = [];
   filteredPuestos: Puesto[] = [];
   edad: number=0;
   enter: boolean=true;
@@ -162,7 +169,7 @@ export class AddEmpleadoComponent implements OnInit {
     private _coreService: CoreService,
     private _puestosService: PuestosService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router, private messageService: MessageService
   ) { 
     
     this.employeeForm = this.fb.group({
@@ -292,7 +299,7 @@ export class AddEmpleadoComponent implements OnInit {
 
     this._empleadosService.getEmpleadosAll().subscribe({
       next: (empleados) => {
-        this.empleados = empleados;
+        this.empleadosAdd = empleados;
       },
       error: (error) => {
         console.error('Error al cargar los empleados', error);
@@ -328,7 +335,7 @@ export class AddEmpleadoComponent implements OnInit {
 
 
           this.enter = true;
-        this.empleados.forEach(element => {
+        this.empleadosAdd.forEach(element => {
         if(element.NoNomina == this.employeeForm.value.NoNomina){
         this.enter = false;
       }
@@ -385,9 +392,10 @@ export class AddEmpleadoComponent implements OnInit {
           console.log(this.employeeForm.value);
           this._empleadosService.addEmpleados(this.employeeForm.value).subscribe({
             next: (resp: any) => {
-                this._coreService.openSnackBar('Empleado Agregado Satisfactoriamente  *o*', resp);
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empleado Agregado Satisfactoriamente  *o*' });
+                //this._coreService.openSnackBar('Empleado Agregado Satisfactoriamente  *o*', resp);
                 this.limpiarCampos();
-                this.router.navigate(['/system/empleados']);
+                //this.router.navigate(['/system/empleados']);
 
             },
             error: (err: any) => {
@@ -397,7 +405,8 @@ export class AddEmpleadoComponent implements OnInit {
         });
 
     }else{
-      this._coreService.openSnackBar('Numero De Nomina ya Existente');
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Numero De Nomina ya Existe' });
+      
     }
 
           // Aquí puedes agregar la lógica para manejar el cierre de sesión

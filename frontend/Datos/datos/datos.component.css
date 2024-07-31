@@ -36,3 +36,57 @@ th.mat-header-cell, td.mat-cell {
     background-color: #ba3bd0; /* Cambia esto al color que desees */
     color: white; /* Cambia esto al color del texto que desees */
   }
+
+
+  mat-form-field {
+    width: 100%;
+  }
+  
+  @media (min-width: 600px) {
+    mat-form-field {
+      width: 30%;
+      margin-right: 2%;
+    }
+
+  }
+  
+  button {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+
+  }
+  
+  mat-card{
+    background-color: aliceblue;
+
+  }
+  h2{
+    color: #00823b;
+    background-color: lightcyan;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  h1{
+    color: #005782;
+    padding-top: 10px;
+    padding-left: 20px;
+  }
+  mat-icon{
+    color: black;
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+
+  .edad-empleado {
+    font-size: 16px;
+    color: #3f51b5; /* Color accent de Angular Material */
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    display: flex;
+  }
+
+  .center{
+    text-align: center;
+  }

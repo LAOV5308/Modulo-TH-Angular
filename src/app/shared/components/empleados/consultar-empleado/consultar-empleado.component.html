@@ -107,7 +107,13 @@
 </ng-container>-->
 
 
-
+<div style="display: flex; justify-content: flex-start;">
+  <button [routerLink]="['/system/empleados']" class="agregar"
+  mat-raised-button 
+  color="primary">
+  <mat-icon>keyboard_return</mat-icon>Regresar
+</button>
+</div>
 
 
 <ng-container *ngIf="empleado.length > 0">
