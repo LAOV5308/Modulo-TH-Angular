@@ -1,0 +1,146 @@
+<p-toast />
+<div>
+    <h1 class="title"><strong>Consultar Historial</strong></h1>
+</div>
+
+
+    <form [formGroup]="bajaForm">
+        <div class="form-container">
+        <div class="input-group">
+            <label for="NoNomina">No. Nomina: </label>
+            <input 
+            pInputText 
+            id="NoNomina"
+            type="number" formControlName="NoNomina"/>
+            
+            
+        </div>
+        <div class="input-group">
+            <p><strong>Nombre :</strong> {{Nombre}}</p>
+            
+        </div>
+        <div class="input-group">
+            <p><strong>Puesto Actual | Reciente :</strong> {{NombrePuesto}}</p>
+        </div>
+        <div class="input-group">
+            <p><strong>Departamento Actual | Reciente :</strong> {{NombreDepartamento}}</p>
+        </div>
+    </div>
+
+    </form>
+   
+
+
+<div style="padding-top: 10px;">
+
+    <mat-tab-group color="primary">
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon>work_off</mat-icon>
+              Vacaciones
+            </ng-template>
+            <div class="example-large-box mat-elevation-z4">
+                
+              </div>
+
+          </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>recent_actors</mat-icon>
+                Cambios Puestos
+              </ng-template>
+              <div class="example-large-box mat-elevation-z4">
+
+                <div *ngIf="bajas.length>0">
+                    <p-table [value]="bajas" [tableStyle]="{ 'min-width': '50rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>IdBaja</th>
+                                <th>No. Nomina</th>
+                                <th>Nombre</th>
+                                <th>Puesto</th>
+                                <th>Departamento</th>
+                                <th>Responsable</th>
+                                <th>Fecha Ingreso</th>
+                                <th>Fecha Salida</th>
+                                <th>Antiguedad</th>
+    
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-baja>
+                            <tr>
+                                <td>{{baja.IdBaja}}</td>
+                                <td>{{baja.NoNomina}}</td>
+                                <td>{{baja.Nombre + ' '+baja.Apellidos}}</td>
+                                <td>{{baja.NombrePuesto}}</td>
+                                <td>{{baja.NombreDepartamento}}</td>
+                                <td>{{baja.NombreResponsable}}</td>
+                                <td>{{addOneDay(baja.FechaIngreso) | date:'dd-MM-yyyy' }}</td>
+                                <td>{{addOneDay(baja.FechaSalida) | date:'dd-MM-yyyy' }}</td>
+                                <td>{{baja.Antiguedad}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <div *ngIf="bajas.length==0" style="color: brown;">
+                    <h2>No Existen Registros</h2>
+                </div>
+                
+
+
+                </div>
+        </mat-tab>
+        <mat-tab> 
+            <ng-template mat-tab-label>
+                <mat-icon> insert_chart</mat-icon>
+                Incidencias
+              </ng-template>
+              <div class="example-large-box mat-elevation-z4">
+                <div *ngIf="incidencias.length>0">
+                    <p-table [value]="incidencias" [tableStyle]="{ 'min-width': '50rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>IdIncidencia</th>
+                                <th>No. Nomina</th>
+                                <th>Nombre</th>
+                                <th>Puesto</th>
+                                <th>Departamento</th>
+                                <th>Responsable</th>
+                                <th>Motivo</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Dias</th>
+    
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-baja>
+                            <tr>
+                                <td>{{baja.IdIncidencias}}</td>
+                                <td>{{baja.NoNomina}}</td>
+                                <td>{{baja.Nombre + ' '+baja.Apellidos}}</td>
+                                <td>{{baja.NombrePuesto}}</td>
+                                <td>{{baja.NombreDepartamento}}</td>
+                                <td>{{baja.NombreResponsable}}</td>
+                                <td>{{baja.Motivo}}</td>
+                                <td>{{addOneDay(baja.FechaInicio) | date:'dd-MM-yyyy' }}</td>
+                                <td>{{addOneDay(baja.FechaFin) | date:'dd-MM-yyyy' }}</td>
+                                <td>{{baja.DiasSubsidios}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <div *ngIf="incidencias.length==0" style="color: brown;">
+                    <h2>No Existen Registros</h2>
+                </div>
+                  
+
+
+
+                </div>
+        </mat-tab>
+      </mat-tab-group>
+      
+
+</div>
+
+  

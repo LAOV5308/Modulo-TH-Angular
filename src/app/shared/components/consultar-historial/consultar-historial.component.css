@@ -1,0 +1,24 @@
+.title {
+    color: rgb(52, 159, 163);
+    text-align: center;
+    padding-top: 10px;
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.input-group {
+    padding-right: 10px;
+}
+
+p-iconField {
+    display: flex;
+    align-items: center;
+}
+
+p-inputIcon {
+    margin-right: 5px;
+}

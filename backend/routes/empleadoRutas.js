@@ -277,17 +277,15 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar el empleado: ' + err.message });
     }
     
+
 });
 
+
 router.put('/bajas/:id', async (req, res) => {
-
     const { id } = req.params;
-
     const { 
         FechaSalida, TipoBaja, Finiquito, FechaInicio, FechaFin
     } = req.body;
-
-
     try {
         const pool = await getConnection();
         const request = pool.request();
@@ -305,13 +303,13 @@ router.put('/bajas/:id', async (req, res) => {
         const result = await request.execute('stp_baja_add');
         //const result = await request.execute('stp_prueba_add');
         res.status(201).json({ message: "Empleado Dado De Baja Con exito" });
-
-
     } catch (err) {
         res.status(500).json({ message: 'Error al dar de baja empleado: ' + err.message });
     }
     
 });
+
+
 
 
 ///Capacitaciones

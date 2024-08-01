@@ -9,6 +9,7 @@ const capacitacionesRutas = require('./backend/routes/capacitacionesRutas')
 const usuariosRutas = require('./backend/routes/usuariosRutas');
 const solicitudesRutas = require('./backend/routes/solicitudesRutas');
 const vacacionesRutas = require('./backend/routes/vacacionesRutas');
+const bajasRutas = require('./backend/routes/bajasRutas')
 
 const {sql, getConnection}= require('./backend/ConexionDB/dbConfig');
 const port = 3000;
@@ -40,6 +41,7 @@ app.use('/capacitaciones', capacitacionesRutas);
 app.use('/usuarios', usuariosRutas);
 app.use('/solicitudes', solicitudesRutas);
 app.use('/vacaciones', vacacionesRutas);
+app.use('/bajas', bajasRutas);
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
