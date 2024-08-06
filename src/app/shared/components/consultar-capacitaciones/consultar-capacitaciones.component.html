@@ -138,23 +138,18 @@ header="Header"
     [style]="{ height: '800px' }" 
     styleClass="mb-5">
     <ng-template pTemplate>
-        
         <div class="col flex align-items-center justify-content-center">
             <div id="calendar-container" class="full-calendar-md">
               <full-calendar [options]="calendarOptions"></full-calendar>
             </div>
           </div>
-          
-          
-          
     </ng-template>
     <ng-template pTemplate>
         <div class="">
-
             <h1>Descripción de la Capacitación</h1>
             
-
 <ng-container *ngIf="programacionConsulta.length > 0">
+
     <button *ngIf="!eval"
     class="agregarempleado"
     mat-raised-button 
@@ -175,13 +170,24 @@ header="Header"
     </button>
 
     
-        <button class="consultarCalificaciones"
-        mat-raised-button (click)="calificacionesMostrar()" *ngIf="eval"
-        ><mat-icon>assignment</mat-icon>Calificaciones
-        </button>
-    
-    
+    <button class="consultarCalificaciones"
+    mat-raised-button (click)="calificacionesMostrar()" *ngIf="eval && !verificacion"
+    ><mat-icon>assignment</mat-icon>Calificaciones
+    </button>
 
+    <button class="consultarCalificaciones"
+    mat-raised-button *ngIf="verificacion"
+    ><mat-icon>assignment</mat-icon>Asistencia
+    </button>
+
+    <button *ngIf="!eval"
+    class="agregarempleado"
+    mat-raised-button 
+    style="background-color: cadetblue;"
+    (click)="asignar()"
+    ><mat-icon>edit</mat-icon>Editar Capacitacion
+    </button>
+    
 
     <mat-card class="employee-card">
       <mat-card-header>
@@ -260,25 +266,28 @@ header="Header"
             <th>Nombre</th>
             <th>NombrePuesto</th>
             <th>NombreDepartamento</th>
-            <th>Acciones</th>
+            <th *ngIf="eval && !verificacion">Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-empleado>
             <tr>
+
                 <td *ngIf="eval" > 
                     <p-checkbox 
                     [(ngModel)]="empleado.Asistencia" 
                     [binary]="true" 
                     variant="filled" 
-                    [disabled]="empleado.Evaluado"
+                    [disabled]="empleado.Asistencia"
+                    (onChange)="Asistencia(empleado.NoNomina)"
                     />
+
                 </td>
                 <td>{{empleado.NoNomina}}</td>
                 <td>{{empleado.Nombre + ' ' +empleado.Apellidos}}</td>
                 <td>{{empleado.NombrePuesto}}</td>
                 <td>{{empleado.NombreDepartamento}}</td>
                 <td>
-                    <p-button *ngIf="eval"
+                    <p-button *ngIf="eval && !verificacion"
                     pRipple 
                     icon="pi pi-clipboard" 
                     label="Evlr"

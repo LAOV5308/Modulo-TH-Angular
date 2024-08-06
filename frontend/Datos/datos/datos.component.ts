@@ -225,7 +225,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         //Apellidos: ['', Validators.required],
         Nombre:['', Validators.required],
         Apellidos:['', Validators.required],
-        Sexo:[''],
+        Sexo:['', Validators.required],
         EstadoCivil:[''],
         FechaNacimiento:[''],
         EntidadNacimiento:[''],

@@ -27,7 +27,7 @@ import { ConsultarCapacitacionesComponent } from './shared/components/consultar-
 import { VacacionesComponent } from './shared/components/vacaciones/vacaciones.component';
 import { VacacionaddComponent } from './shared/components/vacacionadd/vacacionadd.component';
 import { ConsultarHistorialComponent } from './shared/components/consultar-historial/consultar-historial.component';
-
+import { UpdateCapacitacionesComponent } from './shared/components/capacitaciones/update-capacitaciones/update-capacitaciones.component';
 
 
 export const routes: Routes = [
@@ -60,7 +60,9 @@ export const routes: Routes = [
             { path: 'solicitudes', component: DatosReclutamientoComponent},
             { path: 'consultarvacaciones', component: VacacionesComponent},
             {path: 'agregarvacacion', component: VacacionaddComponent},
-            {path: 'historial', component: ConsultarHistorialComponent}
+            {path: 'historial', component: ConsultarHistorialComponent},
+            {path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent}
+
         ]
      },
      

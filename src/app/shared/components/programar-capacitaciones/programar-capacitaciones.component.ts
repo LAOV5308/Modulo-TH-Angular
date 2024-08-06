@@ -1,5 +1,5 @@
 import { Component , ChangeDetectorRef, OnInit, Inject} from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgModelGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { PickListModule } from 'primeng/picklist';
 import { Empleado } from '../../../../../backend/models/empleado.model';
@@ -33,8 +33,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
-
-
+import {MatCheckboxModule} from '@angular/material/checkbox'
 registerLocaleData(localeEs);
 
 interface AutoCompleteCompleteEvent {
@@ -49,7 +48,7 @@ interface AutoCompleteCompleteEvent {
   imports: [FormsModule, CalendarModule, PickListModule,
     MatFormFieldModule, MatInputModule, MatDatepickerModule, MatButtonModule, ReactiveFormsModule,
     MatAutocompleteModule, NgFor, NgIf, NgForOf, MatOption, MatCardModule, NgxMaterialTimepickerModule, AutoCompleteModule, ColorPickerModule,
-    RadioButtonModule, MatSelectModule, CardModule, SplitterModule, MatIconModule, RouterLink
+    RadioButtonModule, MatSelectModule, CardModule, SplitterModule, MatIconModule, RouterLink, MatCheckboxModule
   ],
   providers:[EmpleadosService, MessageService,
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
@@ -79,6 +78,7 @@ export class ProgramarCapacitacionesComponent implements OnInit{
 
     filteredCapacitaciones!: any[];
     selectedFrecuencia: string = 'Diaria';
+    checked: boolean = false;
 
 
     frecuencias: string[]=[
@@ -107,6 +107,9 @@ export class ProgramarCapacitacionesComponent implements OnInit{
       
       //Informacion Laboral
       // Define otros controles de formulario aquí
+      
+      Color:['', Validators.required],
+      Evaluacion:[''],
       NombreCapacitacion:['', Validators.required],
       Origen:['', Validators.required],
       Frecuencia:['', Validators.required],
@@ -114,10 +117,9 @@ export class ProgramarCapacitacionesComponent implements OnInit{
       FechaFin: [''],
       HoraInicio: [''],
       HoraFin: [''],
-      //HoraInicio:[''],
-      Imparte:[''],
+      PersonaImparte:[''],
       Comentarios:[''],
-      Color:['']
+      
     });
   }
 
@@ -265,6 +267,7 @@ this.targetEmpleados.forEach(empleado => {
   // Puedes realizar otras operaciones aquí
 });*/
 
+/*
 if(this.employeeForm.value.Origen == 'Interna'){
   this.employeeForm.patchValue({
     Color: '#00943e'
@@ -274,7 +277,13 @@ if(this.employeeForm.value.Origen == 'Interna'){
   this.employeeForm.patchValue({
     Color: '#388ec7'
   });
-}
+}*/
+
+/*if(this.employeeForm.value.Evaluacion == ''){
+  
+}*/
+
+
 if(this.employeeForm.value.HoraInicio == ''){
   this.employeeForm.patchValue({
     HoraInicio: null

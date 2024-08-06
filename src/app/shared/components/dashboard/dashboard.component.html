@@ -2,19 +2,36 @@
 <div class="dashboard-container">
     <mat-card>
       <mat-card-header>
-        <mat-card-title>Bajas</mat-card-title>
+        <mat-card-title>Empleados</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <canvas baseChart
+
+        <div class="form-container">
+          <div class="separacion"> 
+            <i class="pi pi-user" style="font-size: 5rem; color: #50b8c5"> {{Masculino}} </i>
+            <p style="color: #50b8c5;">Masculinos</p>
+          </div>
+          
+          <div class="separacion"> 
+            <i class="pi pi-user" style="font-size: 5rem; color: #be70e6">{{Femenino}} </i>
+            <p style="color: #be70e6;">Femeninos</p>
+          </div>
+          
+        </div>
+        <br>
+
+      <p-meterGroup [value]="value">
+      </p-meterGroup>
+
+      <br>
+
+    <!--  <canvas baseChart
               [datasets]="barChartData"
               [labels]="barChartLabels"
               [options]="barChartOptions"
               [legend]="barChartLegend"
               [type]="barChartType">
-      </canvas>
-
-      <p-meterGroup [value]="value">
-      </p-meterGroup>
+      </canvas>-->
       
       </mat-card-content>
     </mat-card>

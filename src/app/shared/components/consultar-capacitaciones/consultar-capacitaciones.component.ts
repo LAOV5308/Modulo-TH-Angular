@@ -1,4 +1,4 @@
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule, NgFor, NumberSymbol } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
@@ -103,10 +103,11 @@ export class ConsultarCapacitacionesComponent implements OnInit, AfterViewInit{
  NoNominaEvaluar!: number;
  cols!: Column[];
  exportColumns!: ExportColumn[];
-idProgramacionFecha: number = 0;
+idProgramacionFecha!: number;
 validarDuplicidad: number[]=[];
 suscripcionForm: FormGroup;
 evaluarForm: FormGroup;
+asistenciaForm: FormGroup;
 calificacionEmpleado: number =0;
 comentario!: string;
 eval: boolean= true;
@@ -125,6 +126,8 @@ items1: MenuItem[] | undefined;
 selectedOrigen!: Origenes;
 selectedFrecuencia!: Frecuencias;
 fechaDate!:Date;
+verificacion: boolean = false;
+asistenciadata: any[]=[];
 
 origenes: Origenes[] = [
   { label: 'Interna', value: 'Interna' },
@@ -152,6 +155,13 @@ orig: string[] = [
       NoNomina:[],
     IdProgramacionCapacitacion:[]
     });
+
+    this.asistenciaForm = this.fb.group({
+      
+    IdProgramacionCapacitacion:[],
+      NoNomina:[]
+    });
+
 
     this.evaluarForm = this.fb.group({
       NoNomina:[],
@@ -247,7 +257,7 @@ orig: string[] = [
       next: (data) => {
         this.capacitacionesprogramadas = data;
         console.log('data');
-        console.log(data);
+        console.log(this.capacitacionesprogramadas);
         this.updateCalendarEvents();
         
       },
@@ -394,8 +404,6 @@ convertirFechaATiempo(fechaISO: string): string {
         { title: 'Capacitacion 4', date: '2024-07-02'}
       ]*/
 
-
-
   handleDateClick(arg: any) {
     if(arg.event!=undefined){
      // alert('date click! ' + arg.event);
@@ -432,16 +440,20 @@ convertirFechaATiempo(fechaISO: string): string {
     }); */
     
     this.idProgramacionFecha = clickInfo.event.id;
+
     console.log(this.idProgramacionFecha);
     this.consulta = false;
+    this.verificacion=false;
     this.programacionConsulta=[];
     this.calificaciones = [];
     //AQUI
     this.capacitacionesService.getsingleProgramacionCapacitacion(clickInfo.event.id).subscribe({
       next: (data) => {
         this.programacionConsulta = data;
-        console.log('Programacion Consulta');
-        console.log(data);
+
+        /*console.log('Programacion Consulta');
+        console.log(data);*/
+
         const today = new Date();
         
         if(this.programacionConsulta[0].FechaFin == null){
@@ -458,9 +470,17 @@ convertirFechaATiempo(fechaISO: string): string {
 //const day = today.getDate();
 if(this.fechaDate >= today){
   this.eval=false;
-  
 }else{
+
+  if(this.programacionConsulta[0].Evaluacion==true){
   this.eval=true;
+  }
+
+  else{
+    //Aqui una variable o Metodo para la parte de evalua
+    this.verificacion=true;
+  }
+
 }
       },
       error: (error) => {
@@ -712,7 +732,8 @@ if(evaluado){
   this.WEvaluar = true;
 }
 
-  /*
+  
+/*
 this.confirmationService.confirm({
       message: '¿La persona Asistio a la Capacitacion? '+ this.NoNominaEvaluar + 'IdFecha:'+this.idProgramacionFecha,
       header: 'Confirmación',
@@ -774,7 +795,15 @@ evaluarEmpleado(){
     });
 
   }
-
+  this.confirmationService.confirm({
+    message: '¿Quieres Evaluar a N.Nomina-'+ this.NoNominaEvaluar + ' con esta calificacion: '+this.calificacionEmpleado+'?',
+    header: 'Confirmación',
+    icon: 'pi pi-exclamation-triangle',
+    rejectButtonStyleClass: "p-button-text",
+    rejectLabel: 'No',
+    acceptLabel: 'Sí',
+    accept: () => {
+      
   try {
     this.capacitacionesService.addEvaluacion(this.evaluarForm.value).subscribe({
       next: (resp: any) => {
@@ -797,6 +826,15 @@ evaluarEmpleado(){
     console.log('Error', error);
     
   }
+
+    },
+    reject: () => {
+     
+    }
+})
+
+
+
   
   
 }
@@ -833,16 +871,30 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
   });*/
 }
 
-Asistencia(){
-  window.alert('Asistencia');
-}
+
  
 resetEvaluarForm(){
   this.calificacionEmpleado = 0;
   this.comentario = '';
 };
 
+Asistencia(NoNomina: Number){
+
+  
+  this.asistenciaForm.patchValue({
+    IdProgramacionCapacitacion: this.idProgramacionFecha,
+    NoNomina: NoNomina
+  });
 
 
+  this.capacitacionesService.addAsistencia(this.asistenciaForm.value).subscribe({
+    next: (resp: any) => {
+      this.messageService.add({ severity: 'success', summary: 'Asistencia', detail: 'Asistencia Agregada Exitosamente', life: 1500 });
+  },
+  error: (err: any) => {
+      console.error('Error: ' + err);
+  }
+  });
+}
 
 }

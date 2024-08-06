@@ -176,8 +176,6 @@
             <mat-datepicker #pickerfechanacimiento></mat-datepicker>
           </mat-form-field>  
 
-          
-
           <mat-form-field appearance="fill" color="primary">
             <mat-label>Entidad de Nacimiento</mat-label>
             <mat-select formControlName="EntidadNacimiento">
@@ -219,12 +217,10 @@
             </mat-select>
         </mat-form-field>
 
-         
-  
         <!-- Domicilio -->
         <h2>Información Domicilio</h2>
-        <!---
-        <mat-expansion-panel>
+
+        <!--- <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Domicilio
@@ -248,8 +244,6 @@
               <mat-option *ngFor="let value of estados1" [value]="value">{{ value }}</mat-option>
             </mat-select>
           </mat-form-field>
-
-
           <!--<mat-form-field appearance="fill" color="accent">
             <mat-label>CP</mat-label>
             <input type='number' matInput formControlName="CP" #inputcp maxlength="5">
@@ -312,6 +306,7 @@
               <mat-option *ngFor="let value of parentesco" [value]="value">{{ value }}</mat-option>
             </mat-select>
           </mat-form-field>
+
           <mat-form-field appearance="fill" color="primary">
             <mat-label>Fecha Nacimiento Beneficiario</mat-label>
             <input matInput [matDatepicker]="pickerfechanacimientobeneficiario" formControlName="FechaNacimientoBeneficiario">
@@ -328,13 +323,10 @@
           <!-- Agrega más campos aquí -->
   
         <!--</mat-expansion-panel>-->
-  
       <!--</mat-accordion>-->
   
       <button mat-raised-button color="primary" type="submit">Actualizar</button>
        <!--Le quite aqui lo del darle click-->
     </form>
   </mat-card-header>
-
   </mat-card>
-  

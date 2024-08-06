@@ -26,6 +26,7 @@ export interface CapacitacionProgramada {
   Comentarios: string;
   IdEstadoProgramacionCapacitacion: number;
   Color: string;
+  Evaluacion: boolean;
 }
 
 

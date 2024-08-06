@@ -1,1 +1,119 @@
-<p>update-capacitaciones works!</p>
+<p-card>
+    <div style="display: flex; justify-content: flex-start;">
+      <button [routerLink]="['/system/consultarcapacitaciones']" class="agregar"
+      mat-raised-button 
+      color="accent">
+      <mat-icon>keyboard_return</mat-icon>Regresar
+    </button>
+    </div>
+  </p-card>
+
+  <div class="form-section">
+    <p-card>
+      <h2>Formulario Nueva Programación</h2>
+
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+          <div style="margin: 0 10px; padding-bottom: 10px; padding-left: 15%; font-size: 14px;">
+            <label for="cp-hex" class="font-bold block mb-2">Elige El Color de la Capacitacion:</label>
+            <div style="text-align: center;">
+              <p-colorPicker formControlName="Color"></p-colorPicker>
+            </div>
+          </div>
+        
+          <div style="margin: 0 10px; padding-bottom: 7px; font-size: 14px; padding-right: 15%;">
+            <label for="ny" class="font-bold block mb-2">Capacitacion con Evaluación</label>
+            <div style="text-align: center;">
+              <mat-checkbox id="ny" color="primary" formControlName="Evaluacion"></mat-checkbox>
+            </div>
+          </div>
+        </div>
+        
+
+        <mat-form-field class="form-field" appearance="fill" color="primary">
+          <mat-label>Nombre Capacitacion</mat-label>
+          <input matInput formControlName="NombreCapacitacion">
+        </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="fill" color="primary">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="Origen">
+            <mat-option *ngFor="let val of origen" [value]="val">{{val}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    
+    <mat-form-field class="form-field" appearance="fill" color="primary">
+      <mat-label>Seleccion Dias</mat-label>
+      <mat-select formControlName="Frecuencia">
+          <mat-option *ngFor="let val of frecuencias" [value]="val">{{val}}</mat-option>
+      </mat-select>
+  </mat-form-field>
+
+
+        <p-splitter [style]="{ height: '400px' }" styleClass="mb-5">
+          <ng-template pTemplate>
+              <div class="col flex align-items-center justify-content-center">
+                  
+                <div class="small-calendar">
+                  <label for="fechaInicio" class="font-bold block mb-2">Fecha Inicio</label> 
+                  <p-calendar [inline]="true" inputId="fechaInicio" formControlName="FechaInicio" 
+                  dateFormat="dd/mm/yy" [minDate]="hoy" [(ngModel)]="fechaStart"></p-calendar>
+                  
+                </div>
+              </div>
+          </ng-template>
+          <ng-template pTemplate>
+            
+
+              <div class="col flex align-items-center justify-content-center">
+
+
+                <div class="small-calendar" *ngIf="selectedFrecuencia !== 'Diaria'">
+                  <label for="fechaFin" class="font-bold block mb-2"> Fecha Fin </label>
+                  <p-calendar [inline]="true" inputId="fechaFin" formControlName="FechaFin" 
+                dateFormat="dd/mm/yy" [minDate]="fechaStart" />
+                </div>
+
+                <div class="small-calendar" *ngIf="selectedFrecuencia === 'Diaria'">
+                  <label for="calendar-timeonly" class="font-bold block mb-2"> Hora Inicio </label>
+                  <p-calendar 
+                  [hourFormat]="'12'" 
+          inputId="calendar-timeonly" 
+          [timeOnly]="true" formControlName="HoraInicio"/>
+                </div>
+        
+                <div class="small-calendar" *ngIf="selectedFrecuencia === 'Diaria'">
+                  <label for="calendar-time" class="font-bold block mb-2"> Hora Fin </label>
+                  <p-calendar 
+                  [hourFormat]="'12'" 
+          inputId="calendar-time" 
+          [timeOnly]="true" formControlName="HoraFin"/>
+                </div>
+        
+
+              </div>
+          </ng-template>
+      </p-splitter>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Persona que Imparte</mat-label>
+          <input matInput formControlName="PersonaImparte">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Comentarios *Opcional</mat-label>
+          <input matInput formControlName="Comentarios">
+        </mat-form-field>
+        
+    
+        <button class="buton1" mat-raised-button color="primary" type="submit">Guardar</button>
+
+    </form> 
+
+    </p-card>
+      
+
+  </div>
+  

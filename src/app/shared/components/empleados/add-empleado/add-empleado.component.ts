@@ -194,7 +194,7 @@ export class AddEmpleadoComponent implements OnInit {
       //Apellidos: ['', Validators.required],
       Nombre:['', Validators.required],
       Apellidos:['', Validators.required],
-      Sexo:[''],
+      Sexo:['', Validators.required],
       EstadoCivil:[''],
       FechaNacimiento:[''],
       EntidadNacimiento:[''],

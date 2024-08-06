@@ -14,20 +14,37 @@
 
 
     <div class="form-section">
-      
       <p-card>
         <h2>Formulario Nueva Programación</h2>
   
         <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-  
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+            <div style="margin: 0 10px; padding-bottom: 10px; padding-left: 15%; font-size: 14px;">
+              <label for="cp-hex" class="font-bold block mb-2">Elige El Color de la Capacitacion:</label>
+              <div style="text-align: center;">
+                <p-colorPicker formControlName="Color"></p-colorPicker>
+              </div>
+            </div>
+          
+            <div style="margin: 0 10px; padding-bottom: 7px; font-size: 14px; padding-right: 15%;">
+              <label for="ny" class="font-bold block mb-2">Capacitacion con Evaluación</label>
+              <div style="text-align: center;">
+                <mat-checkbox id="ny" color="primary" formControlName="Evaluacion"></mat-checkbox>
+              </div>
+            </div>
+          </div>
           
   
           <mat-form-field class="form-field" appearance="fill" color="primary">
             <mat-label>Nombre Capacitacion</mat-label>
             <input matInput formControlName="NombreCapacitacion">
           </mat-form-field>
+
          
-  
+           
+
+            
         <mat-form-field class="form-field" appearance="fill" color="primary">
           <mat-label>Tipo</mat-label>
           <mat-select formControlName="Origen">
@@ -37,7 +54,7 @@
   
       
       <mat-form-field class="form-field" appearance="fill" color="primary">
-        <mat-label>Frecuencia</mat-label>
+        <mat-label>Seleccion Dias</mat-label>
         <mat-select formControlName="Frecuencia">
             <mat-option *ngFor="let val of frecuencias" [value]="val">{{val}}</mat-option>
         </mat-select>
@@ -104,20 +121,23 @@
         </p-splitter>
   
           
-  
+
+   
   
           
   
   
           <mat-form-field appearance="outline">
             <mat-label>Persona que Imparte</mat-label>
-            <input matInput formControlName="Imparte">
+            <input matInput formControlName="PersonaImparte">
           </mat-form-field>
   
           <mat-form-field appearance="outline">
             <mat-label>Comentarios *Opcional</mat-label>
             <input matInput formControlName="Comentarios">
           </mat-form-field>
+          
+         
   
   
           <button class="buton1" mat-raised-button color="primary" type="submit">Guardar</button>

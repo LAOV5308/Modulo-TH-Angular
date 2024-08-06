@@ -178,7 +178,7 @@ router.get('/single/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { NombreCapacitacion, Origen, Frecuencia, FechaInicio,
-        FechaFin, HoraInicio, HoraFin, Imparte, Comentarios, Color
+        FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion
      } = req.body;
 
     try {
@@ -192,15 +192,37 @@ router.post('/', async (req, res) => {
         request.input('FechaFin', sql.Date, FechaFin);
         request.input('HoraInicio', HoraInicio);
         request.input('HoraFin', HoraFin);
-        request.input('PersonaImparte', sql.VarChar, Imparte);
+        request.input('PersonaImparte', sql.VarChar, PersonaImparte);
         request.input('Comentarios', sql.VarChar, Comentarios);
         request.input('Color', sql.VarChar, Color);
+        request.input('Evaluacion', sql.Bit, Evaluacion);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_programacioncapacitacion_add');
         //const result = await request.execute('stp_prueba_add');
         res.status(201).json({ message: "Agregado al catalogo de Capacitaciones con éxito" });
     } catch (err) {
         res.status(500).json({ message: 'Error al agregar al programar Capacitacion: ' + err.message });
+    }
+    
+});
+
+
+router.post('/asistencia', async (req, res) => {
+    const { IdProgramacionCapacitacion, NoNomina
+     } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
+        request.input('NoNomina', sql.Int, NoNomina);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_asistenciaCapacitacion_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Asistencia Agregada con exito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al agregar la asistencia: ' + err.message });
     }
     
 });

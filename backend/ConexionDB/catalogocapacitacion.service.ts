@@ -93,6 +93,12 @@ export class CatalogoCapacitacionService {
       catchError(this.handleError)
     );
   }
+
+  addAsistencia(data: any): Observable<any>{
+    return this.http.post(this.apiUrl+'/asistencia', data).pipe(
+      catchError(this.handleError)
+    );
+  }
   
 
   private handleError(error: HttpErrorResponse) {

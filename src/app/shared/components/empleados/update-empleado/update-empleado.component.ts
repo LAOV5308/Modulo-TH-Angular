@@ -188,7 +188,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       //Apellidos: ['', Validators.required],
       Nombre:['', Validators.required],
       Apellidos:['', Validators.required],
-      Sexo:[''],
+      Sexo:['', Validators.required],
       EstadoCivil:[''],
       FechaNacimiento:[''],
       EntidadNacimiento:[''],
@@ -296,9 +296,6 @@ export class UpdateEmpleadoComponent implements OnInit{
         this.employeeForm.patchValue(data);
         //console.log(data);
         this.empleados = data;
-        console.log(this.empleados);
-        //this.empleados.push(data);
-        console.log(this.empleados[0].Escolaridad);
 
         //console.log(this.empleados[0].NombrePuesto);
 
