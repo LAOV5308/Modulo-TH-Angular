@@ -33,8 +33,12 @@ import { SplitterModule } from 'primeng/splitter';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import {MatCheckboxModule} from '@angular/material/checkbox'
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ToastModule } from 'primeng/toast';
 registerLocaleData(localeEs);
+
+import { NgxColorsModule } from 'ngx-colors';
+
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -48,7 +52,8 @@ interface AutoCompleteCompleteEvent {
   imports: [FormsModule, CalendarModule, PickListModule,
     MatFormFieldModule, MatInputModule, MatDatepickerModule, MatButtonModule, ReactiveFormsModule,
     MatAutocompleteModule, NgFor, NgIf, NgForOf, MatOption, MatCardModule, NgxMaterialTimepickerModule, AutoCompleteModule, ColorPickerModule,
-    RadioButtonModule, MatSelectModule, CardModule, SplitterModule, MatIconModule, RouterLink, MatCheckboxModule
+    RadioButtonModule, MatSelectModule, CardModule, SplitterModule, MatIconModule, RouterLink, MatCheckboxModule,
+    ToastModule, NgxColorsModule
   ],
   providers:[EmpleadosService, MessageService,
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
@@ -58,9 +63,11 @@ interface AutoCompleteCompleteEvent {
   styleUrl: './programar-capacitaciones.component.css'
 })
 export class ProgramarCapacitacionesComponent implements OnInit{
+  dates: Date[] | undefined;
+  rangeDates: Date[] | undefined;
   hoy = new Date();
   fechaStart: Date = this.hoy;
-
+mensaje: boolean = false;
   sourceEmpleados!: Empleado[];
   targetEmpleados!: Empleado[];
   employeeForm: FormGroup;
@@ -77,15 +84,14 @@ export class ProgramarCapacitacionesComponent implements OnInit{
   capacitacionSeleccionada: any;
 
     filteredCapacitaciones!: any[];
-    selectedFrecuencia: string = 'Diaria';
     checked: boolean = false;
 
+    leftColor!: string;
 
+    selectedFrecuencia: string = 'Seleccion de Dias';
     frecuencias: string[]=[
-      'Diaria',
-      'Semanal',
-      'Mensual',
-      'Anual'
+      'Seleccion de Dias',
+      'Seleccion Dia Inicio y Dia Fin'
     ];
     origen: string[]=[
       'Interna', 'Externa'
@@ -113,6 +119,8 @@ export class ProgramarCapacitacionesComponent implements OnInit{
       NombreCapacitacion:['', Validators.required],
       Origen:['', Validators.required],
       Frecuencia:['', Validators.required],
+      Fecha: [''],
+      FechaRango: [''],
       FechaInicio: ['', Validators.required],
       FechaFin: [''],
       HoraInicio: [''],
@@ -148,8 +156,6 @@ export class ProgramarCapacitacionesComponent implements OnInit{
       this.updateFechaFieldsVisibility();
     });
     this.updateFechaFieldsVisibility();
-
-
 
     this.catalogoCapacitacionesService.getCatalogoCapacitaciones().subscribe({
       next: (data) => {
@@ -193,13 +199,18 @@ this.NombreCapacitaciones=[];
     this.targetEmpleados = [];
   }
 
+
+
   updateFechaFieldsVisibility() {
-    if (this.selectedFrecuencia === 'Diaria') {
-      this.employeeForm.get('FechaFin')?.reset();
+    if (this.selectedFrecuencia === 'Seleccion de Dias') {
+      this.employeeForm.get('FechaRango')?.reset();
+      this.rangeDates = undefined;
+    }
+    if (this.selectedFrecuencia === 'Seleccion Dia Inicio y Dia Fin') {
+      this.employeeForm.get('Fecha')?.reset();
+      this.dates = undefined;
     }
   }
-
-
 
   updateCloseButtonLabel(label: string) {
     this._intl.closeCalendarLabel = label;
@@ -225,6 +236,7 @@ this.NombreCapacitaciones=[];
   }
   
   onSubmit(){
+    console.log(this.rangeDates);
     //alert(this.datetime12h);
     /*
 
@@ -243,7 +255,10 @@ this.employeeForm.patchValue({
   HoraFin: formattedTime1
 });*/
 
-console.log(this.employeeForm.value);
+/*
+console.log(this.dates);
+console.log(this.employeeForm.value);*/
+
 
 /*
 this.empleadoService.postIngreso(this.employeeForm.value).subscribe({
@@ -283,7 +298,6 @@ if(this.employeeForm.value.Origen == 'Interna'){
   
 }*/
 
-
 if(this.employeeForm.value.HoraInicio == ''){
   this.employeeForm.patchValue({
     HoraInicio: null
@@ -294,20 +308,80 @@ if(this.employeeForm.value.HoraFin == ''){
     HoraFin: null
   });
 };
+if(this.employeeForm.value.FechaInicio == ''){
+  this.employeeForm.patchValue({
+    FechaInicio: null
+  });
+};
+if(this.employeeForm.value.FechaFin == ''){
+  this.employeeForm.patchValue({
+    FechaFin: null
+  });
+};
+
 //if(this.employeeForm.value.HoraInicio == ''){}
 
-console.log(this.employeeForm.value);
-this.catalogoCapacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
-  next: (resp: any) => {
-    window.alert('Agregado con exito');
-    //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+
+
+if(this.dates == undefined && this.rangeDates==undefined){
+  this.messageService.add({ severity: 'warn', summary: 'Precaucion', detail: 'No hay fechas Seleccionadas' });
+}else{
+
+  if(this.dates!=undefined){
+    //alert('Entro en fechas');
+    this.dates!.forEach((element:Date) => {
+      this.employeeForm.patchValue({
+        Fecha: element
+      });
+
+      console.log(this.employeeForm.value);
+
+      this.catalogoCapacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
+        next: (resp: any) => {
+          //window.alert('Agregado con exito');
+      },
+      error: (err: any) => {
+          window.alert(err);
+          /*
+          this.dates = [];
+          this.limpiar();*/
+      }
+      });
+    
+    });
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
     this.limpiar();
-},
-error: (err: any) => {
-    console.error('Error: ' + err);
-    window.alert(err);
+  }
+
+  if(this.rangeDates!=undefined){
+    if(this.rangeDates.length>=2){
+      this.employeeForm.patchValue({
+        FechaInicio: this.rangeDates[0],
+        FechaFin: this.rangeDates[1]
+      });
+    
+      console.log(this.employeeForm.value);
+      this.catalogoCapacitacionesService.addCapacitacionRango(this.employeeForm.value).subscribe({
+        next: (resp: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+          this.limpiar();
+
+      },
+      error: (err: any) => {
+          window.alert(err);
+          this.rangeDates = undefined;
+          this.limpiar();
+      }
+      });
+    }
+  }
 }
-});
+
+  
+
+
+
+
 
     /*
   this.empleadoService.postIngreso(this.employeeForm.value).subscribe({
@@ -320,6 +394,7 @@ error: (err: any) => {
   }
   });*/
     
+  
 
   }
 
@@ -328,6 +403,7 @@ limpiar(){
     NombreCapacitacion:'',
       Origen:'',
       Frecuencia:'',
+      Fecha:null,
       FechaInicio: null,
       FechaFin: null,
       HoraInicio: null,

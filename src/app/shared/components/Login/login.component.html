@@ -9,7 +9,7 @@
         <p-toast></p-toast>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label for="NombreUsuario">Nombre de Usuario</label>
+            <label for="username">Nombre de Usuario</label>
             <p-iconField>
               <input pInputText id="username" type="text" placeholder="NombreUsuario" formControlName="NombreUsuario"/>
             </p-iconField>
@@ -18,19 +18,19 @@
             <label for="Password">Contraseña</label>
             <!--<p-password [toggleMask]="true" [feedback]="false" placeholder="Contraseña" formControlName="Password" class="password-input"/>-->
             <p-iconField>
-              <input pInputText id="username" type="password" placeholder="Contraseña" formControlName="Password"/>
+              <input pInputText id="Password" type="password" placeholder="Contraseña" formControlName="Password"/>
             </p-iconField>
           </div>
           <div class="card-header">
             <re-captcha (resolved)="onCaptchaResolved($event)" siteKey="6LeH8fspAAAAALh8ktjGmtZNymfq5U7apn5gxjBv" class="captcha"></re-captcha>
           </div>
-          <button mat-raised-button color="primary" type="submit">Ingresar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!recaptchaResolved">Ingresar</button>
         </form>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
-
+<p-toast />
 
 
 <!--[disabled]="!recaptchaResolved"

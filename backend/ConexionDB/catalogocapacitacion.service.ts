@@ -25,13 +25,12 @@ export class CatalogoCapacitacionService {
       catchError(this.handleError)
     );
   }
-  
-  updateCatalogoCapacitacion(CodigoCapacitacion: string, data: any): Observable<any> {
-    return this.http.put(this.apiUrl+'/'+CodigoCapacitacion, data).pipe(
+  addCapacitacionRango(data: any):Observable<any>{
+    return this.http.post(this.apiUrl+'/rango', data).pipe(
       catchError(this.handleError)
     );
   }
-
+  
   getCatalogoCapacitaciones(): Observable<CapacitacionCatalogo[]> {
     return this.http.get<CapacitacionCatalogo[]>(this.apiUrl);
   }
@@ -96,6 +95,12 @@ export class CatalogoCapacitacionService {
 
   addAsistencia(data: any): Observable<any>{
     return this.http.post(this.apiUrl+'/asistencia', data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateCapacitacion(IdProgramacionCapacitacion: number, data: any): Observable<any> {
+    return this.http.put(this.apiUrl+'/'+IdProgramacionCapacitacion, data).pipe(
       catchError(this.handleError)
     );
   }

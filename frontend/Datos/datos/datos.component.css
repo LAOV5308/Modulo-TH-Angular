@@ -37,7 +37,6 @@ th.mat-header-cell, td.mat-cell {
     color: white; /* Cambia esto al color del texto que desees */
   }
 
-
   mat-form-field {
     width: 100%;
   }
@@ -47,7 +46,6 @@ th.mat-header-cell, td.mat-cell {
       width: 30%;
       margin-right: 2%;
     }
-
   }
   
   button {

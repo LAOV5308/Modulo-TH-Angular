@@ -70,13 +70,13 @@
               <div class="col flex align-items-center justify-content-center">
 
 
-                <div class="small-calendar" *ngIf="selectedFrecuencia !== 'Diaria'">
+                <div class="small-calendar" *ngIf="selectedFrecuencia !== '1 Dia'">
                   <label for="fechaFin" class="font-bold block mb-2"> Fecha Fin </label>
                   <p-calendar [inline]="true" inputId="fechaFin" formControlName="FechaFin" 
                 dateFormat="dd/mm/yy" [minDate]="fechaStart" />
                 </div>
 
-                <div class="small-calendar" *ngIf="selectedFrecuencia === 'Diaria'">
+                <div class="small-calendar" *ngIf="selectedFrecuencia === '1 Dia'">
                   <label for="calendar-timeonly" class="font-bold block mb-2"> Hora Inicio </label>
                   <p-calendar 
                   [hourFormat]="'12'" 
@@ -84,7 +84,7 @@
           [timeOnly]="true" formControlName="HoraInicio"/>
                 </div>
         
-                <div class="small-calendar" *ngIf="selectedFrecuencia === 'Diaria'">
+                <div class="small-calendar" *ngIf="selectedFrecuencia === '1 Dia'">
                   <label for="calendar-time" class="font-bold block mb-2"> Hora Fin </label>
                   <p-calendar 
                   [hourFormat]="'12'" 
@@ -108,7 +108,7 @@
         </mat-form-field>
         
     
-        <button class="buton1" mat-raised-button color="primary" type="submit">Guardar</button>
+        <button class="buton1" mat-raised-button color="primary" type="submit"><mat-icon>save</mat-icon>Actualizar</button>
 
     </form> 
 
@@ -117,3 +117,5 @@
 
   </div>
   
+  <p-toast />
+  <p-confirmDialog />

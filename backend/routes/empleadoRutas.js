@@ -96,7 +96,6 @@ router.get('/inactive', async (req, res) => {
 });
 
 //Obtener solamente el empleado por Id
-
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {

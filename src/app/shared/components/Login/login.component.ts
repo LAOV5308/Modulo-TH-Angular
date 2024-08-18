@@ -160,7 +160,6 @@ onSubmit(): void {
         //console.log(this._authService.isLoggedIn());
         //alert(this._authService.getUserRole());
         
-        
         this.router.navigate(['/system']);
         
         
@@ -168,8 +167,6 @@ onSubmit(): void {
       error: (err) => {
         this.showError();
         //this.errorMessage = 'Login failed. Por Favor Checa tu Nombre de Usuario y Contraseña';
-
-        
         //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
         //this.recaptchaResolved = false; // Reset the captcha if login fails
 
@@ -185,7 +182,7 @@ togglePasswordVisibility(): void {
 
 showError() {
   //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
-  this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error. Por Favor Checa tu Nombre de Usuario y Contraseña' });
+  this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error. Por Favor Checa tu Nombre de Usuario y Contraseña', life: 2000 });
 }
 
 }

@@ -31,8 +31,6 @@ import { UpdateCapacitacionesComponent } from './shared/components/capacitacione
 
 
 export const routes: Routes = [
-    
-
     { path: 'system',
         loadComponent:()=> import('./shared/components/system/system.component').then((c) => c.SystemComponent),
         canActivate: [authGuard] },

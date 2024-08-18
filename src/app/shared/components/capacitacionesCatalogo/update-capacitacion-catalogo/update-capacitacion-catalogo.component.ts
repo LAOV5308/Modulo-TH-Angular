@@ -83,9 +83,9 @@ export class UpdateCapacitacionCatalogoComponent implements OnInit {
   
 
   onFormSubmit() {
-    
+    /*
     if (this.Form.valid) {
-      this._catalogoCapacitacionesService.updateCatalogoCapacitacion(this.CatalogoCapacitaciones[0].CodigoCapacitacion, this.Form.value).subscribe({
+      this._catalogoCapacitacionesService.updateCapacitacion(this.CatalogoCapacitaciones[0].CodigoCapacitacion, this.Form.value).subscribe({
         next: (resp: any) => {
           this._coreService.openSnackBar('Actualizado al Catalogo successfully', resp);
           this._dialogRef.close(true);
@@ -97,7 +97,7 @@ export class UpdateCapacitacionCatalogoComponent implements OnInit {
   });
   }else{
     this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
-  }
+  }*/
 
   }
 

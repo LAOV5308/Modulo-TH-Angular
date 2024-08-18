@@ -33,13 +33,14 @@ import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencia
 })
 export class ConsultarHistorialComponent implements OnInit{
   bajaForm: FormGroup;
-  Nombre: string='';
-  NombrePuesto: string='';
-  NombreDepartamento: string='';
+  Nombre!: string;
+  NombrePuesto!: string;
+  NombreDepartamento!: string;
   bajas: Baja[] = [];
   empleados: Empleado[] = [];
   incidencias: IncidenciaB[]=[];
   ultimo: number = 0;
+  empleadosA: Empleado[]=[];
 
   constructor(private empleadosService: EmpleadosService, 
     private messageService: MessageService, private bajasService: BajasService,
@@ -77,17 +78,36 @@ export class ConsultarHistorialComponent implements OnInit{
 
   obtener(NoNomina: any){
     
-
     this.Nombre='';
     this.NombreDepartamento='';
     this.NombrePuesto='';
+    
+      this.empleadosService.getEmpleado(NoNomina).subscribe({
+        next:(data) =>{
+          this.empleadosA = data;
+          //console.log(this.empleadosA);
+
+          //this.empleados = data;
+          /*this.ultimo = this.bajas.length-1;*/
+          if(this.empleadosA.length>0){
+          this.Nombre = this.empleadosA[0].Nombre+ ' '+this.empleadosA[0].Apellidos+'';
+          this.NombrePuesto = this.empleadosA[0].NombrePuesto;
+          this.NombreDepartamento = this.empleadosA[0].NombreDepartamento;
+          }
+        
+    }
+  
+      });
+
+
+    
     this.bajasService.getBajas(NoNomina).subscribe({
       next:(data) =>{
         this.bajas = data;
-        this.ultimo = this.bajas.length-1;
+        /*this.ultimo = this.bajas.length-1;
         this.Nombre = this.bajas[this.ultimo].Nombre+ ' '+this.bajas[this.ultimo].Apellidos;
         this.NombrePuesto = this.bajas[this.ultimo].NombrePuesto;
-        this.NombreDepartamento = this.bajas[this.ultimo].NombreDepartamento;
+        this.NombreDepartamento = this.bajas[this.ultimo].NombreDepartamento;*/
       },
       error: (error) => {
         console.error('Error al cargar las Bajas', error);
@@ -98,7 +118,7 @@ export class ConsultarHistorialComponent implements OnInit{
     this.bajasService.getIncidencias(NoNomina).subscribe({
       next:(data) =>{
         this.incidencias = data;
-        console.log(this.incidencias);
+        //console.log(this.incidencias);
       },
       error: (error) => {
         console.error('Error al cargar las Bajas', error);

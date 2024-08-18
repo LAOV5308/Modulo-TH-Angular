@@ -150,7 +150,7 @@ header="Header"
             
 <ng-container *ngIf="programacionConsulta.length > 0">
 
-    <button *ngIf="!eval"
+    <button *ngIf="!eval && !verificacion"
     class="agregarempleado"
     mat-raised-button 
     color = "primary"
@@ -164,9 +164,10 @@ header="Header"
     ><mat-icon>assignment_ind</mat-icon>Consultar/Actualizar
     </button>
 
-    <button class="eliminarProgramacion" *ngIf="!eval"
-    mat-raised-button (click)="eliminarprogramacion(programacionConsulta[0].IdProgramacionCapacitacion)"
-    ><mat-icon>cancel</mat-icon>Eliminar Programación
+    <!--<button class="eliminarProgramacion" -->
+    <button class="eliminarProgramacion" *ngIf="!eval && !verificacion"
+    mat-raised-button (click)="eliminarprogramacion(programacionConsulta[0].IdProgramacionFecha)"
+    ><mat-icon>cancel</mat-icon>Cancelar
     </button>
 
     
@@ -180,11 +181,11 @@ header="Header"
     ><mat-icon>assignment</mat-icon>Asistencia
     </button>
 
-    <button *ngIf="!eval"
+    <button *ngIf="!eval && !verificacion"
     class="agregarempleado"
     mat-raised-button 
     style="background-color: cadetblue;"
-    (click)="asignar()"
+    (click)="editarCapacitacion()"
     ><mat-icon>edit</mat-icon>Editar Capacitacion
     </button>
     
@@ -192,10 +193,12 @@ header="Header"
     <mat-card class="employee-card">
       <mat-card-header>
         <mat-card-title [ngStyle]="{'color': programacionConsulta[0].Color}">{{'Capacitacion: '+ programacionConsulta[0].NombreCapacitacion}}</mat-card-title>
-        <mat-card-subtitle>Fecha Inicio</mat-card-subtitle>
-        <mat-card-subtitle>{{getFechaConDiaAdicional(programacionConsulta[0].FechaInicio)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
-        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null">Fecha Fin</mat-card-subtitle>
-        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null">{{getFechaConDiaAdicional(programacionConsulta[0].FechaFin)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].Fecha != null">Fecha Capacitacion</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].Fecha != null">{{getFechaConDiaAdicional(programacionConsulta[0].Fecha)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null && programacionConsulta[0].FechaInicio!=null">Fecha Inicio</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null && programacionConsulta[0].FechaInicio!=null">{{getFechaConDiaAdicional(programacionConsulta[0].FechaInicio)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null && programacionConsulta[0].FechaInicio!=null">Fecha Fin</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="programacionConsulta[0].FechaFin != null && programacionConsulta[0].FechaInicio!=null">{{getFechaConDiaAdicional(programacionConsulta[0].FechaFin)| date: 'dd/MM/yyyy'}}</mat-card-subtitle>
     
         <mat-card-content>
             <p>
@@ -239,14 +242,12 @@ header="Header"
     [tableStyle]="{ 'min-width': '50rem' }">
 
     <ng-template pTemplate="caption">
-        
        <!-- <div style="text-align: left">
             <p-button 
                 icon="pi pi-external-link" 
                 label="Export" 
                 (click)="dt.exportCSV()" />
         </div>-->
-
         <div style="text-align: left">
         <input 
         pInputText 
@@ -255,9 +256,6 @@ header="Header"
         placeholder="Buscar" />
     </div>
     </ng-template>
-
-    
-    
         <ng-template pTemplate="header" let-columns>
 
             <tr>
@@ -276,10 +274,10 @@ header="Header"
                     <p-checkbox 
                     [(ngModel)]="empleado.Asistencia" 
                     [binary]="true" 
-                    variant="filled" 
-                    [disabled]="empleado.Asistencia"
+                    variant="filled"
                     (onChange)="Asistencia(empleado.NoNomina)"
                     />
+                    <!--[disabled]="empleado.Asistencia"-->
 
                 </td>
                 <td>{{empleado.NoNomina}}</td>

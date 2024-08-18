@@ -15,9 +15,11 @@ export interface Capacitacion {
 
 export interface CapacitacionProgramada {
   IdProgramacionCapacitacion: number;//IdProgramacionFecha
+  IdProgramacionFecha: number;
   NombreCapacitacion: string;
   Origen: string;
   Frecuencia: string;
+  Fecha: Date;
   FechaInicio: Date;
   FechaFin: Date;
   HoraInicio: any;
