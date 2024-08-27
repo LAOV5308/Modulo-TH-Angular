@@ -1,20 +1,140 @@
+<p-toast />
+<p-confirmDialog />
+
 <p-card>
-
-  <!--<p-menubar [model]="items1" />-->
-  
   <div style="text-align: center">
-      <button [routerLink]="['/system/agregarvacacion']" class="agregar"
-  mat-raised-button 
-  color = "primary"
-  type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
-  </button>
-  </div>
-
+    <!--<<button [routerLink]="['/system/agregarvacacion']" class="agregar"
+mat-raised-button 
+color = "primary"
+type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
+</button>-->
+<p-button (onClick)="showDialog()" [rounded]="true" size="large" 
+label="Agregar Nueva Vacacion" icon="pi pi-plus-circle"/>
+</div>
 
 </p-card>
-<div>
+
+  <!--<p-menubar [model]="items1" />-->
+  <p-card>
+    <h1>Aniversario: {{empleados[0].Aniversario}}</h1>
+    <div class="flex-auto" style="text-align: center;">
+      <label for="NoNominaiInput" class="font-bold block mb-2">No. Nomina</label>
+      <p-inputNumber 
+          [(ngModel)]="NoNomina" 
+          mode="decimal" 
+          inputId="NoNominaInput" 
+          [useGrouping]="false" 
+          [min]="0" 
+            [max]="9999"
+          /> 
+  </div>
+
+    <div>
+    <div class="flex-auto" style="text-align: center;">
+      <label for="FechaInicio" class="font-bold block mb-2"> Fecha Inicio </label>
+      <p-calendar
+          dateFormat="dd/mm/yy"
+          [(ngModel)]="date1" 
+          [showIcon]="true" 
+          inputId="FechaInicio" 
+          [showOnFocus]="false" />
+
+          <label for="FechaFin" class="font-bold block mb-2"> Fecha Fin </label>
+    <p-calendar
+        dateFormat="dd/mm/yy"
+        [(ngModel)]="date2" 
+        [showIcon]="true" 
+        inputId="FechaFin" 
+        [showOnFocus]="false" />
+
+        <div style="text-align: center; padding-top: 2rem;">
+          <p-button label="Consultar" icon="pi pi-check" (onClick)="ConsultarFechas()"/>
+        </div>
+        
+  </div>
+</div>
+  </p-card>
+  
+  <div>
+    <p-table [value]="vacaciones" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-striped"
+    [scrollable]="true" 
+    scrollHeight="300px" >
+      <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+              <th>Fecha</th>
+              <th>Comentarios</th>
+              <th>Acciones</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-vacacion>
+          <tr>
+            <td></td>
+              <td>{{ vacacion.Fecha | date:'dd/MM/yyyy'}}</td>
+              <td>{{ vacacion.Comentarios }}</td>
+              <td>
+                <p-button 
+                    icon="pi pi-trash" 
+                    severity="danger" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    (onClick)="CancelarVacacion(vacacion.IdVacacion)"/>
+            </td>
+          </tr>
+      </ng-template>
+  </p-table>
+  </div>
+ 
+
+<!--<div>
   <h1 style="color: rgb(0, 145, 255);"><strong>Calendario de Vacaciones</strong></h1>
   <div id="calendar-container" class="full-calendar-md" style="width: 40%;">
     <full-calendar [options]="calendarOptions"></full-calendar>
   </div>
-</div>
+</div>-->
+
+
+<p-dialog 
+    header="Agregar Vacación" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    [draggable]="false" 
+    [resizable]="false">
+
+    
+      
+      <div class="flex align-items-center gap-3 mb-3">
+        <p-calendar 
+        class="max-w-full" 
+        [(ngModel)]="dates" 
+        selectionMode="multiple"
+        [inline]="true" 
+        [showButtonBar]="true"
+        (onSelect)="formatSelectedDates()"
+        (ngModelChange)="formatSelectedDates()"
+        (onClearClick)="limpiar()"
+        />
+    </div>
+    <div class="card flex justify-content-center">
+      <label for="fechas">Fechas Seleccionadas: </label>
+      <input 
+          id="fechas"
+          type="text"
+          pInputText 
+          [disabled]="true"
+          [value]="formattedDates"
+          />
+  </div>
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="comentario">Comentarios: </label>
+      <input [(ngModel)]="comentarios" type="text" pInputText id="comentario" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button label="Agregar" (onClick)="OnSubmit()"/>
+    </div>
+  
+</p-dialog>
+
+<!--<form [formGroup]="vacacionForm" (ngSubmit)="OnSubmit()"></form>-->

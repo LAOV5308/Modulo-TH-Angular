@@ -40,6 +40,12 @@ export class CatalogoCapacitacionService {
     );
   }
 
+  getFechasProgramaciones(id: number): Observable<CapacitacionProgramada[]> {
+    return this.http.get<CapacitacionProgramada[]>(this.apiUrl+'/programacionfechaall/'+id
+    );
+  }
+
+
   
   /*getPuestosByDepartamento(departamentoId: number){
     return this.http.get<Cat[]>(this.apiUrl+'/'+departamentoId);
@@ -104,7 +110,12 @@ export class CatalogoCapacitacionService {
       catchError(this.handleError)
     );
   }
-  
+
+  updateFechasCapacitacion(IdProgramacionCapacitacion: number, data: any): Observable<any> {
+    return this.http.put(this.apiUrl+'/actualizarfechas/'+IdProgramacionCapacitacion, data).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   private handleError(error: HttpErrorResponse) {
     // Puedes personalizar el mensaje de error basándote en el error.status o error.error

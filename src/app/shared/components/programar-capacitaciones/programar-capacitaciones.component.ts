@@ -93,6 +93,7 @@ mensaje: boolean = false;
       'Seleccion de Dias',
       'Seleccion Dia Inicio y Dia Fin'
     ];
+
     origen: string[]=[
       'Interna', 'Externa'
     ];
@@ -119,15 +120,14 @@ mensaje: boolean = false;
       NombreCapacitacion:['', Validators.required],
       Origen:['', Validators.required],
       Frecuencia:['', Validators.required],
-      Fecha: [''],
-      FechaRango: [''],
-      FechaInicio: ['', Validators.required],
-      FechaFin: [''],
-      HoraInicio: [''],
-      HoraFin: [''],
       PersonaImparte:[''],
       Comentarios:[''],
-      
+      Fecha: [''],
+      FechaRango: [''],
+      FechaInicio: [''],
+      FechaFin: [''],
+      HoraInicio: [''],
+      HoraFin: ['']
     });
   }
 
@@ -226,10 +226,6 @@ this.NombreCapacitaciones=[];
     this.capacitacionesFiltradas = this.capacitaciones.filter(capacitacion => capacitacion.NombreCapacitacion.toLowerCase().includes(filterValue));
   }
 
-  
-
-
-
   imprimir(){
     console.log(this.targetEmpleados)
     console.log(this.employeeForm.value);
@@ -297,85 +293,95 @@ if(this.employeeForm.value.Origen == 'Interna'){
 /*if(this.employeeForm.value.Evaluacion == ''){
   
 }*/
-
-if(this.employeeForm.value.HoraInicio == ''){
-  this.employeeForm.patchValue({
-    HoraInicio: null
-  });
-};
-if(this.employeeForm.value.HoraFin == ''){
-  this.employeeForm.patchValue({
-    HoraFin: null
-  });
-};
-if(this.employeeForm.value.FechaInicio == ''){
-  this.employeeForm.patchValue({
-    FechaInicio: null
-  });
-};
-if(this.employeeForm.value.FechaFin == ''){
-  this.employeeForm.patchValue({
-    FechaFin: null
-  });
-};
-
-//if(this.employeeForm.value.HoraInicio == ''){}
-
-
-
-if(this.dates == undefined && this.rangeDates==undefined){
-  this.messageService.add({ severity: 'warn', summary: 'Precaucion', detail: 'No hay fechas Seleccionadas' });
-}else{
-
-  if(this.dates!=undefined){
-    //alert('Entro en fechas');
-    this.dates!.forEach((element:Date) => {
-      this.employeeForm.patchValue({
-        Fecha: element
-      });
-
-      console.log(this.employeeForm.value);
-
-      this.catalogoCapacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
-        next: (resp: any) => {
-          //window.alert('Agregado con exito');
-      },
-      error: (err: any) => {
-          window.alert(err);
-          /*
-          this.dates = [];
-          this.limpiar();*/
-      }
-      });
-    
+if(this.employeeForm.valid){
+  if(this.employeeForm.value.HoraInicio == ''){
+    this.employeeForm.patchValue({
+      HoraInicio: null
     });
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
-    this.limpiar();
-  }
-
-  if(this.rangeDates!=undefined){
-    if(this.rangeDates.length>=2){
-      this.employeeForm.patchValue({
-        FechaInicio: this.rangeDates[0],
-        FechaFin: this.rangeDates[1]
+  };
+  if(this.employeeForm.value.HoraFin == ''){
+    this.employeeForm.patchValue({
+      HoraFin: null
+    });
+  };
+  if(this.employeeForm.value.FechaInicio == ''){
+    this.employeeForm.patchValue({
+      FechaInicio: null
+    });
+  };
+  if(this.employeeForm.value.FechaFin == ''){
+    this.employeeForm.patchValue({
+      FechaFin: null
+    });
+  };
+  
+  //if(this.employeeForm.value.HoraInicio == ''){}
+  
+  
+  
+  if(this.dates == undefined && this.rangeDates==undefined){
+    this.messageService.add({ severity: 'warn', summary: 'Precaucion', detail: 'No hay fechas Seleccionadas' });
+  }else{
+  
+    if(this.dates!=undefined){
+      //alert('Entro en fechas');
+  
+      this.dates!.forEach((element:Date) => {
+        this.employeeForm.patchValue({
+          Fecha: element
+        });
+  
+        console.log(this.employeeForm.value);
+  
+        this.catalogoCapacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
+          next: (resp: any) => {
+            //window.alert('Agregado con exito');
+        },
+        error: (err: any) => {
+            console.log(err);
+            /*
+            this.dates = [];
+            this.limpiar();*/
+        }
+        });
+      
       });
-    
-      console.log(this.employeeForm.value);
-      this.catalogoCapacitacionesService.addCapacitacionRango(this.employeeForm.value).subscribe({
-        next: (resp: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
-          this.limpiar();
-
-      },
-      error: (err: any) => {
-          window.alert(err);
-          this.rangeDates = undefined;
-          this.limpiar();
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+      this.limpiar();
+    }
+  
+    if(this.rangeDates!=undefined){
+      if(this.rangeDates.length>=2){
+        this.employeeForm.patchValue({
+          FechaInicio: this.rangeDates[0],
+          FechaFin: this.rangeDates[1]
+        });
+      
+        console.log(this.employeeForm.value);
+        this.catalogoCapacitacionesService.addCapacitacionRango(this.employeeForm.value).subscribe({
+          next: (resp: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+            this.limpiar();
+  
+        },
+        error: (err: any) => {
+            window.alert(err);
+            this.rangeDates = undefined;
+            this.limpiar();
+        }
+        });
       }
-      });
     }
   }
+  
+
+
+
+}else{
+
+  this.messageService.add({ severity: 'warn', summary: 'Completa Campos', detail: 'Faltan campos por llenar' });
 }
+
 
   
 

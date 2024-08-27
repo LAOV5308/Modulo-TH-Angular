@@ -1,6 +1,5 @@
-<div class="card">
-    
-</div>
+
+<!--
 <div class="card flex justify-content-center">
 <p-dialog 
 header="Header" 
@@ -19,13 +18,13 @@ header="Header"
         <div class="formgrid grid">
             <div class="field col">
 
-                <!--<mat-form-field appearance="fill" color="primary">
+                <mat-form-field appearance="fill" color="primary">
                     <mat-label>Origen</mat-label>
                     <mat-select>
                         <mat-option *ngFor="let val of orig" [value]="val">{{val}}
                         </mat-option>
                     </mat-select>
-                </mat-form-field>-->
+                </mat-form-field>
 
             
                 
@@ -91,23 +90,11 @@ header="Header"
        
     
 </p-dialog>
-</div>
-    <p-card>
-
-        <!--<p-menubar [model]="items1" />-->
-        
-        <div style="text-align: left">
-            <button [routerLink]="['/system/programarcapacitaciones']" class="agregar"
-        mat-raised-button 
-        color = "primary"
-        type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitación
-        </button>
-        </div>
+</div>-->
+<!--<p-menubar [model]="items1" />-->
+    
 
 
-    </p-card>
-
-<p-card>
     
      <!---
 <div class="card flex justify-content-center flex-wrap gap-3">
@@ -116,12 +103,6 @@ header="Header"
     [model]="items" 
     severity="info" />
 </div>
-
-
-   
-
-
-
 
 <div style="text-align: right">
 
@@ -133,19 +114,26 @@ header="Header"
     </button>
 </div>
 --->
-<p-splitter 
-    [panelSizes]="[44, 56]" 
-    [style]="{ height: '800px' }" 
-    styleClass="mb-5">
-    <ng-template pTemplate>
+<p-card>
+    <div style="text-align: left">
+        <button [routerLink]="['/system/programarcapacitaciones']" class="agregar"
+    mat-raised-button 
+    color = "primary"
+    type="submit"><mat-icon>add_circle</mat-icon>Programar Nueva Capacitación
+    </button>
+    </div>
+</p-card>
+<p-card>
+    <div class="container">
+
+        <div class="box1">
         <div class="col flex align-items-center justify-content-center">
             <div id="calendar-container" class="full-calendar-md">
               <full-calendar [options]="calendarOptions"></full-calendar>
             </div>
           </div>
-    </ng-template>
-    <ng-template pTemplate>
-        <div class="">
+        </div>
+        <div class="box2">
             <h1>Descripción de la Capacitación</h1>
             
 <ng-container *ngIf="programacionConsulta.length > 0">
@@ -226,7 +214,6 @@ header="Header"
     </mat-card>
 
     
-
     
     <div *ngIf=consulta>
 <div class="card">
@@ -269,7 +256,6 @@ header="Header"
         </ng-template>
         <ng-template pTemplate="body" let-empleado>
             <tr>
-
                 <td *ngIf="eval" > 
                     <p-checkbox 
                     [(ngModel)]="empleado.Asistencia" 
@@ -388,6 +374,30 @@ header="Header"
                 </div>
                             </div>
   </ng-container>
+
+
+  <ng-container *ngIf="programacionConsulta.length <= 0">
+    <mat-accordion *ngIf="capacitacionesprogramadas.length > 0;">
+        <mat-expansion-panel *ngFor="let capacitacion of capacitacionesprogramadas">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ capacitacion.NombreCapacitacion }}
+            </mat-panel-title>
+            <mat-panel-description>
+              Fecha: {{ capacitacion.FechaInicio | date }} - {{ capacitacion.FechaFin | date }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+      
+          <p><strong>Descripción:</strong> {{ capacitacion.PersonaImparte }}</p>
+          <!-- Añade más detalles de la capacitación aquí -->
+      
+        </mat-expansion-panel>
+      </mat-accordion>
+  
+
+  </ng-container>
+
+
 
 
   <p-dialog 
@@ -651,10 +661,7 @@ header="Header"
 -->
 
         </div>
-    </ng-template>
-</p-splitter>
-
-
+</div>
 </p-card>
 
 <p-toast />

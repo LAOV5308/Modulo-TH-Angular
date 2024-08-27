@@ -1,3 +1,13 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.box1, .box2{
+  width: 47%;
+  padding: 5px;
+}
+
 #calendar-container {
   width: 100%;
   height: 100%;
@@ -49,3 +59,14 @@
   display: block;
 }
 
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Coloca los divs uno debajo del otro en pantallas pequeñas */
+  }
+
+  .box1, .box2 {
+    padding-top: 10px;
+    width: 100%; /* Los divs ocupan el ancho completo en pantallas pequeñas */
+  }
+}

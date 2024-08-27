@@ -76,7 +76,7 @@ export class EmpleadosService {
   /*getEmpleado(id: number): Observable<any> {
     return this.http.get(this.apiUrl+'/'+id);
   }*/
-  getEmpleado(id: number): Observable<Empleado[]> {
+  getEmpleado(id: number | undefined): Observable<Empleado[]> {
     return this.http.get<Empleado[]>(this.apiUrl+'/'+id);
   }
   

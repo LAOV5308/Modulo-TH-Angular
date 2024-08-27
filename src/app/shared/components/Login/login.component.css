@@ -32,7 +32,7 @@
 }
 
 mat-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.8);
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -77,6 +77,25 @@ mat-card {
 .captcha{
   text-align: center;
   position: relative;
+}
+
+@media (max-width: 768px) {
+  .login-container{
+    flex-direction: column;
+  }
+
+  .logo{
+    width: 180px;
+  margin-bottom: 40px;
+  
+  }
+
+  mat-card {
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+
+  
 }
 
 /* Botón de envío 

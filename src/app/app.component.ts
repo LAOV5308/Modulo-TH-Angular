@@ -58,7 +58,9 @@ export class AppComponent implements OnInit {
     monthNamesShort: [
       'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
       'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-  ]
+  ],
+  today: 'Hoy',
+  clear: 'Limpiar'
     });
 
     this.primengConfig.zIndex = {

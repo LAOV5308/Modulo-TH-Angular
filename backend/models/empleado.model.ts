@@ -16,6 +16,7 @@ export interface Empleado {
   UMF: string;
   Sueldo: Number;
   IngresoImss: Date;
+  Aniversario: Date;
   BajaImss: Date;
   Escolaridad: string;
 

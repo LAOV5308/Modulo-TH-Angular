@@ -23,6 +23,7 @@ Edad: number;
   HorarioSemanal: string;
   Sueldo: Number;
   IngresoImss: Date;
+  Aniversario: Date;
   BajaImss: Date;
   Escolaridad: string;
 

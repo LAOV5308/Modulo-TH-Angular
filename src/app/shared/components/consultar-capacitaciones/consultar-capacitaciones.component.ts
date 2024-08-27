@@ -45,6 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { Router } from '@angular/router';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -60,19 +61,7 @@ interface ExportColumn {
   title: string;
   dataKey: string;
 }
-interface Suscripcion{
-  NoNomina: number;
-  IdProgramacionFecha: number;
-}
 
-interface Origenes {
-  label: string;
-  value: string;
-}
-interface Frecuencias {
-  label: string;
-  value: string;
-}
 
 @Component({
   selector: 'app-consultar-capacitaciones',
@@ -81,7 +70,7 @@ interface Frecuencias {
     MatButtonModule, MatIcon, DynamicDialogModule, ToastModule, ButtonModule, SplitterModule, MatCardModule, MatGridListModule,
     PickListModule, NgFor, TableModule,  InputTextModule, DialogModule, ConfirmDialogModule, CheckboxModule, InputNumberModule
     , InputTextareaModule, FloatLabelModule, SplitButtonModule, MenubarModule, CardModule, MatMenuModule, DropdownModule, MatFormFieldModule,
-    MatOptionModule, MatSelectModule, MatDatepickerModule
+    MatOptionModule, MatSelectModule, MatDatepickerModule, MatExpansionModule
 
   ],
   providers:[CatalogoCapacitacionService, DialogService, MessageService, EmpleadosService, ConfirmationService, provideNativeDateAdapter()],
@@ -105,6 +94,7 @@ export class ConsultarCapacitacionesComponent implements OnInit, AfterViewInit{
  cols!: Column[];
  exportColumns!: ExportColumn[];
 idProgramacionFecha!: number;
+idProgramacionCapacitacion!: number;
 validarDuplicidad: number[]=[];
 suscripcionForm: FormGroup;
 evaluarForm: FormGroup;
@@ -122,29 +112,14 @@ productDialog: boolean = false;
 checked: boolean = false;
 asistio!: boolean;
 mostrarcalificaciones: boolean = false;
-selectedOrigen!: Origenes;
-selectedFrecuencia!: Frecuencias;
 fechaDate!:Date;
 verificacion: boolean = false;
 asistenciadata: any[]=[];
-
-origenes: Origenes[] = [
-  { label: 'Interna', value: 'Interna' },
-  { label: 'Externa', value: 'Externa' }
-];
-frecuencias: Frecuencias[] = [
-  { label: 'Diaria', value: 'Diari' },
-  { label: 'Semanal', value: 'Semanal' },
-  { label: 'Mensual', value: 'Mensual' },
-  { label: 'Anual', value: 'Anual' }
-];
 
 orig: string[] = [
   'Interna',
   'Externa'
 ];
-
-
 
   constructor(private _dialog: MatDialog, private capacitacionesService: CatalogoCapacitacionService, private cdr: ChangeDetectorRef,
     public dialogService: DialogService, public messageService: MessageService, private empleadoService: EmpleadosService,
@@ -152,18 +127,18 @@ orig: string[] = [
   ){
     this.suscripcionForm = this.fb.group({
       NoNomina:[],
-    IdProgramacionFecha:[]
+    IdProgramacionCapacitacion:[]
     });
 
     this.asistenciaForm = this.fb.group({
-    IdProgramacionFecha:[],
+    IdProgramacionCapacitacion:[],
       NoNomina:[]
     });
 
 
     this.evaluarForm = this.fb.group({
       NoNomina:[],
-      IdProgramacionFecha:[],
+      IdProgramacionCapacitacion:[],
       Calificacion: [],
       Estatus: [],
       Asistio: [],
@@ -185,8 +160,9 @@ orig: string[] = [
     this.capacitacionesService.getProgramacionCapacitaciones().subscribe({
       next: (data) => {
         this.capacitacionesprogramadas = data;
-        console.log('data');
-        console.log(this.capacitacionesprogramadas);
+        
+        //console.log('data');
+        //console.log(this.capacitacionesprogramadas);
         this.updateCalendarEvents();
         
       },
@@ -285,6 +261,7 @@ convertirFechaATiempo(fechaISO: string): string {
         //Aqui entra para mostrar en el calendario fecha inicio y fecha Fin
         this.events.push({
           id: cap.IdProgramacionFecha,
+          description: cap.IdProgramacionCapacitacion,
           title: cap.NombreCapacitacion,
           start: new Date(cap.FechaInicio).toISOString().split('T')[0], // Convertir a ISO string para FullCalendar
           end: this.getFechaConDiaMas(cap.FechaFin), 
@@ -299,6 +276,7 @@ convertirFechaATiempo(fechaISO: string): string {
         this.events.push({
           id: cap.IdProgramacionFecha,
           title: cap.NombreCapacitacion,
+          description: cap.IdProgramacionCapacitacion,
           start: new Date(cap.Fecha).toISOString().split('T')[0], // Convertir a ISO string para FullCalendar
           extendedProps: {
                   imparte: cap.PersonaImparte
@@ -385,7 +363,9 @@ convertirFechaATiempo(fechaISO: string): string {
       }
     }); */
     
+    //ID´s
     this.idProgramacionFecha = clickInfo.event.id;
+    this.idProgramacionCapacitacion= Number(clickInfo.event.extendedProps.description);
 
     //console.log(this.idProgramacionFecha);
 
@@ -441,10 +421,10 @@ convertirFechaATiempo(fechaISO: string): string {
 
 
     //OBTENGO LAS CALIFICACIONES
-this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).subscribe({
+this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitacion).subscribe({
   next:(data) =>{
-    /*console.log('Calificaciones');
-    console.log(data);*/
+    //console.log('Calificaciones');
+    //console.log(data);
     this.calificaciones = data;
     
   },
@@ -464,13 +444,14 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
     this.mostrarcalificaciones = false;
     this.validarDuplicidad = [];
 
-    if(this.idProgramacionFecha){
+    if(this.idProgramacionCapacitacion){
       
-      this.capacitacionesService.getsingleProgramaciones(this.idProgramacionFecha).subscribe({
+      this.capacitacionesService.getsingleProgramaciones(this.idProgramacionCapacitacion).subscribe({
         next: (data) => {
           //CapacitacionesProgramadas
           this.capacitacionessuscripciones = data;
-          console.log(this.capacitacionessuscripciones);
+          /*console.log('Capacitaciones suscripciones');
+          console.log(this.capacitacionessuscripciones);*/
           
         this.capacitacionessuscripciones.forEach(consulta => {
           this.validarDuplicidad.push(consulta.NoNomina);
@@ -598,7 +579,6 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
   }
 
   eliminarprogramacion(id: number){
-
     this.confirmationService.confirm({
       message: '¿Está seguro de que desea Cancelar la programacion de este Dia?',
       header: 'Confirmación',
@@ -642,7 +622,7 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).sub
 saveAsignacion() {
 
   this.suscripcionForm.patchValue({
-    IdProgramacionFecha: Number(this.idProgramacionFecha)
+    IdProgramacionCapacitacion: Number(this.idProgramacionCapacitacion)
   })
 
   this.targetEmpleados.forEach(empleado => {
@@ -651,10 +631,10 @@ saveAsignacion() {
       NoNomina: empleado.NoNomina
     });
 
-console.log(this.suscripcionForm.value);
+//console.log(this.suscripcionForm.value);
 
 if(this.validarDuplicidad.includes(this.suscripcionForm.value.NoNomina)){
-  console.log('Elementos duplicados');
+  //console.log('Elementos duplicados');
 }else{
   this.capacitacionesService.addSuscripcion(this.suscripcionForm.value).subscribe({
     next: (resp: any) => {
@@ -736,7 +716,7 @@ evaluarEmpleado(){
 
   this.evaluarForm.patchValue({
     NoNomina: this.NoNominaEvaluar,
-    IdProgramacionFecha: this.idProgramacionFecha
+    IdProgramacionCapacitacion: this.idProgramacionCapacitacion
   });
 
 
@@ -805,10 +785,10 @@ this.mostrarcalificaciones = true;
 this.consulta = false;
 this.calificaciones=[];
 
-this.capacitacionesService.getsingleCalificaciones(this.idProgramacionFecha).subscribe({
+this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitacion).subscribe({
   next:(data) =>{
-    console.log('Calificaciones');
-    console.log(data);
+    //console.log('Calificaciones');
+    //console.log(data);
     this.calificaciones = data;
     
   },
@@ -841,7 +821,7 @@ resetEvaluarForm(){
 
 Asistencia(NoNomina: Number){
   this.asistenciaForm.patchValue({
-    IdProgramacionFecha: Number(this.idProgramacionFecha),
+    IdProgramacionCapacitacion: Number(this.idProgramacionCapacitacion),
     NoNomina: NoNomina
   });
 
@@ -858,8 +838,8 @@ Asistencia(NoNomina: Number){
 }
 
 editarCapacitacion(){
-  if(this.idProgramacionFecha){
-    this.router.navigate(['system/updateCapacitacion/'+this.idProgramacionFecha]);
+  if(this.idProgramacionCapacitacion){
+    this.router.navigate(['system/updateCapacitacion/'+this.idProgramacionCapacitacion]);
   }
 }
 

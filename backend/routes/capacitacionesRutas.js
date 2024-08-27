@@ -46,6 +46,7 @@ router.get('/programacionall', async (req, res) => {
         res.status(500).send('Error al obtener la programacion de Capacitaciones');
     }
 });
+
 router.get('/programacionall/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -57,11 +58,20 @@ router.get('/programacionall/:id', async (req, res) => {
     }
 });
 
+router.get('/programacionfechaall/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('Select * from V_ProgramacionCapacitacion where IdEstadoProgramacionCapacitacion=1 and IdProgramacionCapacitacion = '+id);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener la programacion de Capacitaciones');
+    }
+});
 
 // Eliminar un departamento por ID
 router.delete('/programacionactive/:id', async (req, res) => {
     const { id } = req.params;
-
 
     try {
         const pool = await getConnection();
@@ -83,13 +93,9 @@ router.delete('/programacionactive/:id', async (req, res) => {
 router.get('/programaciones/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const pool = await getConnection();
-        const request = pool.request();
-        request.input('IdProgramacionFecha', sql.Int, id);
-        // Ejecutar el procedimiento almacenado
-        const result = await request.execute('stp_V_SuscripcionesCapacitaciones');
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_SuscripcionCapacitaciones where IdProgramacionCapacitacion ='+id);
         res.json(result.recordset);
-        //res.status(201).send({ message: "Traida con exito" });
     } catch (err) {
         res.status(500).send('Error al obtener la programacion de Capacitaciones');
     }
@@ -98,11 +104,8 @@ router.get('/programaciones/:id', async (req, res) => {
 router.get('/calificaciones/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const pool = await getConnection();
-        const request = pool.request();
-        request.input('IdProgramacionFecha', sql.Int, id);
-        // Ejecutar el procedimiento almacenado
-        const result = await request.execute('stp_V_Calificaciones');
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_Calificaciones where IdProgramacionCapacitacion ='+id);
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener las calificaciones');
@@ -111,7 +114,7 @@ router.get('/calificaciones/:id', async (req, res) => {
 
 
 router.post('/programaciones/', async (req, res) => {
-    const { NoNomina, IdProgramacionFecha
+    const { NoNomina, IdProgramacionCapacitacion
      } = req.body;
 
     try {
@@ -119,7 +122,7 @@ router.post('/programaciones/', async (req, res) => {
         const request = pool.request();
         ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
         request.input('NoNomina', sql.Int, NoNomina);
-        request.input('IdProgramacionFecha', sql.Int, IdProgramacionFecha);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_suscripcioncapacitacion_add');
         //const result = await request.execute('stp_prueba_add');
@@ -131,7 +134,7 @@ router.post('/programaciones/', async (req, res) => {
 });
 
 router.post('/evaluar/', async (req, res) => {
-    const { NoNomina, IdProgramacionFecha, Calificacion, Estatus, Asistio, Comentario
+    const { NoNomina, IdProgramacionCapacitacion, Calificacion, Estatus, Asistio, Comentario
      } = req.body;
 
     try {
@@ -139,7 +142,7 @@ router.post('/evaluar/', async (req, res) => {
         const request = pool.request();
         ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
         request.input('NoNomina', sql.Int, NoNomina);
-        request.input('IdProgramacionFecha', sql.Int, IdProgramacionFecha);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
         request.input('Calificacion', sql.Decimal, Calificacion);
         request.input('Estatus', sql.Bit, Estatus);
         request.input('Asistio', sql.Bit, Asistio);
@@ -194,7 +197,7 @@ router.post('/', async (req, res) => {
         request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
         request.input('Origen', sql.VarChar, Origen);
         request.input('Frecuencia', sql.VarChar, Frecuencia);
-        request.input('Fecha', sql.Date, Fecha);
+        request.input('Fecha',sql.Date, Fecha);
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
         request.input('HoraInicio', HoraInicio);
@@ -246,14 +249,14 @@ router.post('/rango', async (req, res) => {
 
 
 router.post('/asistencia', async (req, res) => {
-    const { IdProgramacionFecha, NoNomina
+    const { IdProgramacionCapacitacion, NoNomina
      } = req.body;
 
     try {
         const pool = await getConnection();
         const request = pool.request();
         ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
-        request.input('IdProgramacionFecha', sql.Int, IdProgramacionFecha);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
         request.input('NoNomina', sql.Int, NoNomina);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_asistenciaCapacitacion_add');
@@ -310,27 +313,25 @@ router.delete('/programaciones/:id', async (req, res) => {
 });
 
 
-// Actualizar un departamento por ID
+// Actualizar programacion por ID
 router.put('/:id', async (req, res) => {
-
     const { id } = req.params;
-
     const { 
-        NombreCapacitacion, Origen, Frecuencia, FechaInicio,
+        NombreCapacitacion, Origen, Frecuencia, Fecha,FechaInicio,
         FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion
      } = req.body;
-
     try {
         const pool = await getConnection();
         const request = pool.request();
-        request.input('IdProgramacionCapacitacion', sql.VarChar, id);
+        request.input('IdProgramacionCapacitacion', sql.Int, id);
         request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
         request.input('Origen', sql.VarChar, Origen);
         request.input('Frecuencia', sql.VarChar, Frecuencia);
+        /*request.input('Fecha', sql.Date, Fecha);
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
         request.input('HoraInicio', HoraInicio);
-        request.input('HoraFin', HoraFin);
+        request.input('HoraFin', HoraFin);*/
         request.input('PersonaImparte', sql.VarChar, PersonaImparte);
         request.input('Comentarios', sql.VarChar, Comentarios);
         request.input('Color', sql.VarChar, Color);
@@ -338,12 +339,40 @@ router.put('/:id', async (req, res) => {
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_programacioncapacitacion_update');
         //const result = await request.execute('stp_prueba_add');
-        res.status(201).json({ message: "Catalogo actualizado con éxito" });
+        res.status(201).json({ message: "Actualizado con exito" });
     } catch (err) {
         res.status(500).json({ message: 'Error al actualizar el Catalogo: ' + err.message });
     }
-
 });
+
+
+router.put('/actualizarfechas/:id', async (req, res) => {
+    const { id } = req.params;
+    const { 
+        Frecuencia, Fecha,FechaInicio,
+        FechaFin
+     } = req.body;
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdProgramacionCapacitacion', sql.Int, id);
+        request.input('Frecuencia', sql.VarChar, Frecuencia);
+        request.input('Fecha', sql.Date, Fecha);
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_programacioncapacitacion_update_fecha');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Actualizado con exito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al actualizar el Catalogo: ' + err.message });
+    }
+});
+
+
+
+
+
 
 
 // Añadir más rutas para crear, actualizar y eliminar departamentos

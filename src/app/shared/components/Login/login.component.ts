@@ -147,6 +147,10 @@ entrar(){
 onSubmit(): void {
   
   
+  if(this.loginForm.value.NombreUsuario == '' || this.loginForm.value.Password == '' ){
+    this.messageService.add({ severity: 'warn', summary: 'Precaución', detail: 'Completa Los campos', life: 2000 });
+  }else{
+
   //if (this.loginForm.valid && this.recaptchaResolved) {
     if (this.loginForm.valid) {
     const { NombreUsuario, Password } = this.loginForm.value;
@@ -173,6 +177,8 @@ onSubmit(): void {
       }
     });
     
+    }
+  
   }
 }
 

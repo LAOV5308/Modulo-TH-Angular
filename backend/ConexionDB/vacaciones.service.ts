@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
+import { Vacacion } from '../models/vacacion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,21 @@ export class VacacionesService {
 
 constructor(private http: HttpClient) { }
 
-getVacaciones(): Observable<any> {
-  return this.http.get<any>(this.apiUrl);
+
+addVacacion(data: any):Observable<any>{
+  return this.http.post(this.apiUrl, data);
 }
+getVacaciones(NoNomina: number | undefined): Observable<Vacacion[]> {
+  return this.http.get<Vacacion[]>(this.apiUrl+'/'+NoNomina);
+}
+getVacacionesRango(data: any): Observable<any[]> {
+  return this.http.post<any[]>(this.apiUrl+'/rango', data);
+}
+
+deleteVacacion(IdVacacion: number): Observable<any> {
+  return this.http.delete(this.apiUrl+'/'+IdVacacion);
+}
+
 
 
 }

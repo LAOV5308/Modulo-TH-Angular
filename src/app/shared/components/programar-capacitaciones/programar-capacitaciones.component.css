@@ -1,10 +1,21 @@
 
 .container {
   display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre los divs */
+}
+
+.box1, .box2 {
+  width: 45%; /* Puedes ajustar el porcentaje según tus necesidades */
+  padding: 8px;
+}
+
+
+/*.container {
+  display: flex;
   padding: 20px;
   border: 2px solid #00a0dc;
   border-radius: 8px;
-}
+}*/
 
 .form-section, .info-section {
   flex: 1;
@@ -45,4 +56,15 @@ background-color: black;
 
 mat-checkbox{
   font-size: 20px;
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Coloca los divs uno debajo del otro en pantallas pequeñas */
+  }
+
+  .box1, .box2 {
+    width: 100%; /* Los divs ocupan el ancho completo en pantallas pequeñas */
+  }
 }
