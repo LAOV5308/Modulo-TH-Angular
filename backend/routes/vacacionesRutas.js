@@ -3,6 +3,36 @@ const router = express.Router();
 const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js exporta una función para obtener el pool de conexiones
 const {sql, getConnection} = require('../ConexionDB/dbConfig');
 
+// Obtener Dias de Vacaciones por periodo
+router.post('/periodos', async (req, res) => {
+    const { NoNomina, Periodo } = req.body; // Aquí se usa req.body para recibir los datos
+
+    try {
+        const sql = await db.getConnection();
+        //const result = await sql.query("SELECT * FROM tblVacaciones WHERE NoNomina = " + NoNomina + " AND Periodo = " + Periodo);
+        const result = await sql.query("SELECT * FROM tblVacaciones WHERE EstadoVacacion = 1 and NoNomina = " + NoNomina);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error: ' + err.message);
+    }
+});
+
+router.post('/all', async (req, res) => {
+    const { NoNomina, Periodo } = req.body; // Aquí se usa req.body para recibir los datos
+
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query("SELECT * FROM tblVacaciones WHERE NoNomina = " + NoNomina + " AND Periodo = " + Periodo);
+        //const result = await sql.query("SELECT * FROM tblVacaciones WHERE NoNomina = " + NoNomina);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error: ' + err.message);
+    }
+});
+
+
+
+//Obtener Vacaciones por empleado
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -13,6 +43,10 @@ router.get('/:id', async (req, res) => {
         res.status(500).send('Error');
     }
 });
+
+
+
+
 router.post('/rango', async (req, res) => {
     const { NoNomina, FechaInicio, FechaFin } = req.body;
 
@@ -30,13 +64,15 @@ router.post('/rango', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { NoNomina,Fecha, Comentarios} = req.body;
+    const { NoNomina,Fecha, Comentarios, Periodo, IdVacacion} = req.body;
     try {
         const pool = await getConnection();
         const request = pool.request();
         request.input('NoNomina', sql.Int, NoNomina);
         request.input('Fecha', sql.Date, Fecha);
         request.input('Comentarios', sql.VarChar, Comentarios);
+        request.input('Periodo', sql.VarChar, Periodo);
+        request.input('IdVacacion', sql.Int, IdVacacion);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_vacacionfecha_add');
         //const result = await request.execute('stp_prueba_add');
@@ -52,12 +88,37 @@ router.delete('/:id', async (req, res) => {
     try {
         const pool = await getConnection();
         const request = pool.request();
-        request.input('IdVacacion', sql.Int, id);
+        request.input('IdFechaVacacion', sql.Int, id);
         const result = await request.execute('stp_vacacionfecha_delete');
         res.status(201).json({ message: "Vacacion Dada de baja con éxito" });
     } catch (err) {
         res.status(500).json({ message: 'Error al dar de baja: ' + err.message });
     }
+});
+
+
+// Actualizar Dias de la Vacacion
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { DiasDisponibles, DiasUtilizados} = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdVacacion', sql.Int, id);
+        request.input('DiasDisponibles', sql.Int, DiasDisponibles);
+        request.input('DiasUtilizados', sql.Int, DiasUtilizados);
+
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_vacaciondias_update');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Vacacion Actualizada con exito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al actualizar: ' + err.message });
+    }
+    
 });
 
 

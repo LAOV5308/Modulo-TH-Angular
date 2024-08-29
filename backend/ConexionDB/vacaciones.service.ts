@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
-import { Vacacion } from '../models/vacacion.model';
+import { FechaVacacion, Vacacion } from '../models/vacacion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,35 @@ constructor(private http: HttpClient) { }
 addVacacion(data: any):Observable<any>{
   return this.http.post(this.apiUrl, data);
 }
-getVacaciones(NoNomina: number | undefined): Observable<Vacacion[]> {
-  return this.http.get<Vacacion[]>(this.apiUrl+'/'+NoNomina);
+getFechasVacaciones(NoNomina: number | undefined): Observable<FechaVacacion[]> {
+  return this.http.get<FechaVacacion[]>(this.apiUrl+'/'+NoNomina);
 }
+
+getVacacionesPeriodo(NoNomina: number | undefined): Observable<Vacacion[]> {
+  const body = {
+    NoNomina: NoNomina
+  };
+  return this.http.post<Vacacion[]>(`${this.apiUrl}/periodos`, body);
+}
+
+getVacaciones(NoNomina: number | undefined, Periodo: string): Observable<Vacacion[]> {
+  const body = {
+    NoNomina: NoNomina,
+    Periodo: Periodo
+  };
+  return this.http.post<Vacacion[]>(`${this.apiUrl}/all`, body);
+}
+updateDiasVacaciones(IdVacacion: number, DiasDisponibles: number, DiasUtilizados: number ): Observable<any> {
+  const body = {
+    DiasDisponibles: DiasDisponibles,
+    DiasUtilizados: DiasUtilizados
+  };
+  return this.http.put(this.apiUrl+'/'+IdVacacion, body);
+}
+
+/**return this.http.put(this.apiUrl+'/'+IdPuesto, data) */
+
+
 getVacacionesRango(data: any): Observable<any[]> {
   return this.http.post<any[]>(this.apiUrl+'/rango', data);
 }
@@ -29,7 +55,5 @@ getVacacionesRango(data: any): Observable<any[]> {
 deleteVacacion(IdVacacion: number): Observable<any> {
   return this.http.delete(this.apiUrl+'/'+IdVacacion);
 }
-
-
 
 }
