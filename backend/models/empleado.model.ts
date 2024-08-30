@@ -42,6 +42,6 @@ export interface Empleado {
   FechaNacimientoBeneficiario: Date;
   NumeroTelefonoEmergencia: string;
   EstadoEmpleado: boolean;
-  Vacacion: boolean;
+  Vacaciones: boolean;
   //disabled?: boolean; 
 }

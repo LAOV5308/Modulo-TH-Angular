@@ -40,6 +40,6 @@ Edad: number;
   FechaNacimientoBeneficiario: Date;
   NumeroTelefonoEmergencia: string;
   EstadoEmpleado: boolean;
-  Vacacion: boolean;
+  Vacaciones: boolean;
 
 }

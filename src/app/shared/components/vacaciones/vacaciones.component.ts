@@ -264,13 +264,16 @@ ConsultarFechas(){
    */
 
 this.reiniciar();
+
 if(this.NoNomina != undefined){
   this.empleadosService.getEmpleado(this.NoNomina).subscribe({
     next:(data:any) =>{
       this.empleados = data;
 
 if(this.empleados.length > 0){
-  this.btnAgregar = true;
+  if(this.empleados[0].Vacaciones){
+
+    this.btnAgregar = true;
   if(this.date1!=undefined && this.date2!=undefined){
     this.consultaForm.patchValue({
       NoNomina: this.NoNomina,
@@ -297,12 +300,23 @@ if(this.empleados.length > 0){
     this.vacacionesService.getFechasVacaciones(this.NoNomina).subscribe({
     next:(data: FechaVacacion[]) => {
       this.vacaciones = data;
+      console.log(this.vacaciones);
     },
     error:(err: any) => {
       console.log('Error', err);
     }
   })
   }
+
+  }else{
+    this.messageService.add({ severity: 'error', summary: 'No hay Vacaciones', detail: 'Empleado Aun No tiene Vacaciones' });
+    this.vacaciones = [];
+  this.btnAgregar = false;
+
+  }
+
+  
+
   
 }else{
   this.messageService.add({ severity: 'error', summary: 'No Hay Vacaciones del empleado', detail: 'No hay Vacaciones' });
@@ -369,7 +383,12 @@ if(this.empleados.length > 0){
     console.log(this.IdVacacion,this.DiasRestantes, (this.DiasDeLey - this.DiasRestantes));
     this.vacacionesService.updateDiasVacaciones(this.IdVacacion,this.DiasRestantes, (this.DiasDeLey - this.DiasRestantes)).subscribe({
       next:(data: any)=>{
-      console.log(data);
+       //console.log(data);
+      this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Vacacion Agregada con Exito' });
+      this.showDialog();
+
+      //this.obtenerVacacion(this.opcionSeleccionada);
+
       },
       error:(err: any)=>{
         console.log('Error', err)
@@ -378,7 +397,7 @@ if(this.empleados.length > 0){
 
  }
 
- CancelarVacacion(IdFechaVacacion: number){
+ CancelarVacacion(IdFechaVacacion: number, IdVacacion: number){
   this.confirmationService.confirm({
     message: '¿Está seguro de que desea Cancelar la programacion de este Dia?',
     header: 'Confirmación',
@@ -387,8 +406,15 @@ if(this.empleados.length > 0){
     accept: () => {
       this.vacacionesService.deleteVacacion(IdFechaVacacion).subscribe({
         next:()=>{
-          this.messageService.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Eliminado Con exito' });
-          this.ConsultarFechas();
+          this.vacacionesService.incrementarDiasVacaciones(IdVacacion).subscribe({
+            next:()=>{
+              this.messageService.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Eliminado Con exito' });
+              this.ConsultarFechas();
+            },
+            error:(err: any)=>{
+              console.log('Error', err);
+            }
+          })
         },
         error:(err: any)=>{
           console.log('Error', err);

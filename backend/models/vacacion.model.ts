@@ -5,6 +5,7 @@ export interface FechaVacacion {
     Comentarios: string;
     EstadoVacacion: boolean;
     Periodo: string;
+    IdVacacion: number;
   }
 
   export interface Vacacion {

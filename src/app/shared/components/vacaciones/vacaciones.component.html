@@ -2,7 +2,7 @@
 <p-confirmDialog />
 
 <p-card>
-  <div style="text-align: center">
+  <div style="text-align: center;">
     
     <!--<<button [routerLink]="['/system/agregarvacacion']" class="agregar"
 mat-raised-button 
@@ -12,7 +12,7 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
 <p-button (onClick)="showDialog()" [rounded]="true" size="large" 
 label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"/>
 
-  <label for="Periodo"> Periodos:  </label>
+  <!--<label for="Periodo"> Periodos:  </label>
   <p-dropdown
   id="Periodo"
   [virtualScroll]="true"
@@ -20,10 +20,12 @@ label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"
   [options]="Opciones"
   [(ngModel)]="opcionSeleccionada"
   placeholder="Selecciona un Periodo"
-  [disabled]="!btnAgregar"/>
+  [disabled]="!btnAgregar"/>-->
+
+
 </div>
 
-<div *ngIf="empleados.length>0">
+<div style="text-align: end;" *ngIf="empleados.length>0">
   <h1>Nombre: {{empleados[0].Nombre + ' '+ empleados[0].Apellidos}}</h1>
   <h2>Aniversario: {{empleados[0].Aniversario | date:'dd/MM/yyyy'}}</h2>
   <h2>Alta Imss: {{empleados[0].IngresoImss | date:'dd/MM/yyyy'}}</h2>
@@ -100,7 +102,7 @@ label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"
                     severity="danger" 
                     [rounded]="true" 
                     [outlined]="true" 
-                    (onClick)="CancelarVacacion(vacacion.IdFechaVacacion)"/>
+                    (onClick)="CancelarVacacion(vacacion.IdFechaVacacion, vacacion.IdVacacion)"/>
             </td>
           </tr>
       </ng-template>

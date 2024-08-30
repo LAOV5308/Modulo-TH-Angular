@@ -44,6 +44,13 @@ updateDiasVacaciones(IdVacacion: number, DiasDisponibles: number, DiasUtilizados
   };
   return this.http.put(this.apiUrl+'/'+IdVacacion, body);
 }
+incrementarDiasVacaciones(IdVacacion: number): Observable<any> {
+  const body = {
+    IdVacacion: IdVacacion
+  };
+  return this.http.post(this.apiUrl+'/increase', body);
+}
+
 
 /**return this.http.put(this.apiUrl+'/'+IdPuesto, data) */
 
