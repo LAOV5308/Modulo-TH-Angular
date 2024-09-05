@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';  // Asegúrate de impor
 import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
 import { DataService } from '../../../../../backend/ConexionDB/data.service';
 import { HeaderComponent } from '../header/header.component';
-import { CreateEmpleadoComponent } from '../empleados/create-empleado/create-empleado.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { LoginComponent } from '../Login/login.component';
 import { MatToolbarModule } from '@angular/material/toolbar';

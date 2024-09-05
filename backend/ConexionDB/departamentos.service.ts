@@ -31,8 +31,8 @@ export class DepartamentosService {
   getDepartamentos(): Observable<Departamento[]> {
     return this.http.get<Departamento[]>(this.apiUrl);
   }*/
-  getDepartamentos(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getDepartamentos(): Observable<Departamento[]> {
+    return this.http.get<Departamento[]>(this.apiUrl);
   }
 
   deleteDepartamentos(id: number): Observable<any> {

@@ -5,6 +5,7 @@ export interface Empleado {
   NoNomina: number;
   Nivel: string;
   //Departamento:Departamento;
+  IdDepartamento: number;
   NombreDepartamento: string;
   NombrePuesto: string;
   NombreResponsable: string;
@@ -43,5 +44,6 @@ export interface Empleado {
   NumeroTelefonoEmergencia: string;
   EstadoEmpleado: boolean;
   Vacaciones: boolean;
+  Edad: number;
   //disabled?: boolean; 
 }

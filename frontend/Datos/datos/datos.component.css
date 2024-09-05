@@ -43,7 +43,8 @@ th.mat-header-cell, td.mat-cell {
   
   @media (min-width: 600px) {
     mat-form-field {
-      width: 30%;
+      width: 20%;
+      margin-left: 2%;
       margin-right: 2%;
     }
   }

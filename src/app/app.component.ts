@@ -5,7 +5,6 @@ import { DatosComponent } from '../../frontend/Datos/datos/datos.component';
 import { DataService } from '../../backend/ConexionDB/data.service';
 import { SystemComponent } from './shared/components/system/system.component';
 import { HeaderComponent } from './shared/components/header/header.component';
-import { CreateEmpleadoComponent } from './shared/components/empleados/create-empleado/create-empleado.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 import { LoginComponent } from './shared/components/Login/login.component';
@@ -21,7 +20,6 @@ import { FilterMatchMode,PrimeNGConfig } from 'primeng/api';
     DatosComponent,
     SystemComponent,
     HeaderComponent,
-    CreateEmpleadoComponent,
     SidebarComponent,
     HttpClientModule,
     NgIf

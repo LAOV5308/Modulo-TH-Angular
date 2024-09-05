@@ -19,6 +19,7 @@ constructor(private http: HttpClient) { }
 addVacacion(data: any):Observable<any>{
   return this.http.post(this.apiUrl, data);
 }
+
 getFechasVacaciones(NoNomina: number | undefined): Observable<FechaVacacion[]> {
   return this.http.get<FechaVacacion[]>(this.apiUrl+'/'+NoNomina);
 }

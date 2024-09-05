@@ -19,6 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { IncidenciaB } from '../../../../../backend/models/incidencia.model';
 import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencias.service';
+import { FechaVacacion } from '../../../../../backend/models/vacacion.model';
+import { VacacionesService } from '../../../../../backend/ConexionDB/vacaciones.service';
 
 @Component({
   selector: 'app-consultar-historial',
@@ -27,7 +29,7 @@ import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencia
     TableModule, CommonModule, MatFormFieldModule, FormsModule,
     ReactiveFormsModule
   ],
-  providers:[EmpleadosService, MessageService, BajasService, IncidenciasService],
+  providers:[EmpleadosService, MessageService, BajasService, IncidenciasService, VacacionesService],
   templateUrl: './consultar-historial.component.html',
   styleUrl: './consultar-historial.component.css'
 })
@@ -41,10 +43,11 @@ export class ConsultarHistorialComponent implements OnInit{
   incidencias: IncidenciaB[]=[];
   ultimo: number = 0;
   empleadosA: Empleado[]=[];
+  vacaciones: FechaVacacion[]=[];
 
   constructor(private empleadosService: EmpleadosService, 
     private messageService: MessageService, private bajasService: BajasService,
-    private fb: FormBuilder, private incidenciasService: IncidenciasService
+    private fb: FormBuilder, private incidenciasService: IncidenciasService, private vacacionesService: VacacionesService
   ){
     this.bajaForm = this.fb.group({
       NoNomina: ['']
@@ -124,6 +127,16 @@ export class ConsultarHistorialComponent implements OnInit{
         console.error('Error al cargar las Bajas', error);
       }
     });
+
+    this.vacacionesService.getFechasVacaciones(NoNomina).subscribe({
+      next:(data) =>{
+        this.vacaciones = data;
+        //console.log(this.incidencias);
+      },
+      error: (error) => {
+        console.error('Error al cargar las vacaciones', error);
+      }
+    })
 
     //this.messageService.add({ severity: 'success', summary: 'Success', detail: NoNomina });
   }

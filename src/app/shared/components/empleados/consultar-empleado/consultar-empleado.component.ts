@@ -10,7 +10,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { inputEmpleado } from '../../../../../../backend/models/inputEmpleado.model';
 
 
 @Component({
@@ -22,7 +21,7 @@ import { inputEmpleado } from '../../../../../../backend/models/inputEmpleado.mo
   styleUrl: './consultar-empleado.component.css'
 })
 export class ConsultarEmpleadoComponent implements OnInit{
-  empleado : inputEmpleado[]=[];
+  empleado : Empleado[]=[];
   NoNomina: number = 0;
 
   constructor(private _empleadosService: EmpleadosService,
@@ -40,7 +39,7 @@ export class ConsultarEmpleadoComponent implements OnInit{
     });
     console.log(this.NoNomina);
     
-    this._empleadosService.getEmpleadoI(this.NoNomina).subscribe({
+    this._empleadosService.getEmpleado(this.NoNomina).subscribe({
       next: (data) => {
         
         //this.employeeForm.patchValue(data);

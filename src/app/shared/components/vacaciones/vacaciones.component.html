@@ -2,15 +2,28 @@
 <p-confirmDialog />
 
 <p-card>
-  <div style="text-align: center;">
+  <div>
+    <h1 class="title"><strong>Vacaciones</strong></h1>
+</div>
+
+  <div style="display: flex; justify-content:center; margin: 2rem;" >
     
     <!--<<button [routerLink]="['/system/agregarvacacion']" class="agregar"
 mat-raised-button 
 color = "primary"
 type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
 </button>-->
-<p-button (onClick)="showDialog()" [rounded]="true" size="large" 
-label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"/>
+
+<div style="padding-left: 2rem;">
+  <p-button label="Consultar/Actualizar" size="large"  icon="pi pi-check" (onClick)="ConsultarFechas()"/>
+</div>
+  
+
+<div style="padding-left: 2rem;">
+  <p-button (onClick)="showDialog()" [rounded]="true" size="large" 
+  label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"/>
+</div>
+
 
   <!--<label for="Periodo"> Periodos:  </label>
   <p-dropdown
@@ -25,16 +38,24 @@ label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"
 
 </div>
 
-<div style="text-align: end;" *ngIf="empleados.length>0">
-  <h1>Nombre: {{empleados[0].Nombre + ' '+ empleados[0].Apellidos}}</h1>
-  <h2>Aniversario: {{empleados[0].Aniversario | date:'dd/MM/yyyy'}}</h2>
-  <h2>Alta Imss: {{empleados[0].IngresoImss | date:'dd/MM/yyyy'}}</h2>
-
+<div style="display: flex; justify-content: space-around; align-items: center;" *ngIf="empleados.length>0">
+  <div class="flex-auto" style="text-align: center;">
+    <h2>Nombre: {{empleados[0].Nombre + ' '+ empleados[0].Apellidos}}</h2>
+  </div>
+  <div class="flex-auto" style="text-align: center;"><h3><strong>Puesto:</strong> {{empleados[0].NombrePuesto}}</h3></div>
+  <div class="flex-auto" style="text-align: center;"><h3><strong>Departamento:</strong> {{empleados[0].NombreDepartamento}}</h3></div>
+  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].Aniversario !=null"><strong>Aniversario:</strong> {{addOneDay(empleados[0].Aniversario) | date:'dd/MM/yyyy'}}</h3></div>
+  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].IngresoImss !=null"><strong>Alta Imss:</strong> {{addOneDay(empleados[0].IngresoImss) | date:'dd/MM/yyyy'}}</h3></div>
+  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].Aniversario ==null"><strong>Aniversario:</strong> No Definido</h3></div>
+  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].IngresoImss ==null"><strong>Alta Imss:</strong> No Definido</h3></div>
+  
 </div>
-</p-card>
 
-  <!--<p-menubar [model]="items1" />-->
-  <p-card>
+  <!--<p-menubar [model]="items1" />   (ngModelChange)="ConsultarFechas()" -->
+ 
+    
+
+    <div style="display: flex; justify-content: space-around; align-items: center;">
     
     <div class="flex-auto" style="text-align: center;">
       <label for="NoNominaiInput" class="font-bold block mb-2">No. Nomina</label>
@@ -45,42 +66,45 @@ label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"
           [useGrouping]="false" 
           [min]="0" 
             [max]="9999"
-          /> 
+            
+          /> </div>
           
-          
-  </div>
 
-    <div>
-    <div class="flex-auto" style="text-align: center;">
-      <label for="FechaInicio" class="font-bold block mb-2"> Fecha Inicio </label>
+          <div class="flex-auto" style="text-align: center;">
+            <label for="FechaInicio" class="font-bold block mb-2"> Fecha Inicio </label>
       <p-calendar
           dateFormat="dd/mm/yy"
           [(ngModel)]="date1" 
           [showIcon]="true" 
           inputId="FechaInicio" 
           [showOnFocus]="false" />
-
-          <label for="FechaFin" class="font-bold block mb-2"> Fecha Fin </label>
-    <p-calendar
-        dateFormat="dd/mm/yy"
-        [(ngModel)]="date2" 
-        [showIcon]="true" 
-        inputId="FechaFin" 
-        [showOnFocus]="false" />
-
-        <div style="text-align: center; padding-top: 2rem;">
-          <p-button label="Consultar/Actualizar" icon="pi pi-check" (onClick)="ConsultarFechas()"/>
         </div>
+        <div class="flex-auto" style="text-align: center;">
+          <label for="FechaFin" class="font-bold block mb-2"> Fecha Fin </label>
+          <p-calendar
+              dateFormat="dd/mm/yy"
+              [(ngModel)]="date2" 
+              [showIcon]="true" 
+              inputId="FechaFin" 
+              [showOnFocus]="false" />
+        </div>
+
+    
         
-  </div>
+        
+  
 </div>
-  </p-card>
+
   
   
-  <div>
-    <p-table [value]="vacaciones" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-striped"
-    [scrollable]="true" 
-    scrollHeight="250px" >
+  <div style="margin-top: 7rem; margin-bottom: 7rem;">
+    <p-table [value]="vacaciones" [tableStyle]="{ 'min-width': '50rem' }" 
+    styleClass="p-datatable-striped"
+    [scrollable]="true"  
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20, 30, 40, 50]"
+    >
       <ng-template pTemplate="header">
           <tr>
             <th></th>
@@ -93,7 +117,7 @@ label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"
       <ng-template pTemplate="body" let-vacacion>
           <tr>
             <td></td>
-              <td>{{ vacacion.Fecha | date:'dd/MM/yyyy'}}</td>
+              <td>{{ addOneDay(vacacion.Fecha) | date:'dd/MM/yyyy'}}</td>
               <td>{{ vacacion.Comentarios }}</td>
               <td>{{ vacacion.Periodo}}</td>
               <td>
@@ -111,7 +135,7 @@ label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"
     <h2>No Hay Vacaciones</h2>
   </div>
   </div>
- 
+</p-card>
 
 <!--<div>
   <h1 style="color: rgb(0, 145, 255);"><strong>Calendario de Vacaciones</strong></h1>
@@ -129,10 +153,26 @@ label="Agregar Nueva Vacacion" icon="pi pi-plus-circle" [disabled]="!btnAgregar"
     [style]="{ width: '50vw' }" 
     [draggable]="false" 
     [resizable]="false">
-    <p-button (onClick)="reiniciar()"
-label="Reiniciar"/>
+    
+
 
     
+
+  <div style="display: flex; justify-content: space-around; align-items: center;" *ngIf="empleados.length>0">
+<div class="flex-auto" style="text-align: center;">
+  <p-button (onClick)="reiniciar()"
+label="Reiniciar"/>
+</div>
+    
+
+    <div class="flex-auto" style="text-align: center;">
+      <h3><strong>No. Nomina:</strong> {{empleados[0].NoNomina}}</h3>
+    </div>
+    <div class="flex-auto" style="text-align: center;">
+      <h3><strong>Nombre:</strong> {{empleados[0].Nombre + ' '+ empleados[0].Apellidos}}</h3>
+    </div>
+  
+  </div>
       
       <div class="flex align-items-center gap-3 mb-3">
 
@@ -152,7 +192,13 @@ label="Reiniciar"/>
         <!--(ngModelChange)="formatSelectedDates()"
         (onSelect)="formatSelectedDates()"
         -->
+
+        
+
         <div class="flex align-items-center gap-3 mb-3" *ngIf="consultavacaciones.length > 0">
+
+          
+          
           
           <h2 *ngIf="vacacionesPeriodo.length > 0">Dias Restantes: {{DiasRestantes}}</h2>
           <label for="periodos">Selecciona un Periodo: </label>
@@ -180,11 +226,16 @@ label="Reiniciar"/>
         
         </div>
 
+        <div class="flex align-items-center gap-3 mb-3" *ngIf="consultavacaciones.length == 0">
+          <h2>No Quedan Vacaciones</h2>
+        </div>
+
       
     </div>
 
     
     <div class="card flex justify-content-center">
+
       <label for="fechas">Fechas Seleccionadas: </label>
       <input 
           id="fechas"
@@ -205,5 +256,6 @@ label="Reiniciar"/>
     </div>
   
 </p-dialog>
+
 
 <!--<form [formGroup]="vacacionForm" (ngSubmit)="OnSubmit()"></form>-->

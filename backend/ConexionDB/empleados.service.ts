@@ -5,7 +5,6 @@ import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
 import { Empleado } from '../models/empleado.model';
-import { inputEmpleado } from '../models/inputEmpleado.model';
 import { Capacitacion } from '../models/capacitacion.model';
 import { BehaviorSubject } from 'rxjs';
 
@@ -80,9 +79,6 @@ export class EmpleadosService {
     return this.http.get<Empleado[]>(this.apiUrl+'/'+id);
   }
   
-  getEmpleadoI(id: number): Observable<inputEmpleado[]> {
-    return this.http.get<inputEmpleado[]>(this.apiUrl+'/'+id);
-  }
 
   getEmpleados(): Observable<Empleado[]> {
     return this.http.get<Empleado[]>(this.apiUrl);

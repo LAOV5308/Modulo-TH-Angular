@@ -271,6 +271,7 @@ if(this.NoNomina != undefined){
       this.empleados = data;
 
 if(this.empleados.length > 0){
+  console.log(this.empleados[0].Vacaciones);
   if(this.empleados[0].Vacaciones){
 
     this.btnAgregar = true;
@@ -309,7 +310,17 @@ if(this.empleados.length > 0){
   }
 
   }else{
-    this.messageService.add({ severity: 'error', summary: 'No hay Vacaciones', detail: 'Empleado Aun No tiene Vacaciones' });
+    //this.messageService.add({ severity: 'error', summary: 'No hay Vacaciones', detail: 'Empleado Aun No tiene Vacaciones', sticky: true });
+    this.confirmationService.confirm({
+      message: 'Empleado Aun NO Cumple con el Primer Aniversario',
+      header: 'No Cumple Aniversario',
+      icon: 'pi pi-calendar-times',
+      rejectButtonStyleClass: "p-button-text",
+      accept: () => {
+      },
+      reject: () => {
+      }
+  })
     this.vacaciones = [];
   this.btnAgregar = false;
 
@@ -398,6 +409,7 @@ if(this.empleados.length > 0){
  }
 
  CancelarVacacion(IdFechaVacacion: number, IdVacacion: number){
+
   this.confirmationService.confirm({
     message: '¿Está seguro de que desea Cancelar la programacion de este Dia?',
     header: 'Confirmación',
@@ -438,6 +450,12 @@ this.dates = [];
 this.comentarios = '';
 this.vacacionesPeriodo = [];
  }
+
+ addOneDay(dateString: any): Date {
+  const fecha = new Date(dateString);
+  fecha.setDate(fecha.getDate() + 1);
+  return fecha;
+}
 
 
 }

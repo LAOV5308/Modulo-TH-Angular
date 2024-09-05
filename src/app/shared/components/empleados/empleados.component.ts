@@ -5,7 +5,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
-import { CreateEmpleadoComponent } from './create-empleado/create-empleado.component';
 import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
 
 

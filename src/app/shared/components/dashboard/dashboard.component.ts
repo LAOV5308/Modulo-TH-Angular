@@ -1,49 +1,142 @@
 import { Component, OnInit } from '@angular/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { FormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_DATE_LOCALE, provideNativeDateAdapter} from '@angular/material/core';
+
 
 import { MatCard, MatCardHeader, MatCardModule } from '@angular/material/card';
 import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
+import {Chart, Colors } from 'chart.js';
+
+import { ChartModule } from 'primeng/chart';
 import { BaseChartDirective } from 'ng2-charts';
 import { MeterGroupModule } from 'primeng/metergroup';
 import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
 import { Empleado } from '../../../../../backend/models/empleado.model';
+import { Departamento } from '../../../../../backend/models/departamento.model';
+import { DepartamentosService } from '../../../../../backend/ConexionDB/departamentos.service';
+import { DashboardService } from '../../../../../backend/ConexionDB/dashboard.service';
+import { D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo } from '../../../../../backend/models/dashboard.model';
+import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencias.service';
+import { Incidencia } from '../../../../../backend/models/incidencia.model';
+
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { DropdownModule } from 'primeng/dropdown';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCard, MatCardHeader, MatCardModule,
-    BaseChartDirective, MeterGroupModule],
-    providers:[EmpleadosService],
+  imports: [FormsModule,MatCard, MatCardHeader, MatCardModule,
+    BaseChartDirective, MeterGroupModule, ChartModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
+    DropdownModule, MatGridListModule
+  ],
+    providers:[EmpleadosService, DepartamentosService, DashboardService, IncidenciasService,
+      { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, provideNativeDateAdapter()
+    ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
   empleados: Empleado[] = [];
   CantidadEmpleados: number = 0;
+  BajasEmpleados: number = 0;
   Masculino!: number;
   Femenino!: number;
+  Otro!:number;
   value:any=[];
+  departamentos: D_Departamentos[] = [];
+  estadocivil: D_EstadoCivil[]=[];
+  promedioedad: string='';
+  incidencias: Incidencia[]=[];
+  incidenciasPeriodo: D_IncidenciasPeriodo[]=[];
+  capacitacionesPeriodo: D_CapacitacionesPeriodo[]=[];
+  contratacionesPeriodo: D_ContratacionesPeriodo[]=[];
+  edades: D_Edades[]=[];
+  periodoSeleccionado: string = '2024';
+  periodos: string[]=['2022','2023', '2024', '2025', '2026']
+  //NombresDepartamentos:string[] = [];
+
+  data: any;
+
+    options: any;
+    datadoughnut: any;
+    databar: any;
+    databarEdades: any;
+    dataline: any;
+    datalineCapacitaciones: any;
+    datalineContrataciones: any;
 
 
-  constructor(private empleadosService: EmpleadosService){
-    
+  constructor(private empleadosService: EmpleadosService, private departamentosService: DepartamentosService, private dashboardservice: DashboardService,
+    private incidenciasService: IncidenciasService
+  ){
+   // Register the Colors plugin
+Chart.register(Colors);
+Chart.register(ChartDataLabels);  // Registrar el plugin
+Chart.defaults.set('plugins.datalabels', {
+  color: '#0000000'
+});
+
   }
 
   ngOnInit(): void {
     this.Masculino = 0;
     this.Femenino = 0;
+
+    
+
+
+    //Bar Chart
+  /*this.databar = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+        {
+            label: 'My First dataset',
+            backgroundColor: '#42A5F5',
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: 'My Second dataset',
+            backgroundColor: '#FFA726',
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+};*/
+
+    
+
     this.empleadosService.getEmpleados().subscribe({
       next: (data) => {
         this.empleados = data;
+        //Es valor string;
+        this.promedioedad= this.promedioEdad(this.empleados).toFixed(1);
+
+        console.log(this.empleados);
         this.CantidadEmpleados = this.empleados.length;
+
         this.empleados.forEach(element => {
-          if(element.Sexo == 'Masculino'){
-            this.Masculino++;
-          }
-          if(element.Sexo == 'Femenino'){
-            this.Femenino++;
+
+          //Genero
+          switch(element.Sexo){
+            case 'Masculino':
+              this.Masculino++;
+              break;
+              case 'Femenino':
+              this.Femenino++;
+              break;
+              case 'Otro':
+              this.Otro++;
+              break;
           }
           
         });
+        this.value = [
+          { label: 'Hombres', color: '#50b8c5', value: this.calcular(this.CantidadEmpleados,this.Masculino), icon: 'pi pi-mars' },
+          { label: 'Mujeres', color: '#be70e6', value: this.calcular(this.CantidadEmpleados,this.Femenino), icon: 'pi pi-venus' },
+      ];
 
 
       },
@@ -53,15 +146,492 @@ export class DashboardComponent implements OnInit {
 
     });
 
-    this.value = [
-      { label: 'Hombres', color: '#50b8c5', value: this.calcular(this.CantidadEmpleados,this.Masculino), icon: 'pi pi-mars' },
-      { label: 'Mujeres', color: '#be70e6', value: this.calcular(this.CantidadEmpleados,this.Femenino), icon: 'pi pi-venus' },
-  ];
+    this.empleadosService.getEmpleadosInactive().subscribe({
+      next:(data: any)=>{
+        this.BajasEmpleados = data.length;
+      },
+      error:(error: any)=>{
+        console.log(error);
+      },
+    })
 
+    
+
+    this.dashboardservice.getEmpleadosPorDepartamento().subscribe({
+      next: (departamentos: any) => {
+
+        this.departamentos = departamentos;
+        console.log(this.departamentos);
+
+// Inicializa el arreglo de labels y data
+const labels = this.departamentos.map(dept => dept.NombreDepartamento);
+const data = this.departamentos.map(dept => dept.CantidadEmpleados);
+
+        //Doughnut Chart
+    this.datadoughnut = {
+      labels: labels,
+      datasets: [
+          {
+              data: data,
+          }],
+          options: {
+            plugins: {
+                colors: {
+                    enabled: true
+                }
+            }
+        }
+      };
+
+      },
+      error: (err) => {
+        console.log('Error'+err);
+      }
+
+    });
+
+
+    //Graficas de DataBar
+    this.dashboardservice.getEmpleadosporEstadoCivil().subscribe({
+      next: (estadocivil: any) => {
+        this.estadocivil = estadocivil;
+        console.log(this.estadocivil);
+
+// Crea un dataset para cada entrada en el estado civil
+const datasets = this.estadocivil.map((dept, index) => ({
+  label: dept.EstadoCivil,  // Etiqueta para cada dataset
+  data: [dept.CantidadEstadoCivil],  // Solo un valor para este dataset
+}));
+
+//const data = this.estadocivil.map(dept => dept.CantidadEstadoCivil);
+
+        //Databar Chart
+      this.databar = {
+      labels: ['Estado Civil'],
+      datasets: datasets,
+          options: {
+            plugins: {
+                colors: {
+                    enabled: true
+                }
+            }
+        }
+      };
+
+      },
+      error: (err) => {
+        console.log('Error'+err);
+      }
+
+    });
+
+
+    //Graficas de DataBar Edades
+    this.dashboardservice.getEmpleadosporEdades().subscribe({
+      next: (edades: any) => {
+        this.edades = edades;
+
+// Crea un dataset para cada entrada en el estado civil
+const datasets = this.edades.map((dept, index) => ({
+  label: dept.RangoEdad,  // Etiqueta para cada dataset
+  data: [dept.CantidadEdades],  // Solo un valor para este dataset
+}));
+
+//const data = this.estadocivil.map(dept => dept.CantidadEstadoCivil);
+
+        //Databar Chart
+      this.databarEdades = {
+      labels: ['Edades'],
+      datasets: datasets,
+          options: {
+            plugins: {
+                colors: {
+                    enabled: true
+                }
+            }
+        }
+      };
+
+      },
+      error: (err) => {
+        console.log('Error'+err);
+      }
+
+    });
+
+
+    this.dashboardservice.getIncidencias(this.periodoSeleccionado).subscribe({
+      next: (data: any) => {
+        this.incidenciasPeriodo = data;
+        console.log(this.incidenciasPeriodo);
+    
+        // Inicializa un objeto para almacenar los datos por motivo
+        const motivoData:any = {};
+    
+        // Recorre las incidencias y organiza los datos por motivo y mes
+        this.incidenciasPeriodo.forEach(incidencia => {
+          const mes = incidencia.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
+          const motivo = incidencia.Motivo;
+    
+          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
+          if (!motivoData[motivo]) {
+            motivoData[motivo] = new Array(12).fill(0);
+          }
+    
+          // Asignar la cantidad de incidencias al mes correspondiente
+          motivoData[motivo][mes] = incidencia.CantidadIncidencias;
+        });
+    
+        // Crear datasets a partir de motivoData
+        const datasets = Object.keys(motivoData).map(motivo => ({
+          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
+          data: motivoData[motivo],  // Los datos organizados por mes
+          tension: 0.4,
+          fill: false  // Evitar que la línea se llene
+        }));
+    
+        // Configura el gráfico de líneas
+        this.dataline = {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+        console.log(datasets);
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+
+
+    this.dashboardservice.getCapacitaciones(this.periodoSeleccionado).subscribe({
+      next: (data: any) => {
+        this.capacitacionesPeriodo = data;
+        console.log(this.capacitacionesPeriodo);
+    
+        // Inicializa un objeto para almacenar los datos por motivo
+        const motivoData:any = {};
+    
+        // Recorre las incidencias y organiza los datos por motivo y mes
+        this.capacitacionesPeriodo.forEach(capacitacion => {
+          const mes = capacitacion.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
+          const nombre = capacitacion.NombreCapacitacion;
+    
+          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
+          if (!motivoData[nombre]) {
+            motivoData[nombre] = new Array(12).fill(0);
+          }
+    
+          // Asignar la cantidad de incidencias al mes correspondiente
+          motivoData[nombre][mes] = capacitacion.CantidadCapacitaciones;
+        });
+    
+        // Crear datasets a partir de motivoData
+        const datasets = Object.keys(motivoData).map(motivo => ({
+          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
+          data: motivoData[motivo],  // Los datos organizados por mes
+          tension: 0.4,
+          fill: false  // Evitar que la línea se llene
+        }));
+    
+        // Configura el gráfico de líneas
+        this.datalineCapacitaciones = {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+        console.log(datasets);
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+
+
+    this.dashboardservice.getContrataciones(this.periodoSeleccionado).subscribe({
+      next: (data: any) => {
+        this.contratacionesPeriodo = data;
+    
+        // Inicializa un objeto para almacenar los datos por motivo
+        const motivoData:any = {};
+    
+        // Recorre las incidencias y organiza los datos por motivo y mes
+        this.contratacionesPeriodo.forEach(contratacion => {
+          const mes = contratacion.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
+          const nombre = contratacion.NombreDepartamento;
+    
+          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
+          if (!motivoData[nombre]) {
+            motivoData[nombre] = new Array(12).fill(0);
+          }
+    
+          // Asignar la cantidad de incidencias al mes correspondiente
+          motivoData[nombre][mes] = contratacion.CantidadContrataciones;
+        });
+    
+        // Crear datasets a partir de motivoData
+        const datasets = Object.keys(motivoData).map(motivo => ({
+          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
+          data: motivoData[motivo],  // Los datos organizados por mes
+          tension: 0.4,
+          fill: false  // Evitar que la línea se llene
+        }));
+    
+        // Configura el gráfico de líneas
+        this.datalineContrataciones = {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+        console.log(datasets);
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+    
+
+    this.incidenciasService.getIncidenciasAll().subscribe({
+      next: (data: any) => {
+        
+       /* this.incidencias = data;
+        console.log(this.incidencias);
+
+        const datasets = this.incidencias.map((incidencia, index) => ({
+          label: incidencia.Motivo,  // Etiqueta para cada dataset
+          data: [incidencia.DiasSubsidios, Math.floor (Math.random ()*18) + 1, Math.floor (Math.random ()*18) + 1,Math.floor (Math.random ()*18) + 1],  // Solo un valor para este dataset
+          tension: 0.4
+        }));
+
+        console.log(datasets);
+        //Line Chart
+this.dataline = {
+  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  datasets: datasets /*[
+      {
+          label: 'Maternidad',
+          data: [6, 5, 8, 8, 5, 5, 6, 5, 8, 8, 5, 4],
+          fill: false,
+          borderColor: '#42A5F5',
+          tension: 0.4
+      },
+      {
+          label: 'Trayecto',
+          data: [2, 4, 4, 1, 8, 2, 2, 4, 4, 1, 8, 9],
+          fill: false,
+          borderColor: '#FFA726',
+          tension: 0.4
+      }
+  ]*/
+//};
+
+      },
+      error: (err) => {
+        console.log('Error'+err);
+      }
+    });
+
+
+  }
+
+  periodo(){
+
+    this.dashboardservice.getIncidencias(this.periodoSeleccionado).subscribe({
+      next: (data: any) => {
+        this.incidenciasPeriodo = data;
+        console.log(this.incidenciasPeriodo);
+    
+        // Inicializa un objeto para almacenar los datos por motivo
+        const motivoData:any = {};
+    
+        // Recorre las incidencias y organiza los datos por motivo y mes
+        this.incidenciasPeriodo.forEach(incidencia => {
+          const mes = incidencia.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
+          const motivo = incidencia.Motivo;
+    
+          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
+          if (!motivoData[motivo]) {
+            motivoData[motivo] = new Array(12).fill(0);
+          }
+    
+          // Asignar la cantidad de incidencias al mes correspondiente
+          motivoData[motivo][mes] = incidencia.CantidadIncidencias;
+        });
+    
+        // Crear datasets a partir de motivoData
+        const datasets = Object.keys(motivoData).map(motivo => ({
+          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
+          data: motivoData[motivo],  // Los datos organizados por mes
+          tension: 0.4,
+          fill: false  // Evitar que la línea se llene
+        }));
+    
+        // Configura el gráfico de líneas
+        this.dataline = {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+        console.log(datasets);
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+
+
+    this.dashboardservice.getCapacitaciones(this.periodoSeleccionado).subscribe({
+      next: (data: any) => {
+        this.capacitacionesPeriodo = data;
+        console.log(this.capacitacionesPeriodo);
+    
+        // Inicializa un objeto para almacenar los datos por motivo
+        const motivoData:any = {};
+    
+        // Recorre las incidencias y organiza los datos por motivo y mes
+        this.capacitacionesPeriodo.forEach(capacitacion => {
+          const mes = capacitacion.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
+          const nombre = capacitacion.NombreCapacitacion;
+    
+          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
+          if (!motivoData[nombre]) {
+            motivoData[nombre] = new Array(12).fill(0);
+          }
+    
+          // Asignar la cantidad de incidencias al mes correspondiente
+          motivoData[nombre][mes] = capacitacion.CantidadCapacitaciones;
+        });
+    
+        // Crear datasets a partir de motivoData
+        const datasets = Object.keys(motivoData).map(motivo => ({
+          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
+          data: motivoData[motivo],  // Los datos organizados por mes
+          tension: 0.4,
+          fill: false  // Evitar que la línea se llene
+        }));
+    
+        // Configura el gráfico de líneas
+        this.datalineCapacitaciones = {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+        console.log(datasets);
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+
+    this.dashboardservice.getContrataciones(this.periodoSeleccionado).subscribe({
+      next: (data: any) => {
+        this.contratacionesPeriodo = data;
+    
+        // Inicializa un objeto para almacenar los datos por motivo
+        const motivoData:any = {};
+    
+        // Recorre las incidencias y organiza los datos por motivo y mes
+        this.contratacionesPeriodo.forEach(contratacion => {
+          const mes = contratacion.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
+          const nombre = contratacion.NombreDepartamento;
+    
+          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
+          if (!motivoData[nombre]) {
+            motivoData[nombre] = new Array(12).fill(0);
+          }
+    
+          // Asignar la cantidad de incidencias al mes correspondiente
+          motivoData[nombre][mes] = contratacion.CantidadContrataciones;
+        });
+    
+        // Crear datasets a partir de motivoData
+        const datasets = Object.keys(motivoData).map(motivo => ({
+          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
+          data: motivoData[motivo],  // Los datos organizados por mes
+          tension: 0.4,
+          fill: false  // Evitar que la línea se llene
+        }));
+    
+        // Configura el gráfico de líneas
+        this.datalineContrataciones = {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+        console.log(datasets);
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+
+  }
+
+  onDataSelect(event: any){
+    console.log(event);
+    const datasetIndex = event.element._datasetIndex;
+    const dataIndex = event.element._index;
+    console.log(datasetIndex);
+    const selectedData = this.databar.datasets[datasetIndex].data[dataIndex];
+    const selectedLabel = this.datadoughnut.labels[dataIndex];
+    console.log(selectedLabel);
   }
 
   calcular(total:number, cantidad:number): number{
     return (100/total)*cantidad
+  }
+
+  promedioEdad(empleados: Empleado[]):number{
+    var Promedio=0;
+    var SumaEdad=0;
+    
+    empleados.forEach(element => {
+      SumaEdad = SumaEdad + element.Edad;
+    });
+    Promedio = (SumaEdad/this.empleados.length);
+    return Promedio;
   }
 
   public barChartOptions: ChartOptions = {

@@ -34,7 +34,6 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 import 'moment/locale/fr';
 import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
 import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
-import { inputEmpleado } from '../../../../../../backend/models/inputEmpleado.model';
 import { log } from 'console';
 import { estados, estados1, estadosConCiudades } from '../../../recursos/estados';
 export const MY_DATE_FORMATS = {
@@ -74,7 +73,7 @@ export const MY_DATE_FORMATS = {
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
   EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService
   ],
   templateUrl: './update-empleado.component.html',
@@ -85,7 +84,7 @@ export class UpdateEmpleadoComponent implements OnInit{
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
   puestos: Puesto[] = [];
-  empleados: inputEmpleado[] | null = null;
+  empleados: Empleado[] | null = null;
   NoNomina1!: number;
   filteredPuestos: Puesto[] = [];
   
@@ -100,7 +99,8 @@ export class UpdateEmpleadoComponent implements OnInit{
   //Opciones de Eleccion
   sexo: string[] = [
     'Masculino',
-    'Femenino'
+    'Femenino',
+      'Otro'
   ];
 
   nivel: string[] = [
@@ -172,7 +172,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       // Define otros controles de formulario aquí
       NoNomina: [{value: ' ', disabled: true}],
       Nivel:[''],
-      NombreDepartamento:[''],
+      NombreDepartamento:['', Validators.required],
       NombrePuesto:['', Validators.required],
       TipoIngreso:[''],
       Ingreso:[''],
@@ -189,7 +189,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       Nombre:['', Validators.required],
       Apellidos:['', Validators.required],
       Sexo:['', Validators.required],
-      EstadoCivil:[''],
+      EstadoCivil:['', Validators.required],
       FechaNacimiento:[''],
       EntidadNacimiento:[''],
       CiudadNacimiento:[''],
@@ -290,7 +290,7 @@ export class UpdateEmpleadoComponent implements OnInit{
     });
     console.log(this.NoNomina1);
     
-    this._empleadosService.getEmpleadoI(this.NoNomina1).subscribe({
+    this._empleadosService.getEmpleado(this.NoNomina1).subscribe({
       next: (data) => {
         
         this.employeeForm.patchValue(data);

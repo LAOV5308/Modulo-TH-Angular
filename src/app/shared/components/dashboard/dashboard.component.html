@@ -1,12 +1,27 @@
 <!-- dashboard-overview.component.html -->
-<div class="dashboard-container">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Empleados</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
 
-        <div class="form-container">
+<mat-grid-list cols="1">
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>
+        Empleados
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="dashboard-card-content">
+      <h2>Colaboradores</h2>
+        <div class="form-container" style="margin-top: 10px;">
+          
+          <div class="separacion"> 
+            <i class="pi pi-user-minus" style="font-size: 5rem; color: #5056c5"> {{BajasEmpleados}} </i>
+            <p style="color: #5056c5;">Empleados Bajas</p>
+            </div>
+
+          <div class="separacion"> 
+            <i class="pi pi-users" style="font-size: 5rem; color: #50c596"> {{CantidadEmpleados}} </i>
+          <p style="color: #50c596;">Total Empleados Activos</p> 
+          </div>
+
           <div class="separacion"> 
             <i class="pi pi-user" style="font-size: 5rem; color: #50b8c5"> {{Masculino}} </i>
             <p style="color: #50b8c5;">Masculinos</p>
@@ -16,14 +31,120 @@
             <i class="pi pi-user" style="font-size: 5rem; color: #be70e6">{{Femenino}} </i>
             <p style="color: #be70e6;">Femeninos</p>
           </div>
-          
+          <h2>Promedio Edad De Empleados:  <strong>{{promedioedad}} Años</strong></h2>
         </div>
+    </mat-card-content>
+  </mat-card>
+</mat-grid-tile>
+</mat-grid-list>
+
+<div class="dashboard-container">
+
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title style="color: #50c596; font-size: 2rem; text-align: center;">DashBoard</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+          
+        
+          
+
+        <h2>Colaboradores</h2>
+        <div class="form-container" style="margin-top: 10px;">
+          
+          <div class="separacion"> 
+            <i class="pi pi-user-minus" style="font-size: 5rem; color: #5056c5"> {{BajasEmpleados}} </i>
+            <p style="color: #5056c5;">Empleados Bajas</p>
+            </div>
+
+          <div class="separacion"> 
+            <i class="pi pi-users" style="font-size: 5rem; color: #50c596"> {{CantidadEmpleados}} </i>
+          <p style="color: #50c596;">Total Empleados Activos</p> 
+          </div>
+
+          <div class="separacion"> 
+            <i class="pi pi-user" style="font-size: 5rem; color: #50b8c5"> {{Masculino}} </i>
+            <p style="color: #50b8c5;">Masculinos</p>
+          </div>
+          
+          <div class="separacion"> 
+            <i class="pi pi-user" style="font-size: 5rem; color: #be70e6">{{Femenino}} </i>
+            <p style="color: #be70e6;">Femeninos</p>
+          </div>
+          <h2>Promedio Edad De Empleados:  <strong>{{promedioedad}} Años</strong></h2>
+        </div>
+
         <br>
 
       <p-meterGroup [value]="value">
       </p-meterGroup>
 
       <br>
+      <div class="form-container">
+        <!-- Doughnut Chart -->
+        <div style="width: 23%; padding-right: 40px;">
+          <h2>Empleados por Departamento</h2>
+          <p-chart type="doughnut" [data]="datadoughnut" (onDataSelect)="onDataSelect($event)"></p-chart>
+        </div>
+
+
+        <div style="width: 40%; padding-right: 40px;">
+          <h2>Empleados por Estado Civil</h2>
+          <p-chart type="bar" [data]="databar" (onDataSelect)="onDataSelect($event)"></p-chart>
+        
+        </div>
+
+       </div>
+
+
+       <div>
+        <div style="width: 50%;">
+          <label for="periodo">Selecciona un Periodo: </label>
+          <br>
+          <p-dropdown 
+          id="periodo"
+              [options]="periodos" 
+              [(ngModel)]="periodoSeleccionado"
+              placeholder="Selecciona Un Periodo" 
+              (onChange)="periodo()"
+              />
+        </div>
+        <br>
+       </div>
+<div class="form-container">
+  
+  <div style="width: 50%;">
+
+    <h2>Cantidad de Incidencias por Mes y Año</h2>
+    <p-chart type="line" [data]="dataline"></p-chart>
+  </div>
+  <div style="width: 50%;">
+
+    <h2>Cantidad de Capacitaciones por Mes y Año</h2>
+    <p-chart type="line" [data]="datalineCapacitaciones"></p-chart>
+  </div>
+
+  
+  
+
+</div>
+<div class="form-container">
+  <div style="width: 50%;">
+
+    <h2>Cantidad de Contrataciones por Mes y Año</h2>
+    <p-chart type="line" [data]="datalineContrataciones"></p-chart>
+  </div>
+
+
+  <div style="width: 50%;">
+
+    <h2>Rango de Edades</h2>
+    <p-chart type="bar" [data]="databarEdades"></p-chart>
+  </div>
+
+</div>
 
     <!--  <canvas baseChart
               [datasets]="barChartData"

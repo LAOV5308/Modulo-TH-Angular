@@ -2,14 +2,19 @@
 .form-container {
     display: flex;
     align-items: center;
-    padding-left: 30%;
+    padding-left: 5%;
+    padding-bottom: 2rem;
 }
 
 
 .separacion{
-    padding-right: 30%;
+    padding-right: 5%;
     
 }
 p{
     font-size: 1.5rem;
 }
+
+.grid-container {
+    margin: 20px;
+  }

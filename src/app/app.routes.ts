@@ -28,6 +28,7 @@ import { VacacionesComponent } from './shared/components/vacaciones/vacaciones.c
 import { VacacionaddComponent } from './shared/components/vacacionadd/vacacionadd.component';
 import { ConsultarHistorialComponent } from './shared/components/consultar-historial/consultar-historial.component';
 import { UpdateCapacitacionesComponent } from './shared/components/capacitaciones/update-capacitaciones/update-capacitaciones.component';
+import { DashboardComponent1 } from './dashboard/dashboard.component';
 
 
 export const routes: Routes = [
@@ -59,7 +60,8 @@ export const routes: Routes = [
             { path: 'consultarvacaciones', component: VacacionesComponent},
             {path: 'agregarvacacion', component: VacacionaddComponent},
             {path: 'historial', component: ConsultarHistorialComponent},
-            {path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent}
+            {path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent},
+            {path: 'dashboard1', component: DashboardComponent1}
 
         ]
      },

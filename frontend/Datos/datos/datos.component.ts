@@ -12,7 +12,6 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { CoreService } from '../../../src/app/Core/core.service';
 import { HeaderComponent } from '../../../src/app/shared/components/header/header.component';
-import { CreateEmpleadoComponent } from '../../../src/app/shared/components/empleados/create-empleado/create-empleado.component';
 import { UpdateEmpleadoComponent } from '../../../src/app/shared/components/empleados/update-empleado/update-empleado.component';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -68,7 +67,6 @@ export const MY_DATE_FORMATS = {
     NgFor, DatePipe, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
     HeaderComponent,
-    CreateEmpleadoComponent,
     MatIconModule,
     //UpdateEmpleadoComponent,
     MatPaginator,
@@ -80,9 +78,9 @@ export const MY_DATE_FORMATS = {
     MensajeGuardarEmpleadoComponent
   ],
   providers: [EmpleadosService, CoreService,DepartamentosService, PuestosService, MessageService,
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }  ,
     provideMomentDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_LOCALE, useValue: 'es' },
   ],
   templateUrl: './datos.component.html',
   styleUrl: './datos.component.css'
@@ -94,7 +92,8 @@ export class DatosComponent implements OnInit, AfterViewInit{
     //Opciones de Eleccion
     sexo: string[] = [
       'Masculino',
-      'Femenino'
+      'Femenino',
+      'Otro'
     ];
     nivel: string[] = [
       '1',
@@ -209,7 +208,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         // Define otros controles de formulario aquí
         NoNomina: ['', Validators.required],
         Nivel:[''],
-        departamento:[''],
+        departamento:['', Validators.required],
         NombrePuesto:['', Validators.required],
         TipoIngreso:[''],
         Ingreso:[''],
@@ -567,13 +566,13 @@ export class DatosComponent implements OnInit, AfterViewInit{
           //Conversiones de Number a String
           this.employeeForm.patchValue({
             NombrePuesto: this.employeeForm.value.NombrePuesto.NombrePuesto,
-            Nivel: this.employeeForm.value.Nivel+'',
+            Nivel: this.employeeForm.value.Nivel+"",
             NSS: this.employeeForm.value.NSS+"",
             UMF: this.employeeForm.value.UMF+"",
             CP: this.employeeForm.value.CP+"",
-            NumeroTelefono1: this.employeeForm.value.NumeroTelefono1+'',
-            NumeroTelefono2: this.employeeForm.value.NumeroTelefono2+'',
-            NumeroTelefonoEmergencia: this.employeeForm.value.NumeroTelefonoEmergencia+'',
+            NumeroTelefono1: this.employeeForm.value.NumeroTelefono1+"",
+            NumeroTelefono2: this.employeeForm.value.NumeroTelefono2+"",
+            NumeroTelefonoEmergencia: this.employeeForm.value.NumeroTelefonoEmergencia+"",
           })
           
           console.log(this.employeeForm.value);
