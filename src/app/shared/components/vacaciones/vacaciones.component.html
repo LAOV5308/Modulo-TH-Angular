@@ -40,7 +40,7 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
 
 <div style="display: flex; justify-content: space-around; align-items: center;" *ngIf="empleados.length>0">
   <div class="flex-auto" style="text-align: center;">
-    <h2>Nombre: {{empleados[0].Nombre + ' '+ empleados[0].Apellidos}}</h2>
+    <h3><strong>Nombre: </strong>{{empleados[0].Nombre + ' '+ empleados[0].Apellidos}}</h3>
   </div>
   <div class="flex-auto" style="text-align: center;"><h3><strong>Puesto:</strong> {{empleados[0].NombrePuesto}}</h3></div>
   <div class="flex-auto" style="text-align: center;"><h3><strong>Departamento:</strong> {{empleados[0].NombreDepartamento}}</h3></div>

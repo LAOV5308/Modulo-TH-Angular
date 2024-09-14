@@ -63,7 +63,7 @@ type="submit">Agregar Empleado
   
   <ng-container matColumnDef="Antiguedad">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Antiguedad</th>
-    <td mat-cell *matCellDef="let row"> {{row.Antiguedad}} Dias </td>
+    <td mat-cell *matCellDef="let row"> {{this.dias(row.Antiguedad)}} </td>
   </ng-container>
 
   <!-- ID Column -->
@@ -73,10 +73,11 @@ type="submit">Agregar Empleado
   </ng-container>
 
   <!-- Progress Column -->
+   <!--
   <ng-container matColumnDef="TipoIngreso">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Ingreso</th>
     <td mat-cell *matCellDef="let row"> {{row.TipoIngreso}}</td>
-  </ng-container>
+  </ng-container>-->
 
   <!-- <ng-container matColumnDef="Sueldo">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>$Sueldo</th>
@@ -90,14 +91,19 @@ type="submit">Agregar Empleado
     <td mat-cell *matCellDef="let row"> {{row.EstadoEmpleado}}</td>
   </ng-container>-->
 
-  
+  <ng-container matColumnDef="Ver">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ver </th>
+    <td mat-cell *matCellDef="let row">
+      <p-button size="small" icon="pi pi-user" (onClick)="consultar(row.NoNomina)" /> 
+    </td>
+  </ng-container>
 
   <ng-container matColumnDef="Acciones">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Accion </th>
     <td mat-cell *matCellDef="let row">
-      <p-button  icon="pi pi-user" (onClick)="consultar(row.NoNomina)" /> 
-      <p-button  icon="pi pi-user-edit" severity="info" (onClick)="editar(row.NoNomina)" /> 
-      <p-button  icon="pi pi-ban" severity="danger" (onClick)="eliminar(row)" /> 
+      
+      <p-button size="small" icon="pi pi-user-edit" severity="info" (onClick)="editar(row.NoNomina)" /> 
+      <p-button size="small" icon="pi pi-ban" severity="danger" (onClick)="eliminar(row)" />
 
     </td>
   </ng-container>
@@ -106,7 +112,7 @@ type="submit">Agregar Empleado
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   <!-- Row shown when there is no matching data. -->
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="10">No data matching the filter "{{input.value}}"</td>
+    <td class="mat-cell" colspan="11">No data matching the filter "{{input.value}}"</td>
   </tr>
 
 </table>
@@ -213,8 +219,8 @@ type="submit">Agregar Empleado
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="custom-headerInactive"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns1" class="custom-headerInactive"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
   <!-- Row shown when there is no matching data. -->
   <tr class="mat-row" *matNoDataRow>
     <td class="mat-cell" colspan="4">No data matching the filter "{{inputInactive.value}}"</td>

@@ -5,14 +5,13 @@ import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
 
-import { CapacitacionCatalogo } from '../models/capacitacioncatalogo.model';
 
-import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones } from '../models/capacitacion.model';
+import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones, Capacitacion } from '../models/capacitacion.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CatalogoCapacitacionService {
+export class CapacitacionService {
 
   
   private apiUrl = 'http://localhost:3000/capacitaciones';
@@ -25,20 +24,43 @@ export class CatalogoCapacitacionService {
       catchError(this.handleError)
     );
   }
-  addCapacitacionRango(data: any):Observable<any>{
-    return this.http.post(this.apiUrl+'/rango', data).pipe(
+
+  getCapacitaciones(): Observable<Capacitacion[]> {
+    return this.http.get<Capacitacion[]>(this.apiUrl);
+  }
+  
+  addCapacitacionRango(IdProgramacionCapacitacion:number | null, FechaInicio: Date, FechaFin: Date, Horas:number):Observable<any>{
+    const body = {
+      IdProgramacionCapacitacion: IdProgramacionCapacitacion,
+      FechaInicio: FechaInicio,
+      FechaFin: FechaFin,
+      Horas: Horas
+    };
+
+    return this.http.post(this.apiUrl+'/rango', body).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addCapacitacionFecha(IdProgramacionCapacitacion:number | null, Fecha: Date, Horas:number):Observable<any>{
+    const body = {
+      IdProgramacionCapacitacion: IdProgramacionCapacitacion,
+      Fecha: Fecha,
+      Horas: Horas
+    };
+
+    return this.http.post(this.apiUrl+'/fecha', body).pipe(
       catchError(this.handleError)
     );
   }
   
-  getCatalogoCapacitaciones(): Observable<CapacitacionCatalogo[]> {
-    return this.http.get<CapacitacionCatalogo[]>(this.apiUrl);
-  }
+  /*
+  
 
   getsingleCatalogo(CodigoCapacitacion: String): Observable<CapacitacionCatalogo[]> {
     return this.http.get<CapacitacionCatalogo[]>(this.apiUrl+'/single/'+"'"+CodigoCapacitacion+"'"
     );
-  }
+  }*/
 
   getFechasProgramaciones(id: number): Observable<CapacitacionProgramada[]> {
     return this.http.get<CapacitacionProgramada[]>(this.apiUrl+'/programacionfechaall/'+id
@@ -72,8 +94,7 @@ export class CatalogoCapacitacionService {
   }
 
   getsingleProgramaciones(id: number): Observable<CapacitacionesSuscripciones[]> {
-    return this.http.get<CapacitacionesSuscripciones[]>(this.apiUrl+'/programaciones/'+id
-    );
+    return this.http.get<CapacitacionesSuscripciones[]>(this.apiUrl+'/programaciones/'+id);
   }
 
   getsingleCalificaciones(id: number): Observable<Calificaciones[]> {

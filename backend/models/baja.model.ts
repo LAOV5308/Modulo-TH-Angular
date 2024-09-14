@@ -13,4 +13,5 @@ export interface Baja {
     Finiquito: number;
     FechaInicio: Date;
     FechaFin: Date;
+    Edad: number;
   }

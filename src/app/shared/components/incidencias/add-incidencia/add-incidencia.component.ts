@@ -93,9 +93,10 @@ export class AddIncidenciaComponent implements OnInit{
   selectedValue: string | null = null;
 
   motivos: string[] = [
+    'Falta',
+    'Enfermedad General',
     'Maternidad', 
-    'Trayecto', 
-    'Enfermedad General'
+    'Trayecto'
   ];
 
   constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,

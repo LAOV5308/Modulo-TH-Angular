@@ -9,7 +9,7 @@ const {sql, getConnection} = require('../ConexionDB/dbConfig');
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('select * from V_CatalogoCapacitacionesActive');
+        const result = await sql.query('select * from V_ProgramacionCapacitacionActiveHoras');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener el catalogo de Capacitaciones');
@@ -186,8 +186,8 @@ router.get('/single/:id', async (req, res) => {
 //AQUI NOS QUEDAMOS CON AGREGAR COLOR
 
 router.post('/', async (req, res) => {
-    const { NombreCapacitacion, Origen, Frecuencia,Fecha, FechaInicio,
-        FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion
+    const { NombreCapacitacion, Origen, Frecuencia, FechaInicio,
+        FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion, Horas
      } = req.body;
 
     try {
@@ -197,7 +197,7 @@ router.post('/', async (req, res) => {
         request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
         request.input('Origen', sql.VarChar, Origen);
         request.input('Frecuencia', sql.VarChar, Frecuencia);
-        request.input('Fecha',sql.Date, Fecha);
+        request.input('Fecha', null);
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
         request.input('HoraInicio', HoraInicio);
@@ -206,37 +206,67 @@ router.post('/', async (req, res) => {
         request.input('Comentarios', sql.VarChar, Comentarios);
         request.input('Color', sql.VarChar, Color);
         request.input('Evaluacion', sql.Bit, Evaluacion);
-        // Ejecutar el procedimiento almacenado
-        const result = await request.execute('stp_programacioncapacitacion_add_prueba');
+
+         // Output
+         request.output('IdProgramacionCapacitacion', sql.Int);
+
+         // Ejecutar el procedimiento almacenado
+         const result = await request.execute('stp_programacioncapacitacion_add');
+         
+         // Obtener el valor de la salida (output)
+         const IdProgramacionCapacitacion = result.output.IdProgramacionCapacitacion;
         //const result = await request.execute('stp_prueba_add');
-        res.status(201).json({ message: "Agregado al catalogo de Capacitaciones con éxito" });
+
+        // Responder con el ID generado o existente
+        res.status(201).json({ 
+            message: "Agregado al catalogo de Capacitaciones con éxito",
+            IdProgramacionCapacitacion 
+        });
+
     } catch (err) {
         res.status(500).json({ message: 'Error al agregar al programar Capacitacion: ' + err.message });
     }
     
 });
+
+
 //ProcedimientoAlmacenado para fecha de Rango
-router.post('/rango', async (req, res) => {
-    const { NombreCapacitacion, Origen, Frecuencia, Fecha, FechaInicio,
-        FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion
+router.post('/fecha', async (req, res) => {
+    const { IdProgramacionCapacitacion, Fecha, Horas
      } = req.body;
 
     try {
         const pool = await getConnection();
         const request = pool.request();
         ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
-        request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
-        request.input('Origen', sql.VarChar, Origen);
-        request.input('Frecuencia', sql.VarChar, Frecuencia);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
         request.input('Fecha', sql.Date, Fecha);
+        request.input('Horas', sql.Float, Horas);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_programacioncapacitacion_add_fecha');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Exito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al agregar: ' + err.message });
+    }
+    
+});
+
+
+//ProcedimientoAlmacenado para fecha de Rango
+router.post('/rango', async (req, res) => {
+    const { IdProgramacionCapacitacion,FechaInicio,
+        FechaFin, Horas
+     } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
         request.input('FechaInicio', sql.Date, FechaInicio);
         request.input('FechaFin', sql.Date, FechaFin);
-        request.input('HoraInicio', HoraInicio);
-        request.input('HoraFin', HoraFin);
-        request.input('PersonaImparte', sql.VarChar, PersonaImparte);
-        request.input('Comentarios', sql.VarChar, Comentarios);
-        request.input('Color', sql.VarChar, Color);
-        request.input('Evaluacion', sql.Bit, Evaluacion);
+        request.input('Horas', sql.Float, Horas);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_programacioncapacitacion_add_rango');
         //const result = await request.execute('stp_prueba_add');
@@ -318,7 +348,7 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { 
         NombreCapacitacion, Origen, Frecuencia, Fecha,FechaInicio,
-        FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion
+        FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion, Horas
      } = req.body;
     try {
         const pool = await getConnection();
@@ -336,6 +366,7 @@ router.put('/:id', async (req, res) => {
         request.input('Comentarios', sql.VarChar, Comentarios);
         request.input('Color', sql.VarChar, Color);
         request.input('Evaluacion', sql.Bit, Evaluacion);
+        request.input('Horas', sql.Float, Horas);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_programacioncapacitacion_update');
         //const result = await request.execute('stp_prueba_add');

@@ -34,8 +34,8 @@ h2 {
 }
 
 mat-form-field {
-  width: 45%;
-  margin-left: 10px;
+  width: 47%;
+  margin-left: 12px;
 }
 
 
@@ -67,4 +67,11 @@ mat-checkbox{
   .box1, .box2 {
     width: 100%; /* Los divs ocupan el ancho completo en pantallas pequeñas */
   }
+
+  mat-form-field {
+    width: 100%;
+    margin-left: 12px;
+  }
+  
+
 }

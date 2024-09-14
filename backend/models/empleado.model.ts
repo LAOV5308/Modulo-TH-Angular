@@ -11,7 +11,7 @@ export interface Empleado {
   NombreResponsable: string;
   TipoIngreso: string;
   Ingreso: Date;
-  Antiguedad: Number;//aQUIMOVI
+  Antiguedad: number;//aQUIMOVI
   HorarioSemanal: string;
   NSS: string;
   UMF: string;

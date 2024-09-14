@@ -32,10 +32,9 @@ import { DepartamentosService } from '../../../../../../backend/ConexionDB/depar
 
 import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
-import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
 import { Router } from '@angular/router';
 import { IncidenciasService } from '../../../../../../backend/ConexionDB/incidencias.service';
-import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CapacitacionService } from '../../../../../../backend/ConexionDB/capacitacion.service';
 import { error } from 'console';
 
 
@@ -77,7 +76,7 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, CatalogoCapacitacionService
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, CapacitacionService
   ],
   templateUrl: './add-capacitaciones.component.html',
   styleUrl: './add-capacitaciones.component.css'
@@ -85,7 +84,7 @@ export const MY_DATE_FORMATS = {
 export class AddCapacitacionesComponent implements OnInit{
   capacitacionForm: FormGroup;
   empleados: Empleado[]=[];
-  capacitacionesCatalogo: CapacitacionCatalogo[]=[]; 
+  //capacitacionesCatalogo: CapacitacionCatalogo[]=[]; 
   NombreCapacitaciones: string[]=[];
   enter: boolean = false;
   selectedEmpleado: Empleado | null = null;
@@ -110,7 +109,7 @@ export class AddCapacitacionesComponent implements OnInit{
       this.updateEmployeeInfo(value);
     });
 
-    this._catalogocapacitacionesService.getCatalogoCapacitaciones().subscribe({
+    /*this._catalogocapacitacionesService.getCatalogoCapacitaciones().subscribe({
       next:(data) => {
         this.capacitacionesCatalogo = data
         this.capacitacionesCatalogo.forEach(element => {
@@ -120,7 +119,7 @@ export class AddCapacitacionesComponent implements OnInit{
       error: (error) => {
         console.error('Error al cargar las Capacitaciones del Catalogo ', error)
       }
-    })
+    })*/
     
   }
 
@@ -133,7 +132,7 @@ export class AddCapacitacionesComponent implements OnInit{
     private _dialogRef: MatDialogRef<AddCapacitacionesComponent>,
     private router: Router,
     private _empleadoService: EmpleadosService,
-    private _catalogocapacitacionesService: CatalogoCapacitacionService,
+    private _catalogocapacitacionesService: CapacitacionService,
     private dialog: MatDialog
   ) {
     this.capacitacionForm = this.fb.group({

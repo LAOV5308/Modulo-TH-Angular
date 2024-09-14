@@ -1,0 +1,91 @@
+
+
+<!--<div style="text-align: end;">
+<ngx-doc-viewer
+  [url]="doc"
+  viewer="google"
+  style="width:50%;height:40rem; text-align: start;"
+></ngx-doc-viewer>
+</div>-->
+
+<div class="center">
+
+  <h1> <i class="pi pi-address-book" style="font-size: 2rem"></i> Reportes <i class="pi pi-address-book" style="font-size: 2rem"></i></h1>
+</div>
+
+<div class="container">
+  <div class="box1">
+    <!--<p>Impresion de Reportes</p>
+
+
+    <button (click)="impresion()">Impresion</button>-->
+
+
+
+
+    <form  [formGroup]="Form" (ngSubmit)="imprimirEmpleados(false)">
+      <h2 style="color: rgb(11, 137, 205);">Elige El Reporte</h2>
+      <mat-form-field>
+        <mat-label>Opciones</mat-label>
+        <mat-select formControlName="Opcion" (selectionChange)="filtro(true)">
+          
+          <mat-option *ngFor="let value of opciones" [value]="value">{{ value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+     <div *ngIf="opcionSeleccionada">
+      <button (click)="filtro(false)" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>
+     </div>
+  
+      <!--
+      (selectionChange)="imprimirEmpleados()"
+  
+  
+      <div>
+        <label for="name">Nombre:</label>
+        <input [(ngModel)]="characterData.name" name="name" />
+      </div>
+  
+      <div>
+        <label for="surname">Apellidos:</label>
+        <input [(ngModel)]="characterData.surname" name="surname" />
+      </div>
+  
+      <div>
+        <label for="description">Descripción:</label>
+        <textarea [(ngModel)]="characterData.description" name="description"></textarea>
+      </div>
+  
+      <div>
+        <label for="strength">Fuerza:</label>
+        <input [(ngModel)]="characterData.strength" name="strength" type="range" />
+      </div>
+  
+      <div>
+        <label for="magic">Magia:</label>
+        <input [(ngModel)]="characterData.magic" name="magic" type="range" />
+      </div>
+  
+      <div>
+        <label for="velocity">Velocidad:</label>
+        <input [(ngModel)]="characterData.velocity" name="velocity" type="range" />
+      </div>-->
+  
+  <!--
+      <button type="button" (click)="imprimirEmpleados(true)"class="bg-sky-500 text-white px-3 py-2 rounded preview-pdf-btn">Previsualizar PDF</button>
+      <button type="submit" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>-->
+      
+    </form>
+
+  </div>
+  <div class="box2">
+
+
+    <div style="text-align: end;">
+  
+      <iframe style="width:800px;height:530px;"></iframe>
+    </div>
+
+  </div>
+  
+</div>

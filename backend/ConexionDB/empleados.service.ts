@@ -40,6 +40,21 @@ export class EmpleadosService {
     );
   }
 
+
+  cambioPuesto(NoNomina: number, NombrePuestoAnterior: string, NombrePuestoNuevo:string, FechaCambio: Date,Antiguedad:number):Observable<any>{
+    const body = {
+      NoNomina: NoNomina,
+      NombrePuestoAnterior: NombrePuestoAnterior, 
+      NombrePuestoNuevo: NombrePuestoNuevo, 
+      FechaCambio: FechaCambio, 
+      Antiguedad: Antiguedad
+    };
+
+    return this.http.post(this.apiUrl+'/cambiopuesto', body).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   getCapacitaciones(): Observable<Capacitacion[]> {
     return this.http.get<Capacitacion[]>(this.apiUrl+'/capacitacion').pipe(
       catchError(this.handleError)

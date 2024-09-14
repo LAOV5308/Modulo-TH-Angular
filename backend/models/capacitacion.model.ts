@@ -1,16 +1,15 @@
 
 
 export interface Capacitacion {
-  NoNomina: number;
-  NombreCompleto: string;
-  NombrePuesto: string;
-  NombreDepartamento: string;
-  FechaIngreso: Date;
-  CURP: string;
+  IdProgramacionCapacitacion: number;//IdProgramacionFecha
   NombreCapacitacion: string;
-  FechaCapacitacion: Date;
-  ValoracionCapacitacion: string;
-  CalificacionCapacitacion: string;
+  Origen: string;
+  Frecuencia: string;
+  FechaInicio: Date;
+  PersonaImparte: string;
+  Comentarios: string;
+  Color: string;
+  Horas: number;
 }
 
 export interface CapacitacionProgramada {
@@ -29,6 +28,7 @@ export interface CapacitacionProgramada {
   IdEstadoProgramacionCapacitacion: number;
   Color: string;
   Evaluacion: boolean;
+  Horas: number;
 }
 
 

@@ -13,8 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import 'moment/locale/es';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-import { CapacitacionCatalogo } from '../../../../../backend/models/capacitacioncatalogo.model';
-import { CatalogoCapacitacionService } from '../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
 import { NgFor, NgForOf, NgIf } from '@angular/common';
 import { CapacitacionProgramada } from '../../../../../backend/models/capacitacion.model';
 import { MatCardModule } from '@angular/material/card';
@@ -36,6 +35,7 @@ import { MessageService } from 'primeng/api';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ToastModule } from 'primeng/toast';
 registerLocaleData(localeEs);
+import { InputNumberModule } from 'primeng/inputnumber';
 
 import { NgxColorsModule } from 'ngx-colors';
 
@@ -53,17 +53,18 @@ interface AutoCompleteCompleteEvent {
     MatFormFieldModule, MatInputModule, MatDatepickerModule, MatButtonModule, ReactiveFormsModule,
     MatAutocompleteModule, NgFor, NgIf, NgForOf, MatOption, MatCardModule, NgxMaterialTimepickerModule, AutoCompleteModule, ColorPickerModule,
     RadioButtonModule, MatSelectModule, CardModule, SplitterModule, MatIconModule, RouterLink, MatCheckboxModule,
-    ToastModule, NgxColorsModule
+    ToastModule, NgxColorsModule, InputNumberModule
   ],
   providers:[EmpleadosService, MessageService,
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    provideMomentDateAdapter(),CatalogoCapacitacionService, { provide: LOCALE_ID, useValue: 'es' }
+    provideMomentDateAdapter(),CapacitacionService, { provide: LOCALE_ID, useValue: 'es' }
   ],
   templateUrl: './programar-capacitaciones.component.html',
   styleUrl: './programar-capacitaciones.component.css'
 })
 export class ProgramarCapacitacionesComponent implements OnInit{
   dates: Date[] | undefined;
+  datesAux: Date[] | undefined;
   rangeDates: Date[] | undefined;
   hoy = new Date();
   fechaStart: Date = this.hoy;
@@ -71,23 +72,23 @@ mensaje: boolean = false;
   sourceEmpleados!: Empleado[];
   targetEmpleados!: Empleado[];
   employeeForm: FormGroup;
+  horas: number = 0;
   
   //Capacitacoiones Programadas
   capacitacionesprogramadas: CapacitacionProgramada[]=[];
 
-  capacitaciones: CapacitacionCatalogo[] = [];
-  capacitacionesFiltradas: CapacitacionCatalogo[] = [];
   capacitacionesFiltrada: string = '';
   NombreCapacitaciones: string[] =[];
   minDate: Date | undefined;
 
   capacitacionSeleccionada: any;
 
+  idProgramacionCapacitacion: number | null = null;
+
     filteredCapacitaciones!: any[];
     checked: boolean = false;
 
     leftColor!: string;
-
     selectedFrecuencia: string = 'Seleccion de Dias';
     frecuencias: string[]=[
       'Seleccion de Dias',
@@ -99,7 +100,7 @@ mensaje: boolean = false;
     ];
 
   constructor(private cdr: ChangeDetectorRef, private empleadoService: EmpleadosService,
-    private catalogoCapacitacionesService: CatalogoCapacitacionService,
+    private capacitacionesService: CapacitacionService,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,
@@ -117,6 +118,7 @@ mensaje: boolean = false;
       
       Color:['', Validators.required],
       Evaluacion:[''],
+      Horas:['', Validators.required],
       NombreCapacitacion:['', Validators.required],
       Origen:['', Validators.required],
       Frecuencia:['', Validators.required],
@@ -124,7 +126,7 @@ mensaje: boolean = false;
       Comentarios:[''],
       Fecha: [''],
       FechaRango: [''],
-      FechaInicio: [''],
+      //FechaInicio: [''],
       FechaFin: [''],
       HoraInicio: [''],
       HoraFin: ['']
@@ -157,22 +159,6 @@ mensaje: boolean = false;
     });
     this.updateFechaFieldsVisibility();
 
-    this.catalogoCapacitacionesService.getCatalogoCapacitaciones().subscribe({
-      next: (data) => {
-        this.capacitaciones = data;
-        this.capacitacionesFiltradas = this.capacitaciones;
-this.NombreCapacitaciones=[];
-        this.capacitaciones.forEach(capacitacion => {
-          
-          this.NombreCapacitaciones.push(capacitacion.NombreCapacitacion);
-        }
-      );
-        
-      },
-      error: (error) => {
-        console.error('Error al cargar las Capacitaciones', error);
-      }
-    });
 
     /*
     this.catalogoCapacitacionesService.getProgramacionCapacitaciones().subscribe({
@@ -221,10 +207,6 @@ this.NombreCapacitaciones=[];
     return 'DD/MM/YYYY';
   }
 
-  filterCapacitaciones() {
-    const filterValue = this.capacitacionesFiltrada.toLowerCase();
-    this.capacitacionesFiltradas = this.capacitaciones.filter(capacitacion => capacitacion.NombreCapacitacion.toLowerCase().includes(filterValue));
-  }
 
   imprimir(){
     console.log(this.targetEmpleados)
@@ -322,20 +304,81 @@ if(this.employeeForm.valid){
   if(this.dates == undefined && this.rangeDates==undefined){
     this.messageService.add({ severity: 'warn', summary: 'Precaucion', detail: 'No hay fechas Seleccionadas' });
   }else{
+    //Aqui Primero Metemos un registro de la informacion de la capacitacion
+
+this.datesAux = this.dates;
+
+    this.employeeForm.patchValue({
+      Fecha: null
+    });
+
+    console.log(this.employeeForm.value);
   
-    if(this.dates!=undefined){
-      //alert('Entro en fechas');
-  
-      this.dates!.forEach((element:Date) => {
-        this.employeeForm.patchValue({
-          Fecha: element
-        });
-  
-        console.log(this.employeeForm.value);
-  
-        this.catalogoCapacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
+        this.capacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
           next: (resp: any) => {
             //window.alert('Agregado con exito');
+            console.log('Capacitación agregada:', resp);
+        this.idProgramacionCapacitacion = resp.IdProgramacionCapacitacion;  // Guarda el IdProgramacionCapacitacion
+        console.log('ID de la programación:', this.idProgramacionCapacitacion);
+        //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+
+
+console.log(this.datesAux + ' '+this.rangeDates +''+this.idProgramacionCapacitacion);
+//Programar Capacitaciones para los dias
+if(this.datesAux!=undefined){
+//alert('Entro en fechas');
+
+
+
+//Multiplicacion de Horas por Dias
+var HorasPorDia = this.datesAux.length * this.employeeForm.value.Horas;
+
+this.datesAux!.forEach((element:Date) => {
+/*this.employeeForm.patchValue({
+  Fecha: element
+});*/
+
+this.capacitacionesService.addCapacitacionFecha(this.idProgramacionCapacitacion, element, HorasPorDia).subscribe({
+  next: (resp: any) => {
+    //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente'+resp });
+},
+error: (err: any) => {
+    console.log(err);
+}
+})
+
+});
+this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+this.limpiar();
+}
+
+//Programar Capacitaciones de Inicio Y Fin
+if(this.rangeDates!=undefined){
+  /*
+this.employeeForm.patchValue({
+  FechaInicio: this.rangeDates[0],
+  FechaFin: this.rangeDates[1]
+});
+*/
+//console.log(this.employeeForm.value);
+//console.log(this.idProgramacionCapacitacion+' '+this.rangeDates[0] +' '+this.rangeDates[1])
+
+ this.capacitacionesService.addCapacitacionRango(this.idProgramacionCapacitacion, this.rangeDates[0], this.rangeDates[1], this.employeeForm.value.Horas).subscribe({
+  next: (resp: any) => {
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+    this.limpiar();
+
+},
+error: (err: any) => {
+    window.alert(err);
+    this.rangeDates = undefined;
+    this.limpiar();
+}
+});
+}
+
+
+      //this.limpiar();
         },
         error: (err: any) => {
             console.log(err);
@@ -344,34 +387,8 @@ if(this.employeeForm.valid){
             this.limpiar();*/
         }
         });
+
       
-      });
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
-      this.limpiar();
-    }
-  
-    if(this.rangeDates!=undefined){
-      if(this.rangeDates.length>=2){
-        this.employeeForm.patchValue({
-          FechaInicio: this.rangeDates[0],
-          FechaFin: this.rangeDates[1]
-        });
-      
-        console.log(this.employeeForm.value);
-        this.catalogoCapacitacionesService.addCapacitacionRango(this.employeeForm.value).subscribe({
-          next: (resp: any) => {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
-            this.limpiar();
-  
-        },
-        error: (err: any) => {
-            window.alert(err);
-            this.rangeDates = undefined;
-            this.limpiar();
-        }
-        });
-      }
-    }
   }
   
 
@@ -418,6 +435,7 @@ limpiar(){
       Imparte:'',
       Comentarios:''
   });
+
 }
 
 }

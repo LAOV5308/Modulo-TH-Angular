@@ -69,7 +69,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit{
-  empleados: Empleado[] = [];
+  ///empleados: Empleado[] = [];
   loginForm: FormGroup;
   NombreRol: string = '';
   errorMessage: string | null = null;
@@ -91,14 +91,19 @@ export class LoginComponent implements OnInit{
 
 
   ngOnInit() {
-    this.empleadosService.getEmpleados().subscribe({
+
+    //Eliminar token del sistema
+    this._authService.logout();
+
+    //Obtener Empleados
+    /*this.empleadosService.getEmpleados().subscribe({
       next: (data) => {
         this.empleados = data;
       },
       error: (error) => {
         console.error('Error al cargar los empleados', error);
       }
-    });
+    });*/
 
   }
 
@@ -169,7 +174,8 @@ onSubmit(): void {
         
       },
       error: (err) => {
-        this.showError();
+        //console.log(err);
+        this.messageService.add({ severity: 'warn', summary: 'Precaución', detail: 'Contraseña Incorrecta', life: 2000 });
         //this.errorMessage = 'Login failed. Por Favor Checa tu Nombre de Usuario y Contraseña';
         //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
         //this.recaptchaResolved = false; // Reset the captcha if login fails

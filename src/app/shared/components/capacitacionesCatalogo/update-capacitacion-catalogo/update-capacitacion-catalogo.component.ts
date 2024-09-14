@@ -15,9 +15,8 @@ import { NgFor } from '@angular/common';
 import { CoreService } from '../../../../Core/core.service';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CapacitacionService } from '../../../../../../backend/ConexionDB/capacitacion.service';
 import { error } from 'node:console';
-import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
 
 @Component({
   selector: 'app-update-capacitacion-catalogo',
@@ -32,15 +31,16 @@ import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitac
     ReactiveFormsModule,
     NgFor,
   MatButtonModule, HttpClientModule],
-    providers: [CatalogoCapacitacionService, provideNativeDateAdapter(), CoreService],
+    providers: [CapacitacionService, provideNativeDateAdapter(), CoreService],
   templateUrl: './update-capacitacion-catalogo.component.html',
   styleUrl: './update-capacitacion-catalogo.component.css'
 })
 export class UpdateCapacitacionCatalogoComponent implements OnInit {
   Form: FormGroup;
-  CatalogoCapacitaciones: CapacitacionCatalogo[]=[];
+  //CatalogoCapacitaciones: CapacitacionCatalogo[]=[];
   
   ngOnInit(): void {
+    /*
     this._catalogoCapacitacionesService.getsingleCatalogo(this.data).subscribe({
       next: (data) => {
         this.CatalogoCapacitaciones = data;
@@ -50,14 +50,14 @@ export class UpdateCapacitacionCatalogoComponent implements OnInit {
       error: (error) => {
         console.error('Error al cargar el catalogo seleccionado', error);
       }
-    })
+    })*/
 
     
   }
   constructor(
     private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<UpdateCapacitacionCatalogoComponent>,
-    private _catalogoCapacitacionesService: CatalogoCapacitacionService,
+    private _catalogoCapacitacionesService: CapacitacionService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService
   ){

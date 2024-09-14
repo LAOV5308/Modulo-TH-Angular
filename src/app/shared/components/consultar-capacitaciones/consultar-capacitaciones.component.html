@@ -377,19 +377,24 @@ header="Header"
 
 
   <ng-container *ngIf="programacionConsulta.length <= 0">
-    <mat-accordion *ngIf="capacitacionesprogramadas.length > 0;">
-        <mat-expansion-panel *ngFor="let capacitacion of capacitacionesprogramadas">
+    <mat-accordion *ngIf="capacitaciones.length > 0;">
+        <mat-expansion-panel *ngFor="let capacitacion of capacitaciones">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{ capacitacion.NombreCapacitacion }}
             </mat-panel-title>
-            <mat-panel-description>
-              Fecha: {{ capacitacion.FechaInicio | date }} - {{ capacitacion.FechaFin | date }}
+            <mat-panel-description *ngIf="capacitacion.FechaInicio">
+              Fecha Inicio: {{ capacitacion.FechaInicio | date }} 
             </mat-panel-description>
+            <mat-panel-description *ngIf="!capacitacion.FechaInicio">
+                Fechas Distintas
+              </mat-panel-description>
           </mat-expansion-panel-header>
-      
-          <p><strong>Descripción:</strong> {{ capacitacion.PersonaImparte }}</p>
-          <!-- Añade más detalles de la capacitación aquí -->
+
+          <p><strong>Persona Imparte:</strong> {{ capacitacion.PersonaImparte }}</p>
+          <p><strong>Tipo:</strong> {{ capacitacion.Origen }}</p>
+          <p><strong>Horas:</strong> {{ capacitacion.Horas }} Horas</p>
+          <!-- Añade más detalles de la capacitación aquí - {{ capacitacion.FechaFin | date }} -->
       
         </mat-expansion-panel>
       </mat-accordion>

@@ -195,6 +195,34 @@ router.post('/', async (req, res) => {
 
 });
 
+
+// Cambiar Puesto Empleado
+router.post('/cambiopuesto', async (req, res) => {
+
+   
+    const { NoNomina, NombrePuestoAnterior, NombrePuestoNuevo, FechaCambio, Antiguedad
+    } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        request.input('NombrePuestoAnterior', sql.VarChar, NombrePuestoAnterior);
+        request.input('NombrePuestoNuevo', sql.VarChar, NombrePuestoNuevo);
+        request.input('FechaCambio', sql.Date, FechaCambio);
+        request.input('Antiguedad', sql.Int, Antiguedad);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_cambiopuesto_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Empleado Cambio con éxito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al Cambiar el empleado: ' + err.message });
+    }
+
+});
+
 //Recuperar Empleado
 router.post('/recuperar', async (req, res) => {
    

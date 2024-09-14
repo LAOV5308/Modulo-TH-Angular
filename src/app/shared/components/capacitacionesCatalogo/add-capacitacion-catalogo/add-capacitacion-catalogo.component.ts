@@ -15,7 +15,7 @@ import { NgFor } from '@angular/common';
 import { CoreService } from '../../../../Core/core.service';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/capacitacion.service';
 import { ColorPickerModule } from 'primeng/colorpicker';
 
 

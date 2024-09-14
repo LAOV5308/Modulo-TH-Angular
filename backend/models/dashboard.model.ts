@@ -30,4 +30,41 @@ export interface D_Edades{
     CantidadEdades: number;
 }
 
+export interface D_Bajas{
+    RangoEdad: string;
+    CantidadEdades: number;
+}
+
+export interface D_RangoAntiguedad{
+    RangoAntiguedad: string;
+    CantidadAntiguedades: number;
+}
+
+export interface D_IncidenciasPorDepartamento{
+    NombreDepartamento: string;
+    Motivo: string;
+    CantidadMotivos: number;
+}
+
+export interface D_SalidasEdades{
+    Mes: number;
+    RangoEdad: string;
+    CantidadEdades: number;
+}
+
+export interface D_SumaIncidenciasPorDepartamento{
+    Mes: number;
+    NombreDepartamento: string;
+    TotalDiasSubsidios: number;
+    
+}
+
+export interface D_CambiosPorDepartamento{
+    NombreDepartamentoAnterior: string;
+    CantidadCambios: number;
+    
+}
+
+
+
 

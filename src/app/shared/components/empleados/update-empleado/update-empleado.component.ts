@@ -25,7 +25,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import { HttpClientModule} from '@angular/common/http';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { ActivatedRoute, ParamMap } from "@angular/router";
 
@@ -36,6 +36,12 @@ import { DepartamentosService } from '../../../../../../backend/ConexionDB/depar
 import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
 import { log } from 'console';
 import { estados, estados1, estadosConCiudades } from '../../../recursos/estados';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
+import { MatGridListModule } from '@angular/material/grid-list';
+
+
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -68,13 +74,17 @@ export const MY_DATE_FORMATS = {
     CommonModule,
     HttpClientModule,
     MatIcon,
-    NgFor
+    NgFor,
+    ConfirmDialogModule,
+    RouterModule,
+    MatIconModule,
+    MatGridListModule 
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService
+  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService,ConfirmationService
   ],
   templateUrl: './update-empleado.component.html',
   styleUrl: './update-empleado.component.css'
@@ -84,7 +94,7 @@ export class UpdateEmpleadoComponent implements OnInit{
   ciudades: string[] = [];
   departamentos: Departamento[] = [];
   puestos: Puesto[] = [];
-  empleados: Empleado[] | null = null;
+  empleados: Empleado[] =[];
   NoNomina1!: number;
   filteredPuestos: Puesto[] = [];
   
@@ -93,6 +103,7 @@ export class UpdateEmpleadoComponent implements OnInit{
   
   estados: string[] = estados;
   estados1: string[] = estados1;
+  puestoTemporal: string = '';
 
   //estados1: string[] = [];
 
@@ -162,7 +173,8 @@ export class UpdateEmpleadoComponent implements OnInit{
     private _coreService: CoreService,
     public route: ActivatedRoute,
     private _puestosService: PuestosService,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService
 
     
   ) { 
@@ -307,6 +319,9 @@ export class UpdateEmpleadoComponent implements OnInit{
       NombrePuesto:this.empleados[0].NombrePuesto,
         });
 
+        this.puestoTemporal = this.empleados[0].NombrePuesto;
+        console.log(this.puestoTemporal);
+
 
 
         
@@ -411,16 +426,62 @@ export class UpdateEmpleadoComponent implements OnInit{
           })
           console.log(this.employeeForm.value);
 
-      this._empleadosService.updateEmpleados(this.NoNomina1,this.employeeForm.value).subscribe({
-        next: (resp: any) => {
-            this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
-            this.router.navigate(['/system/empleados']);
-        },
-        error: (err: any) => {
-            console.error('Error: ' + err);
-            this._coreService.openSnackBar('Error al agregar Empleado');
-        }
-    });
+          console.log(this.puestoTemporal+''+ this.employeeForm.value.NombrePuesto);
+
+          //Cambio de Puesto
+          if(this.puestoTemporal != this.employeeForm.value.NombrePuesto){
+            const Hoy = new Date();
+            this.confirmationService.confirm({
+              message: 'Quieres cambiar de Puesto del Empleado a '+this.employeeForm.value.NombrePuesto+'?',
+              header: 'Confirmación',
+              icon: 'pi pi-exclamation-triangle',
+              rejectButtonStyleClass:"p-button-text",
+              accept: () => {
+
+                this._empleadosService.cambioPuesto(this.NoNomina1,this.puestoTemporal,this.employeeForm.value.NombrePuesto,Hoy,this.empleados[0].Antiguedad).subscribe({
+                  next: (resp: any) => {
+                    //this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
+                    this._empleadosService.updateEmpleados(this.NoNomina1,this.employeeForm.value).subscribe({
+                      next: (resp: any) => {
+                          this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
+                          this.router.navigate(['/system/empleados']);
+                      },
+                      error: (err: any) => {
+                          console.error('Error: ' + err);
+                          this._coreService.openSnackBar('Error al agregar Empleado');
+                      }
+                  });
+                    
+                  },
+                  error: (err: any) => {
+                    console.error('Error: ' + err);
+                    this._coreService.openSnackBar('Error al agregar Empleado');
+                  }
+                });
+                
+              },
+              reject: () => {
+
+
+
+              }
+          });
+          }else{
+
+            this._empleadosService.updateEmpleados(this.NoNomina1,this.employeeForm.value).subscribe({
+              next: (resp: any) => {
+                  this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
+                  this.router.navigate(['/system/empleados']);
+              },
+              error: (err: any) => {
+                  console.error('Error: ' + err);
+                  this._coreService.openSnackBar('Error al agregar Empleado');
+              }
+          });
+          }
+
+      
+
     }else{
       this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
     }

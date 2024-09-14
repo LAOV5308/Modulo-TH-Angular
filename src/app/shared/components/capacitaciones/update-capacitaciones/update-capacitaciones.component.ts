@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
-import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CapacitacionService } from '../../../../../../backend/ConexionDB/capacitacion.service';
 import { CardModule } from 'primeng/card';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +12,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { SplitterModule } from 'primeng/splitter';
 import { CalendarModule } from 'primeng/calendar';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
-import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
 import { CapacitacionProgramada } from '../../../../../../backend/models/capacitacion.model';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -32,7 +31,7 @@ import { parseISO } from 'date-fns';
     MatCheckboxModule, MatInputModule, ToastModule, ConfirmDialogModule, NgxColorsModule
 
   ],
-  providers:[CatalogoCapacitacionService, ConfirmationService, MessageService],
+  providers:[CapacitacionService, ConfirmationService, MessageService],
   templateUrl: './update-capacitaciones.component.html',
   styleUrl: './update-capacitaciones.component.css'
 })
@@ -54,8 +53,8 @@ export class UpdateCapacitacionesComponent implements OnInit{
   //Capacitaciones programadas con las fechas
   capacitacionesFechas: CapacitacionProgramada[]=[];
 
-  capacitaciones: CapacitacionCatalogo[] = [];
-  capacitacionesFiltradas: CapacitacionCatalogo[] = [];
+  /*capacitaciones: CapacitacionCatalogo[] = [];
+  capacitacionesFiltradas: CapacitacionCatalogo[] = [];*/
   capacitacionesFiltrada: string = '';
   NombreCapacitaciones: string[] =[];
   minDate: Date | undefined;
@@ -73,7 +72,7 @@ export class UpdateCapacitacionesComponent implements OnInit{
     origen: string[]=[
       'Interna', 'Externa'
     ];
-  constructor(private route: ActivatedRoute, private capacitacionesService: CatalogoCapacitacionService,
+  constructor(private route: ActivatedRoute, private capacitacionesService: CapacitacionService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService,
     private router: Router
   ){

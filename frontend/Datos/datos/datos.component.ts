@@ -31,7 +31,7 @@ import { estados, estados1, estadosConCiudades } from '../../../src/app/shared/r
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import { PuestosService } from '../../../backend/ConexionDB/puestos.service';
-import { MessageService } from 'primeng/api';
+import { MessageService,MenuItem } from 'primeng/api';
 import { MensajeGuardarEmpleadoComponent } from '../../../src/app/shared/components/empleados/messages/mensaje-guardar-empleado/mensaje-guardar-empleado.component';
 import { DepartamentosService } from '../../../backend/ConexionDB/departamentos.service';
 import { ToastModule } from 'primeng/toast';
@@ -45,6 +45,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { SplitButtonModule } from 'primeng/splitbutton';
+
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -75,7 +78,9 @@ export const MY_DATE_FORMATS = {
     AddBajaComponent,
     MatTabsModule,
     MessageRecuperarComponent,
-    MensajeGuardarEmpleadoComponent
+    MensajeGuardarEmpleadoComponent,
+    TooltipModule,
+    SplitButtonModule
   ],
   providers: [EmpleadosService, CoreService,DepartamentosService, PuestosService, MessageService,
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }  ,
@@ -151,6 +156,22 @@ export class DatosComponent implements OnInit, AfterViewInit{
 
 
   displayedColumns: string[] = [
+    'NoNomina',
+    'Nombre',
+    'Edad',
+    'NombreDepartamento',
+    'NombrePuesto',
+    'Ingreso',
+    'Antiguedad',
+    'HorarioSemanal',
+    //'TipoIngreso',
+    //'Sueldo',
+    //'EstadoEmpleado',
+    'Ver',
+    'Acciones'
+  ];
+
+  displayedColumns1: string[] = [
     'NoNomina',
     'Nombre',
     'Edad',
@@ -263,9 +284,10 @@ export class DatosComponent implements OnInit, AfterViewInit{
       this.employeeForm.get('departamento')!.valueChanges.subscribe(departamentoId => {
         this.filterPuestos(departamentoId);
       });
-  
+
 
     }
+
 
     filterPuestos(departamentoId: number): void {
       if (departamentoId) {
@@ -298,6 +320,9 @@ export class DatosComponent implements OnInit, AfterViewInit{
     }
 
   ngOnInit() {
+
+    
+
     //Traer a todos los empleados
     this.empleadosService.getEmpleados().subscribe({
       next: (data) => {
@@ -406,9 +431,31 @@ export class DatosComponent implements OnInit, AfterViewInit{
 
   }
 
-  hola(){
-    window.alert("Se ha Guardado");
+  dias(dias: number): string {
+    const diasPorAño = 365;
+    const diasPorMes = 30;
+  
+    // Calcula los años y meses
+    const años = Math.floor(dias / diasPorAño);
+    const meses = Math.floor((dias % diasPorAño) / diasPorMes);
+  
+    // Construye el resultado dependiendo de los años y meses
+    let resultado = '';
+  
+    if (años > 0) {
+      resultado += `${años} Año${años > 1 ? 's' : ''}`;
+    }
+  
+    if (meses > 0) {
+      if (años > 0) {
+        resultado += ' ';
+      }
+      resultado += `${meses} Mes${meses > 1 ? 'es' : ''}`;
+    }
+  
+    return resultado || '0 Meses'; // En caso de que los días sean 0
   }
+  
 
   consultar(idEmpleado: number){
     this.router.navigate(['system/consultarEmpleado'+'/'+idEmpleado]);

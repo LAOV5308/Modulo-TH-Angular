@@ -22,26 +22,62 @@
           
           
               <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
-                <div style="margin: 0 10px; padding-bottom: 10px; padding-left: 15%; font-size: 14px;">
-                  <label for="cp-hex" class="font-bold block mb-2">Elige El Color de la Capacitacion:</label>
+
+                <div style="margin: 0 10px; padding-bottom: 7px; padding-left: 5%; font-size: 14px; text-align: center;">
+                  <label for="cp-hex" class="font-bold block mb-2">Elige El Color de la Capacitación*:</label>
                   <div style="text-align: center;">
                     <ngx-colors ngx-colors-trigger formControlName="Color"></ngx-colors>
                   </div>
                 </div>
               
-                <div style="margin: 0 10px; padding-bottom: 7px; font-size: 14px; padding-right: 15%;">
-                  <label for="ny" class="font-bold block mb-2">Capacitacion con Evaluación</label>
+                <div style="margin: 0 10px; padding-bottom: 7px; font-size: 14px; padding-right: 6%; padding-left: 6%; text-align: center;">
+                  <label for="ny" class="font-bold block mb-2">¿Capacitación con Evaluación?</label>
                   <div style="text-align: center;">
                     <mat-checkbox id="ny" color="primary" formControlName="Evaluacion"></mat-checkbox>
                   </div>
                 </div>
+
+                <div style="margin: 0 20px; padding-bottom: 7px; font-size: 14px; padding-right: 20%; text-align: center;">
+
+                  <div *ngIf="selectedFrecuencia === 'Seleccion de Dias'">
+                    <label class="font-bold block mb-2" for="horas">
+                      Horas Capacitacion x Dia*
+                  </label>
+                  </div>
+                  <div *ngIf="selectedFrecuencia !== 'Seleccion de Dias'">
+                    <label class="font-bold block mb-2" for="horas">
+                      Total Horas Capacitacion*
+                  </label>
+                  </div>
+                
+                  <div >
+                    <p-inputNumber
+                    formControlName="Horas"
+                [showButtons]="true" 
+                id="horas"
+                [step]="0.5"
+                suffix=" Horas"
+                />
+                  </div>
+                </div>
               </div>
+
+              
+
+              
+                
       
+
               <mat-form-field class="form-field" appearance="fill" color="primary">
                 <mat-label>Nombre Capacitacion</mat-label>
                 <input matInput formControlName="NombreCapacitacion">
               </mat-form-field>
+
+
+             
+              
     
+                
             <mat-form-field class="form-field" appearance="fill" color="primary">
               <mat-label>Tipo</mat-label>
               <mat-select formControlName="Origen">
@@ -51,7 +87,7 @@
     
           <mat-form-field class="form-field" appearance="fill" color="primary">
             <mat-label>Metodo de Selección</mat-label>
-            <mat-select formControlName="Frecuencia">
+            <mat-select formControlName="Frecuencia" [ngModel]="selectedFrecuencia">
                 <mat-option *ngFor="let val of frecuencias" [value]="val">{{val}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -67,6 +103,8 @@
         </mat-form-field>
       
               </div>
+
+
             <div class="box2">
           
               <div class="col flex align-items-center justify-content-center">
@@ -75,15 +113,16 @@
                   <!--<label for="fechaInicio" class="font-bold block mb-2">Fecha Inicio</label> 
                   <p-calendar [inline]="true" inputId="fechaInicio" formControlName="FechaInicio" 
                   dateFormat="dd/mm/yy" [minDate]="hoy" [(ngModel)]="fechaStart"></p-calendar>-->
-                  <label for="fechaInicio" class="font-bold block mb-2">Selecciona Dias</label> 
+                  <label for="fechaInicio" class="font-bold block mb-2">Selecciona Dias*</label> 
                   <p-calendar [inline]="true" inputId="fechaInicio" selectionMode="multiple" 
                   [readonlyInput]="true" formControlName="Fecha"
-                  dateFormat="dd/mm/yy" [minDate]="hoy" [(ngModel)]="dates"></p-calendar>
+                  dateFormat="dd/mm/yy" [minDate]="hoy" [(ngModel)]="dates">
+                </p-calendar>
                 </div>
-               
+               <!--formControlName="Fecha"-->
 
                 <div class="small-calendar" *ngIf="selectedFrecuencia !== 'Seleccion de Dias'">
-                  <label for="fecharango" class="font-bold block mb-2">Selecciona Dia Inicio y Dia Fin</label> 
+                  <label for="fecharango" class="font-bold block mb-2">Selecciona Dia Inicio y Dia Fin*</label> 
                   <p-calendar [(ngModel)]="rangeDates" inputId="fecharango" [minDate]="hoy" formControlName="FechaRango"
                 [inline]="true"
                 selectionMode="range" 

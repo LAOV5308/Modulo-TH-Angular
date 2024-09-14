@@ -23,13 +23,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
 import { MessageConfirmCheckBoxComponent } from '../../incidencias/add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
-import { CatalogoCapacitacionService } from '../../../../../../backend/ConexionDB/catalogocapacitacion.service';
-import { CapacitacionCatalogo } from '../../../../../../backend/models/capacitacioncatalogo.model';
+import { CapacitacionService } from '../../../../../../backend/ConexionDB/capacitacion.service';
 
 import { MessageDeleteComponent } from '../../Messages/message-delete/message-delete.component';
 import { UpdateCapacitacionCatalogoComponent } from '../update-capacitacion-catalogo/update-capacitacion-catalogo.component';
 import { AddCapacitacionesComponent } from '../../capacitaciones/add-capacitaciones/add-capacitaciones.component';
-import { AddCapacitacionCatalogoComponent } from '../add-capacitacion-catalogo/add-capacitacion-catalogo.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
 
 
@@ -42,10 +40,10 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     MatPaginator, MatFormFieldModule,
     MatCheckboxModule,
     MatCardModule,
-    FormsModule,MessageConfirmCheckBoxComponent, AddCapacitacionCatalogoComponent,
+    FormsModule,MessageConfirmCheckBoxComponent,
     MessageDeleteComponent,
     UpdateCapacitacionCatalogoComponent, NgIf,  ColorPickerModule, CommonModule ],
-    providers:[EmpleadosService, CoreService, CatalogoCapacitacionService],
+    providers:[EmpleadosService, CoreService, CapacitacionService],
   templateUrl: './datos-capacitacion-catalogo.component.html',
   styleUrl: './datos-capacitacion-catalogo.component.css'
 })
@@ -67,7 +65,7 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
     //'EstadoNombreCapacitacion'
   ];
 
-  capacitaciones: CapacitacionCatalogo[] = [];
+  //capacitaciones: CapacitacionCatalogo[] = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -76,7 +74,7 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
     private _coreService: CoreService,
     private _dialog: MatDialog,
     private _empleadosService: EmpleadosService,
-    private _catalogoCapacitacionesService: CatalogoCapacitacionService
+    private _catalogoCapacitacionesService: CapacitacionService
   ){}
 
   ngAfterViewInit(): void {
@@ -93,12 +91,13 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
   }
 
   getCapacitaciones(){
+    /*
      //Traer a todas las incidencias
      this._catalogoCapacitacionesService.getCatalogoCapacitaciones().subscribe({
       next: (data) => {
-        this.capacitaciones = data;
-        console.log(this.capacitaciones);
-        this.dataSource = new MatTableDataSource(data);
+        /*this.capacitaciones = data;
+        console.log(this.capacitaciones);*/
+        /*this.dataSource = new MatTableDataSource(data);
         //this.actualizar();
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
@@ -107,7 +106,7 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
         console.error('Error al cargar las capacitaciones', error);
       }
     });
-
+*/
   }
 
   ajustarFecha(fecha: string): string {
@@ -118,7 +117,7 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
   }
 
   agregar(){
-    
+    /*
     const dialog = this._dialog.open(AddCapacitacionCatalogoComponent
       );
 
@@ -128,7 +127,7 @@ export class DatosCapacitacionCatalogoComponent implements OnInit, AfterViewInit
           this.actualizar();
         }
       }
-    });
+    });*/
   }
 
   editar(data: string){

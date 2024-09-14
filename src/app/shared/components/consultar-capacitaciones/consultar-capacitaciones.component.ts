@@ -11,8 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ProgramarCapacitacionesComponent } from '../programar-capacitaciones/programar-capacitaciones.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones } from '../../../../../backend/models/capacitacion.model';
-import { CatalogoCapacitacionService } from '../../../../../backend/ConexionDB/catalogocapacitacion.service';
+import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones, Capacitacion } from '../../../../../backend/models/capacitacion.model';
+import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
 
 import { MessageService, ConfirmationService, MenuItem } from 'primeng/api';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -73,12 +73,13 @@ interface ExportColumn {
     MatOptionModule, MatSelectModule, MatDatepickerModule, MatExpansionModule
 
   ],
-  providers:[CatalogoCapacitacionService, DialogService, MessageService, EmpleadosService, ConfirmationService, provideNativeDateAdapter()],
+  providers:[CapacitacionService, DialogService, MessageService, EmpleadosService, ConfirmationService, provideNativeDateAdapter()],
   templateUrl: './consultar-capacitaciones.component.html',
   styleUrl: './consultar-capacitaciones.component.css'
 })
 export class ConsultarCapacitacionesComponent implements OnInit, AfterViewInit{
  //Capacitacoiones Programadas
+ capacitaciones: Capacitacion[]=[];
  capacitacionesprogramadas: CapacitacionProgramada[]=[];
  capacitacionessuscripciones: CapacitacionesSuscripciones[]=[];
  events: any[] = [];  // Crear el arreglo de eventos
@@ -121,7 +122,7 @@ orig: string[] = [
   'Externa'
 ];
 
-  constructor(private _dialog: MatDialog, private capacitacionesService: CatalogoCapacitacionService, private cdr: ChangeDetectorRef,
+  constructor(private _dialog: MatDialog, private capacitacionesService: CapacitacionService, private cdr: ChangeDetectorRef,
     public dialogService: DialogService, public messageService: MessageService, private empleadoService: EmpleadosService,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private router: Router
   ){
@@ -157,12 +158,26 @@ orig: string[] = [
 
   ngOnInit(): void {
 
+    this.capacitacionesService.getCapacitaciones().subscribe({
+      next: (data) => {
+        this.capacitaciones = data;
+        console.log(this.capacitaciones);
+        //console.log('data');
+        this.updateCalendarEvents();
+        
+      },
+      error: (error) => {
+        console.error('Error al cargar las Capacitaciones', error);
+      }
+    });
+
+
     this.capacitacionesService.getProgramacionCapacitaciones().subscribe({
       next: (data) => {
         this.capacitacionesprogramadas = data;
         
         //console.log('data');
-        //console.log(this.capacitacionesprogramadas);
+        console.log(this.capacitacionesprogramadas);
         this.updateCalendarEvents();
         
       },
@@ -438,6 +453,19 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitaci
     this.consultar();
 
   }
+
+/*getProgramaciones(idProgramacionCapacitacion: number): any{
+    this.capacitacionesService.getsingleProgramaciones(idProgramacionCapacitacion).subscribe({
+      next: (data) => {
+        this.capacitacionessuscripciones = data;
+       return this.capacitacionessuscripciones;
+        
+      },
+      error: (error) => {
+        console.error('Error al cargar las Capacitaciones', error);
+      }
+    });
+  }*/
 
   consultar(){
     this.consulta = true;

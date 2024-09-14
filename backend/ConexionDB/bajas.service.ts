@@ -15,10 +15,16 @@ export class BajasService {
 
   constructor(private http: HttpClient) { }
 
+  getAllBajas():Observable<Baja[]>{
+    return this.http.get<Baja[]>(this.apiUrl);
+  }
+
+
  getBajas(id: number): Observable<Baja[]> {
     return this.http.get<Baja[]>(this.apiUrl+'/'+id
     );
   };
+
 
   getIncidencias(id: number): Observable<IncidenciaB[]> {
     return this.http.get<IncidenciaB[]>(this.apiUrl+'/incidencias/'+id
