@@ -61,3 +61,21 @@ export interface Calificaciones {
   Estatus: boolean;
   Comentario: string;
 }
+
+
+export interface CapacitacionesEmpleado {
+  NoNomina: number;
+  Nombre: string;
+  Apellidos: string;
+  NombrePuesto: string;
+  NombreDepartamento: string;
+  IdSuscripcionCapacitacion: number;
+  Asistencia: boolean;
+  IdProgramacionCapacitacion: number;
+  NombreCapacitacion: string;
+  Origen: string;
+  Frecuencia: string;
+  PersonaImparte: string;
+  FechaInicio: Date;
+  Horas: number;
+}

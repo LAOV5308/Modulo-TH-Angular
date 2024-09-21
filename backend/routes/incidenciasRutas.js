@@ -36,6 +36,23 @@ router.get('/all/', async (req, res) => {
     }
 });
 
+//Obtener solamente el empleado por Id
+router.post('/empleado', async (req, res) => {
+    const { NoNomina } = req.body;
+
+    try {
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        const result = await request.execute('stp_V_IncidenciasOrdenar');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
+
+
+
 // Obtener todos los empleados all
 /*
 router.get('/all', async (req, res) => {

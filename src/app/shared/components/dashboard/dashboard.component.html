@@ -35,6 +35,14 @@
     <mat-card-header>
       <mat-card-title>
         Empleados
+
+        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu0" aria-label="Toggle menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu0="matMenu" xPosition="before">
+          <button (click)="impresion()" mat-menu-item>Imprimir Grafica</button>
+        </mat-menu>
+        
       </mat-card-title>
     </mat-card-header>
     <mat-card-content class="dashboard-card-content">
@@ -84,6 +92,13 @@
   <mat-card-header>
     <mat-card-title>
       Empleados Activos Rango de Edades
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu1" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu1="matMenu" xPosition="before">
+        <button (click)="impresion()" mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -99,6 +114,14 @@
   <mat-card-header>
     <mat-card-title>
       Antiguedades por Empleados Activo
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu2" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu2="matMenu" xPosition="before">
+        <button (click)="impresion()" mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -114,6 +137,15 @@
   <mat-card-header>
     <mat-card-title>
       Antiguedades por Empleados Salidas
+
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu3" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu3="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -130,6 +162,14 @@
   <mat-card-header>
     <mat-card-title>
       Cantidades de Empleados por Cada Departamento
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -151,6 +191,14 @@
   <mat-card-header>
     <mat-card-title>
       Empleados Bajas por Departamento
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -177,6 +225,15 @@
   <mat-card-header>
     <mat-card-title>
       Empleados por Estado Civil
+
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -193,6 +250,15 @@
   <mat-card-header>
     <mat-card-title>
       Cantidad De Incidencias Por Departamento
+
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -208,6 +274,14 @@
     <mat-card-header>
       <mat-card-title>
         Cantidad De Horas Por Capacitaciones
+
+        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>Imprimir Grafica</button>
+        </mat-menu>
+
       </mat-card-title>
     </mat-card-header>
     <mat-card-content class="dashboard-card-content">
@@ -225,6 +299,15 @@
   <mat-card-header>
     <mat-card-title>
       Cambios de Puestos por Departamento
+
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -265,6 +348,16 @@
 <mat-card-header>
   <mat-card-title>
     Cantidad de Incidencias por Mes y Año {{periodoSeleccionado}}
+
+
+    <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item>Imprimir Grafica</button>
+    </mat-menu>
+
+
   </mat-card-title>
 </mat-card-header>
 <mat-card-content class="dashboard-card-content">
@@ -279,6 +372,14 @@
 <mat-card-header>
   <mat-card-title>
     Cantidad de Dias de Capacitaciones por Mes y Año {{periodoSeleccionado}}
+
+    <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item>Imprimir Grafica</button>
+    </mat-menu>
+
   </mat-card-title>
 </mat-card-header>
 <mat-card-content class="dashboard-card-content">
@@ -295,6 +396,14 @@
 <mat-card-header>
   <mat-card-title>
     Cantidad de Contrataciones por Mes y Año {{periodoSeleccionado}}
+
+    <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item>Imprimir Grafica</button>
+    </mat-menu>
+
   </mat-card-title>
 </mat-card-header>
 <mat-card-content class="dashboard-card-content">
@@ -311,6 +420,14 @@
   <mat-card-header>
     <mat-card-title>
       Salidas de Edades por Mes del Año {{periodoSeleccionado}}
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -326,6 +443,14 @@
   <mat-card-header>
     <mat-card-title>
       Dias de Incidencias por Departamento por Mes del Año {{periodoSeleccionado}}
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">

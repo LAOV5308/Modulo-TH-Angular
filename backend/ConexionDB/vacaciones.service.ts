@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
-import { FechaVacacion, Vacacion } from '../models/vacacion.model';
+import { FechaVacacion, Vacacion, DiasDisponibles } from '../models/vacacion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +24,42 @@ getFechasVacaciones(NoNomina: number | undefined): Observable<FechaVacacion[]> {
   return this.http.get<FechaVacacion[]>(this.apiUrl+'/'+NoNomina);
 }
 
+
+//Traer las fechas por Periodo y NoNomina
+getFechasVacacionesPerido(NoNomina: number | undefined, Periodo: string): Observable<FechaVacacion[]> {
+  const body = {
+    NoNomina: NoNomina,
+    Periodo: Periodo
+  }
+  return this.http.post<FechaVacacion[]>(this.apiUrl+'/fechasvacacionesperiodo', body);
+}
+
+//Traer las fechas por Periodo y NoNomina
+getVacacionesPorPeriodo(NoNomina: number | undefined, Periodo: string): Observable<Vacacion[]> {
+  const body = {
+    NoNomina: NoNomina,
+    Periodo: Periodo
+  }
+  return this.http.post<Vacacion[]>(this.apiUrl+'/vacacionesperiodo', body);
+}
+
+
+
+
+
 getVacacionesPeriodo(NoNomina: number | undefined): Observable<Vacacion[]> {
   const body = {
     NoNomina: NoNomina
   };
   return this.http.post<Vacacion[]>(`${this.apiUrl}/periodos`, body);
+}
+
+getDiasVacaciones(NoNomina: number | undefined):Observable<DiasDisponibles[]>{
+  const body = {
+    NoNomina: NoNomina
+  };
+
+  return this.http.post<DiasDisponibles[]>(this.apiUrl+'/diasvacaciones', body);
 }
 
 getVacaciones(NoNomina: number | undefined, Periodo: string): Observable<Vacacion[]> {

@@ -158,6 +158,54 @@ router.post('/evaluar/', async (req, res) => {
 });
 
 
+
+
+//Obtener los Empleados por Capacitacione
+router.post('/capacitacionempleado', async (req, res) => {
+    const { NoNomina
+     } = req.body;
+
+    try {
+        const pool = await getConnection(); 
+        const request = pool.request();
+        ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
+        request.input('NoNomina', sql.Int, NoNomina);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_V_CapacitacionesEmpleados');
+        //const result = await request.execute('stp_prueba_add');
+        res.json(result.recordset);
+        
+    } catch (err) {
+        res.status(500).json({ message: 'Error al Evaluarlo: ' + err.message });
+    }
+    
+});
+
+
+//Obtener las capacitaciones en un rango de fecha
+router.post('/consultacapacitaciones', async (req, res) => {
+    const { FechaInicio, FechaFin
+     } = req.body;
+
+    try {
+        const pool = await getConnection(); 
+        const request = pool.request();
+        ///request.input('CodigoCapacitacion', sql.VarChar, CodigoCapacitacion);
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_ConsultarCapacitaciones');
+        //const result = await request.execute('stp_prueba_add');
+        res.json(result.recordset);
+        
+    } catch (err) {
+        res.status(500).json({ message: 'Error al Evaluarlo: ' + err.message });
+    }
+    
+});
+
+
+
 // Obtener solo uno 
 
 router.get('/single/:id', async (req, res) => {
@@ -399,6 +447,8 @@ router.put('/actualizarfechas/:id', async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar el Catalogo: ' + err.message });
     }
 });
+
+
 
 
 

@@ -25,6 +25,7 @@ app.use((req, res, next) => {
     next();
 
 });
+
 app.use(bodyParser.json());
 
 //Login
@@ -48,6 +49,8 @@ app.use('/dashboard', dashboardRutas);
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 });
+
+
 /*
 app.use(express.json());
 

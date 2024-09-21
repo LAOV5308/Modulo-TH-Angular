@@ -17,6 +17,9 @@ router.post('/periodos', async (req, res) => {
     }
 });
 
+
+
+
 router.post('/all', async (req, res) => {
     const { NoNomina, Periodo } = req.body; // Aquí se usa req.body para recibir los datos
 
@@ -113,7 +116,35 @@ router.delete('/:id', async (req, res) => {
 });
 
 
+router.post('/fechasvacacionesperiodo', async (req, res) => {
+    const { NoNomina, Periodo } = req.body;
 
+    try {
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        request.input('Periodo', sql.VarChar, Periodo);
+        const result = await request.execute('stp_V_FechasVacacionesPeriodo');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
+
+router.post('/vacacionesperiodo', async (req, res) => {
+    const { NoNomina, Periodo } = req.body;
+
+    try {
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        request.input('Periodo', sql.VarChar, Periodo);
+        const result = await request.execute('stp_V_VacacionesPeriodo');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
 
 // Actualizar Dias de la Vacacion
 router.put('/:id', async (req, res) => {
@@ -139,5 +170,21 @@ router.put('/:id', async (req, res) => {
     
 });
 
+
+router.post('/diasvacaciones', async (req, res) => {
+    const { NoNomina } = req.body;
+
+    try {
+        /*const sql = await db.getConnection();
+        const request = sql.request();*/
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        const result = await request.execute('stp_V_DiasDisponibles');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
 
 module.exports = router;

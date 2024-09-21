@@ -1,3 +1,5 @@
+
+//La diferencia es que este ya tiene el nombre Completo
 export interface Incidencia {
     IdIncidencias: number;
     NoNomina: number;

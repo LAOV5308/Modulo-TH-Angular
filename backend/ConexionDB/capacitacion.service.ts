@@ -6,7 +6,7 @@ import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
 
 
-import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones, Capacitacion } from '../models/capacitacion.model';
+import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones, Capacitacion, CapacitacionesEmpleado } from '../models/capacitacion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,9 @@ export class CapacitacionService {
     );
   }
 
+  
+
+
   addCapacitacionFecha(IdProgramacionCapacitacion:number | null, Fecha: Date, Horas:number):Observable<any>{
     const body = {
       IdProgramacionCapacitacion: IdProgramacionCapacitacion,
@@ -50,6 +53,29 @@ export class CapacitacionService {
     };
 
     return this.http.post(this.apiUrl+'/fecha', body).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
+  getCapacitacionEmpleado(NoNomina: number | undefined):Observable<CapacitacionesEmpleado[]>{
+    const body = {
+      NoNomina: NoNomina
+    };
+
+    return this.http.post<CapacitacionesEmpleado[]>(this.apiUrl+'/capacitacionempleado', body).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
+  getConsultaCapacitaciones(FechaInicio:Date | undefined, FechaFin:Date | undefined):Observable<CapacitacionProgramada[]>{
+    const body = {
+      FechaInicio: FechaInicio,
+      FechaFin: FechaFin
+    };
+
+    return this.http.post<CapacitacionProgramada[]>(this.apiUrl+'/consultacapacitaciones', body).pipe(
       catchError(this.handleError)
     );
   }

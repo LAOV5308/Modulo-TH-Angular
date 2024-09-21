@@ -32,7 +32,15 @@ export class IncidenciasService {
     );
   }
 
-  
+  getIncidenciasPorEmpleado(NoNomina: number | undefined): Observable<Incidencia[]> {
+    const body={
+      NoNomina: NoNomina
+    };
+    return this.http.post<Incidencia[]>(this.apiUrl+'/empleado', body);
+  }
+
+
+
   getIncidencias(): Observable<Incidencia[]> {
     return this.http.get<Incidencia[]>(this.apiUrl);
   }

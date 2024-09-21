@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {jsPDF} from 'jspdf';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {NgxDocViewerModule} from 'ngx-doc-viewer';
@@ -12,30 +12,176 @@ import { NgFor,NgIf } from '@angular/common';
 import 'jspdf-autotable';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
+
+import { TableModule } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { Table } from 'primeng/table';
+import { VacacionesService } from '../../../../../backend/ConexionDB/vacaciones.service';
+import { FechaVacacion, Vacacion } from '../../../../../backend/models/vacacion.model';
+import { DropdownModule } from 'primeng/dropdown';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { RippleModule } from 'primeng/ripple';
+import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencias.service';
+import { Incidencia } from '../../../../../backend/models/incidencia.model';
+import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
+import { CapacitacionesEmpleado, CapacitacionesSuscripciones, CapacitacionProgramada } from '../../../../../backend/models/capacitacion.model';
+
+
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+import 'moment/locale/es';
+
 
 
 @Component({
   selector: 'app-reportes',
   standalone: true,
-  imports: [NgxDocViewerModule,FormsModule, MatInputModule, MatSelectModule, MatFormFieldModule,NgFor,NgIf,ReactiveFormsModule],
-  providers:[EmpleadosService],
+  imports: [NgxDocViewerModule,FormsModule, MatInputModule, MatSelectModule, MatFormFieldModule,NgFor,NgIf,ReactiveFormsModule,
+    MatIconModule, MatButtonModule, MatToolbarModule,MatMenuModule, TableModule, CommonModule, IconFieldModule, InputIconModule, InputTextModule,
+    DropdownModule, ToastModule, RippleModule,MatDatepickerModule
+  ],
+
+  providers:[EmpleadosService,VacacionesService, MessageService, IncidenciasService, CapacitacionService, provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}],
   templateUrl: './reportes.component.html',
   styleUrl: './reportes.component.css'
 })
 export class ReportesComponent implements OnInit{
-  doc = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
+  //doc = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
   empleados: Empleado[]=[];
   empleadosActive: Empleado[]=[];
   empleadosInactive: Empleado[]=[];
+  showempleados: boolean = false;
+  showVacaciones: boolean = false;
+  showIncidencias: boolean = false;
+  showCapacitacion: boolean = false;
+  showCapacitaciones: boolean = false;
   opcionSeleccionada: string | undefined;
-  opciones:string[]=['-','Empleados', 'Empleados Activos', 'Empleados Inactivos'];
-  Form: FormGroup;
+  opciones:string[]=['-', 'Empleados', 'Empleados Activos', 'Empleados Inactivos'];
+  FormEmpleados: FormGroup;
+  FormVacaciones: FormGroup;
+  selectedEmpleados!: Empleado;
+  vacacionesEmpleado: FechaVacacion[]=[];
+  vacacionesEmpleadoPeriodo: Vacacion[]=[];
+  periodoSeleccionado: string = '2024';
+  periodos: string[]=['2022','2023', '2024', '2025', '2026'];
+  incidencias: Incidencia[]=[];
+  capacitacionesEmpleado: CapacitacionesEmpleado[]=[];
+  capacitacionesConsultadas: CapacitacionProgramada[]=[];
+  capacitacionSeleccionada!: CapacitacionProgramada;
+  capacitacionesSuscritas: CapacitacionesSuscripciones[]=[];
+  //Consulta Capacitacion
+  fechainicio: Date | undefined;
+  fechafin: Date | undefined;
+  btnSeleccionarCapacitacion: boolean = true;
 
-  constructor(private empleadosService:EmpleadosService, private _fb: FormBuilder,){
-    this.Form = this._fb.group({
+
+  @ViewChild('dt') dt!: Table; // Referencia a la tabla
+
+  
+
+imprimir(){
+  alert('Prueba');
+}
+
+verEmpleados(){
+  console.log(this.selectedEmpleados);
+}
+
+periodo(){
+
+}
+
+filterGlobal(event: Event, field: string) {
+  const inputElement = event.target as HTMLInputElement;
+  this.dt.filterGlobal(inputElement.value, field);
+}
+
+
+
+  constructor(private empleadosService:EmpleadosService, private _fb: FormBuilder,public dialog: MatDialog, private vacacionesService: VacacionesService, private messageService: MessageService,
+    private incidenciasService: IncidenciasService, private capacitacionesService: CapacitacionService
+  ){
+    this.FormEmpleados = this._fb.group({
       Opcion:['']
     });
+
+    this.FormVacaciones = this._fb.group({
+      Opcion:['']
+    });
+
   }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(DatosComponent, {
+      height: '400px',
+      width: '600px',
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openEmpleados(){
+this.showempleados = true;
+//Ocultar
+this.showVacaciones = false;
+this.showIncidencias = false;
+this.showCapacitacion = false;
+this.showCapacitaciones = false;
+
+  }
+
+  openVacaciones(){
+    this.showVacaciones = true;
+//Ocultar
+this.showempleados = false;
+this.showIncidencias = false;
+this.showCapacitacion = false;
+this.showCapacitaciones = false;
+  }
+
+
+  openIncidencias(){
+    this.showIncidencias = true;
+//Ocultar
+this.showempleados = false;
+this.showVacaciones = false;
+this.showCapacitacion = false;
+this.showCapacitaciones = false;
+  }
+
+  openCapacitacion(){
+    this.showCapacitacion = true;
+    //OCULTAR
+    this.showIncidencias = false;
+    this.showempleados = false;
+    this.showVacaciones = false;
+    this.showCapacitaciones = false;
+  }
+
+  openCapacitaciones(){
+    this.showCapacitaciones = true;
+    //OCULTAR
+    this.showIncidencias = false;
+    this.showempleados = false;
+    this.showVacaciones = false;
+    this.showCapacitacion = false;
+  }
+
 
   ngOnInit(): void {
     this.empleadosService.getEmpleadosAll().subscribe({
@@ -72,9 +218,9 @@ export class ReportesComponent implements OnInit{
   filtro(consulta: boolean){
     
 
-if(this.Form.value.Opcion){
+if(this.FormEmpleados.value.Opcion){
 
-  this.opcionSeleccionada = this.Form.value.Opcion;
+  this.opcionSeleccionada = this.FormEmpleados.value.Opcion;
   console.log(this.opcionSeleccionada);
   /*
   console.log(this.Form.value.Opcion);
@@ -82,7 +228,7 @@ if(this.Form.value.Opcion){
 
 
   
-switch (this.Form.value.Opcion) {
+switch (this.FormEmpleados.value.Opcion) {
   case 'Empleados':
     this.imprimirEmpleados(consulta);
     break;
@@ -105,6 +251,10 @@ switch (this.Form.value.Opcion) {
 
 
 
+  }
+
+  reiniciarpdf(){
+    (document.querySelector('iframe') as HTMLIFrameElement).src = 'about:blank';
   }
 
 
@@ -332,18 +482,796 @@ switch (this.Form.value.Opcion) {
     };
   }
 
+  
+
+imprimirvacaciones(){
+if(this.selectedEmpleados == undefined){
+  this.messageService.add({ severity: 'error', summary: 'Cuidado', detail: 'No se Encuentra seleccionado ningun Empleado',key: 'tl' });
+}else{
+
+this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
+  next:(data)=>{
+    this.vacacionesEmpleadoPeriodo = data;
+    console.log(this.vacacionesEmpleadoPeriodo);
+  },
+  error:(error: any)=>{
+    console.log('Error' + error);
+  }
+})
+
+  this.vacacionesService.getFechasVacacionesPerido(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
+    next:(data)=>{
+      console.log(data);
+      this.vacacionesEmpleado = data;
+      console.log(this.vacacionesEmpleado);
 
 
-  characterData = {
-    name: 'Gandalf',
-    surname: 'El gris',
-    description: 'Llevaba un sombrero azul alto y puntiagudo...',
-    type: 'wizard',
-    strength: 40,
-    magic: 90,
-    velocity: 60,
-  };
 
+      const doc = new jsPDF();
+
+      // Configurar el estilo del encabezado
+      doc.setFontSize(20);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Lista de Vacaciones', 14, 20);
+      
+      // Información del empleado en el encabezado
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Nombre Completo: ${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, 14, 30);
+      doc.text(`No. Nómina: ${this.selectedEmpleados.NoNomina}`, 14, 36);
+      doc.text(`Puesto: ${this.selectedEmpleados.NombrePuesto}`, 14, 42);
+      doc.text(`Departamento: ${this.selectedEmpleados.NombreDepartamento}`, 14, 48);
+      doc.text(`Periodo Seleccionado: ${this.periodoSeleccionado}`, 14, 54);
+      if(this.vacacionesEmpleadoPeriodo.length == 0){
+        doc.text('NO CUENTA CON DIAS', 14, 66);
+      }else{
+        doc.text(`Dias Totales: ${this.vacacionesEmpleadoPeriodo[0].DiasVacaciones}`, 14, 60);
+      doc.text(`Dias Disponibles: ${this.vacacionesEmpleadoPeriodo[0].DiasDisponibles}`, 14, 66);
+      doc.text(`Dias Utilizados: ${this.vacacionesEmpleadoPeriodo[0].DiasUtilizados}`, 14, 72);
+      }
+      
+      // Extraer datos de empleados
+      
+      
+      // Añadir un espacio antes de la tabla
+      doc.text('Vacaciones:', 14, 78);
+      
+      // Definir columnas de la tabla
+      //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
+      const columns = ['Fecha', 'Periodo', 'Comentarios'];
+      
+      
+      console.log(this.vacacionesEmpleado)
+      
+
+      
+
+      // Simulación de datos de vacaciones (esto debe ser tu lógica)
+      const rows = this.vacacionesEmpleado.map(vacacion => [
+        //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+        vacacion.Fecha.toString().split('T')[0].split('-').reverse().join('/'),
+        vacacion.Periodo,
+        vacacion.Comentarios
+        //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+        
+    ]);
+      
+       // Extraer datos de empleados
+          
+      /*const rows = [
+        [
+        this.selectedEmpleados.NoNomina,
+        `${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, // Nombre Completo
+        this.selectedEmpleados.NombrePuesto,                     // Puesto
+        this.selectedEmpleados.NombreDepartamento,                // Departamento
+        this.selectedEmpleados.Edad,
+      new Date(this.selectedEmpleados.Ingreso).toLocaleDateString('es-ES')
+      ]
+      ];*/
+      
+      
+      // Generar la tabla
+      (doc as any).autoTable({
+        head: [columns],
+        body: rows,
+        startY: 80, // Iniciar la tabla después de la información del empleado
+        margin: { top: 10, left: 14, right: 14 },
+        styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+        theme: 'striped', // Estilo de tabla con líneas alternas
+        headStyles: { fillColor: [22, 160, 133] }, // Color de encabezado de tabla
+      });
+      
+      // Obtener la fecha y hora actual
+      const now = new Date();
+      const dateStr = now.toLocaleDateString();
+      const timeStr = now.toLocaleTimeString();
+      doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
+      // Agregar la fecha y hora en la parte inferior del documento
+      doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+      doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+      
+      
+      
+      const pdfBlob = doc.output('bloburl');
+      // Convertimos el objeto URL a una cadena de texto
+      (document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+      
+
+
+
+    },
+    error:(err: any)=>{
+    }
+  });
+
+
+}
+    
+
+/*this.selectedEmpleados.forEach(element => {
+  this.vacacionesService.getFechasVacaciones(element.NoNomina).subscribe({
+    next:(data)=>{
+      console.log(data);
+    },
+    error:(err: any)=>{
+    }
+  });
+});*/
+
+/*const doc = new jsPDF({
+  orientation: 'landscape',  // Establecer orientación horizontal
+});*/
+
+/*
+if (true) {
+  const pdfBlob = doc.output('bloburl');
+// Convertimos el objeto URL a una cadena de texto
+(document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+
+} else {
+   // Formatear la fecha para el nombre del archivo
+   const day = String(now.getDate()).padStart(2, '0');
+   const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+   const year = now.getFullYear();
+   const fileName = `empleados_bajas_${day}_${month}_${year}.pdf`;
+  // Guardar el PDF con nombre personalizado
+doc.save(fileName);
+}*/
+
+
+  }
+
+  imprimirIncidencias(){
+    if(this.selectedEmpleados == undefined){
+      this.messageService.add({ severity: 'error', summary: 'Cuidado', detail: 'No se Encuentra seleccionado ningun Empleado',key: 'tl' });
+    }else{
+    
+    this.incidenciasService.getIncidenciasPorEmpleado(this.selectedEmpleados.NoNomina).subscribe({
+      next:(data)=>{
+        this.incidencias = data;
+        console.log(this.incidencias);
+
+
+        const doc = new jsPDF({
+          orientation: 'landscape'
+        });
+          // Configurar el estilo del encabezado
+          doc.setFontSize(20);
+          doc.setFont('helvetica', 'bold');
+          doc.text('Lista de Incidencias', 14, 20);
+          
+          // Información del empleado en el encabezado
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Nombre Completo: ${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, 14, 30);
+          doc.text(`No. Nómina: ${this.selectedEmpleados.NoNomina}`, 14, 36);
+          doc.text(`Puesto: ${this.selectedEmpleados.NombrePuesto}`, 14, 42);
+          doc.text(`Departamento: ${this.selectedEmpleados.NombreDepartamento}`, 14, 48);
+
+      
+          // Extraer datos de empleados
+          
+          
+          // Añadir un espacio antes de la tabla
+          doc.text('Incidencias:', 14, 58);
+          
+          // Definir columnas de la tabla
+          //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
+          const columns = ['Motivo', 'FechaInicio', 'FechaFin', 'DiasSubsidios', 'Categoria', 'FolioAlta', 'FolioBaja', 'Estado'];
+          
+    
+          // Simulación de datos de vacaciones (esto debe ser tu lógica)
+          const rows =  this.incidencias.map(incidencia => [
+            //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+            incidencia.Motivo,
+            incidencia.FechaInicio.toString().split('T')[0].split('-').reverse().join('/'),
+            incidencia.FechaFin.toString().split('T')[0].split('-').reverse().join('/'),
+            incidencia.DiasSubsidios,
+            incidencia.CategoriaIncidencia,
+            incidencia.FolioAlta,
+            incidencia.FolioBaja,
+            incidencia.Estatus ? 'Cerrado' : 'Abierto' 
+
+            //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+            
+        ]);
+          
+           // Extraer datos de empleados
+              
+          /*const rows = [
+            [
+            this.selectedEmpleados.NoNomina,
+            `${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, // Nombre Completo
+            this.selectedEmpleados.NombrePuesto,                     // Puesto
+            this.selectedEmpleados.NombreDepartamento,                // Departamento
+            this.selectedEmpleados.Edad,
+          new Date(this.selectedEmpleados.Ingreso).toLocaleDateString('es-ES')
+          ]
+          ];*/
+          
+          
+          // Generar la tabla
+          
+          (doc as any).autoTable({
+            head: [columns],
+            body: rows,
+            startY: 62, // Iniciar la tabla después de la información del empleado
+            margin: { top: 10, left: 14, right: 14 },
+            styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+            theme: 'striped', // Estilo de tabla con líneas alternas
+            headStyles: { fillColor: [22, 160, 133] }, // Color de encabezado de tabla
+          });
+          
+          // Obtener la fecha y hora actual
+          const now = new Date();
+          const dateStr = now.toLocaleDateString();
+          const timeStr = now.toLocaleTimeString();
+          doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
+          // Agregar la fecha y hora en la parte inferior del documento
+          doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+          doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+          
+          
+          
+          const pdfBlob = doc.output('bloburl');
+          // Convertimos el objeto URL a una cadena de texto
+          (document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+
+
+      },
+      error:(error: any)=>{
+        console.log('Error' + error);
+      }
+    })
+    
+    /*
+      this.vacacionesService.getFechasVacacionesPerido(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
+        next:(data)=>{
+          console.log(data);
+          this.vacacionesEmpleado = data;
+          console.log(this.vacacionesEmpleado);
+    
+    
+    
+          const doc = new jsPDF();
+    
+          // Configurar el estilo del encabezado
+          doc.setFontSize(20);
+          doc.setFont('helvetica', 'bold');
+          doc.text('Lista de Vacaciones', 14, 20);
+          
+          // Información del empleado en el encabezado
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Nombre Completo: ${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, 14, 30);
+          doc.text(`No. Nómina: ${this.selectedEmpleados.NoNomina}`, 14, 36);
+          doc.text(`Puesto: ${this.selectedEmpleados.NombrePuesto}`, 14, 42);
+          doc.text(`Departamento: ${this.selectedEmpleados.NombreDepartamento}`, 14, 48);
+          doc.text(`Periodo Seleccionado: ${this.periodoSeleccionado}`, 14, 54);
+          if(this.vacacionesEmpleadoPeriodo.length == 0){
+            doc.text('NO CUENTA CON DIAS', 14, 66);
+          }else{
+            doc.text(`Dias Totales: ${this.vacacionesEmpleadoPeriodo[0].DiasVacaciones}`, 14, 60);
+          doc.text(`Dias Disponibles: ${this.vacacionesEmpleadoPeriodo[0].DiasDisponibles}`, 14, 66);
+          doc.text(`Dias Utilizados: ${this.vacacionesEmpleadoPeriodo[0].DiasUtilizados}`, 14, 72);
+          }
+          
+          // Extraer datos de empleados
+          
+          
+          // Añadir un espacio antes de la tabla
+          doc.text('Vacaciones:', 14, 78);
+          
+          // Definir columnas de la tabla
+          //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
+          const columns = ['Fecha', 'Periodo', 'Comentarios'];
+          
+          
+          console.log(this.vacacionesEmpleado)
+          
+    
+          
+    
+          // Simulación de datos de vacaciones (esto debe ser tu lógica)
+          const rows = this.vacacionesEmpleado.map(vacacion => [
+            //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+            vacacion.Fecha.toString().split('T')[0].split('-').reverse().join('/'),
+            vacacion.Periodo,
+            vacacion.Comentarios
+            //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+            
+        ]);*/
+          
+           // Extraer datos de empleados
+              
+          /*const rows = [
+            [
+            this.selectedEmpleados.NoNomina,
+            `${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, // Nombre Completo
+            this.selectedEmpleados.NombrePuesto,                     // Puesto
+            this.selectedEmpleados.NombreDepartamento,                // Departamento
+            this.selectedEmpleados.Edad,
+          new Date(this.selectedEmpleados.Ingreso).toLocaleDateString('es-ES')
+          ]
+          ];*/
+          
+          
+          // Generar la tabla
+          /*Aqui
+          (doc as any).autoTable({
+            head: [columns],
+            body: rows,
+            startY: 80, // Iniciar la tabla después de la información del empleado
+            margin: { top: 10, left: 14, right: 14 },
+            styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+            theme: 'striped', // Estilo de tabla con líneas alternas
+            headStyles: { fillColor: [22, 160, 133] }, // Color de encabezado de tabla
+          });
+          
+          // Obtener la fecha y hora actual
+          const now = new Date();
+          const dateStr = now.toLocaleDateString();
+          const timeStr = now.toLocaleTimeString();
+          doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
+          // Agregar la fecha y hora en la parte inferior del documento
+          doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+          doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+          
+          
+          
+          const pdfBlob = doc.output('bloburl');
+          // Convertimos el objeto URL a una cadena de texto
+          (document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+          
+    
+    
+    
+        },
+        error:(err: any)=>{
+        }
+      });*/
+    
+    
+    }
+  }
+    
+
+
+  imprimirCapacitaciones(){
+    if(this.selectedEmpleados == undefined){
+      this.messageService.add({ severity: 'error', summary: 'Cuidado', detail: 'No se Encuentra seleccionado ningun Empleado',key: 'tl' });
+    }else{
+
+    this.capacitacionesService.getCapacitacionEmpleado(this.selectedEmpleados.NoNomina).subscribe({
+      next:(data)=>{
+        this.capacitacionesEmpleado = data;
+
+
+        const doc = new jsPDF({
+          orientation: 'landscape'
+        });
+          // Configurar el estilo del encabezado
+          doc.setFontSize(20);
+          doc.setFont('helvetica', 'bold');
+          doc.text('Lista de Capacitaciones', 14, 20);
+          
+          // Información del empleado en el encabezado
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Nombre Completo: ${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, 14, 30);
+          doc.text(`No. Nómina: ${this.selectedEmpleados.NoNomina}`, 14, 36);
+          doc.text(`Puesto: ${this.selectedEmpleados.NombrePuesto}`, 14, 42);
+          doc.text(`Departamento: ${this.selectedEmpleados.NombreDepartamento}`, 14, 48);
+
+      
+          // Extraer datos de empleados
+          
+          
+          // Añadir un espacio antes de la tabla
+          doc.text('Capacitaciones:', 14, 58);
+          
+          // Definir columnas de la tabla
+          //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
+          const columns = ['Nombre Capacitacion','FechaCapacitacion','Total Horas' ,'Origen', 'Frecuencia', 'Asistencia'];
+          
+    
+          // Simulación de datos de vacaciones (esto debe ser tu lógica)
+          const rows =  this.capacitacionesEmpleado.map(capacitacion => [
+            //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+            capacitacion.NombreCapacitacion,
+            capacitacion.FechaInicio.toString().split('T')[0].split('-').reverse().join('/'),
+            capacitacion.Horas,
+            capacitacion.Origen,
+            capacitacion.Frecuencia,
+            capacitacion.Asistencia ? 'Asistio' : '-' 
+
+            //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+            
+        ]);
+          
+           // Extraer datos de empleados
+              
+          
+          
+          
+          // Generar la tabla
+          
+          (doc as any).autoTable({
+            head: [columns],
+            body: rows,
+            startY: 62, // Iniciar la tabla después de la información del empleado
+            margin: { top: 10, left: 14, right: 14 },
+            styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+            theme: 'striped', // Estilo de tabla con líneas alternas
+            headStyles: { fillColor: [101, 153, 255] }, // Color de encabezado de tabla
+          });
+          
+          // Obtener la fecha y hora actual
+          const now = new Date();
+          const dateStr = now.toLocaleDateString();
+          const timeStr = now.toLocaleTimeString();
+          doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
+          // Agregar la fecha y hora en la parte inferior del documento
+          doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+          doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+          
+          
+          
+          const pdfBlob = doc.output('bloburl');
+          // Convertimos el objeto URL a una cadena de texto
+          (document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+        
+
+      },
+      error:(error: any)=>{
+        console.log('Error', error);
+      }
+    })
+
+
+
+/*
+    this.incidenciasService.getIncidenciasPorEmpleado(this.selectedEmpleados.NoNomina).subscribe({
+      next:(data)=>{
+        this.incidencias = data;
+        console.log(this.incidencias);
+
+
+        const doc = new jsPDF({
+          orientation: 'landscape'
+        });
+          // Configurar el estilo del encabezado
+          doc.setFontSize(20);
+          doc.setFont('helvetica', 'bold');
+          doc.text('Lista de Incidencias', 14, 20);
+          
+          // Información del empleado en el encabezado
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Nombre Completo: ${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, 14, 30);
+          doc.text(`No. Nómina: ${this.selectedEmpleados.NoNomina}`, 14, 36);
+          doc.text(`Puesto: ${this.selectedEmpleados.NombrePuesto}`, 14, 42);
+          doc.text(`Departamento: ${this.selectedEmpleados.NombreDepartamento}`, 14, 48);
+
+      
+          // Extraer datos de empleados
+          
+          
+          // Añadir un espacio antes de la tabla
+          doc.text('Capacitaciones:', 14, 58);
+          
+          // Definir columnas de la tabla
+          //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
+          const columns = ['Motivo', 'FechaInicio', 'FechaFin', 'DiasSubsidios', 'Categoria', 'FolioAlta', 'FolioBaja', 'Estado'];
+          
+    
+          // Simulación de datos de vacaciones (esto debe ser tu lógica)
+          const rows =  this.incidencias.map(incidencia => [
+            //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+            incidencia.Motivo,
+            incidencia.FechaInicio.toString().split('T')[0].split('-').reverse().join('/'),
+            incidencia.FechaFin.toString().split('T')[0].split('-').reverse().join('/'),
+            incidencia.DiasSubsidios,
+            incidencia.CategoriaIncidencia,
+            incidencia.FolioAlta,
+            incidencia.FolioBaja,
+            incidencia.Estatus ? 'Cerrado' : 'Abierto' 
+
+            //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+            
+        ]);
+          
+           // Extraer datos de empleados
+              
+          
+          
+          
+          // Generar la tabla
+          
+          (doc as any).autoTable({
+            head: [columns],
+            body: rows,
+            startY: 62, // Iniciar la tabla después de la información del empleado
+            margin: { top: 10, left: 14, right: 14 },
+            styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+            theme: 'striped', // Estilo de tabla con líneas alternas
+            headStyles: { fillColor: [22, 160, 133] }, // Color de encabezado de tabla
+          });
+          
+          // Obtener la fecha y hora actual
+          const now = new Date();
+          const dateStr = now.toLocaleDateString();
+          const timeStr = now.toLocaleTimeString();
+          doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
+          // Agregar la fecha y hora en la parte inferior del documento
+          doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+          doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+          
+          
+          
+          const pdfBlob = doc.output('bloburl');
+          // Convertimos el objeto URL a una cadena de texto
+          (document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+
+
+      },
+      error:(error: any)=>{
+        console.log('Error' + error);
+      }
+    })*/
+    
+    /*
+      this.vacacionesService.getFechasVacacionesPerido(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
+        next:(data)=>{
+          console.log(data);
+          this.vacacionesEmpleado = data;
+          console.log(this.vacacionesEmpleado);
+    
+    
+    
+          const doc = new jsPDF();
+    
+          // Configurar el estilo del encabezado
+          doc.setFontSize(20);
+          doc.setFont('helvetica', 'bold');
+          doc.text('Lista de Vacaciones', 14, 20);
+          
+          // Información del empleado en el encabezado
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Nombre Completo: ${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, 14, 30);
+          doc.text(`No. Nómina: ${this.selectedEmpleados.NoNomina}`, 14, 36);
+          doc.text(`Puesto: ${this.selectedEmpleados.NombrePuesto}`, 14, 42);
+          doc.text(`Departamento: ${this.selectedEmpleados.NombreDepartamento}`, 14, 48);
+          doc.text(`Periodo Seleccionado: ${this.periodoSeleccionado}`, 14, 54);
+          if(this.vacacionesEmpleadoPeriodo.length == 0){
+            doc.text('NO CUENTA CON DIAS', 14, 66);
+          }else{
+            doc.text(`Dias Totales: ${this.vacacionesEmpleadoPeriodo[0].DiasVacaciones}`, 14, 60);
+          doc.text(`Dias Disponibles: ${this.vacacionesEmpleadoPeriodo[0].DiasDisponibles}`, 14, 66);
+          doc.text(`Dias Utilizados: ${this.vacacionesEmpleadoPeriodo[0].DiasUtilizados}`, 14, 72);
+          }
+          
+          // Extraer datos de empleados
+          
+          
+          // Añadir un espacio antes de la tabla
+          doc.text('Vacaciones:', 14, 78);
+          
+          // Definir columnas de la tabla
+          //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
+          const columns = ['Fecha', 'Periodo', 'Comentarios'];
+          
+          
+          console.log(this.vacacionesEmpleado)
+          
+    
+          
+    
+          // Simulación de datos de vacaciones (esto debe ser tu lógica)
+          const rows = this.vacacionesEmpleado.map(vacacion => [
+            //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+            vacacion.Fecha.toString().split('T')[0].split('-').reverse().join('/'),
+            vacacion.Periodo,
+            vacacion.Comentarios
+            //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+            
+        ]);*/
+          
+           // Extraer datos de empleados
+              
+          /*const rows = [
+            [
+            this.selectedEmpleados.NoNomina,
+            `${this.selectedEmpleados.Nombre} ${this.selectedEmpleados.Apellidos}`, // Nombre Completo
+            this.selectedEmpleados.NombrePuesto,                     // Puesto
+            this.selectedEmpleados.NombreDepartamento,                // Departamento
+            this.selectedEmpleados.Edad,
+          new Date(this.selectedEmpleados.Ingreso).toLocaleDateString('es-ES')
+          ]
+          ];*/
+          
+          
+          // Generar la tabla
+          /*Aqui
+          (doc as any).autoTable({
+            head: [columns],
+            body: rows,
+            startY: 80, // Iniciar la tabla después de la información del empleado
+            margin: { top: 10, left: 14, right: 14 },
+            styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+            theme: 'striped', // Estilo de tabla con líneas alternas
+            headStyles: { fillColor: [22, 160, 133] }, // Color de encabezado de tabla
+          });
+          
+          // Obtener la fecha y hora actual
+          const now = new Date();
+          const dateStr = now.toLocaleDateString();
+          const timeStr = now.toLocaleTimeString();
+          doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
+          // Agregar la fecha y hora en la parte inferior del documento
+          doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+          doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+          
+          
+          
+          const pdfBlob = doc.output('bloburl');
+          // Convertimos el objeto URL a una cadena de texto
+          (document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+          
+    
+    
+    
+        },
+        error:(err: any)=>{
+        }
+      });*/
+    
+    
+    }
+  }
+    
+
+  
+consultarCapacitaciones(){
+  this.btnSeleccionarCapacitacion = true;
+  if(this.fechainicio == undefined || this.fechafin == undefined){
+   
+  }else{
+    this.capacitacionesService.getConsultaCapacitaciones(this.fechainicio, this.fechafin).subscribe({
+      next:(data: any) =>{
+        this.capacitacionesConsultadas = data;
+        console.log(this.capacitacionesConsultadas);
+          this.btnSeleccionarCapacitacion = false;
+        
+
+
+      },
+      error:(error: any) =>{
+        console.log('Error', error);
+      },
+    })
+
+  }
+//alert(this.fechainicio + ' '+ this.fechafin);
+
+}
+imprimirConsultaProgramaciones(){
+
+  console.log(this.capacitacionSeleccionada.IdProgramacionCapacitacion);
+
+  if(this.capacitacionSeleccionada == undefined){
+    this.messageService.add({ severity: 'error', summary: 'Cuidado', detail: 'No se Encuentra seleccionado ningun Empleado',key: 'tl' });
+  }else{
+    
+  this.capacitacionesService.getsingleProgramaciones(this.capacitacionSeleccionada.IdProgramacionCapacitacion).subscribe({
+    next:(data)=>{
+
+      this.capacitacionesSuscritas = data;
+      console.log(this.capacitacionesSuscritas);
+      //this.capacitacionesEmpleado = data;
+
+
+      const doc = new jsPDF({
+        orientation: 'landscape'
+      });
+        // Configurar el estilo del encabezado
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Lista de Participantes: ${this.capacitacionSeleccionada.NombreCapacitacion}`, 14, 20);
+        
+        // Información del empleado en el encabezado
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Nombre Capacitacion: ${this.capacitacionSeleccionada.NombreCapacitacion}`, 14, 30);
+        doc.text(`Horas: ${this.capacitacionSeleccionada.Horas}`, 14, 36);
+        doc.text(`Persona Imparte: ${this.capacitacionSeleccionada.PersonaImparte}`, 14, 42);
+        doc.text(`Dia Estimado: ${this.capacitacionSeleccionada.FechaInicio.toString().split('T')[0].split('-').reverse().join('/')}`, 14, 48);
+
+    
+        // Extraer datos de empleados
+        
+        // Añadir un espacio antes de la tabla
+        doc.text('Participantes:', 14, 58);
+        
+        // Definir columnas de la tabla
+        //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
+        const columns = ['No. Nomina','Nombre','Puesto' ,'Departamento', 'Asistencia'];
+        
+  
+        // Simulación de datos de vacaciones (esto debe ser tu lógica)
+        const rows =  this.capacitacionesSuscritas.map(capacitacion => [
+          //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+          capacitacion.NoNomina,
+          `${capacitacion.Nombre} ${capacitacion.Apellidos}`,
+          capacitacion.NombrePuesto,
+          capacitacion.NombreDepartamento,
+          capacitacion.Asistencia ? 'Asistio' : '-' 
+
+          //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+          
+      ]);
+        
+        // Generar la tabla
+        
+        (doc as any).autoTable({
+          head: [columns],
+          body: rows,
+          startY: 62, // Iniciar la tabla después de la información del empleado
+          margin: { top: 10, left: 14, right: 14 },
+          styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+          theme: 'striped', // Estilo de tabla con líneas alternas
+          headStyles: { fillColor:  this.capacitacionSeleccionada.Color}, // Color de encabezado de tabla
+        });
+        
+        // Obtener la fecha y hora actual
+        const now = new Date();
+        const dateStr = now.toLocaleDateString();
+        const timeStr = now.toLocaleTimeString();
+        doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
+        // Agregar la fecha y hora en la parte inferior del documento
+        doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+        doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+        
+        
+        
+        const pdfBlob = doc.output('bloburl');
+        // Convertimos el objeto URL a una cadena de texto
+        (document.querySelector('iframe') as HTMLIFrameElement).src = pdfBlob.toString();
+
+
+    },
+    error:(error: any)=>{
+      console.log('Error', error);
+    }
+  })
+
+
+  
+  }
+
+
+}
 
 
 

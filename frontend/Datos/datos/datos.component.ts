@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Empleado } from '../../../backend/models/empleado.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 import { EmpleadosService } from '../../../backend/ConexionDB/empleados.service';
-import { NgFor, DatePipe, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,7 +11,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { CoreService } from '../../../src/app/Core/core.service';
-import { HeaderComponent } from '../../../src/app/shared/components/header/header.component';
 import { UpdateEmpleadoComponent } from '../../../src/app/shared/components/empleados/update-empleado/update-empleado.component';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -47,6 +46,7 @@ import {MatCardModule} from '@angular/material/card';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { HeaderComponent } from '../../../src/app/shared/components/header/header.component';
 
 
 export const MY_DATE_FORMATS = {
@@ -67,7 +67,7 @@ export const MY_DATE_FORMATS = {
   imports: [ButtonModule, NgIf, MatCardModule,ToastModule, CardModule,MatDialogModule, MatInputModule, 
     MatDatepickerModule, MatNativeDateModule, MatRadioModule, MatSelectModule, ReactiveFormsModule,
     HttpClientModule,
-    NgFor, DatePipe, MatButton, MatExpansionModule,
+    NgFor, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
     HeaderComponent,
     MatIconModule,

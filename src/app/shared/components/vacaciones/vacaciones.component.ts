@@ -24,7 +24,7 @@ import { TableModule } from 'primeng/table';
 import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
 import { Empleado } from '../../../../../backend/models/empleado.model';
 import { VacacionesService } from '../../../../../backend/ConexionDB/vacaciones.service';
-import { FechaVacacion, Vacacion } from '../../../../../backend/models/vacacion.model';
+import { DiasDisponibles, FechaVacacion, Vacacion } from '../../../../../backend/models/vacacion.model';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
@@ -71,6 +71,8 @@ DiasDeLey!: number;
 desactivarCalendario: boolean = true;
 desactivarPeriodos: boolean = false;
 IdVacacion!: number;
+diasVacacionesDisponibles: number = 0;
+todosDiasDisponibles: DiasDisponibles[]=[];
 
 Opciones: string[] = ['2020', '2021', '2022', '2023', '2024'];
 opcionSeleccionada: string = '';
@@ -264,10 +266,23 @@ ConsultarFechas(){
    */
 
 this.reiniciar();
-
+this.diasVacacionesDisponibles = 0;
 if(this.NoNomina != undefined){
   this.empleadosService.getEmpleado(this.NoNomina).subscribe({
     next:(data:any) =>{
+
+      this.vacacionesService.getDiasVacaciones(this.NoNomina).subscribe({
+        next:(data: any) => {
+          console.log(data);
+          this.todosDiasDisponibles = data;
+          this.diasVacacionesDisponibles = this.todosDiasDisponibles[0].DiasDisponibles;
+          console.log(this.diasVacacionesDisponibles);
+        },
+        error:(err: any) => {
+          console.log('Error ', err);
+        }
+
+      })
       this.empleados = data;
 
 if(this.empleados.length > 0){

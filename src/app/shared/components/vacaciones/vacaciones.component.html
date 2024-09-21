@@ -56,7 +56,6 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
     
 
     <div style="display: flex; justify-content: space-around; align-items: center;">
-    
     <div class="flex-auto" style="text-align: center;">
       <label for="NoNominaiInput" class="font-bold block mb-2">No. Nomina</label>
       <p-inputNumber 
@@ -89,12 +88,15 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
               [showOnFocus]="false" />
         </div>
 
-    
-        
+
         
   
 </div>
 
+<div style="text-align: center; color: rgb(98, 174, 199); padding-top: 5px;" class="DiasDisponibles" *ngIf="empleados.length>0">
+<h3>Vacaciones Disponibles: {{diasVacacionesDisponibles}} dias
+</h3>
+</div>
   
   
   <div style="margin-top: 7rem; margin-bottom: 7rem;">

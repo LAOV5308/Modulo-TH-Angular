@@ -15,3 +15,8 @@ export interface FechaVacacion {
     DiasUtilizados: number;
     Periodo: string;
   }
+
+  export interface DiasDisponibles{
+    NoNomina: number;
+    DiasDisponibles: number;
+  }

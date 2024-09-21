@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -31,12 +31,21 @@ import { BajasService } from '../../../../../backend/ConexionDB/bajas.service';
 import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
 import { Capacitacion } from '../../../../../backend/models/capacitacion.model';
 
+import { AsyncPipe } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
+
+import {jsPDF} from 'jspdf';
+import 'jspdf-autotable';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [FormsModule,MatCard, MatCardHeader, MatCardModule,
     BaseChartDirective, MeterGroupModule, ChartModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
-    DropdownModule, MatGridListModule, DividerModule
+    DropdownModule, MatGridListModule, DividerModule, AsyncPipe, MatMenuModule, MatIconModule, MatButtonModule
   ],
     providers:[EmpleadosService, DepartamentosService, DashboardService, IncidenciasService,CapacitacionService,
       { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, provideNativeDateAdapter()
@@ -1174,6 +1183,50 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
     });
     Promedio = ((Sumaantiguedad/empleados.length)/Año);
     return Promedio;
+  }
+
+
+  impresion() {
+
+    const doc = new jsPDF();
+
+    // Agregar texto en la parte superior del documento
+    doc.text('Impresion de Grafica', 10, 10);
+
+    const img1 = new Image();
+    const img2 = new Image();
+    img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+    img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+
+    img1.onload = () => {
+      // Agregar la primera imagen al PDF en la esquina superior izquierda
+      doc.addImage(img1, 'PNG', 10, 12, 30, 20); // Coordenadas x, y y dimensiones width, height
+
+      img2.onload = () => {
+        // Agregar la segunda imagen al PDF en la esquina superior derecha
+        doc.addImage(img2, 'PNG', 170, 12, 30, 30); // Coordenadas x, y y dimensiones width, height
+
+        // Obtener la fecha y hora actual
+        const now = new Date();
+        const dateStr = now.toLocaleDateString();
+        const timeStr = now.toLocaleTimeString();
+
+        // Agregar la fecha y hora en la parte inferior del documento
+        doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
+        doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+
+        // Formatear la fecha para el nombre del archivo
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+        const year = now.getFullYear();
+
+        const fileName = `archivo1_${day}_${month}_${year}.pdf`;
+
+        // Guardar el PDF con el nombre dinámico
+        doc.save(fileName);
+
+      };
+    };
   }
 
   public barChartOptions: ChartOptions = {

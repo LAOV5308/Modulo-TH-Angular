@@ -1,5 +1,3 @@
-
-
 <!--<div style="text-align: end;">
 <ngx-doc-viewer
   [url]="doc"
@@ -7,85 +5,441 @@
   style="width:50%;height:40rem; text-align: start;"
 ></ngx-doc-viewer>
 </div>-->
-
+<p-toast position="top-left" key="tl"/>
 <div class="center">
-
-  <h1> <i class="pi pi-address-book" style="font-size: 2rem"></i> Reportes <i class="pi pi-address-book" style="font-size: 2rem"></i></h1>
+  <h1> <i class="pi pi-address-book" style="font-size: 2rem"></i>Selección De Reportes <i class="pi pi-address-book" style="font-size: 2rem"></i></h1>
 </div>
+<mat-toolbar>
+  <button mat-button (click)="openEmpleados()" style="padding-left: 5px; background-color:dodgerblue; color: aliceblue;"><mat-icon>account_box</mat-icon>Empleados</button>
 
-<div class="container">
-  <div class="box1">
+<button mat-button (click)="openVacaciones()" style="background-color:rgb(17, 156, 73); color: aliceblue; margin-left: 10px;"><mat-icon>calendar_today</mat-icon>Vacaciones</button>
+
+
+<button mat-button (click)="openIncidencias()" style="background-color:rgb(156, 17, 17); color: aliceblue; margin-left: 10px;"><mat-icon>info</mat-icon>Incidencias</button>
+
+
+<button mat-button [matMenuTriggerFor]="menuCapacitaciones" style="background-color:rgb(30, 188, 255); color: aliceblue; margin-left: 10px;"><mat-icon>menu</mat-icon>Capacitaciones</button>
+<mat-menu #menuCapacitaciones="matMenu">
+  <button mat-menu-item (click)="openCapacitacion()" >Capacitaciones Por Empleado</button>
+  <button mat-menu-item (click)="openCapacitaciones()">Participantes por Capacitacion</button>
+  <!--<button mat-menu-item>Empleados Inactivos</button>-->
+</mat-menu> 
+<!--<button mat-button (click)="openCapacitaciones()" style="background-color:rgb(30, 188, 255); color: aliceblue; margin-left: 10px;"><mat-icon>menu</mat-icon>Historial</button>-->
+<!-- <button mat-button [matMenuTriggerFor]="menu" style="background-color:rgb(30, 188, 255); color: aliceblue; margin-left: 10px;"><mat-icon>menu</mat-icon>Capacitaciones</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item >Empleados Todos</button>
+  <button mat-menu-item>Empleados Activos</button>
+  <button mat-menu-item>Empleados Inactivos</button>
+</mat-menu>  -->
+      <span class="example-spacer"></span>
+</mat-toolbar>
+
+
+<!-- Impresion de Reportes de Empleados -->
+<div class="container" *ngIf="showempleados">
+  <div class="box1" >
     <!--<p>Impresion de Reportes</p>
-
-
     <button (click)="impresion()">Impresion</button>-->
 
-
-
-
-    <form  [formGroup]="Form" (ngSubmit)="imprimirEmpleados(false)">
-      <h2 style="color: rgb(11, 137, 205);">Elige El Reporte</h2>
+    <form  [formGroup]="FormEmpleados" (ngSubmit)="imprimirEmpleados(false)">
+      <h2 style="color: rgb(11, 137, 205);">Elige El Reporte De Empleados</h2>
       <mat-form-field>
         <mat-label>Opciones</mat-label>
         <mat-select formControlName="Opcion" (selectionChange)="filtro(true)">
-          
           <mat-option *ngFor="let value of opciones" [value]="value">{{ value }}</mat-option>
         </mat-select>
       </mat-form-field>
-
      <div *ngIf="opcionSeleccionada">
       <button (click)="filtro(false)" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>
      </div>
-  
-      <!--
-      (selectionChange)="imprimirEmpleados()"
-  
-  
-      <div>
-        <label for="name">Nombre:</label>
-        <input [(ngModel)]="characterData.name" name="name" />
-      </div>
-  
-      <div>
-        <label for="surname">Apellidos:</label>
-        <input [(ngModel)]="characterData.surname" name="surname" />
-      </div>
-  
-      <div>
-        <label for="description">Descripción:</label>
-        <textarea [(ngModel)]="characterData.description" name="description"></textarea>
-      </div>
-  
-      <div>
-        <label for="strength">Fuerza:</label>
-        <input [(ngModel)]="characterData.strength" name="strength" type="range" />
-      </div>
-  
-      <div>
-        <label for="magic">Magia:</label>
-        <input [(ngModel)]="characterData.magic" name="magic" type="range" />
-      </div>
-  
-      <div>
-        <label for="velocity">Velocidad:</label>
-        <input [(ngModel)]="characterData.velocity" name="velocity" type="range" />
-      </div>-->
-  
   <!--
       <button type="button" (click)="imprimirEmpleados(true)"class="bg-sky-500 text-white px-3 py-2 rounded preview-pdf-btn">Previsualizar PDF</button>
       <button type="submit" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>-->
-      
     </form>
-
   </div>
+
   <div class="box2">
-
-
     <div style="text-align: end;">
-  
       <iframe style="width:800px;height:530px;"></iframe>
     </div>
+  </div>
+</div>
 
+
+<!-- Impresion de Reportes de Vacaciones -->
+<div class="container" *ngIf="showVacaciones">
+  <div class="box1" >
+    <h2 style="color: rgb(11, 137, 205);">Reporte De Vacaciones</h2>
+    <!--<p>Impresion de Reportes</p>
+    <button (click)="impresion()">Impresion</button>-->
+
+  
+    
+    <div class="card">
+      
+      <p-table 
+      #dt
+      [globalFilterFields]="['NoNomina', 'Nombre','Apellidos', 'NombreDepartamento', 'EstadoEmpleado']"
+      [scrollable]="true" 
+    scrollHeight="300px" 
+    responsiveLayout="stack"
+          [value]="empleados" 
+          [(selection)]="selectedEmpleados" 
+          dataKey="NoNomina" 
+          [metaKeySelection]="true"
+          [tableStyle]="{'min-width': '50rem'}"
+          selectionMode="single"
+          (onRowSelect)="imprimirvacaciones()"
+          >
+
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Empleados</h5>
+
+                <label for="periodo">Selecciona un Periodo: </label>
+                <br>
+                                
+                    <p-dropdown 
+                    id="periodo"
+                    [options]="periodos" 
+                [(ngModel)]="periodoSeleccionado"
+                placeholder="Selecciona Un Periodo"
+                (onChange)="imprimirvacaciones()"
+                />
+
+
+
+                <span class="p-input-icon-left">
+                  <input 
+                  pInputText 
+                  type="text" 
+                  (input)="filterGlobal($event, 'contains')" 
+                  placeholder="Buscar..." />
+
+                </span>
+            </div>
+        </ng-template>
+
+              <ng-template pTemplate="header">
+                  <tr >
+                    <th style="width: 4rem"></th>
+                      <th>NoNomina</th>
+                      <th>Nombre</th>
+                      <th>NombrePuesto</th>
+                      <th>NombreDepartamento</th>
+                      <th>Estado</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-empleado>
+                  <tr [pSelectableRow]="empleado">
+                      <td style="background-color: rgb(234, 234, 234);">
+                          
+                          <p-tableRadioButton [value]="empleado" />
+                      </td>
+                      <td>{{empleado.NoNomina}}</td>
+                      <td>{{empleado.Nombre}} {{empleado.Apellidos}}</td>
+                      <td>{{empleado.NombrePuesto}}</td>
+                      <td>{{empleado.NombreDepartamento}}</td>
+                      <td>{{empleado.EstadoEmpleado ? 'Activo' : 'Baja'}}</td>
+                  </tr>
+              </ng-template>
+      </p-table>
+
+      <button (click)="imprimirvacaciones()" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Ver Empleados Seleccionados</button>
+  </div>
+    
+
+    <!--<form  [formGroup]="FormVacaciones" (ngSubmit)="imprimirEmpleados(false)">
+      <h2 style="color: rgb(11, 137, 205);">Elige El Reporte De Vacaciones</h2>
+      <mat-form-field>
+        <mat-label>Opciones</mat-label>
+        <mat-select formControlName="Opcion" (selectionChange)="filtro(true)">
+          <mat-option *ngFor="let value of opciones" [value]="value">{{ value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+     <div *ngIf="opcionSeleccionada">
+      <button (click)="filtro(false)" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>
+     </div>
+    </form>-->
+
+
+  </div>
+
+  <div class="box2">
+    <div style="text-align: end;">
+      <iframe style="width:800px;height:530px;"></iframe>
+    </div>
   </div>
   
 </div>
+
+
+
+
+
+
+<!-- Impresion de Reportes de Incidencias -->
+<div class="container" *ngIf="showIncidencias">
+  <div class="box1" >
+    <h2 style="color: rgb(11, 137, 205);">Reporte De Incidencias</h2>
+    <!--<p>Impresion de Reportes</p>
+    <button (click)="impresion()">Impresion</button>-->
+
+    <div class="card">
+      <p-table 
+      #dt
+      [globalFilterFields]="['NoNomina', 'Nombre','Apellidos', 'NombreDepartamento', 'EstadoEmpleado']"
+      [scrollable]="true" 
+    scrollHeight="300px" 
+    responsiveLayout="stack"
+          [value]="empleados" 
+          [(selection)]="selectedEmpleados" 
+          dataKey="NoNomina" 
+          [metaKeySelection]="true"
+          [tableStyle]="{'min-width': '50rem'}"
+          selectionMode="single"
+          (onRowSelect)="imprimirIncidencias()">
+
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Empleados</h5>
+                
+                <span class="p-input-icon-left">
+                  <input 
+                  pInputText 
+                  type="text" 
+                  (input)="filterGlobal($event, 'contains')" 
+                  placeholder="Buscar..." />
+
+                </span>
+            </div>
+        </ng-template>
+
+              <ng-template pTemplate="header">
+                  <tr >
+                    <th style="width: 4rem"></th>
+                      <th>NoNomina</th>
+                      <th>Nombre</th>
+                      <th>NombrePuesto</th>
+                      <th>NombreDepartamento</th>
+                      <th>Estado</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-empleado>
+                  <tr [pSelectableRow]="empleado">
+                      <td style="background-color: rgb(234, 234, 234);">
+                          
+                          <p-tableRadioButton [value]="empleado" />
+                      </td>
+                      <td>{{empleado.NoNomina}}</td>
+                      <td>{{empleado.Nombre}} {{empleado.Apellidos}}</td>
+                      <td>{{empleado.NombrePuesto}}</td>
+                      <td>{{empleado.NombreDepartamento}}</td>
+                      <td>{{empleado.EstadoEmpleado ? 'Activo' : 'Baja'}}</td>
+                  </tr>
+              </ng-template>
+      </p-table>
+
+      <button (click)="imprimirvacaciones()" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Ver Empleados Seleccionados</button>
+  </div>
+    
+  </div>
+
+  <div class="box2">
+    <div style="text-align: end;">
+      <iframe style="width:800px;height:530px;"></iframe>
+    </div>
+  </div>
+  
+</div>
+
+
+
+
+<!-- Impresion de Reportes de Capacitaciones -->
+<div class="container" *ngIf="showCapacitacion">
+  <div class="box1" >
+    <h2 style="color: rgb(11, 137, 205);">Reporte De Capacitaciones</h2>
+    <!--<p>Impresion de Reportes</p>
+    <button (click)="impresion()">Impresion</button>-->
+
+    <div class="card">
+      <p-table 
+      #dt
+      [globalFilterFields]="['NoNomina', 'Nombre','Apellidos', 'NombreDepartamento', 'EstadoEmpleado']"
+      [scrollable]="true" 
+    scrollHeight="300px" 
+    responsiveLayout="stack"
+          [value]="empleados" 
+          [(selection)]="selectedEmpleados" 
+          dataKey="NoNomina" 
+          [metaKeySelection]="true"
+          [tableStyle]="{'min-width': '50rem'}"
+          selectionMode="single"
+          (onRowSelect)="imprimirCapacitaciones()">
+
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Empleados</h5>
+                
+                <span class="p-input-icon-left">
+                  <input 
+                  pInputText 
+                  type="text" 
+                  (input)="filterGlobal($event, 'contains')" 
+                  placeholder="Buscar..." />
+
+                </span>
+            </div>
+        </ng-template>
+
+              <ng-template pTemplate="header">
+                  <tr >
+                    <th style="width: 4rem"></th>
+                      <th>NoNomina</th>
+                      <th>Nombre</th>
+                      <th>NombrePuesto</th>
+                      <th>NombreDepartamento</th>
+                      <th>Estado</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-empleado>
+                  <tr [pSelectableRow]="empleado">
+                      <td style="background-color: rgb(234, 234, 234);">
+                          
+                          <p-tableRadioButton [value]="empleado" />
+                      </td>
+                      <td>{{empleado.NoNomina}}</td>
+                      <td>{{empleado.Nombre}} {{empleado.Apellidos}}</td>
+                      <td>{{empleado.NombrePuesto}}</td>
+                      <td>{{empleado.NombreDepartamento}}</td>
+                      <td>{{empleado.EstadoEmpleado ? 'Activo' : 'Baja'}}</td>
+                  </tr>
+              </ng-template>
+      </p-table>
+
+      <button (click)="imprimirCapacitaciones()" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Ver Empleados Seleccionados</button>
+  </div>
+    
+  </div>
+
+  <div class="box2">
+    <div style="text-align: end;">
+      <iframe style="width:800px;height:530px;"></iframe>
+    </div>
+  </div>
+  
+</div>
+
+
+
+<!-- Impresion de Reportes de Capacitaciones -->
+<div class="container" *ngIf="showCapacitaciones">
+  <div class="box1">
+    <h2 style="color: rgb(11, 137, 205);">Elige El Reporte De Capacitaciones</h2>
+
+    <mat-form-field>
+      <mat-label>Selecciona Fecha Inicio</mat-label>
+      <input [(ngModel)]="fechainicio" matInput [matDatepicker]="picker">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-label>Selecciona Fecha Fin</mat-label>
+      <input [(ngModel)]="fechafin" matInput [matDatepicker]="picker2" >
+      <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="consultarCapacitaciones()" >Consultar</button>
+  
+    
+
+      <mat-form-field>
+        <mat-label>Capacitaciones</mat-label>
+
+        <!--<mat-select formControlName="Opcion" (selectionChange)="filtro(true)" [disabled]="false">
+          <mat-option *ngFor="let value of opciones" [value]="value">{{ value }}</mat-option>
+        </mat-select>-->
+
+        <mat-select [(ngModel)]="capacitacionSeleccionada" name="Capacitacion" (selectionChange)="imprimirConsultaProgramaciones()" [disabled]="btnSeleccionarCapacitacion">
+          @for (capacitacion of capacitacionesConsultadas; track capacitacion) {
+            <mat-option [value]="capacitacion">{{capacitacion.NombreCapacitacion}}</mat-option>
+          }
+        </mat-select>
+
+      </mat-form-field>
+
+    <!--<p>Impresion de Reportes</p>
+    <button (click)="impresion()">Impresion</button>-->
+
+    <!--<div class="card">
+      <p-table 
+      #dt
+      [globalFilterFields]="['NoNomina', 'Nombre','Apellidos', 'NombreDepartamento', 'EstadoEmpleado']"
+      [scrollable]="true" 
+    scrollHeight="300px" 
+    responsiveLayout="stack"
+          [value]="empleados" 
+          [(selection)]="selectedEmpleados" 
+          dataKey="NoNomina" 
+          [metaKeySelection]="true"
+          [tableStyle]="{'min-width': '50rem'}"
+          selectionMode="single"
+          (onRowSelect)="imprimirCapacitaciones()">
+
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Empleados</h5>
+                
+                <span class="p-input-icon-left">
+                  <input 
+                  pInputText 
+                  type="text" 
+                  (input)="filterGlobal($event, 'contains')" 
+                  placeholder="Buscar..." />
+
+                </span>
+            </div>
+        </ng-template>
+
+              <ng-template pTemplate="header">
+                  <tr >
+                    <th style="width: 4rem"></th>
+                      <th>NoNomina</th>
+                      <th>Nombre</th>
+                      <th>NombrePuesto</th>
+                      <th>NombreDepartamento</th>
+                      <th>Estado</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-empleado>
+                  <tr [pSelectableRow]="empleado">
+                      <td style="background-color: rgb(234, 234, 234);">
+                          
+                          <p-tableRadioButton [value]="empleado" />
+                      </td>
+                      <td>{{empleado.NoNomina}}</td>
+                      <td>{{empleado.Nombre}} {{empleado.Apellidos}}</td>
+                      <td>{{empleado.NombrePuesto}}</td>
+                      <td>{{empleado.NombreDepartamento}}</td>
+                      <td>{{empleado.EstadoEmpleado ? 'Activo' : 'Baja'}}</td>
+                  </tr>
+              </ng-template>
+      </p-table>
+
+      <button (click)="imprimirCapacitaciones()" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Ver Empleados Seleccionados</button>
+  </div>-->
+    
+  </div>
+
+  <div class="box2">
+    <div style="text-align: end;">
+      <iframe style="width:800px;height:530px;"></iframe>
+    </div>
+  </div>
+  
+</div>
+
