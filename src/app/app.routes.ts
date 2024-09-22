@@ -19,7 +19,7 @@ import { VacacionaddComponent } from './shared/components/vacacionadd/vacacionad
 import { ConsultarHistorialComponent } from './shared/components/consultar-historial/consultar-historial.component';
 import { UpdateCapacitacionesComponent } from './shared/components/capacitaciones/update-capacitaciones/update-capacitaciones.component';
 import { ReportesComponent } from './shared/components/Reportes/reportes.component';
-import { SystemComponent } from './shared/components/system/system.component';
+//import { SystemComponent } from './shared/components/system/system.component';
 
 export const routes: Routes = [
     
