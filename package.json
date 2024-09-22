@@ -29,6 +29,7 @@
     "@fullcalendar/core": "^6.1.14",
     "@fullcalendar/daygrid": "^6.1.14",
     "@fullcalendar/interaction": "^6.1.14",
+    "@vercel/speed-insights": "^1.0.12",
     "angular-calendar": "^0.31.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",

@@ -9,8 +9,8 @@ import { catchError } from 'rxjs/operators';
 })
 export class PuestosService {
 
-  //private apiUrl = 'http://localhost:3000/puestos';
-  private apiUrl ='https://all-keys-sip.loca.lt/puestos'
+  private apiUrl = 'http://localhost:3000/puestos';
+  //private apiUrl ='https://all-keys-sip.loca.lt/puestos'
 
   constructor(private http: HttpClient) { }
 

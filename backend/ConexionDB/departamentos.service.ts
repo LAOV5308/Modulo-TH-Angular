@@ -10,8 +10,8 @@ import { catchError } from 'rxjs/operators';
 })
 export class DepartamentosService {
 
-  //private apiUrl = 'http://localhost:3000/departamentos';
-  private apiUrl ='https://all-keys-sip.loca.lt/departamentos'
+  private apiUrl = 'http://localhost:3000/departamentos';
+  //private apiUrl ='https://all-keys-sip.loca.lt/departamentos'
   private inputDepartamentos: inputDepartamento[] = [];
 
   constructor(private http: HttpClient) { }

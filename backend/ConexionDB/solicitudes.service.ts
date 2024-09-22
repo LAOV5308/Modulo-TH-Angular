@@ -10,8 +10,8 @@ import { SolicitudAceptada, SolicitudProceso, SolicitudRechazada } from '../mode
   providedIn: 'root'
 })
 export class SolicitudesService {
-  //private apiUrl = 'http://localhost:3000/solicitudes';
-  private apiUrl ='https://all-keys-sip.loca.lt/solicitudes'
+  private apiUrl = 'http://localhost:3000/solicitudes';
+  //private apiUrl ='https://all-keys-sip.loca.lt/solicitudes'
 
   constructor(private http: HttpClient) {
     

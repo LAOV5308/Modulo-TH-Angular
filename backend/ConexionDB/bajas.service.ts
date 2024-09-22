@@ -10,8 +10,8 @@ import { IncidenciaB } from '../models/incidencia.model';
 export class BajasService {
 
   
-  //private apiUrl = 'http://localhost:3000/bajas';
-  private apiUrl ='https://all-keys-sip.loca.lt/bajas'
+  private apiUrl = 'http://localhost:3000/bajas';
+  //private apiUrl ='https://all-keys-sip.loca.lt/bajas'
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/capacitaciones';
 
   constructor(private http: HttpClient) { }

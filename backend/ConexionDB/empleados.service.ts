@@ -13,8 +13,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class EmpleadosService {
-  //private apiUrl = 'http://localhost:3000/empleados';
-  private apiUrl ='https://all-keys-sip.loca.lt/empleados'
+  private apiUrl = 'http://localhost:3000/empleados';
+  //private apiUrl ='https://all-keys-sip.loca.lt/empleados'
   
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/empleados';
 
