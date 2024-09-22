@@ -54,7 +54,7 @@ import { NgIf } from '@angular/common';
 export class SystemComponent implements OnInit{
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
-  @ViewChild('drawer') drawer!: MatDrawer;
+ // @ViewChild('drawer') drawer!: MatDrawer;
 
     closeCallback(e: any): void {
         this.sidebarRef.close(e);
@@ -83,14 +83,14 @@ export class SystemComponent implements OnInit{
     this.nombre = this.authService.getNombreUser();
   }
 
-  @HostListener('document:click', ['$event'])
+  /*@HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const clickedInsideHeader = (event.target as HTMLElement).closest('mat-toolbar') !== null;
     const clickedInsideDrawer = (event.target as HTMLElement).closest('mat-drawer') !== null;
     if (!clickedInsideHeader && !clickedInsideDrawer && this.drawer.opened) {
       this.drawer.close();
     }
-  }
+  }*/
 
   
 
