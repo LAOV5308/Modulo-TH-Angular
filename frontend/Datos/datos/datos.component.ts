@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Empleado } from '../../../backend/models/empleado.model';
+
+//Modulos de Importaciones
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
-import { EmpleadosService } from '../../../backend/ConexionDB/empleados.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,11 +11,18 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { CoreService } from '../../../src/app/Core/core.service';
-import { UpdateEmpleadoComponent } from '../../../src/app/shared/components/empleados/update-empleado/update-empleado.component';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
-
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
+
+//Interfaces
+import { Empleado } from '../../../backend/models/empleado.model';
+
+
+//Servicios
+import { EmpleadosService } from '../../../backend/ConexionDB/empleados.service';
+
+
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddBajaComponent } from '../../../src/app/shared/components/Bajas/add-baja/add-baja.component';
@@ -46,7 +53,6 @@ import {MatCardModule} from '@angular/material/card';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { HeaderComponent } from '../../../src/app/shared/components/header/header.component';
 
 
 export const MY_DATE_FORMATS = {
@@ -69,7 +75,6 @@ export const MY_DATE_FORMATS = {
     HttpClientModule,
     NgFor, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
-    HeaderComponent,
     MatIconModule,
     //UpdateEmpleadoComponent,
     MatPaginator,
@@ -80,7 +85,8 @@ export const MY_DATE_FORMATS = {
     MessageRecuperarComponent,
     MensajeGuardarEmpleadoComponent,
     TooltipModule,
-    SplitButtonModule
+    SplitButtonModule,
+    CommonModule
   ],
   providers: [EmpleadosService, CoreService,DepartamentosService, PuestosService, MessageService,
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }  ,
@@ -559,6 +565,16 @@ export class DatosComponent implements OnInit, AfterViewInit{
     
 
     if (this.employeeForm.valid) {
+
+      /**<h1 mat-dialog-title>Confirmar Acción</h1>
+<div mat-dialog-content>¿Estás seguro de que quieres Guardar el Empleado?</div>
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-button [mat-dialog-close]="true" class="buttonsi">Sí</button>
+  <button mat-button [mat-dialog-close]="false" class="buttonno">No</button>
+</div>
+ */
+
+
       const dialogRef = this._dialog.open(MensajeGuardarEmpleadoComponent, {
         width: '350px'
       })

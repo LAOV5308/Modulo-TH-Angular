@@ -24,7 +24,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   imports: [HttpClientModule,
     NgFor, DatePipe, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
-    MatPaginator, MatFormFieldModule, NgIf
+    MatPaginator, MatFormFieldModule, NgIf,
+    AddDepartamentoComponent,
+    UpdateDepartamentoComponent
   ],
   providers: [DepartamentosService, CoreService],
   templateUrl: './datos-departamentos.component.html',
