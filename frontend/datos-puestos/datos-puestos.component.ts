@@ -23,7 +23,7 @@ import { UpdatePuestoComponent } from '../../src/app/shared/components/Puestos/u
   imports: [HttpClientModule,
     NgFor, DatePipe, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
-    MatPaginator, MatFormFieldModule],
+    MatPaginator, MatFormFieldModule, UpdatePuestoComponent, AddPuestoComponent],
     providers: [PuestosService, CoreService],
   templateUrl: './datos-puestos.component.html',
   styleUrl: './datos-puestos.component.css'

@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { MatDialog } from '@angular/material/dialog';
-import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
 import { DatosPuestosComponent } from '../../../../../frontend/datos-puestos/datos-puestos.component';
 
 

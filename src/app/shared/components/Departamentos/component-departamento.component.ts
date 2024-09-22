@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
-import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { DepartamentosService } from '../../../../../backend/ConexionDB/departamentos.service';
-import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
 
 import { AddDepartamentoComponent } from './add-departamento/add-departamento.component';
 
@@ -17,11 +14,10 @@ import { AddDepartamentoComponent } from './add-departamento/add-departamento.co
 @Component({
   selector: 'app-component-departamento',
   standalone: true,
-  imports: [HeaderComponent,
+  imports: [
     MatButtonModule,
     MatCardModule,
-    DatosComponent,
-    DatosDepartamentosComponent
+    AddDepartamentoComponent
   ],
   providers: [DepartamentosService],
   templateUrl: './component-departamento.component.html',
