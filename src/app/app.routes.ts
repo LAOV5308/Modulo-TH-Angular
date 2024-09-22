@@ -19,13 +19,11 @@ import { VacacionaddComponent } from './shared/components/vacacionadd/vacacionad
 import { ConsultarHistorialComponent } from './shared/components/consultar-historial/consultar-historial.component';
 import { UpdateCapacitacionesComponent } from './shared/components/capacitaciones/update-capacitaciones/update-capacitaciones.component';
 import { ReportesComponent } from './shared/components/Reportes/reportes.component';
-
-
+import { SystemComponent } from './shared/components/system/system.component';
 
 export const routes: Routes = [
-    { path: 'system',
-        loadComponent: () => import('./shared/components/system/system.component').then(c => c.SystemComponent),
-        canActivate: [authGuard],
+    
+    /*{ path: 'system', component: SystemComponent, canActivate: [authGuard],
         children: [
             { path: 'empleados', component: EmpleadosComponent },
             { path: 'dashboard', component: DashboardComponent },
@@ -46,13 +44,12 @@ export const routes: Routes = [
             { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent },
             { path: 'reportes', component: ReportesComponent },
         ]
-    },
+    },*/
     { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' },
 ];
-
 
 
 /*
