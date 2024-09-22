@@ -43,11 +43,11 @@ export const routes: Routes = [
             { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent },
             { path: 'reportes', component: ReportesComponent },
         ]
-    },
+    },*/
     { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: '**', redirectTo: '/login' },*/
+    { path: '**', redirectTo: '/login' },
 ];
 
 
