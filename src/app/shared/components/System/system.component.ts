@@ -1,4 +1,4 @@
-import { Component, OnInit , HostListener,  Output, EventEmitter, ViewChild   } from '@angular/core';
+import { Component, OnInit , HostListener, ViewChild   } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 
@@ -54,14 +54,15 @@ import { NgIf } from '@angular/common';
 export class SystemComponent implements OnInit{
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+  @ViewChild('drawer') drawer!: MatDrawer;
 
     closeCallback(e: any): void {
         this.sidebarRef.close(e);
     }
 
-  @ViewChild('drawer') drawer!: MatDrawer;
 
 
+  
   nombre: string | null = '';
   sidebarVisible1: boolean = true;
   

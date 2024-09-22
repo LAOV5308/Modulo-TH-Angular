@@ -21,8 +21,37 @@ import { UpdateCapacitacionesComponent } from './shared/components/capacitacione
 import { ReportesComponent } from './shared/components/Reportes/reportes.component';
 import { SystemComponent } from './shared/components/system/system.component';
 
+export const routes: Routes = [
+    { path: 'system', component: SystemComponent, canActivate: [authGuard],
+        children: [
+            { path: 'empleados', component: EmpleadosComponent },
+            { path: 'dashboard', component: DashboardComponent },
+            { path: 'incidencias', component: IncidenciasComponent },
+            { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent },
+            { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent },
+            { path: 'consultarcapacitaciones', component: ConsultarCapacitacionesComponent },
+            { path: 'puestos', component: PuestoComponentComponent },
+            { path: 'departamentos', component: ComponentDepartamentoComponent },
+            { path: 'addEmpleado', component: AddEmpleadoComponent },
+            { path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent },
+            { path: 'consultarEmpleado/:NoNomina', component: ConsultarEmpleadoComponent },
+            { path: 'addreclutamiento', component: AddReclutamientoComponent },
+            { path: 'solicitudes', component: DatosReclutamientoComponent },
+            { path: 'consultarvacaciones', component: VacacionesComponent },
+            { path: 'agregarvacacion', component: VacacionaddComponent },
+            { path: 'historial', component: ConsultarHistorialComponent },
+            { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent },
+            { path: 'reportes', component: ReportesComponent },
+        ]
+    },
+    { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
+    { path: 'login', component: LoginComponent },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' },
+];
 
 
+/*
 export const routes: Routes = [
     { path: 'system',
         loadComponent:()=> import('./shared/components/system/system.component').then((c) => c.SystemComponent),
@@ -63,7 +92,8 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' },
-    
+    ];
+
 
 
     /*{path: 'login', component: LoginComponent},
@@ -90,4 +120,3 @@ export const routes: Routes = [
     */
 
 
-];
