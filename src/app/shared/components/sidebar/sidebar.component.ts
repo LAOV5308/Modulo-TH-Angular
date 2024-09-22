@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { HeaderComponent } from '../header/header.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
@@ -20,7 +19,7 @@ import { Sidebar } from 'primeng/sidebar';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [MatIconModule, HeaderComponent, MatMenuModule, MatButtonModule, NgIf, RouterModule, MatSidenavModule,
+  imports: [MatIconModule, MatMenuModule, MatButtonModule, NgIf, RouterModule, MatSidenavModule,
     SidebarModule, ButtonModule, RippleModule, AvatarModule, StyleClassModule
   ],
   providers:[AuthService],

@@ -14,7 +14,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
-import { HeaderComponent } from '../../header/header.component';
 import { CoreService } from '../../../../Core/core.service';
 import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
 import { Departamento } from '../../../../../../backend/models/departamento.model';
@@ -66,7 +65,6 @@ export const MY_DATE_FORMATS = {
     MatButtonModule,
     MatExpansionModule,
     MatCardModule,
-    HeaderComponent,
     CommonModule,
     HttpClientModule,
     MatIcon,

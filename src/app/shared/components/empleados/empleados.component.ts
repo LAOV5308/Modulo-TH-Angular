@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
 import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -11,7 +10,7 @@ import { DatosDepartamentosComponent } from '../../../../../frontend/datos-depar
 @Component({
   selector: 'app-empleados',
   standalone: true,
-  imports: [HeaderComponent,
+  imports: [
     DatosComponent,
     MatButtonModule,
     MatCardModule
