@@ -2,7 +2,6 @@ import { Component, OnInit , HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import { DatosComponent } from '../../frontend/Datos/datos/datos.component';
-import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 import { LoginComponent } from './shared/components/Login/login.component';
 import { NgIf } from '@angular/common';
@@ -15,7 +14,6 @@ import { FilterMatchMode,PrimeNGConfig } from 'primeng/api';
     MatButtonModule,
     LoginComponent,
     DatosComponent,
-    SidebarComponent,
     HttpClientModule,
     NgIf
   ],

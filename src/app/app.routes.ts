@@ -21,6 +21,7 @@ import { UpdateCapacitacionesComponent } from './shared/components/capacitacione
 import { ReportesComponent } from './shared/components/Reportes/reportes.component';
 import { SystemComponent } from './shared/components/system/system.component';
 
+
 export const routes: Routes = [
     
     { path: 'system', component: SystemComponent, canActivate: [authGuard],

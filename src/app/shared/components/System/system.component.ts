@@ -2,10 +2,8 @@ import { Component, OnInit  } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 
-import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 
 import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,9 +23,7 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [MatButtonModule,
     DatosComponent,
-    SidebarComponent,
     RouterOutlet,
-    HttpClientModule,
     MatToolbarModule,
     MatIcon,
     ConfirmDialogComponent,
