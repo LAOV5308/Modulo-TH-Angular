@@ -23,6 +23,9 @@ import { SystemComponent } from './shared/components/system/system.component';
 
 
 export const routes: Routes = [
+
+    { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
+    
     
     { path: 'system', component: SystemComponent, canActivate: [authGuard],
         children: [
@@ -46,10 +49,11 @@ export const routes: Routes = [
             { path: 'reportes', component: ReportesComponent },
         ]
     },
-    { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
+    
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' },
+    
 ];
 
 
