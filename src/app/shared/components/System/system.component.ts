@@ -61,22 +61,15 @@ export class SystemComponent implements OnInit{
     }*/
 
 
-
-  
   nombre: string | null = '';
-  sidebarVisible1: boolean = true;
+  //sidebarVisible1: boolean = true;
   
-
-  
-
     sidebarVisible: boolean = false;
 
     
-
   constructor(public dialog: MatDialog,
     private router: Router,
     private authService: AuthService){
-
   }
 
   ngOnInit(): void {
