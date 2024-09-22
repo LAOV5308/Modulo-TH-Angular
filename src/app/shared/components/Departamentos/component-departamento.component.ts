@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DepartamentosService } from '../../../../../backend/ConexionDB/departamentos.service';
 
 import { AddDepartamentoComponent } from './add-departamento/add-departamento.component';
+import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
 
 
 
@@ -17,7 +18,8 @@ import { AddDepartamentoComponent } from './add-departamento/add-departamento.co
   imports: [
     MatButtonModule,
     MatCardModule,
-    AddDepartamentoComponent
+    AddDepartamentoComponent,
+    DatosDepartamentosComponent
   ],
   providers: [DepartamentosService],
   templateUrl: './component-departamento.component.html',

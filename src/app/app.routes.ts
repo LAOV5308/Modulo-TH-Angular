@@ -22,6 +22,7 @@ import { ReportesComponent } from './shared/components/Reportes/reportes.compone
 import { SystemComponent } from './shared/components/system/system.component';
 
 
+
 export const routes: Routes = [
     { path: 'system',
         loadComponent:()=> import('./shared/components/system/system.component').then((c) => c.SystemComponent),

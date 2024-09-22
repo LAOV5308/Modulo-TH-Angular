@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';  // Asegúrate de impor
 
 import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
 import { DataService } from '../../../../../backend/ConexionDB/data.service';
-import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { LoginComponent } from '../Login/login.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -33,7 +32,6 @@ import { NgIf } from '@angular/common';
   selector: 'app-system',
   standalone: true,
   imports: [MatButtonModule,
-    HeaderComponent,
     DatosComponent,
     SidebarComponent,
     RouterOutlet,
