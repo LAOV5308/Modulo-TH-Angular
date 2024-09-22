@@ -53,12 +53,12 @@ import { NgIf } from '@angular/common';
 })
 export class SystemComponent implements OnInit{
 
-  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+  //@ViewChild('sidebarRef') sidebarRef!: Sidebar;
  // @ViewChild('drawer') drawer!: MatDrawer;
 
-    closeCallback(e: any): void {
+   /* closeCallback(e: any): void {
         this.sidebarRef.close(e);
-    }
+    }*/
 
 
 
