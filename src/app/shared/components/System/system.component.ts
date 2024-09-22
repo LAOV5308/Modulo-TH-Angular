@@ -52,16 +52,21 @@ import { NgIf } from '@angular/common';
   styleUrl: './system.component.css'
 })
 export class SystemComponent implements OnInit{
-  @ViewChild('drawer') drawer!: MatDrawer;
-  nombre: string | null = '';
-  sidebarVisible1: boolean = true;
-  @Output() sidebarToggle = new EventEmitter<void>();
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
 
     closeCallback(e: any): void {
         this.sidebarRef.close(e);
     }
+
+  @ViewChild('drawer') drawer!: MatDrawer;
+
+
+  nombre: string | null = '';
+  sidebarVisible1: boolean = true;
+  
+
+  
 
     sidebarVisible: boolean = false;
 
