@@ -23,6 +23,7 @@ import { SystemComponent } from './shared/components/system/system.component';
 
 export const routes: Routes = [
     { path: 'system', component: SystemComponent, canActivate: [authGuard],
+        /*
         children: [
             { path: 'empleados', component: EmpleadosComponent },
             { path: 'dashboard', component: DashboardComponent },
@@ -42,7 +43,7 @@ export const routes: Routes = [
             { path: 'historial', component: ConsultarHistorialComponent },
             { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent },
             { path: 'reportes', component: ReportesComponent },
-        ]
+        ]*/
     },
     { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
     { path: 'login', component: LoginComponent },
