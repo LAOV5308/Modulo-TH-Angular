@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 
 
-import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,7 +21,6 @@ import { NgIf } from '@angular/common';
   selector: 'app-system',
   standalone: true,
   imports: [MatButtonModule,
-    DatosComponent,
     RouterOutlet,
     MatToolbarModule,
     MatIcon,

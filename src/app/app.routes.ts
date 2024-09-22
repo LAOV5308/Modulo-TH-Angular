@@ -19,7 +19,7 @@ import { VacacionaddComponent } from './shared/components/vacacionadd/vacacionad
 import { ConsultarHistorialComponent } from './shared/components/consultar-historial/consultar-historial.component';
 import { UpdateCapacitacionesComponent } from './shared/components/capacitaciones/update-capacitaciones/update-capacitaciones.component';
 import { ReportesComponent } from './shared/components/Reportes/reportes.component';
-import { SystemComponent } from './shared/components/system/system.component';
+import { System1Component } from './shared/components/system1/system1.component';
 
 
 export const routes: Routes = [
@@ -27,7 +27,7 @@ export const routes: Routes = [
     { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
     
     
-    { path: 'system', component: SystemComponent, canActivate: [authGuard],
+    { path: 'system', component: System1Component, canActivate: [authGuard],
         children: [
             { path: 'empleados', component: EmpleadosComponent },
             { path: 'dashboard', component: DashboardComponent },
@@ -49,7 +49,7 @@ export const routes: Routes = [
             { path: 'reportes', component: ReportesComponent },
         ]
     },
-    
+
     { path: 'login', component: LoginComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login' },

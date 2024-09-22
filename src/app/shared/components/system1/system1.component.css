@@ -1,0 +1,100 @@
+/* styles.css o styles.scss */
+.custom-sidebar {
+    background-color: #36b3a0 !important;
+  }
+  
+  .text-custom-color {
+    color: #36b3a0;
+  }
+  
+  /*.custom-jumbotron {
+      margin: 20px;
+      padding: 20px;
+      background-color: #ffffff; 
+      box-shadow: 0 6px 10px rgba(0,0,0,0.1); 
+    }
+    
+    mat-card-title {
+      color: #333333; 
+    }
+    
+    mat-card-subtitle {
+      color: #666666; 
+    }
+    
+    mat-card-content p {
+      color: #444444; 
+    }
+    
+  
+  
+  mat-toolbar {
+      background-color: #36b3a0; 
+      color: white;
+    }
+    
+    .spacer {
+      flex: 1 1 auto;
+    }*/
+    
+  /* header.component.css */
+  .hamburger-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    margin-right: 5px;
+  }
+  
+  .hamburger-button:focus {
+    outline: none;
+  }
+  
+  .hamburger-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .header {
+    background-color: #36b3a0;
+    color: white;
+    padding: 10px 0;
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .logo img {
+    height: 40px;
+  }
+  
+  .search-bar {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    max-width: 300px;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .user-info span {
+    margin-right: 10px;
+  }
+  
