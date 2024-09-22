@@ -9,7 +9,8 @@ import { catchError } from 'rxjs/operators';
 })
 export class IncidenciasService {
 
-  private apiUrl = 'http://localhost:3000/incidencias';
+  //private apiUrl = 'http://localhost:3000/incidencias';
+  private apiUrl ='https://all-keys-sip.loca.lt/incidencias'
   private incidencias: Incidencia[] = [];
 
   constructor(private http: HttpClient) { }

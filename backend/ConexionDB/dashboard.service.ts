@@ -9,7 +9,8 @@ import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesP
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:3000/dashboard';
+  //private apiUrl = 'http://localhost:3000/dashboard';
+  private apiUrl ='https://all-keys-sip.loca.lt/dashboard'
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/dashboard'
 
 constructor(private http: HttpClient) { }
