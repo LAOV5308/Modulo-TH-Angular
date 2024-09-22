@@ -1,31 +1,23 @@
-import { Component, OnInit , HostListener, ViewChild   } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 
 import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 
 import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
-import { DataService } from '../../../../../backend/ConexionDB/data.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-import { LoginComponent } from '../Login/login.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
-import { MatDrawer, MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
-import { BooleanInput } from '@angular/cdk/coercion';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
 import { AuthService } from '../../../auth/ServicesAuth/auth.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
-
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
-import { StyleClassModule } from 'primeng/styleclass';
-import { Sidebar } from 'primeng/sidebar';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -38,12 +30,10 @@ import { NgIf } from '@angular/common';
     HttpClientModule,
     MatToolbarModule,
     MatIcon,
-    MatDrawer,
-    MatSidenavModule,
     ConfirmDialogComponent,
     MatCheckboxModule,
     FormsModule,
-    SidebarModule, ButtonModule, RippleModule, AvatarModule, StyleClassModule,
+    SidebarModule, ButtonModule, RippleModule, AvatarModule,
     NgIf, RouterModule
 
   ],
@@ -68,7 +58,6 @@ export class SystemComponent implements OnInit{
 
     
   constructor(public dialog: MatDialog,
-    private router: Router,
     private authService: AuthService){
   }
 
