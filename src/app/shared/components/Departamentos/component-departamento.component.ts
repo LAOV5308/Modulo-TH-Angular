@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { DepartamentosService } from '../../../../../backend/ConexionDB/departamentos.service';
+import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
 
 import { AddDepartamentoComponent } from './add-departamento/add-departamento.component';
 import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';

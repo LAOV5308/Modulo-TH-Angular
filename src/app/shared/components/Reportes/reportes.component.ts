@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {jsPDF} from 'jspdf';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {NgxDocViewerModule} from 'ngx-doc-viewer';
-import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../backend/services/empleados.service';
 import { Empleado } from '../../../../../backend/models/empleado.model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -17,7 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import { DatosComponent } from '../../../../../frontend/Datos/datos/datos.component';
+import { DatosComponent } from '../../../../../frontend/Datos/datos.component';
 
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
@@ -26,15 +26,15 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { Table } from 'primeng/table';
-import { VacacionesService } from '../../../../../backend/ConexionDB/vacaciones.service';
+import { VacacionesService } from '../../../../../backend/services/vacaciones.service';
 import { FechaVacacion, Vacacion } from '../../../../../backend/models/vacacion.model';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
-import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencias.service';
+import { IncidenciasService } from '../../../../../backend/services/incidencias.service';
 import { Incidencia } from '../../../../../backend/models/incidencia.model';
-import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
+import { CapacitacionService } from '../../../../../backend/services/capacitacion.service';
 import { CapacitacionesEmpleado, CapacitacionesSuscripciones, CapacitacionProgramada } from '../../../../../backend/models/capacitacion.model';
 
 

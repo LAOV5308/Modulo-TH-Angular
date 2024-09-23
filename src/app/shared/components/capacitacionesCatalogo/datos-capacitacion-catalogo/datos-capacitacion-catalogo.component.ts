@@ -17,13 +17,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { CoreService } from '../../../../Core/core.service';
-import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
-import { IncidenciasService } from '../../../../../../backend/ConexionDB/incidencias.service';
+import { EmpleadosService } from '../../../../../../backend/services/empleados.service';
+import { IncidenciasService } from '../../../../../../backend/services/incidencias.service';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
 import { MessageConfirmCheckBoxComponent } from '../../incidencias/add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
-import { CapacitacionService } from '../../../../../../backend/ConexionDB/capacitacion.service';
+import { CapacitacionService } from '../../../../../../backend/services/capacitacion.service';
 
 import { MessageDeleteComponent } from '../../Messages/message-delete/message-delete.component';
 import { UpdateCapacitacionCatalogoComponent } from '../update-capacitacion-catalogo/update-capacitacion-catalogo.component';

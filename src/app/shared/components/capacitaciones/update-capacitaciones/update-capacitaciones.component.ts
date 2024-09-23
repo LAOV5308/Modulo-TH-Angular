@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
-import { CapacitacionService } from '../../../../../../backend/ConexionDB/capacitacion.service';
+import { CapacitacionService } from '../../../../../../backend/services/capacitacion.service';
 import { CardModule } from 'primeng/card';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';

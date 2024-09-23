@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} f
 import { CalendarModule } from 'primeng/calendar';
 import { PickListModule } from 'primeng/picklist';
 import { Empleado } from '../../../../../backend/models/empleado.model';
-import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../backend/services/empleados.service';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MatOption } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import 'moment/locale/es';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
+import { CapacitacionService } from '../../../../../backend/services/capacitacion.service';
 import { NgFor, NgForOf, NgIf } from '@angular/common';
 import { CapacitacionProgramada } from '../../../../../backend/models/capacitacion.model';
 import { MatCardModule } from '@angular/material/card';

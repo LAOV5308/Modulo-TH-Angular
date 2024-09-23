@@ -13,13 +13,13 @@ import {Chart, Colors } from 'chart.js';
 import { ChartModule } from 'primeng/chart';
 import { BaseChartDirective } from 'ng2-charts';
 import { MeterGroupModule } from 'primeng/metergroup';
-import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../backend/services/empleados.service';
 import { Empleado } from '../../../../../backend/models/empleado.model';
 import { Departamento } from '../../../../../backend/models/departamento.model';
-import { DepartamentosService } from '../../../../../backend/ConexionDB/departamentos.service';
-import { DashboardService } from '../../../../../backend/ConexionDB/dashboard.service';
+import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
+import { DashboardService } from '../../../../../backend/services/dashboard.service';
 import { D_Bajas, D_CambiosPorDepartamento, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo, D_IncidenciasPorDepartamento, D_RangoAntiguedad, D_SalidasEdades, D_SumaIncidenciasPorDepartamento } from '../../../../../backend/models/dashboard.model';
-import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencias.service';
+import { IncidenciasService } from '../../../../../backend/services/incidencias.service';
 import { Incidencia } from '../../../../../backend/models/incidencia.model';
 
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -27,8 +27,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { DividerModule } from 'primeng/divider';
 import { Baja } from '../../../../../backend/models/baja.model';
-import { BajasService } from '../../../../../backend/ConexionDB/bajas.service';
-import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
+import { BajasService } from '../../../../../backend/services/bajas.service';
+import { CapacitacionService } from '../../../../../backend/services/capacitacion.service';
 import { Capacitacion } from '../../../../../backend/models/capacitacion.model';
 
 import { AsyncPipe } from '@angular/common';

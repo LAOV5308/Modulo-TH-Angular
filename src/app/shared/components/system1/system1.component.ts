@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -7,17 +7,20 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
-import { SidebarModule } from 'primeng/sidebar';
+import { Sidebar, SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
-import { AuthService } from '../../../auth/ServicesAuth/auth.service';
+import { AuthService } from '../../../../../backend/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
+
+import { StyleClassModule } from 'primeng/styleclass';
+
 
 @Component({
   standalone:true,
   selector: 'app-system1',
-  imports:[MatButtonModule,CommonModule,
+  imports:[MatButtonModule,CommonModule,StyleClassModule,
     RouterOutlet,
     MatIcon,MatToolbarModule,
     ConfirmDialogComponent,
@@ -32,8 +35,14 @@ import { MatDialog } from '@angular/material/dialog';
 export class System1Component implements OnInit {
 
   nombre: string | null = '';
-  //sidebarVisible1: boolean = true;
-  
+  sidebarVisible1: boolean = true;
+
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+
+    closeCallback(e: any): void {
+        this.sidebarRef.close(e);
+    }
+
     sidebarVisible: boolean = false;
 
   constructor(public dialog: MatDialog,
@@ -41,6 +50,11 @@ export class System1Component implements OnInit {
 
   ngOnInit() {
     this.nombre = this.authService.getNombreUser();
+  }
+
+
+  close(){
+this.sidebarVisible = !this.sidebarVisible;
   }
 
   logout(){

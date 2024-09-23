@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../backend/services/empleados.service';
 import { Empleado } from '../../../../../backend/models/empleado.model';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';

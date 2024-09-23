@@ -11,7 +11,7 @@
 }
 
 .login-background {
-  background-image: url('vacas.jpg');
+  background-image: url('../../../../assets/vacas.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;

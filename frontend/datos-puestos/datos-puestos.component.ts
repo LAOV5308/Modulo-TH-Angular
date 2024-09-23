@@ -12,7 +12,7 @@ import { CoreService } from '../../src/app/Core/core.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { PuestosService } from '../../backend/ConexionDB/puestos.service';
+import { PuestosService } from '../../backend/services/puestos.service';
 import { AddPuestoComponent } from '../../src/app/shared/components/Puestos/add-puesto/add-puesto.component';
 import { UpdatePuestoComponent } from '../../src/app/shared/components/Puestos/update-puesto/update-puesto.component';
 

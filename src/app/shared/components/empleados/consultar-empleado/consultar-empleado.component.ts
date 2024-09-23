@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../../backend/services/empleados.service';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación

@@ -10,36 +10,36 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { CoreService } from '../../../src/app/Core/core.service';
+import { CoreService } from '../../src/app/Core/core.service';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
 
 //Interfaces
-import { Empleado } from '../../../backend/models/empleado.model';
+import { Empleado } from '../../backend/models/empleado.model';
 
 
 //Servicios
-import { EmpleadosService } from '../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../backend/services/empleados.service';
 
 
 
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AddBajaComponent } from '../../../src/app/shared/components/Bajas/add-baja/add-baja.component';
+import { AddBajaComponent } from '../../src/app/shared/components/Bajas/add-baja/add-baja.component';
 //import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
 //import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
 import {MatTabsModule} from '@angular/material/tabs';
-import { MessageRecuperarComponent } from '../../../src/app/shared/components/Messages/message-recuperar/message-recuperar.component';
+import { MessageRecuperarComponent } from '../../src/app/shared/components/Messages/message-recuperar/message-recuperar.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Departamento } from '../../../backend/models/departamento.model';
-import { Puesto } from '../../../backend/models/puesto.model';
-import { estados, estados1, estadosConCiudades } from '../../../src/app/shared/recursos/estados';
+import { Departamento } from '../../backend/models/departamento.model';
+import { Puesto } from '../../backend/models/puesto.model';
+import { estados, estados1, estadosConCiudades } from '../../src/app/shared/recursos/estados';
 import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
-import { PuestosService } from '../../../backend/ConexionDB/puestos.service';
+import { PuestosService } from '../../backend/services/puestos.service';
 import { MessageService,MenuItem } from 'primeng/api';
-import { MensajeGuardarEmpleadoComponent } from '../../../src/app/shared/components/empleados/messages/mensaje-guardar-empleado/mensaje-guardar-empleado.component';
-import { DepartamentosService } from '../../../backend/ConexionDB/departamentos.service';
+import { MensajeGuardarEmpleadoComponent } from '../../src/app/shared/components/empleados/messages/mensaje-guardar-empleado/mensaje-guardar-empleado.component';
+import { DepartamentosService } from '../../backend/services/departamentos.service';
 import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { MatDialogModule } from '@angular/material/dialog';

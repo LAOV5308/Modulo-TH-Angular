@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
 import { CoreService } from '../../../../Core/core.service';
-import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../../backend/services/empleados.service';
 import { Departamento } from '../../../../../../backend/models/departamento.model';
 import { Puesto } from '../../../../../../backend/models/puesto.model';
 import { CommonModule } from '@angular/common';
@@ -27,12 +27,12 @@ import { MatIcon } from '@angular/material/icon';
 
 
 import 'moment/locale/fr';
-import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
+import { DepartamentosService } from '../../../../../../backend/services/departamentos.service';
 
-import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
+import { PuestosService } from '../../../../../../backend/services/puestos.service';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { Router } from '@angular/router';
-import { IncidenciasService } from '../../../../../../backend/ConexionDB/incidencias.service';
+import { IncidenciasService } from '../../../../../../backend/services/incidencias.service';
 import { MessageConfirmCheckBoxComponent } from '../add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
 
 

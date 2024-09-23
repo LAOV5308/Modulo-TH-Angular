@@ -4,13 +4,11 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NgIf, NgFor } from '@angular/common';
-import { Empleado } from '../../../../../backend/models/empleado.model';
 
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
-import { window } from 'rxjs';
-import { DataService } from '../../../../../backend/ConexionDB/data.service';
-import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
-import { AuthService } from '../../../auth/ServicesAuth/auth.service';
+
+import { EmpleadosService } from '../../../../../backend/services/empleados.service';
+import { AuthService } from '../../../../../backend/services/auth.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +24,7 @@ import { RippleModule } from 'primeng/ripple';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CommonModule } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-login',
@@ -43,7 +42,8 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     PasswordModule,
     InputTextModule,
-    ToastModule, ButtonModule, RippleModule, IconFieldModule, InputIconModule, CommonModule
+    ToastModule, ButtonModule, RippleModule, IconFieldModule, InputIconModule, CommonModule,
+    TooltipModule
   ],
   providers:[EmpleadosService, AuthService, MessageService]
   ,

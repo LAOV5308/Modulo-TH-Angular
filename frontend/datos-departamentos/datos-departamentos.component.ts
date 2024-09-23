@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { Departamento } from '../../backend/models/departamento.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
-import { DepartamentosService } from '../../backend/ConexionDB/departamentos.service';
+import { DepartamentosService } from '../../backend/services/departamentos.service';
 import { NgFor, DatePipe, NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';

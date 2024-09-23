@@ -5,10 +5,10 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
-import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../backend/services/empleados.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { BajasService } from '../../../../../backend/ConexionDB/bajas.service';
+import { BajasService } from '../../../../../backend/services/bajas.service';
 import { Baja } from '../../../../../backend/models/baja.model';
 import { Empleado } from '../../../../../backend/models/empleado.model';
 import { TableModule } from 'primeng/table';
@@ -18,9 +18,9 @@ import {FormGroup, FormBuilder, Validators, FormsModule} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { IncidenciaB } from '../../../../../backend/models/incidencia.model';
-import { IncidenciasService } from '../../../../../backend/ConexionDB/incidencias.service';
+import { IncidenciasService } from '../../../../../backend/services/incidencias.service';
 import { FechaVacacion } from '../../../../../backend/models/vacacion.model';
-import { VacacionesService } from '../../../../../backend/ConexionDB/vacaciones.service';
+import { VacacionesService } from '../../../../../backend/services/vacaciones.service';
 
 @Component({
   selector: 'app-consultar-historial',

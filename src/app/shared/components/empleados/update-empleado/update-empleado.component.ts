@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
 import { CoreService } from '../../../../Core/core.service';
-import { EmpleadosService } from '../../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../../backend/services/empleados.service';
 import { Departamento } from '../../../../../../backend/models/departamento.model';
 import { Puesto } from '../../../../../../backend/models/puesto.model';
 import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
@@ -31,8 +31,8 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 
 
 import 'moment/locale/fr';
-import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
-import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
+import { DepartamentosService } from '../../../../../../backend/services/departamentos.service';
+import { PuestosService } from '../../../../../../backend/services/puestos.service';
 import { log } from 'console';
 import { estados, estados1, estadosConCiudades } from '../../../recursos/estados';
 import { ConfirmationService, MessageService } from 'primeng/api';

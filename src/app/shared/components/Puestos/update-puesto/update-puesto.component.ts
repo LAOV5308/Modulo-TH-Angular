@@ -14,9 +14,9 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import { NgFor } from '@angular/common';
 import { CoreService } from '../../../../Core/core.service';
 import { Puesto } from '../../../../../../backend/models/puesto.model';
-import { PuestosService } from '../../../../../../backend/ConexionDB/puestos.service';
+import { PuestosService } from '../../../../../../backend/services/puestos.service';
 import { Departamento } from '../../../../../../backend/models/departamento.model';
-import { DepartamentosService } from '../../../../../../backend/ConexionDB/departamentos.service';
+import { DepartamentosService } from '../../../../../../backend/services/departamentos.service';
 import { HttpClientModule} from '@angular/common/http';
 import {MatButtonModule} from '@angular/material/button';
 

@@ -12,7 +12,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ProgramarCapacitacionesComponent } from '../programar-capacitaciones/programar-capacitaciones.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones, Capacitacion } from '../../../../../backend/models/capacitacion.model';
-import { CapacitacionService } from '../../../../../backend/ConexionDB/capacitacion.service';
+import { CapacitacionService } from '../../../../../backend/services/capacitacion.service';
 
 import { MessageService, ConfirmationService, MenuItem } from 'primeng/api';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -23,7 +23,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { Empleado } from '../../../../../backend/models/empleado.model';
-import { EmpleadosService } from '../../../../../backend/ConexionDB/empleados.service';
+import { EmpleadosService } from '../../../../../backend/services/empleados.service';
 import { PickListModule } from 'primeng/picklist';
 import { Table, TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
