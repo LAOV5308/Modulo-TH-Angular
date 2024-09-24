@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
 //Modulos de Importaciones
-import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
+import { HttpClientModule  } from '@angular/common/http';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -34,7 +34,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Departamento } from '../../backend/models/departamento.model';
 import { Puesto } from '../../backend/models/puesto.model';
 import { estados, estados1, estadosConCiudades } from '../../src/app/shared/recursos/estados';
-import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import { PuestosService } from '../../backend/services/puestos.service';
 import { MessageService,MenuItem } from 'primeng/api';
@@ -44,7 +43,6 @@ import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -53,6 +51,12 @@ import {MatCardModule} from '@angular/material/card';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SplitButtonModule } from 'primeng/splitbutton';
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+import 'moment/locale/es';
+
 
 
 export const MY_DATE_FORMATS = {
@@ -89,10 +93,8 @@ export const MY_DATE_FORMATS = {
     CommonModule
   ],
   providers: [EmpleadosService, CoreService,DepartamentosService, PuestosService, MessageService,
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }  ,
-    provideMomentDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'es' },
-  ],
+    provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}]
+  ,
   templateUrl: './datos.component.html',
   styleUrl: './datos.component.css'
 })
@@ -218,7 +220,6 @@ export class DatosComponent implements OnInit, AfterViewInit{
     private _dialog: MatDialog,
     private router: Router,
     private _fb: FormBuilder,
-    private _adapter: DateAdapter<any>,
     private _empleadosService: EmpleadosService,
     private _puestosService: PuestosService,
     private messageService: MessageService,
@@ -238,7 +239,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         departamento:['', Validators.required],
         NombrePuesto:['', Validators.required],
         TipoIngreso:[''],
-        Ingreso:[''],
+        Ingreso:['', Validators.required],
         HorarioSemanal:[''],
         Sueldo:[''],
         IngresoImss:[''],
@@ -252,8 +253,8 @@ export class DatosComponent implements OnInit, AfterViewInit{
         Nombre:['', Validators.required],
         Apellidos:['', Validators.required],
         Sexo:['', Validators.required],
-        EstadoCivil:[''],
-        FechaNacimiento:[''],
+        EstadoCivil:['', Validators.required],
+        FechaNacimiento:['', Validators.required],
         EntidadNacimiento:[''],
         CiudadNacimiento:[''],
         CURP:[''],
@@ -279,7 +280,6 @@ export class DatosComponent implements OnInit, AfterViewInit{
         NumeroTelefonoEmergencia:[''],
         // Añadir más controles de formulario aquí
       });
-      this._adapter.setLocale('en-GB'); // Esto configura el adaptador de fecha para usar el formato de fecha correcto
   
       //Condicion para la opcion de ciudad
       this.employeeForm.get('EntidadNacimiento')?.valueChanges.subscribe(state => {

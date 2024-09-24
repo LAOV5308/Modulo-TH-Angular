@@ -3,13 +3,15 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Incidencia } from '../models/incidencia.model';
 import { catchError } from 'rxjs/operators';
-
+import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
 })
 export class IncidenciasService {
 
-  private apiUrl = 'http://localhost:3000/incidencias';
+  
+  //private apiUrl = 'http://localhost:3000/incidencias';
+  private apiUrl = Peticion.apiUrl+'incidencias';
   //private apiUrl ='https://all-keys-sip.loca.lt/incidencias'
   private incidencias: Incidencia[] = [];
 

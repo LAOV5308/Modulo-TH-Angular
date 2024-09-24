@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 
 import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones, Capacitacion, CapacitacionesEmpleado } from '../models/capacitacion.model';
+import { Peticion } from './Service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ import { CapacitacionProgramada, CapacitacionesSuscripciones, Calificaciones, Ca
 export class CapacitacionService {
 
   
-  private apiUrl = 'http://localhost:3000/capacitaciones';
+  private apiUrl = Peticion.apiUrl+'capacitaciones';
   //private apiUrl ='https://all-keys-sip.loca.lt/capacitaciones'
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/capacitaciones';
 

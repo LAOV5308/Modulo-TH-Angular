@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
+import { Peticion } from './Service';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class AuthService {
   private NombreUser: string = '';
 
   
-  private apiUrl = 'http://localhost:3000/usuarios';
+  private apiUrl = Peticion.apiUrl+'usuarios';
   
   //private apiUrl ='https://all-keys-sip.loca.lt/usuarios'
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/usuarios';

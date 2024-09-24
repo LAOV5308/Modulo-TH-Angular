@@ -5,13 +5,14 @@ import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
 import { FechaVacacion, Vacacion, DiasDisponibles } from '../models/vacacion.model';
-
+import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
 })
 export class VacacionesService {
 
-  private apiUrl = 'http://localhost:3000/vacaciones';
+  //private apiUrl = 'http://localhost:3000/vacaciones';
+  private apiUrl = Peticion.apiUrl+'vacaciones';
   //private apiUrl ='https://all-keys-sip.loca.lt/vacaciones'
 
 constructor(private http: HttpClient) { }

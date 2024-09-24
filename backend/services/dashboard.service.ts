@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento } from '../models/dashboard.model';
-
+import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:3000/dashboard';
+  //private apiUrl = 'http://localhost:3000/dashboard';
+  private apiUrl = Peticion.apiUrl+'dashboard';
   //private apiUrl ='https://all-keys-sip.loca.lt/dashboard'
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/dashboard'
 

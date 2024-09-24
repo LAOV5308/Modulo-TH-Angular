@@ -7,13 +7,14 @@ import { catchError } from 'rxjs/operators';
 import { Empleado } from '../models/empleado.model';
 import { Capacitacion } from '../models/capacitacion.model';
 import { BehaviorSubject } from 'rxjs';
-
+import { Peticion } from './Service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmpleadosService {
-  private apiUrl = 'http://localhost:3000/empleados';
+  //private apiUrl = 'http://localhost:3000/empleados';
+  private apiUrl = Peticion.apiUrl+'empleados';
   //private apiUrl ='https://all-keys-sip.loca.lt/empleados'
   
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/empleados';

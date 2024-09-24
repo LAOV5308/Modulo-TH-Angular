@@ -5,12 +5,13 @@ import { Departamento } from '../models/departamento.model';
 import { inputDepartamento } from '../models/inputDepartament.model';
 import { catchError } from 'rxjs/operators';
 import { SolicitudAceptada, SolicitudProceso, SolicitudRechazada } from '../models/solicitudes.model';
-
+import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitudesService {
-  private apiUrl = 'http://localhost:3000/solicitudes';
+  //private apiUrl = 'http://localhost:3000/solicitudes';
+  private apiUrl = Peticion.apiUrl+'solicitudes';
   //private apiUrl ='https://all-keys-sip.loca.lt/solicitudes'
 
   constructor(private http: HttpClient) {
