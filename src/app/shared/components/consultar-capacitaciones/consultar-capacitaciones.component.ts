@@ -47,10 +47,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
 
-interface AutoCompleteCompleteEvent {
-  originalEvent: Event;
-  query: string;
-}
+
+
 interface Column {
   field: string;
   header: string;
@@ -92,8 +90,18 @@ export class ConsultarCapacitacionesComponent implements OnInit, AfterViewInit{
  consulta: boolean = false;
  WEvaluar: boolean = false;
  NoNominaEvaluar!: number;
+
+
+ //EN CSv
  cols!: Column[];
  exportColumns!: ExportColumn[];
+
+//EN CSV CALIFICACION
+ cols1!: Column[];
+ exportColumns1!: ExportColumn[];
+
+
+
 idProgramacionFecha!: number;
 idProgramacionCapacitacion!: number;
 validarDuplicidad: number[]=[];
@@ -102,7 +110,7 @@ evaluarForm: FormGroup;
 asistenciaForm: FormGroup;
 calificacionEmpleado: number =0;
 comentario!: string;
-eval: boolean= true;
+eval!: boolean;
 calificaciones: Calificaciones[]=[];
 visible: boolean = false;
  ref: DynamicDialogRef | undefined;
@@ -113,9 +121,11 @@ productDialog: boolean = false;
 checked: boolean = false;
 asistio!: boolean;
 mostrarcalificaciones: boolean = false;
+mostrarasistencia: boolean = false;
 fechaDate!:Date;
 verificacion: boolean = false;
 asistenciadata: any[]=[];
+cerrado!: boolean;
 
 orig: string[] = [
   'Interna',
@@ -205,12 +215,96 @@ orig: string[] = [
       { field: 'Nombre', header: 'Nombre'},
       { field: 'Apellidos', header: 'Apellidos'},
       { field: 'NombrePuesto', header: 'Puesto'},
-      { field: 'NombreDepartamento', header: 'Departamento'}
+      { field: 'NombreDepartamento', header: 'Departamento'},
+      { field: 'Asistencia', header: 'Asistencia'},
+
   ];
+
 
   this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
+
+  this.cols1 = [
+    { field: 'NoNomina', header: 'NoNomina'},
+    { field: 'Nombre', header: 'Nombre'},
+    { field: 'Apellidos', header: 'Apellidos'},
+    { field: 'NombrePuesto', header: 'Puesto'},
+    { field: 'NombreDepartamento', header: 'Departamento'},
+    { field: 'Asistencia', header: 'Asistencia'},
+    { field: 'Calificacion', header: 'Calificacion'},
+    { field: 'Estatus', header: 'Evaluacion'},
+    { field: 'Comentario', header: 'Comentario'},
+
+];
+
+
+this.exportColumns1 = this.cols1.map((col) => ({ title: col.header, dataKey: col.field }));
+
   }
+
+
+  customExportCSV(dt: any) {
+    const dataToExport = dt.filteredValue || dt.value; // Obtener los datos de la tabla
+    const transformedData = dataToExport.map((row: any) => ({
+      ...row,
+      Asistencia: row.Asistencia === true ? 'Asistió' : 'No Asistió' // Transformar 1/0 a Asistió/No Asistió
+    }));
+  
+    // Definir las columnas que se exportarán
+    const cols = this.cols.map(col => col.header);
+  
+    // Construir CSV
+    let csvContent = cols.join(',') + '\n'; // Añadir encabezados
+  
+    transformedData.forEach((row: any) => {
+      let rowData = this.cols.map(col => row[col.field]).join(',');
+      csvContent += rowData + '\n'; // Añadir cada fila
+    });
+  
+    // Crear blob para descargar CSV con codificación UTF-8
+    const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8;' }); // Se añade \uFEFF para asegurar UTF-8
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'asistencia_Capacitacion_'+this.programacionConsulta[0].NombreCapacitacion+'_'+this.getFechaConDiaAdicional(this.programacionConsulta[0].Fecha) +'.csv'
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+
+  customExportCalificacionCSV(dt: any) {
+    const dataToExport = dt.filteredValue || dt.value; // Obtener los datos de la tabla
+    
+    const transformedData = dataToExport.map((row: any) => ({
+      ...row,
+      Asistencia: row.Asistencia === true ? 'Asistió' : 'No Asistió', // Transformar 1/0 a Asistió/No Asistió
+      Estatus: row.Estatus === true ? 'Aprobo' : 'No Aprobo'
+    }));
+  
+    // Definir las columnas que se exportarán
+    const cols = this.cols1.map(col => col.header);
+  
+    // Construir CSV
+    let csvContent = cols.join(',') + '\n'; // Añadir encabezados
+  
+    transformedData.forEach((row: any) => {
+      let rowData = this.cols1.map(col => row[col.field]).join(',');
+      csvContent += rowData + '\n'; // Añadir cada fila
+    });
+  
+    // Crear blob para descargar CSV con codificación UTF-8
+    const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8;' }); // Se añade \uFEFF para asegurar UTF-8
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'calificaciones_Capacitacion_'+this.programacionConsulta[0].NombreCapacitacion+'_'+this.getFechaConDiaAdicional(this.programacionConsulta[0].Fecha) +'.csv'
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+  
+
+
+  
 
 
   // Método para obtener la fecha con un día añadido
@@ -388,15 +482,23 @@ convertirFechaATiempo(fechaISO: string): string {
     this.verificacion = false;
     this.programacionConsulta=[];
     this.calificaciones = [];
+    this.mostrarasistencia = false;
     //AQUI
     this.capacitacionesService.getsingleProgramacionCapacitacion(clickInfo.event.id).subscribe({
       next: (data) => {
         this.programacionConsulta = data;
+console.log(this.programacionConsulta);
 
         /*console.log('Programacion Consulta');
         console.log(data);*/
 
+        console.log(this.programacionConsulta);
+
         const today = new Date();
+
+        
+this.cerrado = this.programacionConsulta[0].Cerrado;
+
 
         if(this.programacionConsulta[0].Fecha!=null){
           this.fechaDate = new Date(this.programacionConsulta[0].Fecha);
@@ -412,22 +514,22 @@ convertirFechaATiempo(fechaISO: string): string {
 
         // Agregar un día
         this.fechaDate.setDate(this.fechaDate.getDate() + 1);
+
+        console.log(this.fechaDate);
+
 // Formatear la fecha en un string legible
 //const day = today.getDate();
-      if(this.fechaDate >= today){
-        this.eval=false;
-        
-        }else{
+    
 
        if(this.programacionConsulta[0].Evaluacion==true){
           this.eval=true;
           }
         else{
     //Aqui una variable o Metodo para la parte de evalua
-        this.verificacion=true;
+        this.eval=false;
           }
 
-}
+
       },
       error: (error) => {
         console.error('Error al cargar las Capacitaciones', error);
@@ -467,13 +569,41 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitaci
     });
   }*/
 
+
+    cerrar(){
+      this.confirmationService.confirm({
+        message: '¿Está seguro de que quieres Finalizar la Capacitación?',
+        header: 'Confirmación',
+        icon: 'pi pi-exclamation-triangle',
+        rejectButtonStyleClass: "p-button-text",
+        acceptLabel: 'Sí',
+        rejectLabel: 'No',
+        accept: () => {
+          
+          this.capacitacionesService.concluirProgramacionCapacitacion(this.idProgramacionCapacitacion).subscribe({
+            next:(data: any) =>{
+              console.log(data);
+              this.ngAfterViewInit();
+              this.recargarCapacitacion();
+            
+            },
+            error:(error: any) =>{
+              console.log(error);
+            }
+          })
+        },
+        reject: () => {
+        }
+    })
+    }
+
+
   consultar(){
     this.consulta = true;
     this.mostrarcalificaciones = false;
     this.validarDuplicidad = [];
 
     if(this.idProgramacionCapacitacion){
-      
       this.capacitacionesService.getsingleProgramaciones(this.idProgramacionCapacitacion).subscribe({
         next: (data) => {
           //CapacitacionesProgramadas
@@ -810,6 +940,7 @@ evaluarEmpleado(){
 
 calificacionesMostrar(){
 this.mostrarcalificaciones = true;
+this.mostrarasistencia = false,
 this.consulta = false;
 this.calificaciones=[];
 
@@ -840,6 +971,28 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitaci
   });*/
 }
 
+asistenciaMostrar(){
+  this.mostrarcalificaciones = false;
+this.mostrarasistencia = true,
+this.consulta = false;
+
+/*
+this.calificaciones=[];
+
+this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitacion).subscribe({
+  next:(data) =>{
+    //console.log('Calificaciones');
+    //console.log(data);
+    this.calificaciones = data;
+    
+  },
+  error: (error) => {
+    console.error('Error al cargar las Calificaciones', error);
+  }
+
+});*/
+
+}
 
  
 resetEvaluarForm(){
@@ -848,6 +1001,7 @@ resetEvaluarForm(){
 };
 
 Asistencia(NoNomina: Number){
+
   this.asistenciaForm.patchValue({
     IdProgramacionCapacitacion: Number(this.idProgramacionCapacitacion),
     NoNomina: NoNomina
@@ -871,4 +1025,85 @@ editarCapacitacion(){
   }
 }
 
+
+recargarCapacitacion(){
+  this.mostrarasistencia = false;
+  this.mostrarcalificaciones = false;
+ this.consulta = false;
+    this.verificacion = false;
+    this.programacionConsulta=[];
+    this.calificaciones = [];
+    //AQUI
+    this.capacitacionesService.getsingleProgramacionCapacitacion(this.idProgramacionFecha).subscribe({
+      next: (data) => {
+        this.programacionConsulta = data;
+console.log(this.programacionConsulta);
+
+        /*console.log('Programacion Consulta');
+        console.log(data);*/
+
+        console.log(this.programacionConsulta);
+
+        const today = new Date();
+
+        
+this.cerrado = this.programacionConsulta[0].Cerrado;
+
+
+        if(this.programacionConsulta[0].Fecha!=null){
+          this.fechaDate = new Date(this.programacionConsulta[0].Fecha);
+        }else{
+          if(this.programacionConsulta[0].FechaFin == null){
+            this.fechaDate = new Date(this.programacionConsulta[0].FechaInicio);
+          }else{
+          this.fechaDate = new Date(this.programacionConsulta[0].FechaFin);
+          }
+        }
+        
+        
+
+        // Agregar un día
+        this.fechaDate.setDate(this.fechaDate.getDate() + 1);
+
+        console.log(this.fechaDate);
+
+// Formatear la fecha en un string legible
+//const day = today.getDate();
+    
+
+       if(this.programacionConsulta[0].Evaluacion==true){
+          this.eval=true;
+          }
+        else{
+    //Aqui una variable o Metodo para la parte de evalua
+        this.eval=false;
+          }
+
+
+      },
+      error: (error) => {
+        console.error('Error al cargar las Capacitaciones', error);
+      }
+    });
+
+
+    //OBTENGO LAS CALIFICACIONES
+this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitacion).subscribe({
+  next:(data) =>{
+    //console.log('Calificaciones');
+    //console.log(data);
+    this.calificaciones = data;
+    
+  },
+  error: (error) => {
+    console.error('Error al cargar las Calificaciones', error);
+  }
+
+});
+
+//Consulto las suscripciones de los empleados a las programaciones
+    this.consultar();
+
+
+}
 }

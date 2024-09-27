@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento } from '../models/dashboard.model';
+import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento, D_HorasCapacitacionDepartamento } from '../models/dashboard.model';
 import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
@@ -54,8 +54,19 @@ getSumaDiasIncidenciasPorDepartamento(Periodo: string): Observable<D_SalidasEdad
   const body = {
     Periodo: Periodo
   };
-  return this.http.post<[D_SalidasEdades]>(this.apiUrl+'/sumaincidencias', body);
+  return this.http.post<D_SalidasEdades[]>(this.apiUrl+'/sumaincidencias', body);
 }
+
+getSumaHorasCapacitacionPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_HorasCapacitacionDepartamento[]> {
+  const body = {
+    FechaInicio: FechaInicio,
+    FechaFin: FechaFin
+  };
+  return this.http.post<D_HorasCapacitacionDepartamento[]>(this.apiUrl+'/horasdepartamento', body);
+}
+
+
+
 
 
 

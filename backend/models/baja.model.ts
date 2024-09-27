@@ -14,4 +14,6 @@ export interface Baja {
     FechaInicio: Date;
     FechaFin: Date;
     Edad: number;
+    FondoAhorro:number;
+    Motivo: string;
   }

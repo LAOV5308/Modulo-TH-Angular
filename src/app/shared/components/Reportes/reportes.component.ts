@@ -43,6 +43,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import 'moment/locale/es';
+import { BajasService } from '../../../../../backend/services/bajas.service';
+import { Baja } from '../../../../../backend/models/baja.model';
 
 
 
@@ -54,7 +56,7 @@ import 'moment/locale/es';
     DropdownModule, ToastModule, RippleModule,MatDatepickerModule
   ],
 
-  providers:[EmpleadosService,VacacionesService, MessageService, IncidenciasService, CapacitacionService, provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}],
+  providers:[EmpleadosService,VacacionesService, MessageService, IncidenciasService, CapacitacionService, provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'},BajasService],
   templateUrl: './reportes.component.html',
   styleUrl: './reportes.component.css'
 })
@@ -63,6 +65,7 @@ export class ReportesComponent implements OnInit{
   empleados: Empleado[]=[];
   empleadosActive: Empleado[]=[];
   empleadosInactive: Empleado[]=[];
+  bajas: Baja[]=[];
   showempleados: boolean = false;
   showVacaciones: boolean = false;
   showIncidencias: boolean = false;
@@ -112,7 +115,7 @@ filterGlobal(event: Event, field: string) {
 
 
   constructor(private empleadosService:EmpleadosService, private _fb: FormBuilder,public dialog: MatDialog, private vacacionesService: VacacionesService, private messageService: MessageService,
-    private incidenciasService: IncidenciasService, private capacitacionesService: CapacitacionService
+    private incidenciasService: IncidenciasService, private capacitacionesService: CapacitacionService, private bajasService: BajasService
   ){
     this.FormEmpleados = this._fb.group({
       Opcion:['']
@@ -211,6 +214,16 @@ this.showCapacitaciones = false;
       }
     })
 
+    this.bajasService.getAllBajas().subscribe({
+      next:(data)=>{
+        this.bajas = data;
+        console.log(data);
+      },
+      error:(err: any)=>{
+      }
+    })
+
+    
 
 
   }
@@ -260,23 +273,37 @@ switch (this.FormEmpleados.value.Opcion) {
 
   //Imprimir Empleados 
   imprimirEmpleados(preview: boolean){
+    // Obtener la fecha y hora actual
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+
     const doc = new jsPDF({
       orientation: 'landscape',  // Establecer orientación horizontal
     });
+    doc.setFontSize(10);
+    doc.text(`Fecha de impresión: ${dateStr}`, 220, 6);
+    doc.text(`Hora de impresión: ${timeStr}`, 220, 10);
     // Agregar título
     doc.setFontSize(16);
     doc.text('Lista de Todos los Empleados', 14, 22);
 
     // Definir columnas de la tabla
-    const columns = ['No. Nomina','Nombre Completo', 'Puesto', 'Departamento', 'Edad', 'Estatus'];
+    const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso','Antiguedad','Estatus'];
+    //const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso', 'Antiguedad'];
 
     // Extraer datos de empleados
     const rows = this.empleados.map(empleado => [
       empleado.NoNomina,
       `${empleado.Nombre} ${empleado.Apellidos}`, // Nombre Completo
+      empleado.Sexo,
       empleado.NombrePuesto,                     // Puesto
       empleado.NombreDepartamento,                // Departamento
     empleado.Edad,
+    empleado.CURP,
+    empleado.RFC,
+    new Date(empleado.Ingreso).toLocaleDateString('es-ES'),
+    empleado.EstadoEmpleado ? this.calcularAntiguedad(empleado.Antiguedad): 'Baja',
     empleado.EstadoEmpleado ? 'Activo' : 'Baja'  // Condición para EstadoEmpleado
     ]);
 
@@ -287,15 +314,12 @@ switch (this.FormEmpleados.value.Opcion) {
       startY: 30, // Posición inicial de la tabla en el eje Y
     });
 
-    // Obtener la fecha y hora actual
-    const now = new Date();
-    const dateStr = now.toLocaleDateString();
-    const timeStr = now.toLocaleTimeString();
+    
 
     doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
     // Agregar la fecha y hora en la parte inferior del documento
-    doc.text(`Fecha de impresión: ${dateStr}`, 10, 180);
-    doc.text(`Hora de impresión: ${timeStr}`, 10, 190);
+    /*doc.text(`Fecha de impresión: ${dateStr}`, 10, 180);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 190);*/
 
     if (preview) {
       const pdfBlob = doc.output('bloburl');
@@ -322,19 +346,23 @@ switch (this.FormEmpleados.value.Opcion) {
       });
       // Agregar título
       doc.setFontSize(16);
-      doc.text('Lista de Empleados Active', 14, 22);
+      doc.text('Lista de Empleados Activos', 14, 22);
   
       // Definir columnas de la tabla
-      const columns = ['No. Nomina','Nombre Completo', 'Puesto', 'Departamento', 'Edad', 'Fecha Ingreso'];
+      const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso', 'Antiguedad'];
   
       // Extraer datos de empleados
       const rows = this.empleadosActive.map(empleado => [
         empleado.NoNomina,
-        `${empleado.Nombre} ${empleado.Apellidos}`, // Nombre Completo
+        `${empleado.Nombre} ${empleado.Apellidos}`,
+        empleado.Sexo,  // Nombre Completo
         empleado.NombrePuesto,                     // Puesto
         empleado.NombreDepartamento,                // Departamento
       empleado.Edad,
-      new Date(empleado.Ingreso).toLocaleDateString('es-ES')
+      empleado.CURP,
+      empleado.RFC,
+      new Date(empleado.Ingreso).toLocaleDateString('es-ES'),
+      this.calcularAntiguedad(empleado.Antiguedad)
       ]);
   
       // Generar la tabla
@@ -382,16 +410,22 @@ switch (this.FormEmpleados.value.Opcion) {
       doc.text('Lista de Empleados Dados de Bajas', 14, 22);
   
       // Definir columnas de la tabla
-      const columns = ['No. Nomina','Nombre Completo', 'Puesto', 'Departamento', 'Edad', 'Fecha Ingreso'];
+      const columns = ['No. Nomina','Nombre Completo', 'Puesto', 'Departamento', 'Edad', 'Fecha Ingreso', 'Fecha Salida', 'Antiguedad','Finiquito', 'Fondo de Ahorro', 'Motivo'];
   
       // Extraer datos de empleados
-      const rows = this.empleadosInactive.map(empleado => [
+      const rows = this.bajas.map(empleado => [
         empleado.NoNomina,
         `${empleado.Nombre} ${empleado.Apellidos}`, // Nombre Completo
         empleado.NombrePuesto,                     // Puesto
         empleado.NombreDepartamento,                // Departamento
       empleado.Edad,
-      new Date(empleado.Ingreso).toLocaleDateString('es-ES')
+      new Date(empleado.FechaIngreso).toLocaleDateString('es-ES'),
+      new Date(empleado.FechaSalida).toLocaleDateString('es-ES'),
+      this.calcularAntiguedad(empleado.Antiguedad),
+      empleado.Finiquito,
+      empleado.FondoAhorro,
+      empleado.Motivo
+
       ]);
   
       // Generar la tabla
@@ -650,6 +684,7 @@ doc.save(fileName);
       next:(data)=>{
         this.incidencias = data;
         console.log(this.incidencias);
+        var diasTotales = 0;
 
 
         const doc = new jsPDF({
@@ -658,7 +693,7 @@ doc.save(fileName);
           // Configurar el estilo del encabezado
           doc.setFontSize(20);
           doc.setFont('helvetica', 'bold');
-          doc.text('Lista de Incidencias', 14, 20);
+          doc.text('Lista de Incidencias Por Colaborador', 14, 20);
           
           // Información del empleado en el encabezado
           doc.setFontSize(12);
@@ -679,6 +714,10 @@ doc.save(fileName);
           //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
           const columns = ['Motivo', 'FechaInicio', 'FechaFin', 'DiasSubsidios', 'Categoria', 'FolioAlta', 'FolioBaja', 'Estado'];
           
+          this.incidencias.forEach(element => {
+            diasTotales = diasTotales+element.DiasSubsidios;
+            
+          });
     
           // Simulación de datos de vacaciones (esto debe ser tu lógica)
           const rows =  this.incidencias.map(incidencia => [
@@ -721,6 +760,15 @@ doc.save(fileName);
             theme: 'striped', // Estilo de tabla con líneas alternas
             headStyles: { fillColor: [22, 160, 133] }, // Color de encabezado de tabla
           });
+
+          
+
+            // Obtener la posición Y final de la tabla
+            const finalY = (doc as any).autoTable.previous.finalY;
+
+            // Añadir el texto del total de días justo debajo de la tabla
+            doc.text(`Total: ${diasTotales} Días De Subsidios`, 110, finalY + 10); // Añadir 10 px debajo de la tabla
+
           
           // Obtener la fecha y hora actual
           const now = new Date();
@@ -728,8 +776,8 @@ doc.save(fileName);
           const timeStr = now.toLocaleTimeString();
           doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
           // Agregar la fecha y hora en la parte inferior del documento
-          doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
-          doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
+          doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+          doc.text(`Hora de impresión: ${timeStr}`, 10, 195);
           
           
           
@@ -1273,6 +1321,31 @@ imprimirConsultaProgramaciones(){
 
 }
 
+
+calcularAntiguedad(dias: number): string {
+  const diasPorAno = 365;
+  const diasPorMes = 30;
+
+  // Calcular los años
+  const anos = Math.floor(dias / diasPorAno);
+
+  // Calcular los meses restantes
+  const meses = Math.floor((dias % diasPorAno) / diasPorMes);
+
+  // Generar el resultado en el formato deseado
+  let resultado = '';
+  if (anos > 0) {
+    resultado += `${anos} Año${anos > 1 ? 's' : ''}`; // Plural si es más de 1 año
+  }
+  if (meses > 0) {
+    if (anos > 0) {
+      resultado += ', ';
+    }
+    resultado += `${meses} Mes${meses > 1 ? 'es' : ''}`; // Plural si es más de 1 mes
+  }
+
+  return resultado || 'Menos de 1 mes'; // Si no hay años ni meses
+}
 
 
   /*generatePDF(preview: boolean) {

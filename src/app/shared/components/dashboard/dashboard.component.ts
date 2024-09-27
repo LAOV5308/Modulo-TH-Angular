@@ -18,7 +18,7 @@ import { Empleado } from '../../../../../backend/models/empleado.model';
 import { Departamento } from '../../../../../backend/models/departamento.model';
 import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
 import { DashboardService } from '../../../../../backend/services/dashboard.service';
-import { D_Bajas, D_CambiosPorDepartamento, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo, D_IncidenciasPorDepartamento, D_RangoAntiguedad, D_SalidasEdades, D_SumaIncidenciasPorDepartamento } from '../../../../../backend/models/dashboard.model';
+import { D_Bajas, D_CambiosPorDepartamento, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo, D_IncidenciasPorDepartamento, D_RangoAntiguedad, D_SalidasEdades, D_SumaIncidenciasPorDepartamento, D_HorasCapacitacionDepartamento } from '../../../../../backend/models/dashboard.model';
 import { IncidenciasService } from '../../../../../backend/services/incidencias.service';
 import { Incidencia } from '../../../../../backend/models/incidencia.model';
 
@@ -31,7 +31,7 @@ import { BajasService } from '../../../../../backend/services/bajas.service';
 import { CapacitacionService } from '../../../../../backend/services/capacitacion.service';
 import { Capacitacion } from '../../../../../backend/models/capacitacion.model';
 
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -39,15 +39,20 @@ import { MatButtonModule } from '@angular/material/button';
 
 import {jsPDF} from 'jspdf';
 import 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+import { MatSelectModule } from '@angular/material/select';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [FormsModule,MatCard, MatCardHeader, MatCardModule,
     BaseChartDirective, MeterGroupModule, ChartModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
-    DropdownModule, MatGridListModule, DividerModule, AsyncPipe, MatMenuModule, MatIconModule, MatButtonModule
+    DropdownModule, MatGridListModule, DividerModule, AsyncPipe, MatMenuModule, MatIconModule, MatButtonModule,MatSelectModule,NgFor, NgIf,
+    ToastModule
   ],
-    providers:[EmpleadosService, DepartamentosService, DashboardService, IncidenciasService,CapacitacionService,
+    providers:[EmpleadosService, DepartamentosService, DashboardService, IncidenciasService,CapacitacionService,MessageService,
       { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, provideNativeDateAdapter()
     ],
   templateUrl: './dashboard.component.html',
@@ -55,6 +60,7 @@ import 'jspdf-autotable';
 })
 export class DashboardComponent implements OnInit {
   capacitaciones: Capacitacion[]=[];
+  capacitacionesDepartamento: D_HorasCapacitacionDepartamento[]=[];
   empleadosActive: Empleado[] = [];
   empleadosInactive: Empleado[] = [];
   CantidadEmpleados: number = 0;
@@ -85,7 +91,40 @@ export class DashboardComponent implements OnInit {
   incidenciasPorDepartamento: D_IncidenciasPorDepartamento[]=[];
   edades: D_Edades[]=[];
   periodoSeleccionado: string = '2024';
-  periodos: string[]=['2022','2023', '2024', '2025', '2026']
+  anoSeleccionado: string = '2024';
+  mesSeleccionado!: string;
+  periodos: string[]=['2022','2023', '2024', '2025', '2026'];
+  fechaInicio!: Date;
+  fechaFin!: Date;
+  horasTotales!: number;
+
+  //Opciones de Eleccion de Meses
+  meses: string[] = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ];
+
+
+  //Opciones de Eleccion de Meses
+  anos: string[] = [
+    '2022',
+    '2023',
+    '2024',
+    '2025',
+    '2026'
+  ];
+
+
   //NombresDepartamentos:string[] = [];
 
   data: any;
@@ -115,7 +154,7 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(private empleadosService: EmpleadosService, private departamentosService: DepartamentosService, private dashboardservice: DashboardService,
-    private incidenciasService: IncidenciasService, private bajasService: BajasService, private capacitacionService: CapacitacionService
+    private incidenciasService: IncidenciasService, private bajasService: BajasService, private capacitacionService: CapacitacionService,private messageService: MessageService
   ){
    // Register the Colors plugin
 Chart.register(Colors);
@@ -131,6 +170,7 @@ Chart.defaults.set('plugins.datalabels', {
     this.Femenino = 0;
     this.Otro = 0;
 
+    this.consulta();
     
 
 
@@ -807,7 +847,8 @@ this.dataline = {
     });
 
 
-
+//CAPACITACIONES  
+/*
     this.capacitacionService.getCapacitaciones().subscribe({
       next: (capacitaciones: any) => {
         this.capacitaciones = capacitaciones;
@@ -838,7 +879,7 @@ const data = this.capacitaciones.map(dept => dept.Horas);
         console.log('Error'+err);
       }
 
-    });
+    });*/
 
     this.dashboardservice.getCambiosDepartamento().subscribe({
       next:(cambios: any)=>{
@@ -1135,6 +1176,152 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
 
   }
 
+
+consulta(){
+  this.horasTotales = 0;
+  if (!this.mesSeleccionado){
+      const ano = parseInt(this.anoSeleccionado, 10);
+      this.fechaInicio = new Date(ano, 0, 1);
+    this.fechaFin = new Date(ano, 11, 31);
+
+    this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio,this.fechaFin).subscribe({
+      next: (capacitacionesD: any) => {
+        this.capacitacionesDepartamento = capacitacionesD;
+        console.log(this.capacitacionesDepartamento);
+        this.capacitacionesDepartamento.forEach(element => {
+          this.horasTotales = this.horasTotales + element.TotalHoras
+        });
+  // Inicializa el arreglo de labels y data
+  const labels = this.capacitacionesDepartamento.map(dept => dept.NombreDepartamento);
+  const data = this.capacitacionesDepartamento.map(dept => dept.TotalHoras);
+  
+        //Datapie Chart
+    this.datapieCapacitaciones = {
+      labels: labels,
+      datasets: [
+          {
+              data: data,
+          }],
+          options: {
+            plugins: {
+                colors: {
+                    enabled: true
+                }
+            }
+        }
+      };
+  
+      },
+      error: (err) => {
+        console.log('Error'+err);
+      }
+  
+    });
+
+    //return; // No hagas la consulta hasta que ambos valores estén seleccionados
+    
+  }
+  else{
+    const ano = parseInt(this.anoSeleccionado, 10); // Convertir el año a número
+  switch (this.mesSeleccionado) {
+    case 'Enero':
+      this.fechaInicio = new Date(ano, 0, 1);  // Enero es el mes 0 en JavaScript
+      this.fechaFin = new Date(ano, 0, 31);    // Último día de enero
+      break;
+    case 'Febrero':
+      this.fechaInicio = new Date(ano, 1, 1);
+      this.fechaFin = new Date(ano, 1, this.isLeapYear(ano) ? 29 : 28);  // Manejar años bisiestos
+      break;
+    case 'Marzo':
+      this.fechaInicio = new Date(ano, 2, 1);
+      this.fechaFin = new Date(ano, 2, 31);
+      break;
+    case 'Abril':
+      this.fechaInicio = new Date(ano, 3, 1);
+      this.fechaFin = new Date(ano, 3, 30);
+      break;
+    case 'Mayo':
+      this.fechaInicio = new Date(ano, 4, 1);
+      this.fechaFin = new Date(ano, 4, 31);
+      break;
+    case 'Junio':
+      this.fechaInicio = new Date(ano, 5, 1);
+      this.fechaFin = new Date(ano, 5, 30);
+      break;
+    case 'Julio':
+      this.fechaInicio = new Date(ano, 6, 1);
+      this.fechaFin = new Date(ano, 6, 31);
+      break;
+    case 'Agosto':
+      this.fechaInicio = new Date(ano, 7, 1);
+      this.fechaFin = new Date(ano, 7, 31);
+      break;
+    case 'Septiembre':
+      this.fechaInicio = new Date(ano, 8, 1);
+      this.fechaFin = new Date(ano, 8, 30);
+      break;
+    case 'Octubre':
+      this.fechaInicio = new Date(ano, 9, 1);
+      this.fechaFin = new Date(ano, 9, 31);
+      break;
+    case 'Noviembre':
+      this.fechaInicio = new Date(ano, 10, 1);
+      this.fechaFin = new Date(ano, 10, 30);
+      break;
+    case 'Diciembre':
+      this.fechaInicio = new Date(ano, 11, 1);
+      this.fechaFin = new Date(ano, 11, 31);
+      break;
+  }
+
+  // Después de asignar las fechas, puedes realizar la consulta a tu servicio
+  console.log('Fecha Inicio:', this.fechaInicio);
+  console.log('Fecha Fin:', this.fechaFin);
+
+
+  this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio,this.fechaFin).subscribe({
+    next: (capacitacionesD: any) => {
+      this.capacitacionesDepartamento = capacitacionesD;
+      console.log(this.capacitacionesDepartamento);
+
+      this.capacitacionesDepartamento.forEach(element => {
+        this.horasTotales = this.horasTotales + element.TotalHoras
+      });
+// Inicializa el arreglo de labels y data
+const labels = this.capacitacionesDepartamento.map(dept => dept.NombreDepartamento);
+const data = this.capacitacionesDepartamento.map(dept => dept.TotalHoras);
+
+      //Datapie Chart
+  this.datapieCapacitaciones = {
+    labels: labels,
+    datasets: [
+        {
+            data: data,
+        }],
+        options: {
+          plugins: {
+              colors: {
+                  enabled: true
+              }
+          }
+      }
+    };
+
+    },
+    error: (err) => {
+      console.log('Error'+err);
+    }
+
+  });
+
+
+  }
+};
+
+isLeapYear(year: number): boolean {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+};
+
   /*onDataSelect(event: any){
     console.log(event);
     const datasetIndex = event.element._datasetIndex;
@@ -1186,61 +1373,633 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
   }
 
 
-  impresion() {
 
-    const doc = new jsPDF();
 
-    // Agregar texto en la parte superior del documento
-    doc.text('Impresion de Grafica', 10, 10);
 
-    const img1 = new Image();
-    const img2 = new Image();
-    img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
-    img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
 
-    img1.onload = () => {
-      // Agregar la primera imagen al PDF en la esquina superior izquierda
-      doc.addImage(img1, 'PNG', 10, 12, 30, 20); // Coordenadas x, y y dimensiones width, height
+  impresionEmpleados(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
 
-      img2.onload = () => {
-        // Agregar la segunda imagen al PDF en la esquina superior derecha
-        doc.addImage(img2, 'PNG', 170, 12, 30, 30); // Coordenadas x, y y dimensiones width, height
+      doc.text('DETALLES DE LOS EMPLEADOS', 100, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 10, 80, 260, 50); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `empleados_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
 
-        // Obtener la fecha y hora actual
-        const now = new Date();
-        const dateStr = now.toLocaleDateString();
-        const timeStr = now.toLocaleTimeString();
-
-        // Agregar la fecha y hora en la parte inferior del documento
-        doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
-        doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
-
-        // Formatear la fecha para el nombre del archivo
-        const day = String(now.getDate()).padStart(2, '0');
-        const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
-        const year = now.getFullYear();
-
-        const fileName = `archivo1_${day}_${month}_${year}.pdf`;
-
-        // Guardar el PDF con el nombre dinámico
-        doc.save(fileName);
-
-      };
-    };
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
   }
 
-  public barChartOptions: ChartOptions = {
-    responsive: false,
-  };
+
+  //Impresion Edades
+  impresionEdades(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+
+      doc.text('EDADES DE LOS EMPLEADOS', 100, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 15, 70, 250, 100); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `edadesempleados_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+  //ImpresiondelasAntiguedades
+  //Impresion Edades
+  impresionAntiguedades(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+
+      doc.text('ANTIGUEDADES DE LOS EMPLEADOS', 100, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 15, 70, 250, 100); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `antiguedadesempleados_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+   //Impresion de Antiguedades de las Salidas
+   impresionSalidasAntiguedades(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('ANTIGUEDADES DE LAS SALIDAS DE LOS EMPLEADOS', 100, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 15, 70, 230, 100); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `AntiguedadesSalidasEmpleados_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+
+  //Impresion Empleados Por Departamento
+  impresionEmpleadosPorDepartamento(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('CANTIDAD DE EMPLEADOS POR DEPARTAMENTO', 100, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 20, 70, 260, 100); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `CantidadEmpleadosPorDepartamento_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+
+  //Impresion Empleados Por Departamento
+  impresionBajasPorDepartamento(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('CANTIDAD BAJAS DE EMPLEADOS POR DEPARTAMENTO', 80, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 20, 70, 270, 100); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `CantidadEmpleadosBajasPorDepartamento_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+  //Impresion de Empleados Por estado Civil
+impresionEmpleadosEstadoCivil(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('ESTADO CIVIL DE LOS EMPLEADOS ACTIVOS', 80, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 40, 70, 230, 100); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `EstadoCivilEmpleadosActivos_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
   
-  public barChartLabels: string[] = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartData: ChartDataset<'bar'>[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Produccion' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Diseño y Desarrollo' },
-    { data: [30, 18, 60, 14, 45, 17, 50], label: 'Controloria' },
-    { data: [13, 2, 50, 34, 23, 47, 34], label: 'Ingenieria' }
-  ];
+
+  //Cantidad De Incidencias Por Departamento
+  impresionIncidenciasPorDepartamento(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('CANTIDAD DE INCIDENCIAS POR DEPARTAMENTO', 80, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 30, 70, 230, 80); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `IncidenciasPorDepartamento_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+
+  //Impresion Empleados Por Departamento
+  impresionHorasCapacitaciones(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      if(this.mesSeleccionado){
+        doc.text('CANTIDAD DE HORAS POR CAPACITACIÓN (MES: '+this.mesSeleccionado +' AÑO: '+this.anoSeleccionado+')', 50, 20);
+        
+      }else{
+        doc.text('CANTIDAD DE HORAS POR CAPACITACIÓN (AÑO: '+this.anoSeleccionado+')', 60, 20);
+        
+      }
+      doc.text('Horas Totales: '+this.horasTotales +' Horas ', 200, 65);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 5, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 20, 70, 270, 80); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    if(this.mesSeleccionado){
+      const fileName = `CantidadHorasPorCapacitacionMes${this.mesSeleccionado}_Año${this.anoSeleccionado}_${day}_${month}_${year}.pdf`;
+      doc.save(fileName)
+    }else{
+      const fileName = `CantidadHorasPorCapacitacionAño${this.anoSeleccionado}_${day}_${month}_${year}.pdf`;
+      doc.save(fileName)
+
+    }
+    
+    // Guardar el PDF con el nombre dinámico
+    
+
+    });
+  } else {
+    this.messageService.add({ severity: 'warn', summary: 'Precaución', detail: 'No hay Registros' });
+  }
+  }
+
+
+  //Impresion de Cambios de Puestos
+  impresionCambiosPuestos(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('CANTIDAD DE CAMBIOS DE PUESTOS POR DEPARTAMENTO', 80, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 20, 70, 270, 100); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `CambiosDePuestoPorDepartamento_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+
+  //PERIODO
+
+
+  //Impresion de Periodo Incidencias
+  impresionPeriodoIncidencias(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('CANTIDAD DE INCIDENCIAS POR MES Y AÑO '+this.periodoSeleccionado, 80, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 30, 70, 230, 80); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `CantidadIncidenciasPeriodo${this.periodoSeleccionado}_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir.');
+  }
+  }
+
+
+//Impresion de Periodo Capacitaciones
+  impresionPeriodoCapacitaciones(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('CANTIDAD DE DIAS DE CAPACITACIONES POR MES Y AÑO '+this.periodoSeleccionado, 50, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 30, 70, 230, 80); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `CantidadDiasCapacitacionesPeriodo${this.periodoSeleccionado}_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir');
+  }
+  }
+
+
+  //Impresion de Contratacion por Mes y Año
+  impresionPeriodoContrataciones(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('CANTIDAD DE CONTRATACIONES POR MES Y AÑO '+this.periodoSeleccionado, 70, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 30, 70, 230, 80); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `CantidadContratacionesPeriodo${this.periodoSeleccionado}_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir');
+  }
+  }
+
+  //Impresion de Contratacion por Mes y Año
+  impresionPeriodoEdadesSalidas(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('LAS SALIDAS DE EDADES POR MES Y AÑO '+this.periodoSeleccionado, 70, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 30, 70, 230, 80); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `CantidadSalidasEdadesPeriodo${this.periodoSeleccionado}_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir');
+  }
+  }
+
+
+  //Impresion de Contratacion por Mes y Año
+  impresionPeriodoDeDiasIncidencias(chartId: string) {
+    const chartElement = document.getElementById(chartId);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      doc.text('DIAS DE INCIDENCIAS POR DEPARTAMENTO POR MES Y AÑO '+this.periodoSeleccionado, 50, 50);
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 30, 20); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 30, 30); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 30, 70, 230, 80); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `DiasIncidenciasPorDepartamento${this.periodoSeleccionado}_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir');
+  }
+  }
+
+  
 
 }

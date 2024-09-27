@@ -4,8 +4,8 @@
 }
 
 .box1, .box2{
-  width: 47%;
-  padding: 5px;
+  width: 48%;
+  padding: 2px;
 }
 
 #calendar-container {
@@ -52,7 +52,10 @@
   background-color: rgb(34, 164, 178);
   color: white;
 }
-
+.cerrarCapacitacion{
+  background-color: rgb(34, 106, 178);
+  color: white;
+}
 :host ::ng-deep .p-dialog {
   width: 150px;
   margin: 0 auto 2rem auto;

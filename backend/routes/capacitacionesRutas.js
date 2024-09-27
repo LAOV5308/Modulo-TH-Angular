@@ -346,6 +346,25 @@ router.post('/asistencia', async (req, res) => {
     
 });
 
+//Concluir Capacitacion
+router.post('/concluir', async (req, res) => {
+    const { IdProgramacionCapacitacion
+     } = req.body;
+
+    try {
+        const pool = await getConnection(); 
+        const request = pool.request();
+        request.input('IdProgramacionCapacitacion', sql.Int, IdProgramacionCapacitacion);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_programacioncapacitacion_concluir');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Concluido la capacitacion con éxito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al agregar la suscripcion: ' + err.message });
+    }
+    
+});
+
 // Eliminar un departamento por ID
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;

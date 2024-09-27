@@ -35,8 +35,24 @@
                 <mat-label>Finiquito</mat-label>
                 <input matInput type="number" formControlName="Finiquito">
             </mat-form-field>
+
+            <mat-form-field color="accent">
+                <mat-label>Fondo De Ahorro</mat-label>
+                <input matInput type="number" formControlName="FondoAhorro">
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill" color="accent">
+                <mat-label>Motivo</mat-label>
+                <mat-select formControlName="Motivo">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let val of motivo" [value]="val">{{val}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
     <div class="row">
+        
+
         <mat-checkbox formControlName="ProcesoDemanda">Proceso de Demanda</mat-checkbox>
       </div>
 

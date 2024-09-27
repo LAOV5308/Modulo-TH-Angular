@@ -331,14 +331,14 @@ if(this.datesAux!=undefined){
 
 
 //Multiplicacion de Horas por Dias
-var HorasPorDia = this.datesAux.length * this.employeeForm.value.Horas;
+//var HorasPorDia = this.datesAux.length * this.employeeForm.value.Horas;
 
 this.datesAux!.forEach((element:Date) => {
 /*this.employeeForm.patchValue({
   Fecha: element
 });*/
 
-this.capacitacionesService.addCapacitacionFecha(this.idProgramacionCapacitacion, element, HorasPorDia).subscribe({
+this.capacitacionesService.addCapacitacionFecha(this.idProgramacionCapacitacion, element, this.employeeForm.value.Horas).subscribe({
   next: (resp: any) => {
     //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente'+resp });
 },

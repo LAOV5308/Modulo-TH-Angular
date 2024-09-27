@@ -123,6 +123,8 @@ header="Header"
     </button>
     </div>
 </p-card>
+
+
 <p-card>
     <div class="container">
 
@@ -138,7 +140,7 @@ header="Header"
             
 <ng-container *ngIf="programacionConsulta.length > 0">
 
-    <button *ngIf="!eval && !verificacion"
+    <button *ngIf="!cerrado"
     class="agregarempleado"
     mat-raised-button 
     color = "primary"
@@ -146,35 +148,50 @@ header="Header"
     ><mat-icon>add_circle</mat-icon>Agregar Cursantes
     </button>
 
+
+    <!-- Consultar -->
+     <!--
     <button class="agregar"
     mat-raised-button
     color = "secondary" (click)="consultar()"
     ><mat-icon>assignment_ind</mat-icon>Consultar/Actualizar
-    </button>
+    </button> -->
 
     <!--<button class="eliminarProgramacion" -->
-    <button class="eliminarProgramacion" *ngIf="!eval && !verificacion"
+    <button class="eliminarProgramacion" *ngIf="!cerrado"
     mat-raised-button (click)="eliminarprogramacion(programacionConsulta[0].IdProgramacionFecha)"
     ><mat-icon>cancel</mat-icon>Cancelar
     </button>
 
-    
-    <button class="consultarCalificaciones"
-    mat-raised-button (click)="calificacionesMostrar()" *ngIf="eval && !verificacion"
-    ><mat-icon>assignment</mat-icon>Calificaciones
+    <button (click)="recargarCapacitacion()" class="consultarCalificaciones"
+    mat-raised-button *ngIf="cerrado"
+    ><mat-icon>arrow_back</mat-icon>
     </button>
 
     <button class="consultarCalificaciones"
-    mat-raised-button *ngIf="verificacion"
-    ><mat-icon>assignment</mat-icon>Asistencia
+    mat-raised-button (click)="calificacionesMostrar()" *ngIf="cerrado && eval"
+    ><mat-icon>assignment</mat-icon>Ver Calificaciones
     </button>
 
-    <button *ngIf="!eval && !verificacion"
+    <button class="consultarCalificaciones"
+    mat-raised-button (click)="asistenciaMostrar()"  *ngIf="cerrado && !eval"
+    ><mat-icon>assignment</mat-icon>Ver Asistencia
+    </button>
+
+
+
+    <button *ngIf="!cerrado"
     class="agregarempleado"
     mat-raised-button 
     style="background-color: cadetblue;"
     (click)="editarCapacitacion()"
     ><mat-icon>edit</mat-icon>Editar Capacitacion
+    </button>
+
+    <button *ngIf="!cerrado" class="cerrarCapacitacion"
+    mat-raised-button
+    color = "secondary" (click)="cerrar()"
+    ><mat-icon>event_available</mat-icon>Finalizar
     </button>
     
 
@@ -197,11 +214,11 @@ header="Header"
             [(ngModel)]="checked" 
             [binary]="true" 
             inputId="binary" />-->
-            <p *ngIf="!eval">
-                Estado: Abierto
+            <p *ngIf="!cerrado" style="color: rgba(199, 67, 67, 0.851);">
+                Estado: No Concluido <mat-icon>help_outline</mat-icon>
             </p>
-            <p *ngIf="eval">
-                Estado: Cerrado
+            <p *ngIf="cerrado" style="color: rgb(22, 201, 120);">
+                Estado: Concluido <mat-icon>done</mat-icon>
             </p>
             <p *ngIf="programacionConsulta[0].FechaFin == null && programacionConsulta[0].HoraInicio!=null">
                 {{'Hora Inicio: '+ convertirFechaATiempo(programacionConsulta[0].HoraInicio)}}
@@ -246,7 +263,7 @@ header="Header"
         <ng-template pTemplate="header" let-columns>
 
             <tr>
-            <th *ngIf="eval">Asistio</th>
+            <th *ngIf="cerrado">Asistio</th>
             <th>NoNomina</th>
             <th>Nombre</th>
             <th>NombrePuesto</th>
@@ -256,7 +273,7 @@ header="Header"
         </ng-template>
         <ng-template pTemplate="body" let-empleado>
             <tr>
-                <td *ngIf="eval" > 
+                <td *ngIf="cerrado" > 
                     <p-checkbox 
                     [(ngModel)]="empleado.Asistencia" 
                     [binary]="true" 
@@ -271,7 +288,7 @@ header="Header"
                 <td>{{empleado.NombrePuesto}}</td>
                 <td>{{empleado.NombreDepartamento}}</td>
                 <td>
-                    <p-button *ngIf="eval && !verificacion"
+                    <p-button *ngIf="cerrado && eval"
                     pRipple 
                     icon="pi pi-clipboard" 
                     label="Evlr"
@@ -279,7 +296,7 @@ header="Header"
                     [outlined]="true"  (onClick)="evaluar(empleado.NoNomina, empleado.Evaluado)" [disabled]="!empleado.Asistencia"/>
 
                     <p-button 
-                    *ngIf="!eval"
+                    *ngIf="!cerrado"
                         pRipple 
                         icon="pi pi-ban" 
                         severity="danger" 
@@ -301,9 +318,9 @@ header="Header"
                 <div class="card">
                     
                     <p-table 
-                    #dt 
+                    #dtC 
                     styleClass="p-datatable-striped"    
-                    [columns]="cols" [value]="calificaciones" 
+                    [columns]="cols1" [value]="calificaciones" 
                     [exportHeader]="'customExportHeader'"
                     [globalFilterFields]="['NoNomina','Nombre' ,'Apellidos','NombreDepartamento', 'Puesto'
                     ]"
@@ -313,21 +330,24 @@ header="Header"
                     [tableStyle]="{ 'min-width': '50rem' }">
                 
                     <ng-template pTemplate="caption">
-                        
-                        <div style="text-align: left">
+                       <div style="display: flex;">
+                        <div style="text-align: left;">
+                            <input 
+                            pInputText 
+                            type="text" 
+                            (input)="filterGlobal($event)" 
+                            placeholder="Buscar" />
+                        </div>
+                        <div style="text-align: end; width: 50%;">
                             <p-button 
                                 icon="pi pi-external-link" 
-                                label="Export" 
-                                (click)="dt.exportCSV()" />
+                                label="Export csv" 
+                                (click)="customExportCalificacionCSV(dtC)" />
                         </div>
-                
-                        <div style="text-align: left">
-                        <input 
-                        pInputText 
-                        type="text" 
-                        (input)="filterGlobal($event)" 
-                        placeholder="Buscar" />
-                    </div>
+
+                        
+                       </div>
+                        
                     </ng-template>
                 
                     
@@ -340,18 +360,12 @@ header="Header"
                             <th style="width:10%">NombrePuesto</th>
                             <th style="width:10%">NombreDepartamento</th>
                             <th style="width:10%">Calificacion</th>
-                            <th style="width:10%">Estatus</th>
+                            <th style="width:10%;">Estatus</th>
+                            <th style="width:10%"> <p-columnFilter type="boolean" field="Estatus" /></th>
                             <th style="width:10%">Comentario</th>
                             </tr>
 
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th><p-columnFilter type="boolean" field="Estatus" /></th>
-                            </tr>
+                    
                             
                                     
                                 
@@ -367,15 +381,93 @@ header="Header"
 
                                     <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': calificacion.Estatus, 'text-red-500 pi-times-circle': !calificacion.Estatus }"></i>
                                 </td>
+                                <td></td>
                                 <td>{{calificacion.Comentario}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
                 </div>
                             </div>
+
+
+
+
+        <!---Mostrar Asistencia -->
+            <div *ngIf=mostrarasistencia>
+                <div class="card">
+                    <p-table 
+                    #dt 
+                    styleClass="p-datatable-striped"    
+                    [columns]="cols" [value]="capacitacionessuscripciones" 
+                    [exportHeader]="'customExportHeader'"
+                    [globalFilterFields]="['NoNomina','Nombre' ,'Apellidos','NombreDepartamento', 'Puesto'
+                    ]"
+                    [resizableColumns]="true" 
+                    [scrollable]="true" 
+                    scrollHeight="400px" 
+                    [tableStyle]="{ 'min-width': '50rem' }">
+                
+                    <ng-template pTemplate="caption">
+                        <div style="display: flex;">
+
+                            <div style="text-align: left">
+                                <input 
+                                pInputText 
+                                type="text" 
+                                (input)="filterGlobal($event)" 
+                                placeholder="Buscar" />
+                            </div>
+
+
+                            <div style="text-align: end; width: 50%;">
+                                <p-button 
+                                    icon="pi pi-external-link" 
+                                    label="Export csv" 
+                                    (click)="customExportCSV(dt)" />
+                            </div>
+                    
+                            
+
+                        </div>
+                        
+                    </ng-template>
+                
+                    
+                    
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                            <th style="width:10%">NoNomina</th>
+                            <th style="width:10%" >Nombre</th>
+                            <th style="width:10%">NombrePuesto</th>
+                            <th style="width:10%">NombreDepartamento</th>
+                            <th style="width:10%">Asistencia</th>
+                            <th><p-columnFilter type="boolean" field="Asistencia" /></th>
+                            
+                                    
+                                
+                        </ng-template>
+                        <ng-template pTemplate="body" let-capacitacion>
+                            <tr>
+                                <td>{{capacitacion.NoNomina}}</td>
+                                <td>{{capacitacion.Nombre + ' '+capacitacion.Apellidos}}</td>
+                                <td>{{capacitacion.NombrePuesto}}</td>
+                                <td>{{capacitacion.NombreDepartamento}}</td>
+                                <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': capacitacion.Asistencia, 'text-red-500 pi-times-circle': !capacitacion.Asistencia }"></i>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                            </div>
+
+
+
+
+
+
   </ng-container>
 
 
+  <!--MOSTRAR TODAS LAS CAPACITACIONES QUE HAY-->
   <ng-container *ngIf="programacionConsulta.length <= 0">
     <mat-accordion *ngIf="capacitaciones.length > 0;">
         <mat-expansion-panel *ngFor="let capacitacion of capacitaciones">

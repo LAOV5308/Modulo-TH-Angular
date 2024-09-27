@@ -29,6 +29,7 @@ export interface CapacitacionProgramada {
   Color: string;
   Evaluacion: boolean;
   Horas: number;
+  Cerrado: boolean;
 }
 
 

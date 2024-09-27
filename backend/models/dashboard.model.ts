@@ -62,7 +62,12 @@ export interface D_SumaIncidenciasPorDepartamento{
 export interface D_CambiosPorDepartamento{
     NombreDepartamentoAnterior: string;
     CantidadCambios: number;
-    
+}
+
+
+export interface D_HorasCapacitacionDepartamento{
+    NombreDepartamento: string;
+    TotalHoras: number;
 }
 
 

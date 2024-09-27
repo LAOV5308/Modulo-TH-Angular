@@ -81,6 +81,17 @@ export class CapacitacionService {
       catchError(this.handleError)
     );
   }
+
+  //Concluir Capacitacion
+  concluirProgramacionCapacitacion(IdProgramacionCapacitacion: number):Observable<CapacitacionProgramada[]>{
+    const body = {
+      IdProgramacionCapacitacion: IdProgramacionCapacitacion
+    };
+
+    return this.http.post<CapacitacionProgramada[]>(this.apiUrl+'/concluir', body).pipe(
+      catchError(this.handleError)
+    );
+  }
   
   /*
   

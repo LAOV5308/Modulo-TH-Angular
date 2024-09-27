@@ -80,7 +80,9 @@ export class AddBajaComponent implements OnInit{
     //NoNomina: [{value: ' ', disabled: true}, Validators.required],
     FechaSalida: ['', Validators.required],
     TipoBaja: ['', Validators.required],
-    Finiquito: '',
+    Finiquito: [''],
+    FondoAhorro: [''],
+    Motivo: ['', Validators.required],
     ProcesoDemanda: [false],
     FechaInicio: [''],
     FechaFin: ['']
@@ -95,6 +97,12 @@ tipoBaja: string[] = [
   'Involuntaria',
   'Estrategica'
 ];
+
+//Motivo
+motivo: string[] = [
+  'Mejor empleo', 'Inconformidad de Horarios/turnos', 'Inconformidad de Sueldo', 'Relación con compañeros', 
+  'Inconformidad con el trabajo', 'Lejania', 'Cambio de Residencia', 'Enfermedad', 'Situación Personal', 'Matrimonio', 'Otro'
+]
 
 
   ngOnInit(): void {
@@ -123,6 +131,11 @@ tipoBaja: string[] = [
       if(this.Form.value.Finiquito == 0){
         this.Form.patchValue({
           Finiquito: null
+        })
+      }
+      if(this.Form.value.FondoAhorro == 0){
+        this.Form.patchValue({
+          FondoAhorro: null
         })
       }
       //
