@@ -112,6 +112,17 @@ router.get('/calificaciones/:id', async (req, res) => {
     }
 });
 
+router.get('/calificacion/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const sql = await db.getConnection();
+        const result = await sql.query('select * from V_Calificaciones where IdSuscripcionCapacitacion ='+id);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener las calificaciones');
+    }
+});
+
 
 router.post('/programaciones/', async (req, res) => {
     const { NoNomina, IdProgramacionCapacitacion

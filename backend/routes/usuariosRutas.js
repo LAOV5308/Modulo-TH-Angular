@@ -9,7 +9,7 @@ const secretKey = 'your_secret_key'; // Cambia esto por tu clave secreta
 
 // Registro de usuario
 router.post('/register', async (req, res) => {
-    const { NombreUsuario, NombreRol, Password } = req.body;
+    const { NombreUsuario, NombreRol, Password, FechaCreacion } = req.body;
 
     try {
         const pool = await getConnection();
@@ -17,19 +17,39 @@ router.post('/register', async (req, res) => {
             .input('NombreUsuario', sql.VarChar, NombreUsuario)
             .input('NombreRol', sql.VarChar, NombreRol)
             .input('Password', sql.VarChar, Password)
+            .input('FechaCreacion', sql.Date, FechaCreacion)
             .execute('stp_usuario_add');
 
-        res.status(201).send('Usuario registrado con éxito');
+            res.status(201).json({ message: "Usuario Registrado Con exito" });
+
     } catch (err) {
-        res.status(500).send('Error al registrar el usuario: ' + err.message);
+        res.status(500).json({error:'Error al registrar el usuario: ' + err.message});
     }
 });
+
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const pool = await getConnection();
+        await pool.request()
+            .input('IdUsuario', sql.Int, id)
+            .execute('stp_usuario_delete');
+
+            res.status(201).json({ message: "Usuario Eliminado Con exito" });
+
+    } catch (err) {
+        res.status(500).json({error:'Error al registrar el usuario: ' + err.message});
+    }
+});
+
 
 // Obtener usuarios
 router.get('/', async (req, res) => {
     try {
         const pool = await getConnection();
-        const result = await pool.request().query('SELECT * FROM tblUsuarios');
+        const result = await pool.request().query('SELECT * FROM V_Usuarios');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener a los Usuarios: ' + err.message);
@@ -52,8 +72,9 @@ router.post('/login', async (req, res) => {
 
         if (isMatch) {
             const nombreRol = result.recordset[0].NombreRol;
+            const idUsuario = result.recordset[0].IdUsuario;
             ///Creo que aqui se puede tambien obtener el nombre
-            const token = jwt.sign({ NombreUsuario, NombreRol: nombreRol }, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign({ NombreUsuario, NombreRol: nombreRol, IdUsuario: idUsuario }, secretKey, { expiresIn: '1h' });
             //res.status(200).json({ nombreRol });
             res.status(200).json({ token });
         } else {

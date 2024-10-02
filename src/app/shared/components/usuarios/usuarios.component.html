@@ -1,0 +1,82 @@
+<p-toast />
+<p-confirmDialog />
+<div class="container-form">
+  <h2 class="form-title">Crear Usuario <i class="pi pi-users" style="font-size: 2rem"></i> </h2>
+
+  <div class="form-fields">
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Nombre Usuario</mat-label>
+      <input matInput [(ngModel)]="NombreUsuario">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Nombre Rol</mat-label>
+      <mat-select [(ngModel)]="NombreRol">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let value of NombreRoles" [value]="value">{{ value }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Crea Contraseña</mat-label>
+      <input matInput type="password" [(ngModel)]="Password">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Confirmar Contraseña</mat-label>
+      <input matInput type="password" [(ngModel)]="PasswordConfirmar">
+    </mat-form-field>
+
+    
+  </div>
+  <div class="button">
+    <button mat-flat-button color="primary" (click)="impresion()"> <i class="pi pi-save" style="font-size: 1.5rem"></i>Agregar Usuario</button>
+  </div>
+  
+</div>
+
+
+
+<div class="card">
+  <p-table [value]="Usuarios" [tableStyle]="{'min-width': '50rem'}">
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th></th>
+              <th>Nombre</th>
+              <th>Nombre Rol</th>
+              <th>Acciones</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user let-columns="columns">
+          <tr>
+            <td></td>
+              <td>
+                  {{user.NombreUsuario}}
+              </td>
+              <td>
+                  {{user.NombreRol}}
+              </td>
+              <td>
+                <!--<p-button 
+                 
+                    icon="pi pi-pencil" 
+                    class="mr-2" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    severity="success" 
+                    (onClick)="editar(user.IdUsuario)" />-->
+                    
+                <p-button 
+                 
+                    icon="pi pi-trash" 
+                    severity="danger" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    (onClick)="eliminar(user.IdUsuario)" />
+                    
+            </td>
+             
+          </tr>
+      </ng-template>
+  </p-table>
+</div>

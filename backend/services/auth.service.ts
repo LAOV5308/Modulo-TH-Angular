@@ -15,6 +15,7 @@ import { Peticion } from './Service';
 export class AuthService {
   private userRole: string = '';
   private NombreUser: string = '';
+  private IdUsuario: number = 0;
 
   
   private apiUrl = Peticion.apiUrl+'usuarios';
@@ -24,6 +25,27 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { 
 
+  }
+
+
+  getUsers():Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+
+  register(NombreUsuario:string, NombreRol:string, Password:string):Observable<any> {
+    const body = {
+      NombreUsuario:NombreUsuario,
+      NombreRol: NombreRol,
+      Password: Password,
+      FechaCreacion: new Date()
+    };
+
+    return this.http.post<any>(this.apiUrl+'/register', body);
+    
+  }
+
+  deleteUser(IdUser: number): Observable<any> {
+    return this.http.delete(this.apiUrl+'/'+IdUser);
   }
 
 
@@ -48,6 +70,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
+    
     if (this.isLocalStorageAvailable()) {
       return localStorage.getItem('token');
     }
@@ -57,6 +80,7 @@ export class AuthService {
   getUserRole(): string | null {
     
     const token = this.getToken();
+    console.log(token);
     if (token) {
       const decoded: any = jwtDecode(token);
       this.userRole = decoded.NombreRol;
@@ -73,7 +97,17 @@ export class AuthService {
       return this.NombreUser;
     }
     return null;
+  }
 
+  getIdUser(): number | null{
+    const token = this.getToken();
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.IdUsuario = decoded.IdUsuario;
+      console.log(this.IdUsuario);
+      return this.IdUsuario;
+    }
+    return null;
   }
   
   logout(): void {

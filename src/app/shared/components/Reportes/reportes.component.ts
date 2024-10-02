@@ -46,7 +46,10 @@ import 'moment/locale/es';
 import { BajasService } from '../../../../../backend/services/bajas.service';
 import { Baja } from '../../../../../backend/models/baja.model';
 
-
+import { Calificaciones } from '../../../../../backend/models/capacitacion.model';
+import { map, Observable } from 'rxjs';
+import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
+import { Departamento } from '../../../../../backend/models/departamento.model';
 
 @Component({
   selector: 'app-reportes',
@@ -56,7 +59,9 @@ import { Baja } from '../../../../../backend/models/baja.model';
     DropdownModule, ToastModule, RippleModule,MatDatepickerModule
   ],
 
-  providers:[EmpleadosService,VacacionesService, MessageService, IncidenciasService, CapacitacionService, provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'},BajasService],
+  providers:[EmpleadosService, VacacionesService, MessageService, IncidenciasService, CapacitacionService, provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'},BajasService,
+    DepartamentosService
+  ],
   templateUrl: './reportes.component.html',
   styleUrl: './reportes.component.css'
 })
@@ -65,6 +70,7 @@ export class ReportesComponent implements OnInit{
   empleados: Empleado[]=[];
   empleadosActive: Empleado[]=[];
   empleadosInactive: Empleado[]=[];
+  calificaciones: Calificaciones[] = [];
   bajas: Baja[]=[];
   showempleados: boolean = false;
   showVacaciones: boolean = false;
@@ -72,7 +78,7 @@ export class ReportesComponent implements OnInit{
   showCapacitacion: boolean = false;
   showCapacitaciones: boolean = false;
   opcionSeleccionada: string | undefined;
-  opciones:string[]=['-', 'Empleados', 'Empleados Activos', 'Empleados Inactivos'];
+  opciones:string[]=['-', 'Empleados', 'Empleados Activos', 'Empleados Bajas'];
   FormEmpleados: FormGroup;
   FormVacaciones: FormGroup;
   selectedEmpleados!: Empleado;
@@ -80,6 +86,8 @@ export class ReportesComponent implements OnInit{
   vacacionesEmpleadoPeriodo: Vacacion[]=[];
   periodoSeleccionado: string = '2024';
   periodos: string[]=['2022','2023', '2024', '2025', '2026'];
+  departamentos: Departamento[] = [];
+  departamentoSeleccionado: string = '';
   incidencias: Incidencia[]=[];
   capacitacionesEmpleado: CapacitacionesEmpleado[]=[];
   capacitacionesConsultadas: CapacitacionProgramada[]=[];
@@ -96,7 +104,7 @@ export class ReportesComponent implements OnInit{
   
 
 imprimir(){
-  alert('Prueba');
+  alert(this.departamentoSeleccionado);
 }
 
 verEmpleados(){
@@ -115,7 +123,7 @@ filterGlobal(event: Event, field: string) {
 
 
   constructor(private empleadosService:EmpleadosService, private _fb: FormBuilder,public dialog: MatDialog, private vacacionesService: VacacionesService, private messageService: MessageService,
-    private incidenciasService: IncidenciasService, private capacitacionesService: CapacitacionService, private bajasService: BajasService
+    private incidenciasService: IncidenciasService, private capacitacionesService: CapacitacionService, private bajasService: BajasService, private departamentosService: DepartamentosService
   ){
     this.FormEmpleados = this._fb.group({
       Opcion:['']
@@ -223,6 +231,15 @@ this.showCapacitaciones = false;
       }
     })
 
+    this.departamentosService.getDepartamentos().subscribe({
+      next:(data)=>{
+        this.departamentos = data;
+        console.log(data);
+      },
+      error:(err: any)=>{
+      }
+    })
+
     
 
 
@@ -249,7 +266,7 @@ switch (this.FormEmpleados.value.Opcion) {
     this.imprimirEmpleadosActive(consulta);
 
     break;
-  case 'Empleados Inactivos':
+  case 'Empleados Bajas':
     this.imprimirEmpleadosInactive(consulta);
     break;
   default:
@@ -555,20 +572,38 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
       doc.text(`No. Nómina: ${this.selectedEmpleados.NoNomina}`, 14, 36);
       doc.text(`Puesto: ${this.selectedEmpleados.NombrePuesto}`, 14, 42);
       doc.text(`Departamento: ${this.selectedEmpleados.NombreDepartamento}`, 14, 48);
-      doc.text(`Periodo Seleccionado: ${this.periodoSeleccionado}`, 14, 54);
-      if(this.vacacionesEmpleadoPeriodo.length == 0){
-        doc.text('NO CUENTA CON DIAS', 14, 66);
-      }else{
-        doc.text(`Dias Totales: ${this.vacacionesEmpleadoPeriodo[0].DiasVacaciones}`, 14, 60);
-      doc.text(`Dias Disponibles: ${this.vacacionesEmpleadoPeriodo[0].DiasDisponibles}`, 14, 66);
-      doc.text(`Dias Utilizados: ${this.vacacionesEmpleadoPeriodo[0].DiasUtilizados}`, 14, 72);
-      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFont('helvetica');
       
       // Extraer datos de empleados
       
       
       // Añadir un espacio antes de la tabla
       doc.text('Vacaciones:', 14, 78);
+      if(this.vacacionesEmpleadoPeriodo.length == 0){
+        doc.text('NO CUENTA CON DIAS', 140, 66);
+      }else{
+
+        const columns1 = ['Periodo', 'Dias Totales', 'Dias Disponibles', 'Dias Utilizados'];
+        const rows1 = [[this.periodoSeleccionado,this.vacacionesEmpleadoPeriodo[0].DiasVacaciones,this.vacacionesEmpleadoPeriodo[0].DiasDisponibles,this.vacacionesEmpleadoPeriodo[0].DiasUtilizados]];
+
+(doc as any).autoTable({
+        head: [columns1],
+        body: rows1,
+        startY: 60, // Iniciar la tabla después de la información del empleado
+        margin: { top: 10, left: 14, right: 14 },
+        styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+        theme: 'striped', // Estilo de tabla con líneas alternas
+        headStyles: { fillColor: [211,211,211] }, // Color de encabezado de tabla
+      }); 
+
+        /*doc.text(`Dias Totales: ${this.vacacionesEmpleadoPeriodo[0].DiasVacaciones}`, 140, 60);
+      doc.text(`Dias Disponibles: ${this.vacacionesEmpleadoPeriodo[0].DiasDisponibles}`, 140, 66);
+      doc.text(`Dias Utilizados: ${this.vacacionesEmpleadoPeriodo[0].DiasUtilizados}`, 140, 72);*/
+
+
+      }
+     
       
       // Definir columnas de la tabla
       //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
@@ -615,6 +650,7 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
         headStyles: { fillColor: [22, 160, 133] }, // Color de encabezado de tabla
       });
       
+
       // Obtener la fecha y hora actual
       const now = new Date();
       const dateStr = now.toLocaleDateString();
@@ -914,6 +950,7 @@ doc.save(fileName);
       next:(data)=>{
         this.capacitacionesEmpleado = data;
 
+        console.log(this.capacitacionesEmpleado);
 
         const doc = new jsPDF({
           orientation: 'landscape'
@@ -921,7 +958,7 @@ doc.save(fileName);
           // Configurar el estilo del encabezado
           doc.setFontSize(20);
           doc.setFont('helvetica', 'bold');
-          doc.text('Lista de Capacitaciones', 14, 20);
+          doc.text('Lista de Capacitaciones Por Empleado', 14, 20);
           
           // Información del empleado en el encabezado
           doc.setFontSize(12);
@@ -940,7 +977,7 @@ doc.save(fileName);
           
           // Definir columnas de la tabla
           //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
-          const columns = ['Nombre Capacitacion','FechaCapacitacion','Total Horas' ,'Origen', 'Frecuencia', 'Asistencia'];
+          const columns = ['Nombre Capacitacion','FechaCapacitacion','Total Horas' ,'Origen', 'Asistencia', 'Calificacion', 'Comentario'];
           
     
           // Simulación de datos de vacaciones (esto debe ser tu lógica)
@@ -950,9 +987,9 @@ doc.save(fileName);
             capacitacion.FechaInicio.toString().split('T')[0].split('-').reverse().join('/'),
             capacitacion.Horas,
             capacitacion.Origen,
-            capacitacion.Frecuencia,
-            capacitacion.Asistencia ? 'Asistio' : '-' 
-
+            capacitacion.Asistencia ? 'Asistio' : '-',
+            capacitacion.Evaluacion ? capacitacion.Calificacion ? capacitacion.Calificacion:'---': 'N/A',
+            capacitacion.Evaluacion ? capacitacion.Comentario ? capacitacion.Comentario:'---': 'N/A',
             //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
             
         ]);
@@ -1234,6 +1271,10 @@ imprimirConsultaProgramaciones(){
     
   this.capacitacionesService.getsingleProgramaciones(this.capacitacionSeleccionada.IdProgramacionCapacitacion).subscribe({
     next:(data)=>{
+          // Obtener la fecha y hora actual
+          const now = new Date();
+          const dateStr = now.toLocaleDateString();
+          const timeStr = now.toLocaleTimeString();
 
       this.capacitacionesSuscritas = data;
       console.log(this.capacitacionesSuscritas);
@@ -1243,6 +1284,11 @@ imprimirConsultaProgramaciones(){
       const doc = new jsPDF({
         orientation: 'landscape'
       });
+
+
+      doc.setFontSize(10);
+    doc.text(`Fecha de impresión: ${dateStr}`, 220, 6);
+    doc.text(`Hora de impresión: ${timeStr}`, 220, 10);
         // Configurar el estilo del encabezado
         doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
@@ -1252,8 +1298,8 @@ imprimirConsultaProgramaciones(){
         doc.setFontSize(12);
         doc.setFont('helvetica', 'normal');
         doc.text(`Nombre Capacitacion: ${this.capacitacionSeleccionada.NombreCapacitacion}`, 14, 30);
-        doc.text(`Horas: ${this.capacitacionSeleccionada.Horas}`, 14, 36);
-        doc.text(`Persona Imparte: ${this.capacitacionSeleccionada.PersonaImparte}`, 14, 42);
+        doc.text(`Duración de La Capacitación: ${this.capacitacionSeleccionada.Horas} Horas`, 14, 36);
+        doc.text(`Persona Imparte: ${this.capacitacionSeleccionada.PersonaImparte? this.capacitacionSeleccionada.PersonaImparte: ' '}`, 14, 42);
         doc.text(`Dia Estimado: ${this.capacitacionSeleccionada.FechaInicio.toString().split('T')[0].split('-').reverse().join('/')}`, 14, 48);
 
     
@@ -1264,42 +1310,66 @@ imprimirConsultaProgramaciones(){
         
         // Definir columnas de la tabla
         //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
-        const columns = ['No. Nomina','Nombre','Puesto' ,'Departamento', 'Asistencia'];
+        
         
   
-        // Simulación de datos de vacaciones (esto debe ser tu lógica)
-        const rows =  this.capacitacionesSuscritas.map(capacitacion => [
-          //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
-          capacitacion.NoNomina,
-          `${capacitacion.Nombre} ${capacitacion.Apellidos}`,
-          capacitacion.NombrePuesto,
-          capacitacion.NombreDepartamento,
-          capacitacion.Asistencia ? 'Asistio' : '-' 
 
-          //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
-          
-      ]);
+
+        // Simulación de datos de vacaciones (esto debe ser tu lógica)
+        if(!this.capacitacionSeleccionada.Evaluacion){
+          const columns = ['No. Nomina','Nombre','Puesto' ,'Departamento', 'Asistencia', 'Horas', 'Evaluacion'];
+          const rows =  this.capacitacionesSuscritas.map(capacitacion => [
+            //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+            capacitacion.NoNomina,
+            `${capacitacion.Nombre} ${capacitacion.Apellidos}`,
+            capacitacion.NombrePuesto,
+            capacitacion.NombreDepartamento,
+            capacitacion.Asistencia ? 'Asistio' : '-' ,
+            this.capacitacionSeleccionada.Horas,
+            'N/A'
+            //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+        ]);
+
+              // Generar la tabla   
+              (doc as any).autoTable({
+                head: [columns],
+                body: rows,
+                startY: 62, // Iniciar la tabla después de la información del empleado
+                margin: { top: 10, left: 14, right: 14 },
+                styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+                theme: 'striped', // Estilo de tabla con líneas alternas
+                headStyles: { fillColor:  this.capacitacionSeleccionada.Color}, // Color de encabezado de tabla
+              });
+        }else{
+          const columns = ['No. Nomina','Nombre','Puesto' ,'Departamento', 'Asistencia', 'Horas', 'Calificación', 'Comentarios', 'Evaluacion'];
+          const rows =  this.capacitacionesSuscritas.map(capacitacion => [
+            //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
+            capacitacion.NoNomina,
+            `${capacitacion.Nombre} ${capacitacion.Apellidos}`,
+            capacitacion.NombrePuesto,
+            capacitacion.NombreDepartamento,
+            capacitacion.Asistencia ? 'Asistio' : '-' ,
+            this.capacitacionSeleccionada.Horas,
+            capacitacion.Calificacion ? capacitacion.Calificacion:'---',
+            capacitacion.Comentario ? capacitacion.Comentario:'---',
+            capacitacion.Estatus ? 'Aprobo' : 'No Aprobo'
+            //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
+        ]);
+
+              // Generar la tabla   
+              (doc as any).autoTable({
+                head: [columns],
+                body: rows,
+                startY: 62, // Iniciar la tabla después de la información del empleado
+                margin: { top: 10, left: 14, right: 14 },
+                styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
+                theme: 'striped', // Estilo de tabla con líneas alternas
+                headStyles: { fillColor:  this.capacitacionSeleccionada.Color}, // Color de encabezado de tabla
+              });
+
+
+        }
         
-        // Generar la tabla
-        
-        (doc as any).autoTable({
-          head: [columns],
-          body: rows,
-          startY: 62, // Iniciar la tabla después de la información del empleado
-          margin: { top: 10, left: 14, right: 14 },
-          styles: { fontSize: 10, cellPadding: 3 }, // Personalizar el estilo de la tabla
-          theme: 'striped', // Estilo de tabla con líneas alternas
-          headStyles: { fillColor:  this.capacitacionSeleccionada.Color}, // Color de encabezado de tabla
-        });
-        
-        // Obtener la fecha y hora actual
-        const now = new Date();
-        const dateStr = now.toLocaleDateString();
-        const timeStr = now.toLocaleTimeString();
-        doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
-        // Agregar la fecha y hora en la parte inferior del documento
-        doc.text(`Fecha de impresión: ${dateStr}`, 10, 280);
-        doc.text(`Hora de impresión: ${timeStr}`, 10, 290);
         
         
         
@@ -1313,12 +1383,7 @@ imprimirConsultaProgramaciones(){
       console.log('Error', error);
     }
   })
-
-
-  
   }
-
-
 }
 
 

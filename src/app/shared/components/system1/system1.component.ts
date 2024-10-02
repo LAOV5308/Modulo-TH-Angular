@@ -34,7 +34,8 @@ import { StyleClassModule } from 'primeng/styleclass';
 })
 export class System1Component implements OnInit {
 
-  nombre: string | null = '';
+  //nombre: number | null = '';
+  nombre!: string | null;
   sidebarVisible1: boolean = true;
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;

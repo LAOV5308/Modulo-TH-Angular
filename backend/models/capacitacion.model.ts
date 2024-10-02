@@ -46,6 +46,9 @@ export interface CapacitacionesSuscripciones {
   Evaluado: boolean;
   Asistencia: boolean;
   Estado: boolean;
+  Calificacion: number;
+  Estatus: boolean;
+  Comentario: string;
 }
 
 export interface Calificaciones {
@@ -61,6 +64,7 @@ export interface Calificaciones {
   Asistio: boolean;
   Estatus: boolean;
   Comentario: string;
+  Evaluado: boolean;
 }
 
 
@@ -79,4 +83,8 @@ export interface CapacitacionesEmpleado {
   PersonaImparte: string;
   FechaInicio: Date;
   Horas: number;
+  Calificacion: number;
+  Comentario: string;
+  Estatus: boolean;
+  Evaluacion: boolean;
 }

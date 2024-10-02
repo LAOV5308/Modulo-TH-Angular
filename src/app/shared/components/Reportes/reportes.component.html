@@ -50,8 +50,25 @@
         </mat-select>
       </mat-form-field>
      <div *ngIf="opcionSeleccionada">
+
+      <mat-form-field style="padding-top: 2px;">
+        <mat-label>Departamentos</mat-label>
+        <mat-select [(value)]="departamentoSeleccionado" (selectionChange)="imprimir()">
+          @for (departamento of departamentos; track departamento) {
+            <mat-option [value]="departamento.NombreDepartamento">{{departamento.NombreDepartamento}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+
       <button (click)="filtro(false)" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>
+
+
+      
+
      </div>
+
+     
   <!--
       <button type="button" (click)="imprimirEmpleados(true)"class="bg-sky-500 text-white px-3 py-2 rounded preview-pdf-btn">Previsualizar PDF</button>
       <button type="submit" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>-->

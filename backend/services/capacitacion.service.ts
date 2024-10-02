@@ -140,6 +140,13 @@ export class CapacitacionService {
     return this.http.get<Calificaciones[]>(this.apiUrl+'/calificaciones/'+id
     );
   }
+
+  getCalificacionYComentario(IdSuscripcionCapacitacion: number): Observable<Calificaciones[]> {
+    return this.http.get<Calificaciones[]>(this.apiUrl+'/calificacion/'+IdSuscripcionCapacitacion
+    );
+  }
+
+
   
   addSuscripcion(data: any):Observable<any>{
     return this.http.post(this.apiUrl+'/programaciones', data).pipe(

@@ -20,6 +20,7 @@ import { ConsultarHistorialComponent } from './shared/components/consultar-histo
 import { UpdateCapacitacionesComponent } from './shared/components/capacitaciones/update-capacitaciones/update-capacitaciones.component';
 import { ReportesComponent } from './shared/components/Reportes/reportes.component';
 import { System1Component } from './shared/components/system1/system1.component';
+import { UsuariosComponent } from './shared/components/usuarios/usuarios.component';
 
 
 export const routes: Routes = [
@@ -47,6 +48,8 @@ export const routes: Routes = [
             { path: 'historial', component: ConsultarHistorialComponent },
             { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent },
             { path: 'reportes', component: ReportesComponent },
+            { path: 'users', component: UsuariosComponent },
+            
         ]
     },
 
