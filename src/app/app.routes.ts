@@ -21,7 +21,7 @@ import { UpdateCapacitacionesComponent } from './shared/components/capacitacione
 import { ReportesComponent } from './shared/components/Reportes/reportes.component';
 import { System1Component } from './shared/components/system1/system1.component';
 import { UsuariosComponent } from './shared/components/usuarios/usuarios.component';
-
+import { RolesComponent } from './shared/components/roles/roles.component';
 
 export const routes: Routes = [
 
@@ -49,6 +49,9 @@ export const routes: Routes = [
             { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent },
             { path: 'reportes', component: ReportesComponent },
             { path: 'users', component: UsuariosComponent },
+            { path: 'roles', component:  RolesComponent},
+            
+
             
         ]
     },

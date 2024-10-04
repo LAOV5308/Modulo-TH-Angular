@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { Peticion } from './Service';
+import { Role } from '../models/user.model';
 
 
 @Injectable({
@@ -32,6 +33,31 @@ export class AuthService {
     return this.http.get<any>(this.apiUrl);
   }
 
+  getRoles():Observable<Role[]> {
+    return this.http.get<Role[]>(this.apiUrl+'/roles');
+  }
+  
+
+  addRole(NombreRole:string, DescripcionRole:string):Observable<any> {
+    const body = {
+      NombreRole: NombreRole,
+      DescripcionRole: DescripcionRole,
+    };
+
+    return this.http.post<any>(this.apiUrl+'/roles', body);
+    
+  }
+
+  addPermisos(IdRole:number, NombreColumna:string):Observable<any> {
+    const body = {
+      IdRole: IdRole,
+      NombreColumna: NombreColumna,
+    };
+
+    return this.http.post<any>(this.apiUrl+'/permisos', body);
+    
+  }
+
   register(NombreUsuario:string, NombreRol:string, Password:string):Observable<any> {
     const body = {
       NombreUsuario:NombreUsuario,
@@ -46,6 +72,10 @@ export class AuthService {
 
   deleteUser(IdUser: number): Observable<any> {
     return this.http.delete(this.apiUrl+'/'+IdUser);
+  }
+
+  deleteRole(IdRole: number): Observable<any> {
+    return this.http.delete(this.apiUrl+'/roles/'+IdRole);
   }
 
 

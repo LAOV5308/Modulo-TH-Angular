@@ -14,12 +14,14 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule, MatButtonModule,  NgFor, NgIf, MatSelectModule,
-    TableModule, TagModule, RatingModule, ButtonModule, ToastModule, ConfirmDialogModule
+    TableModule, TagModule, RatingModule, ButtonModule, ToastModule, ConfirmDialogModule,RouterLink
   ],
   providers:[AuthService, ConfirmationService, MessageService],
   templateUrl: './usuarios.component.html',
@@ -40,8 +42,6 @@ export class UsuariosComponent implements OnInit{
 
   ngOnInit(): void {
   this.IdUserActive = this.usuarioService.getIdUser();
-  console.log(this.IdUserActive);
-
   this.usuarioService.getUsers().subscribe({
     next:(data: any)=>{
       this.Usuarios = data;
@@ -80,7 +80,24 @@ alert('Llena campos');
 
   editar(IdUsuario: number){
     if(IdUsuario == this.IdUserActive){
-      alert('No se Puede Hermano');
+      this.messageService.add({ severity: 'error', summary: 'Usuario En Uso', detail: 'Usuario en Uso', life: 3000 });
+    }else{
+      this.confirmationService.confirm({
+        message: 'Quieres Editar el Usuario?',
+        header: 'Confirmación',
+        icon: 'pi pi-info-circle',
+        rejectButtonStyleClass:"p-button-text",
+        accept: () => {
+          
+              this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Usuario Editado con Exito', life: 3000 });
+            
+
+            
+        },
+        reject: () => {
+            //this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
     }
 
   }
@@ -98,7 +115,7 @@ alert('Llena campos');
           this.usuarioService.deleteUser(IdUsuario).subscribe({
             next:(resp: any) =>{
               this.ngOnInit();
-              this.messageService.add({ severity: 'info', summary: 'Eliminado', detail: 'Usuario Eliminado', life: 3000 });
+              this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Usuario Eliminado', life: 3000 });
             },
             error:(error: any) =>{
               console.log(error);

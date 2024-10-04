@@ -20,8 +20,9 @@
 
 <button mat-button [matMenuTriggerFor]="menuCapacitaciones" style="background-color:rgb(30, 188, 255); color: aliceblue; margin-left: 10px;"><mat-icon>menu</mat-icon>Capacitaciones</button>
 <mat-menu #menuCapacitaciones="matMenu">
-  <button mat-menu-item (click)="openCapacitacion()" >Capacitaciones Por Empleado</button>
+  
   <button mat-menu-item (click)="openCapacitaciones()">Participantes por Capacitacion</button>
+  <button mat-menu-item (click)="openCapacitacion()" >Capacitaciones Por Empleado</button>
   <!--<button mat-menu-item>Empleados Inactivos</button>-->
 </mat-menu> 
 <!--<button mat-button (click)="openCapacitaciones()" style="background-color:rgb(30, 188, 255); color: aliceblue; margin-left: 10px;"><mat-icon>menu</mat-icon>Historial</button>-->
@@ -31,7 +32,11 @@
   <button mat-menu-item>Empleados Activos</button>
   <button mat-menu-item>Empleados Inactivos</button>
 </mat-menu>  -->
+
+
+
       <span class="example-spacer"></span>
+      
 </mat-toolbar>
 
 
@@ -49,19 +54,22 @@
           <mat-option *ngFor="let value of opciones" [value]="value">{{ value }}</mat-option>
         </mat-select>
       </mat-form-field>
+
      <div *ngIf="opcionSeleccionada">
+
+      
 
       <mat-form-field style="padding-top: 2px;">
         <mat-label>Departamentos</mat-label>
-        <mat-select [(value)]="departamentoSeleccionado" (selectionChange)="imprimir()">
+        <mat-select [(value)]="departamentoSeleccionado" (selectionChange)="reiniciarEmpleados()">
+          <mat-option>-</mat-option>
           @for (departamento of departamentos; track departamento) {
-            <mat-option [value]="departamento.NombreDepartamento">{{departamento.NombreDepartamento}}</mat-option>
+            <mat-option  [value]="departamento.NombreDepartamento">{{departamento.NombreDepartamento}}</mat-option>
           }
         </mat-select>
       </mat-form-field>
 
-
-      <button (click)="filtro(false)" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>
+     <!-- <button (click)="filtro(false)" type="button" class="bg-sky-500 text-white px-3 py-2 rounded">Descargar PDF</button>-->
 
 
       
@@ -89,7 +97,7 @@
     <h2 style="color: rgb(11, 137, 205);">Reporte De Vacaciones</h2>
     <!--<p>Impresion de Reportes</p>
     <button (click)="impresion()">Impresion</button>-->
-
+    
   
     
     <div class="card">
@@ -112,7 +120,7 @@
           <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <h5 class="m-0">Empleados</h5>
-
+               
                 <label for="periodo">Selecciona un Periodo: </label>
                 <br>
                                 
@@ -370,12 +378,15 @@
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
 
+    <div class="button-consultar" style="padding-left: 17% ; padding-bottom: 2rem;">
       <button mat-flat-button color="primary" (click)="consultarCapacitaciones()" >Consultar</button>
+    </div>
+      
   
     
 
-      <mat-form-field>
-        <mat-label>Capacitaciones</mat-label>
+      <mat-form-field style="width: 55%;">
+        <mat-label>Capacitaciones Disponibles</mat-label>
 
         <!--<mat-select formControlName="Opcion" (selectionChange)="filtro(true)" [disabled]="false">
           <mat-option *ngFor="let value of opciones" [value]="value">{{ value }}</mat-option>
@@ -388,6 +399,18 @@
         </mat-select>
 
       </mat-form-field>
+
+
+      <mat-form-field style="width: 55%;">
+        <mat-label>Selecciona un Departamento</mat-label>
+        <mat-select [(value)]="departamentoSeleccionado" (selectionChange)="imprimirConsultaProgramaciones()" [disabled]="btnSeleccionarCapacitacion">
+          <mat-option>-</mat-option>
+          @for (departamento of departamentos; track departamento) {
+            <mat-option  [value]="departamento.NombreDepartamento">{{departamento.NombreDepartamento}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
 
     <!--<p>Impresion de Reportes</p>
     <button (click)="impresion()">Impresion</button>-->

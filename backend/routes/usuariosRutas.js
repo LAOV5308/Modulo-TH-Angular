@@ -27,6 +27,82 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// Obtener usuarios
+router.get('/roles', async (req, res) => {
+    try {
+        const pool = await getConnection();
+        const result = await pool.request().query('select * from tblRoles where EstadoRole = 1');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener a los Roles: ' + err.message);
+    }
+});
+
+// Obtener usuarios
+router.delete('/roles/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const pool = await getConnection();
+        await pool.request()
+            .input('IdRole', sql.Int, id)
+            .execute('stp_role_delete');
+
+            res.status(201).json({ message: "Role Eliminado Con exito" });
+
+    } catch (err) {
+        res.status(500).json({error:'Error al eliminar el Role: ' + err.message});
+    }
+});
+
+
+// Agregar Roles
+router.post('/roles', async (req, res) => {
+    const { NombreRole, DescripcionRole } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+            request.input('NombreRole', sql.VarChar, NombreRole)
+            request.input('DescripcionRole', sql.VarChar, DescripcionRole)
+            request.output('IdRole', sql.Int)
+            const result = await request.execute('stp_role_add');
+            
+         // Obtener el valor de la salida (output)
+         const IdRole = result.output.IdRole;
+        //const result = await request.execute('stp_prueba_add');
+
+        // Responder con el ID generado o existente
+        res.status(201).json({ 
+            message: "Agregado al Rol con éxito",
+            IdRole
+        });
+            
+    } catch (err) {
+        res.status(500).json({error:'Error al registrar el rol: ' + err.message});
+    }
+});
+
+
+router.post('/permisos', async (req, res) => {
+    const { IdRole, NombreColumna } = req.body;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+            request.input('IdRole', sql.Int, IdRole)
+            request.input('NombreColumna', sql.VarChar, NombreColumna)
+            const result = await request.execute('stp_Roles_addPermisos');
+            
+        // Responder con el ID generado o existente
+        res.status(201).json({ 
+            message: "Agregado Los permisos con éxito"});
+            
+    } catch (err) {
+        res.status(500).json({error:'Error al registrar Los permisos el rol: ' + err.message});
+    }
+});
+
 
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
@@ -84,6 +160,9 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Error al iniciar sesión: ' + err.message);
     }
 });
+
+
+
 
 
 

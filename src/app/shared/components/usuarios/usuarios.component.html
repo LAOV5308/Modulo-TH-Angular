@@ -30,7 +30,8 @@
     
   </div>
   <div class="button">
-    <button mat-flat-button color="primary" (click)="impresion()"> <i class="pi pi-save" style="font-size: 1.5rem"></i>Agregar Usuario</button>
+    <button mat-flat-button color="primary" (click)="impresion()" style="margin-left: 20px;"> <i class="pi pi-save" style="font-size: 1.5rem"></i>Agregar Usuario</button>
+    <button mat-flat-button color="accent" [routerLink]="['/system/roles']" style="margin-left: 20px;"> <i class="pi pi-address-book" style="font-size: 1.5rem"></i>Agregar Roles</button>
   </div>
   
 </div>
@@ -38,7 +39,12 @@
 
 
 <div class="card">
-  <p-table [value]="Usuarios" [tableStyle]="{'min-width': '50rem'}">
+  <p-table [value]="Usuarios" [tableStyle]="{'min-width': '50rem'}"
+  [paginator]="true"
+      [rows]="10"
+      styleClass="p-datatable-striped" 
+      [rowsPerPageOptions]="[10, 20, 30]"
+      >
       <ng-template pTemplate="header" let-columns>
           <tr>
             <th></th>
@@ -57,14 +63,13 @@
                   {{user.NombreRol}}
               </td>
               <td>
-                <!--<p-button 
-                 
+                <p-button 
                     icon="pi pi-pencil" 
                     class="mr-2" 
                     [rounded]="true" 
                     [outlined]="true" 
                     severity="success" 
-                    (onClick)="editar(user.IdUsuario)" />-->
+                    (onClick)="editar(user.IdUsuario)" />
                     
                 <p-button 
                  

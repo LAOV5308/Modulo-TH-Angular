@@ -12,6 +12,8 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
   //return true;
   
   const userRole = authService.getUserRole();
+  console.log(userRole);
+  
   if (authService.isLoggedIn() && userRole === expectedRole) {
     return true;
   }

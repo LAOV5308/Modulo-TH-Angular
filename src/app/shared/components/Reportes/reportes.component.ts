@@ -103,9 +103,7 @@ export class ReportesComponent implements OnInit{
 
   
 
-imprimir(){
-  alert(this.departamentoSeleccionado);
-}
+
 
 verEmpleados(){
   console.log(this.selectedEmpleados);
@@ -147,6 +145,12 @@ filterGlobal(event: Event, field: string) {
   }
 
   openEmpleados(){
+    this.departamentoSeleccionado = '';
+    this.FormEmpleados.setValue({
+      Opcion:['']
+    });
+    this.opcionSeleccionada = undefined;
+    this.ngOnInit();
 this.showempleados = true;
 //Ocultar
 this.showVacaciones = false;
@@ -157,6 +161,8 @@ this.showCapacitaciones = false;
   }
 
   openVacaciones(){
+    this.ngOnInit();
+   
     this.showVacaciones = true;
 //Ocultar
 this.showempleados = false;
@@ -167,6 +173,7 @@ this.showCapacitaciones = false;
 
 
   openIncidencias(){
+    this.ngOnInit();
     this.showIncidencias = true;
 //Ocultar
 this.showempleados = false;
@@ -176,6 +183,8 @@ this.showCapacitaciones = false;
   }
 
   openCapacitacion(){
+    this.departamentoSeleccionado = '';
+    this.ngOnInit();
     this.showCapacitacion = true;
     //OCULTAR
     this.showIncidencias = false;
@@ -185,6 +194,8 @@ this.showCapacitaciones = false;
   }
 
   openCapacitaciones(){
+    this.departamentoSeleccionado = '';
+    this.ngOnInit();
     this.showCapacitaciones = true;
     //OCULTAR
     this.showIncidencias = false;
@@ -194,11 +205,23 @@ this.showCapacitaciones = false;
   }
 
 
+
   ngOnInit(): void {
+    //this.reiniciarEmpleados();
+    
+    ///AQUI OBTENGO TODOS LOS DATOS
+    this.departamentosService.getDepartamentos().subscribe({
+      next:(data)=>{
+        this.departamentos = data;
+      },
+      error:(err: any)=>{
+      }
+    })
+
+    
     this.empleadosService.getEmpleadosAll().subscribe({
       next:(data)=>{
         this.empleados = data;
-        console.log(this.empleados);
       },
       error:(err: any)=>{
       }
@@ -207,7 +230,6 @@ this.showCapacitaciones = false;
     this.empleadosService.getEmpleados().subscribe({
       next:(data)=>{
         this.empleadosActive = data;
-        console.log(this.empleadosActive);
       },
       error:(err: any)=>{
       }
@@ -216,7 +238,6 @@ this.showCapacitaciones = false;
     this.empleadosService.getEmpleadosInactive().subscribe({
       next:(data)=>{
         this.empleadosInactive = data;
-        console.log(this.empleadosInactive);
       },
       error:(err: any)=>{
       }
@@ -225,7 +246,6 @@ this.showCapacitaciones = false;
     this.bajasService.getAllBajas().subscribe({
       next:(data)=>{
         this.bajas = data;
-        console.log(data);
       },
       error:(err: any)=>{
       }
@@ -234,24 +254,98 @@ this.showCapacitaciones = false;
     this.departamentosService.getDepartamentos().subscribe({
       next:(data)=>{
         this.departamentos = data;
-        console.log(data);
+        
       },
       error:(err: any)=>{
       }
     })
 
-    
-
 
   }
 
+
+  reiniciarEmpleados(){
+    this.empleadosService.getEmpleadosAll().subscribe({
+      next:(data)=>{
+        this.empleados = data;
+          //AQUI PARA FILTRAR
+      if(this.departamentoSeleccionado){
+        this.empleados = this.empleados.filter(
+          empleado => empleado.NombreDepartamento === this.departamentoSeleccionado
+        );
+      }
+        this.filtro(true);
+      },
+      error:(err: any)=>{
+      }
+    })
+
+    this.empleadosService.getEmpleados().subscribe({
+      next:(data)=>{
+        this.empleadosActive = data;
+
+         //AQUI PARA FILTRAR
+      if(this.departamentoSeleccionado){
+        this.empleadosActive = this.empleadosActive.filter(
+          empleado => empleado.NombreDepartamento === this.departamentoSeleccionado
+        );
+      }
+
+
+        this.filtro(true);
+      },
+      error:(err: any)=>{
+      }
+    })
+
+    this.empleadosService.getEmpleadosInactive().subscribe({
+      next:(data)=>{
+        this.empleadosInactive = data;
+          //AQUI PARA FILTRAR
+      if(this.departamentoSeleccionado){
+        this.empleadosInactive = this.empleadosInactive.filter(
+          empleado => empleado.NombreDepartamento === this.departamentoSeleccionado
+        );
+      }
+        this.filtro(true);
+      },
+      error:(err: any)=>{
+      }
+    })
+
+    this.bajasService.getAllBajas().subscribe({
+      next:(data)=>{
+        this.bajas = data;
+          //AQUI PARA FILTRAR
+      if(this.departamentoSeleccionado){
+        this.bajas = this.bajas.filter(
+          bajas => bajas.NombreDepartamento === this.departamentoSeleccionado
+        );
+      }
+        
+        this.filtro(true);
+      },
+      error:(err: any)=>{
+      }
+    })
+
+
+    //this.filtro(true);
+
+  }
+
+
+
   filtro(consulta: boolean){
     
+
 
 if(this.FormEmpleados.value.Opcion){
 
   this.opcionSeleccionada = this.FormEmpleados.value.Opcion;
   console.log(this.opcionSeleccionada);
+  console.log(this.departamentoSeleccionado);
+
   /*
   console.log(this.Form.value.Opcion);
   alert(this.Form.value.Opcion);*/
@@ -303,7 +397,12 @@ switch (this.FormEmpleados.value.Opcion) {
     doc.text(`Hora de impresión: ${timeStr}`, 220, 10);
     // Agregar título
     doc.setFontSize(16);
-    doc.text('Lista de Todos los Empleados', 14, 22);
+    if(this.departamentoSeleccionado){
+      doc.text('Lista de Todos los Empleados - Departamento: '+this.departamentoSeleccionado, 14, 22);
+    }else{
+      doc.text('Lista de Todos los Empleados', 14, 22);
+    }
+    
 
     // Definir columnas de la tabla
     const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso','Antiguedad','Estatus'];
@@ -363,7 +462,11 @@ switch (this.FormEmpleados.value.Opcion) {
       });
       // Agregar título
       doc.setFontSize(16);
-      doc.text('Lista de Empleados Activos', 14, 22);
+      if(this.departamentoSeleccionado){
+        doc.text('Lista de Todos los Empleados Activos - Departamento: '+this.departamentoSeleccionado, 14, 22);
+      }else{
+        doc.text('Lista de Todos los Empleados Activos', 14, 22);
+      }
   
       // Definir columnas de la tabla
       const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso', 'Antiguedad'];
@@ -424,7 +527,11 @@ switch (this.FormEmpleados.value.Opcion) {
       });
       // Agregar título
       doc.setFontSize(16);
-      doc.text('Lista de Empleados Dados de Bajas', 14, 22);
+      if(this.departamentoSeleccionado){
+        doc.text('Lista de Empleados Dados de Bajas - Departamento: '+this.departamentoSeleccionado, 14, 22);
+      }else{
+        doc.text('Lista de Empleados Dados de Bajas', 14, 22);
+      }
   
       // Definir columnas de la tabla
       const columns = ['No. Nomina','Nombre Completo', 'Puesto', 'Departamento', 'Edad', 'Fecha Ingreso', 'Fecha Salida', 'Antiguedad','Finiquito', 'Fondo de Ahorro', 'Motivo'];
@@ -1277,7 +1384,15 @@ imprimirConsultaProgramaciones(){
           const timeStr = now.toLocaleTimeString();
 
       this.capacitacionesSuscritas = data;
-      console.log(this.capacitacionesSuscritas);
+
+      //AQUI PARA FILTRAR
+      if(this.departamentoSeleccionado){
+        this.capacitacionesSuscritas = this.capacitacionesSuscritas.filter(
+          capacitacion => capacitacion.NombreDepartamento === this.departamentoSeleccionado
+        );
+      }
+      
+      //console.log(this.capacitacionesSuscritas);
       //this.capacitacionesEmpleado = data;
 
 
@@ -1290,9 +1405,15 @@ imprimirConsultaProgramaciones(){
     doc.text(`Fecha de impresión: ${dateStr}`, 220, 6);
     doc.text(`Hora de impresión: ${timeStr}`, 220, 10);
         // Configurar el estilo del encabezado
-        doc.setFontSize(20);
+        doc.setFontSize(17);
         doc.setFont('helvetica', 'bold');
-        doc.text(`Lista de Participantes: ${this.capacitacionSeleccionada.NombreCapacitacion}`, 14, 20);
+        if(this.departamentoSeleccionado){
+          doc.text(`Lista de Participantes Capacitacion: ${this.capacitacionSeleccionada.NombreCapacitacion} - Departamento: ${this.departamentoSeleccionado}`, 14, 20);
+          
+        }else{
+          doc.text(`Lista de Participantes Capacitacion: ${this.capacitacionSeleccionada.NombreCapacitacion}`, 14, 20);
+        }
+        
         
         // Información del empleado en el encabezado
         doc.setFontSize(12);
