@@ -112,6 +112,8 @@ export class UpdateCapacitacionesComponent implements OnInit{
       }
     });
 
+    
+
     this.capacitacionesService.getFechasProgramaciones(this.idProgramacionCapacitacion).subscribe({
       next: (data) => {
         this.capacitacionesprogramadas = data;

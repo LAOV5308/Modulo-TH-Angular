@@ -8,6 +8,7 @@ import { IncidenciasComponent } from './shared/components/incidencias/incidencia
 import { DatosCapacitacionCatalogoComponent } from './shared/components/capacitacionesCatalogo/datos-capacitacion-catalogo/datos-capacitacion-catalogo.component';
 import { LoginComponent } from './shared/components/Login/login.component';
 import { authGuard } from './auth/Guards/auth.guard';
+import { roleGuard } from './auth/Guards/role.guard';
 import { ConsultarEmpleadoComponent } from './shared/components/empleados/consultar-empleado/consultar-empleado.component';
 import { DashboardComponent } from './shared/components/dashboard/dashboard.component';
 import { AddReclutamientoComponent } from './shared/components/reclutamiento/add-reclutamiento/add-reclutamiento.component';
@@ -22,36 +23,39 @@ import { ReportesComponent } from './shared/components/Reportes/reportes.compone
 import { System1Component } from './shared/components/system1/system1.component';
 import { UsuariosComponent } from './shared/components/usuarios/usuarios.component';
 import { RolesComponent } from './shared/components/roles/roles.component';
+import { RoleeditarComponent } from './shared/components/roleeditar/roleeditar.component';
+
+
 
 export const routes: Routes = [
 
-    { path: 'data', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard] },
-    
-    
+    /*{ path: 'admin', component: DatosCapacitacionCatalogoComponent, canActivate: [authGuard], data:{
+        role:'Admin'
+    } },*/
+
     { path: 'system', component: System1Component, canActivate: [authGuard],
         children: [
-            { path: 'empleados', component: EmpleadosComponent },
-            { path: 'dashboard', component: DashboardComponent },
-            { path: 'incidencias', component: IncidenciasComponent },
-            { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent },
-            { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent },
-            { path: 'consultarcapacitaciones', component: ConsultarCapacitacionesComponent },
-            { path: 'puestos', component: PuestoComponentComponent },
-            { path: 'departamentos', component: ComponentDepartamentoComponent },
-            { path: 'addEmpleado', component: AddEmpleadoComponent },
-            { path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent },
-            { path: 'consultarEmpleado/:NoNomina', component: ConsultarEmpleadoComponent },
-            { path: 'addreclutamiento', component: AddReclutamientoComponent },
-            { path: 'solicitudes', component: DatosReclutamientoComponent },
-            { path: 'consultarvacaciones', component: VacacionesComponent },
-            { path: 'agregarvacacion', component: VacacionaddComponent },
-            { path: 'historial', component: ConsultarHistorialComponent },
-            { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent },
-            { path: 'reportes', component: ReportesComponent },
-            { path: 'users', component: UsuariosComponent },
-            { path: 'roles', component:  RolesComponent},
-            
-
+            { path: 'empleados', component: EmpleadosComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'} },
+            { path: 'dashboard', component: DashboardComponent, canActivate: [roleGuard], data:{acceder: 'Dashboard'}},
+            { path: 'incidencias', component: IncidenciasComponent, canActivate: [roleGuard], data:{acceder: 'Incidencias'}},
+            { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
+            { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
+            { path: 'consultarcapacitaciones', component: ConsultarCapacitacionesComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
+            { path: 'puestos', component: PuestoComponentComponent, canActivate: [roleGuard], data:{acceder: 'Puestos'}},
+            { path: 'departamentos', component: ComponentDepartamentoComponent, canActivate: [roleGuard], data:{acceder: 'Departamentos'}},
+            { path: 'addEmpleado', component: AddEmpleadoComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'}},
+            { path: 'updateEmpleado/:NoNomina', component: UpdateEmpleadoComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'}},
+            { path: 'consultarEmpleado/:NoNomina', component: ConsultarEmpleadoComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'}},
+            { path: 'addreclutamiento', component: AddReclutamientoComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'}},
+            { path: 'solicitudes', component: DatosReclutamientoComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'}},
+            { path: 'consultarvacaciones', component: VacacionesComponent, canActivate: [roleGuard], data:{acceder: 'Vacaciones'}},
+            { path: 'agregarvacacion', component: VacacionaddComponent, canActivate: [roleGuard], data:{acceder: 'Vacaciones'}},
+            { path: 'historial', component: ConsultarHistorialComponent, canActivate: [roleGuard], data:{acceder: 'HistorialEmpleados'}},
+            { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
+            { path: 'reportes', component: ReportesComponent, canActivate: [roleGuard], data:{acceder: 'Reportes'}},
+            { path: 'users', component: UsuariosComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
+            { path: 'roles', component:  RolesComponent,canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
+            { path: 'updaterole/:IdRole', component: RoleeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             
         ]
     },

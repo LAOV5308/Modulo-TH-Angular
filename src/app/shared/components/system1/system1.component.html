@@ -14,21 +14,21 @@
             </div>
             <div class="overflow-y-auto">
                 <ul class="list-none p-3 m-0">
-                    <li *ngIf="isAdmin()">
+                    <li *ngIf="usuario[0].ConsultarEmpleados || usuario[0].HistorialEmpleados || usuario[0].Incidencias || usuario[0].Vacaciones || usuario[0].Dashboard">
                         <div pRipple pStyleClass="@next" enterClass="hidden" enterActiveClass="slidedown" leaveToClass="hidden" leaveActiveClass="slideup" class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple">
                             <span class="font-medium">Talento Humano</span>
                             <i class="pi pi-chevron-down"></i>
                         </div>
                         <ul class="list-none p-0 m-0 overflow-hidden">
                             <li >
-                              <li>
+                              <li *ngIf="usuario[0].ConsultarCapacitaciones">
                                   <a pRipple [routerLink]="['/system/empleados']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                       <mat-icon>supervised_user_circle</mat-icon>
                                       <!--<i class="pi pi-home mr-2"></i>-->
                                       <span class="font-medium">Consultar Empleados</span>
                                   </a>
                               </li>
-                              <li>
+                              <li *ngIf="usuario[0].HistorialEmpleados">
                                   <a pRipple [routerLink]="['/system/historial']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                       <mat-icon>person_pin</mat-icon>
                                       <span class="font-medium">Historial Empleados</span>
@@ -56,20 +56,20 @@
                                     </li>
                                 </ul>
                             </li>-->
-                            <li>
+                            <li  *ngIf="usuario[0].Incidencias">
                                 <a pRipple [routerLink]="['/system/incidencias']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                     <mat-icon>event_note</mat-icon>
                                     <span class="font-medium">Incidencias</span>
                                 </a>
                             </li>
-                            <li >
+                            <li *ngIf="usuario[0].Vacaciones">
                               <a pRipple [routerLink]="['/system/consultarvacaciones']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                   <mat-icon>calendar_today</mat-icon>
                                   <span class="font-medium">Vacaciones</span>
                               </a>
                           </li>
                           
-                            <li>
+                            <li *ngIf="usuario[0].Dashboard">
                                 <a pRipple [routerLink]="['/system/dashboard']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                     <mat-icon>dashboard</mat-icon>
                                     <span class="font-medium">DashBoard</span>
@@ -79,7 +79,7 @@
                     </li>
 
                     
-                    <li *ngIf="isCapacitaciones()">
+                    <li *ngIf="usuario[0].ConsultarCapacitaciones">
                         <div pRipple pStyleClass="@next" enterClass="hidden" enterActiveClass="slidedown" leaveToClass="hidden" leaveActiveClass="slideup" class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple">
                             <span class="font-medium">Capacitaciones</span>
                             <i class="pi pi-chevron-down"></i>
@@ -102,7 +102,7 @@
                                     
                                 </ul>
                             </li>-->
-                            <li>
+                            <li *ngIf="usuario[0].ConsultarCapacitaciones">
                               <a pRipple [routerLink]="['/system/consultarcapacitaciones']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                   <mat-icon>date_range</mat-icon>
                                   <span class="font-medium">Consultar Capacitaciones</span>
@@ -118,25 +118,25 @@
                         </ul>
                     </li>
 
-                    <li *ngIf="isAdmin()">
+                    <li *ngIf="usuario[0].Departamentos || usuario[0].Puestos || usuario[0].Usuarios">
                       <div pRipple pStyleClass="@next" enterClass="hidden" enterActiveClass="slidedown" leaveToClass="hidden" leaveActiveClass="slideup" class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple">
                           <span class="font-medium">Catalogo</span>
                           <i class="pi pi-chevron-down"></i>
                       </div>
                       <ul class="list-none p-0 m-0 overflow-hidden">
-                          <li>
+                          <li *ngIf="usuario[0].Departamentos">
                               <a pRipple [routerLink]="['/system/departamentos']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                   <mat-icon>business</mat-icon>
                                   <span class="font-medium">Departamentos</span>
                               </a>
                           </li>
-                          <li>
+                          <li *ngIf="usuario[0].Puestos">
                               <a pRipple [routerLink]="['/system/puestos']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                   <mat-icon>list_alt</mat-icon>
                                   <span class="font-medium">Puestos</span>
                               </a>
                           </li>
-                          <li>
+                          <li *ngIf="usuario[0].Usuarios">
                             <a pRipple [routerLink]="['/system/users']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                 <mat-icon>perm_identity</mat-icon>
                                 <span class="font-medium">Usuarios</span>
@@ -146,13 +146,13 @@
                   </li>
 
       
-                    <li *ngIf="isAdmin()">
+                    <li *ngIf="usuario[0].Reportes">
                       <div pRipple pStyleClass="@next" enterClass="hidden" enterActiveClass="slidedown" leaveToClass="hidden" leaveActiveClass="slideup" class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple">
                           <span class="font-medium">Reportes</span>
                           <i class="pi pi-chevron-down"></i>
                       </div>
                       <ul class="list-none p-0 m-0 overflow-hidden">
-                          <li>
+                          <li *ngIf="usuario[0].Reportes">
                               <a pRipple [routerLink]="['/system/reportes']" class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
                                   <mat-icon>chrome_reader_mode</mat-icon>
                                   <span class="font-medium"> Reportes</span>

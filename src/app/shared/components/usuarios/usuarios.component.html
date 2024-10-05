@@ -9,11 +9,13 @@
       <input matInput [(ngModel)]="NombreUsuario">
     </mat-form-field>
 
+ 
     <mat-form-field appearance="fill" class="form-input">
       <mat-label>Nombre Rol</mat-label>
-      <mat-select [(ngModel)]="NombreRol">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let value of NombreRoles" [value]="value">{{ value }}</mat-option>
+      <mat-select [(ngModel)]="IdRole" name="food">
+        @for (role of roles; track role) {
+          <mat-option [value]="role.IdRole">{{role.NombreRole}}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
@@ -60,7 +62,7 @@
                   {{user.NombreUsuario}}
               </td>
               <td>
-                  {{user.NombreRol}}
+                  {{user.NombreRole}}
               </td>
               <td>
                 <p-button 

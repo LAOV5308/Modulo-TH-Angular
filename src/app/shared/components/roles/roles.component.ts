@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';// Importante para manejar la navegación
 
 @Component({
   selector: 'app-roles',
@@ -73,7 +74,9 @@ export class RolesComponent implements OnInit{
 
 
 
-  constructor(private usuariosService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService){
+  constructor(private usuariosService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService,
+    private router: Router
+  ){
    
 
   }
@@ -196,6 +199,12 @@ export class RolesComponent implements OnInit{
 
     
   }
+
+  
+    editar(IdRole: number){
+      this.router.navigate(['system/updaterole'+'/'+IdRole]);
+    }
+  
 
   eliminar(IdRole: number){
     this.confirmationService.confirm({

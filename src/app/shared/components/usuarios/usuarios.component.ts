@@ -15,7 +15,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RouterLink } from '@angular/router';
-
+import { Role } from '../../../../../backend/models/user.model';
 
 @Component({
   selector: 'app-usuarios',
@@ -30,9 +30,10 @@ import { RouterLink } from '@angular/router';
 export class UsuariosComponent implements OnInit{
   NombreUsuario!: string;
   NombreRoles: string[] = ['Admin', 'Capacitacion'];
-  NombreRol!: string;
+  IdRole!: number;
   Password!: string;
   PasswordConfirmar!:string;
+  roles: Role[] = [];
   Usuarios: Usuario[]=[];
   IdUserActive!: number | null;
 
@@ -53,17 +54,31 @@ export class UsuariosComponent implements OnInit{
 
   })
 
+
+  this.usuarioService.getRoles().subscribe({
+    next:(data: any)=>{
+      this.roles = data;
+    },
+    error:(error: any)=>{
+
+    },
+
+  })
+
+
+
+
   }
 
 
   impresion(){
-    if(!this.Password || !this.PasswordConfirmar || !this.NombreRol || !this.NombreUsuario){
+    if(!this.Password || !this.PasswordConfirmar || !this.IdRole || !this.NombreUsuario){
 alert('Llena campos');
     }else{
       if(this.Password != this.PasswordConfirmar){
         alert('No coinciden contraseñas');
       }else{
-        this.usuarioService.register(this.NombreUsuario, this.NombreRol, this.Password).subscribe({
+        this.usuarioService.register(this.NombreUsuario, this.IdRole, this.Password).subscribe({
           next:(resp: any) =>{
             console.log(resp.message);
             this.ngOnInit();
@@ -137,7 +152,7 @@ alert('Llena campos');
   reiniciar(){
     this.Password = '';
     this.PasswordConfirmar = '';
-    this.NombreRol = '';
+    this.IdRole = 0;
     this.NombreUsuario = '';
 
   }

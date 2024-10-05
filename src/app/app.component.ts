@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';  // Asegúrate de impor
 import { LoginComponent } from './shared/components/Login/login.component';
 import { NgIf } from '@angular/common';
 import { FilterMatchMode,PrimeNGConfig } from 'primeng/api';
+import { InactivityService } from '../../backend/services/inactivity.service';
+
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,7 @@ import { FilterMatchMode,PrimeNGConfig } from 'primeng/api';
     HttpClientModule,
     NgIf
   ],
+  providers:[InactivityService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -24,12 +27,14 @@ import { FilterMatchMode,PrimeNGConfig } from 'primeng/api';
 export class AppComponent implements OnInit {
   title = 'modulo-th';
 
-  constructor(private primengConfig: PrimeNGConfig){
+  constructor(private primengConfig: PrimeNGConfig, private inactivityService: InactivityService){
     this.primengConfig.csp.set({nonce: '...'});
 
   }
   ngOnInit(): void {
-    this.primengConfig.ripple = false;
+    this.primengConfig.ripple = true;
+    // Resetea el temporizador al inicio
+    this.inactivityService.resetTimer();
 
     this.primengConfig.setTranslation({
       accept: 'Aceptar',
@@ -66,9 +71,21 @@ export class AppComponent implements OnInit {
       numeric: [FilterMatchMode.EQUALS, FilterMatchMode.NOT_EQUALS, FilterMatchMode.LESS_THAN, FilterMatchMode.LESS_THAN_OR_EQUAL_TO, FilterMatchMode.GREATER_THAN, FilterMatchMode.GREATER_THAN_OR_EQUAL_TO],
       date: [FilterMatchMode.DATE_IS, FilterMatchMode.DATE_IS_NOT, FilterMatchMode.DATE_BEFORE, FilterMatchMode.DATE_AFTER]
   };
-
+ 
   }
 
+
+   // Captura eventos de movimiento del mouse
+   @HostListener('window:mousemove')
+   @HostListener('window:mousedown')
+   @HostListener('window:keypress')
+   @HostListener('window:touchstart')
+ 
+   refreshUserState(){
+     // Resetea el temporizador cada vez que se detecta actividad del usuario
+     this.inactivityService.resetTimer();
+   }
+ 
   
     
 

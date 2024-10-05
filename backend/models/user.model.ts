@@ -1,7 +1,20 @@
 export interface Usuario {
     IdUsuario: number;
     NombreUsuario: string;
-    NombreRol: string;
+    NombreRole: string;
+    IdRole: number;
+    DescripcionRole: string;
+    EstadoRole: boolean;
+    ConsultarEmpleados: boolean;
+    HistorialEmpleados: boolean;
+    Incidencias: boolean;
+    Vacaciones: boolean;
+    Dashboard: boolean;
+    ConsultarCapacitaciones: boolean;
+    Departamentos: boolean;
+    Puestos: boolean;
+    Usuarios: boolean;
+    Reportes: boolean;
   }
 
 

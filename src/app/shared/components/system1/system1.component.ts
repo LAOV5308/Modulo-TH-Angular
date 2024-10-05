@@ -15,7 +15,7 @@ import { AuthService } from '../../../../../backend/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 
 import { StyleClassModule } from 'primeng/styleclass';
-
+import { Usuario } from '../../../../../backend/models/user.model';
 
 @Component({
   standalone:true,
@@ -36,7 +36,9 @@ export class System1Component implements OnInit {
 
   //nombre: number | null = '';
   nombre!: string | null;
+  IdUser!: number | null;
   sidebarVisible1: boolean = true;
+  usuario:Usuario[] =[];
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
 
@@ -47,10 +49,21 @@ export class System1Component implements OnInit {
     sidebarVisible: boolean = false;
 
   constructor(public dialog: MatDialog,
-    private authService: AuthService) { }
+    private usuarioService: AuthService) { }
 
   ngOnInit() {
-    this.nombre = this.authService.getNombreUser();
+    this.nombre = this.usuarioService.getNombreUser();
+
+    this.IdUser = this.usuarioService.getIdUser();
+
+    this.usuarioService.getUser(this.IdUser).subscribe({
+      next:(data: any) =>{
+        this.usuario = data;
+      },
+      error:(error : any) =>{
+        console.log(error);
+      },
+    })
   }
 
 
@@ -65,7 +78,7 @@ this.sidebarVisible = !this.sidebarVisible;
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Aquí puedes agregar la lógica para manejar el cierre de sesión
-        this.authService.logout();
+        this.usuarioService.logout();
       } else {
         /*
         window.alert('El usuario canceló la acción');*/
@@ -89,21 +102,5 @@ this.sidebarVisible = !this.sidebarVisible;
     this.submenus[menu] = !this.submenus[menu];
 
   }
-
-  isAdmin(): boolean {
-    return this.authService.getUserRole() === 'Admin';
-  }
-
-  isReclutamiento(): boolean {
-    const role = this.authService.getUserRole();
-    return role === 'Admin' || role === 'Reclutamiento';
-  }
-
-  isCapacitaciones(): boolean {
-    const role = this.authService.getUserRole();
-    return role === 'Admin' || role === 'Capacitacion';
-  }
-
-
 
 }

@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { Peticion } from './Service';
-import { Role } from '../models/user.model';
+import { Role, Usuario } from '../models/user.model';
 
 
 @Injectable({
@@ -25,12 +25,14 @@ export class AuthService {
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/usuarios';
 
   constructor(private http: HttpClient, private router: Router) { 
-
   }
 
 
   getUsers():Observable<any> {
     return this.http.get<any>(this.apiUrl);
+  }
+  getUser(IdUser: number | null):Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.apiUrl+'/'+IdUser);
   }
 
   getRoles():Observable<Role[]> {
@@ -58,10 +60,10 @@ export class AuthService {
     
   }
 
-  register(NombreUsuario:string, NombreRol:string, Password:string):Observable<any> {
+  register(NombreUsuario:string, IdRole:number, Password:string):Observable<any> {
     const body = {
       NombreUsuario:NombreUsuario,
-      NombreRol: NombreRol,
+      IdRole: IdRole,
       Password: Password,
       FechaCreacion: new Date()
     };
@@ -92,6 +94,8 @@ export class AuthService {
   }
 
 
+
+
   isLoggedIn(): boolean {
     if (this.isLocalStorageAvailable()) {
       return !!localStorage.getItem('token');
@@ -108,12 +112,12 @@ export class AuthService {
   }
 
   getUserRole(): string | null {
-    
     const token = this.getToken();
     console.log(token);
     if (token) {
       const decoded: any = jwtDecode(token);
-      this.userRole = decoded.NombreRol;
+      this.userRole = decoded.NombreRole;
+      console.log(this.userRole);
       return this.userRole;
     }
     return null;
@@ -159,6 +163,57 @@ export class AuthService {
     } catch {
       return false;
     }
+  }
+
+
+  passConsultarEmpleados(): boolean{
+
+    return false;
+  }
+
+  passHistorialEmpleados(): boolean{
+
+    return false;
+  }
+
+  passIncidencias(): boolean{
+
+    return false;
+  }
+
+  passVacaciones(): boolean{
+
+    return false;
+  }
+
+  passDashboard(): boolean{
+
+    return false;
+  }
+
+  passConsultarCapacitaciones(): boolean{
+
+    return false;
+  }
+
+  passDepartamentos(): boolean{
+
+    return false;
+  }
+
+  passPuestos(): boolean{
+
+    return false;
+  }
+
+  passUsuarios(): boolean{
+
+    return false;
+  }
+
+  passReportes(): boolean{
+
+    return false;
   }
 
 }
