@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';  // Asegúrate de impor
 import { LoginComponent } from './shared/components/Login/login.component';
 import { NgIf } from '@angular/common';
 import { FilterMatchMode,PrimeNGConfig } from 'primeng/api';
-import { InactivityService } from '../../backend/services/inactivity.service';
+//import { InactivityService } from '../../backend/services/inactivity.service';
 
 
 @Component({
@@ -19,22 +19,21 @@ import { InactivityService } from '../../backend/services/inactivity.service';
     HttpClientModule,
     NgIf
   ],
-  providers:[InactivityService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 
 export class AppComponent implements OnInit {
   title = 'modulo-th';
-
-  constructor(private primengConfig: PrimeNGConfig, private inactivityService: InactivityService){
+  
+  constructor(private primengConfig: PrimeNGConfig){
     this.primengConfig.csp.set({nonce: '...'});
 
   }
   ngOnInit(): void {
     this.primengConfig.ripple = true;
     // Resetea el temporizador al inicio
-    this.inactivityService.resetTimer();
+   // this.inactivityService.resetTimer();
 
     this.primengConfig.setTranslation({
       accept: 'Aceptar',
@@ -76,7 +75,7 @@ export class AppComponent implements OnInit {
 
 
    // Captura eventos de movimiento del mouse
-   @HostListener('window:mousemove')
+   /*@HostListener('window:mousemove')
    @HostListener('window:mousedown')
    @HostListener('window:keypress')
    @HostListener('window:touchstart')
@@ -85,7 +84,7 @@ export class AppComponent implements OnInit {
      // Resetea el temporizador cada vez que se detecta actividad del usuario
      this.inactivityService.resetTimer();
    }
- 
+ */
   
     
 
