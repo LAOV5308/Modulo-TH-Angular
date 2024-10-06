@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RouterLink } from '@angular/router';
 import { Role } from '../../../../../backend/models/user.model';
+import { Router } from '@angular/router';// Importante para manejar la navegación
 
 @Component({
   selector: 'app-usuarios',
@@ -37,7 +38,9 @@ export class UsuariosComponent implements OnInit{
   Usuarios: Usuario[]=[];
   IdUserActive!: number | null;
 
-  constructor(private usuarioService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService){
+  constructor(private usuarioService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService,
+    private router: Router
+  ){
 
   }
 
@@ -97,22 +100,7 @@ alert('Llena campos');
     if(IdUsuario == this.IdUserActive){
       this.messageService.add({ severity: 'error', summary: 'Usuario En Uso', detail: 'Usuario en Uso', life: 3000 });
     }else{
-      this.confirmationService.confirm({
-        message: 'Quieres Editar el Usuario?',
-        header: 'Confirmación',
-        icon: 'pi pi-info-circle',
-        rejectButtonStyleClass:"p-button-text",
-        accept: () => {
-          
-              this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Usuario Editado con Exito', life: 3000 });
-            
-
-            
-        },
-        reject: () => {
-            //this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-        }
-    });
+      this.router.navigate(['system/updateuser'+'/'+IdUsuario]);
     }
 
   }

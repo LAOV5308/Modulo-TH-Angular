@@ -201,9 +201,9 @@ export class RolesComponent implements OnInit{
   }
 
   
-    editar(IdRole: number){
-      this.router.navigate(['system/updaterole'+'/'+IdRole]);
-    }
+  editar(IdRole: number){
+    this.router.navigate(['system/updaterole'+'/'+IdRole]);
+  }
   
 
   eliminar(IdRole: number){

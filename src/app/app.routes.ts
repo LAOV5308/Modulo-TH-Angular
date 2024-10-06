@@ -24,6 +24,7 @@ import { System1Component } from './shared/components/system1/system1.component'
 import { UsuariosComponent } from './shared/components/usuarios/usuarios.component';
 import { RolesComponent } from './shared/components/roles/roles.component';
 import { RoleeditarComponent } from './shared/components/roleeditar/roleeditar.component';
+import { UsuarioeditarComponent } from './shared/components/usuarioeditar/usuarioeditar.component';
 
 
 
@@ -54,6 +55,7 @@ export const routes: Routes = [
             { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
             { path: 'reportes', component: ReportesComponent, canActivate: [roleGuard], data:{acceder: 'Reportes'}},
             { path: 'users', component: UsuariosComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
+            { path: 'updateuser/:IdUser', component: UsuarioeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             { path: 'roles', component:  RolesComponent,canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             { path: 'updaterole/:IdRole', component: RoleeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             

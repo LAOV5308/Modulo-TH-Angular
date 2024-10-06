@@ -130,13 +130,6 @@ export class RoleeditarComponent implements OnInit {
     this.checkReporte = this.selectedReporte.length == this.reportes.length;
   }
 
-  agregar(){
-
-  }
-  eliminar(idUser: number){
-
-  }
-
 
 
 }

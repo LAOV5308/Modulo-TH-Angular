@@ -6,65 +6,6 @@
 
 
 <mat-tab-group>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">list</mat-icon>
-      Roles
-    </ng-template>
-
-    <div class="card">
-      <p-table 
-      [paginator]="true"
-      [rows]="5"
-      [rowsPerPageOptions]="[5, 10, 20]"
-      [value]="roles" 
-      [tableStyle]="{'min-width': '50rem'}"
-      >
-          <ng-template pTemplate="header" let-columns>
-              <tr>
-                <th></th>
-                  <th style="width: 30%;">Nombre Role</th>
-                  <th style="width: 30%;">Descripcion Role</th>
-                  <th style="width: 30%;">Acciones</th>
-              </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-role let-columns="columns">
-              <tr>
-                <td></td>
-                  <td>
-                      {{role.NombreRole}}
-                  </td>
-                  <td>
-                      {{role.DescripcionRole}}
-                  </td>
-                  <td>
-                  <p-button 
-                     
-                        icon="pi pi-pen-to-square" 
-                        class="mr-2" 
-                        [rounded]="true" 
-                        [outlined]="true" 
-                        severity="success"  />
-                        
-                    <p-button 
-                        icon="pi pi-trash" 
-                        severity="danger" 
-                        [rounded]="true" 
-                        [outlined]="true" 
-                        (onClick)="eliminar(role.IdRole)"
-                         />
-                        
-                </td>
-                 
-              </tr>
-          </ng-template>
-      </p-table>
-    </div>
-    
-    
-
-
-  </mat-tab>
 
   <mat-tab>
     <ng-template mat-tab-label>
@@ -202,9 +143,7 @@
   
           </mat-expansion-panel>
         </mat-accordion>
-        <div class="button">
-          <button mat-flat-button color="primary" (click)="agregar()" style="margin: 20px;"> <i class="pi pi-save" style="font-size: 1.5rem"></i>Agregar Rol</button>
-        </div>
+       
   
   
       

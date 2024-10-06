@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 })
 export class InactivityService {
   private timeoutId: any;
-  //MediaHora de Inactividad
-  private readonly timeLimit: number = 1800000; // 1 hora en milisegundos 3600000 
+  //15 minutos de Inactividad 
+  private readonly timeLimit: number = 900000 ; // 1 hora en milisegundos 3600000 
 
   constructor(private router: Router, private ngZone: NgZone) {}
 

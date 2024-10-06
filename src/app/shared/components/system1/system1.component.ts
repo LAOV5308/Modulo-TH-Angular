@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit , HostListener, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -16,6 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { StyleClassModule } from 'primeng/styleclass';
 import { Usuario } from '../../../../../backend/models/user.model';
+import { InactivityService } from '../../../../../backend/services/inactivity.service';
+
 
 @Component({
   standalone:true,
@@ -28,7 +30,7 @@ import { Usuario } from '../../../../../backend/models/user.model';
     FormsModule,
     SidebarModule, ButtonModule, RippleModule, AvatarModule,
     NgIf, RouterModule],
-    providers:[AuthService],
+    providers:[AuthService, InactivityService],
   templateUrl: './system1.component.html',
   styleUrls: ['./system1.component.css']
 })
@@ -49,7 +51,7 @@ export class System1Component implements OnInit {
     sidebarVisible: boolean = false;
 
   constructor(public dialog: MatDialog,
-    private usuarioService: AuthService) { }
+    private usuarioService: AuthService, private inactiveservice: InactivityService) { }
 
   ngOnInit() {
     this.nombre = this.usuarioService.getNombreUser();
@@ -64,6 +66,8 @@ export class System1Component implements OnInit {
         console.log(error);
       },
     })
+
+    this.inactiveservice.resetTimer();
   }
 
 
@@ -102,5 +106,17 @@ this.sidebarVisible = !this.sidebarVisible;
     this.submenus[menu] = !this.submenus[menu];
 
   }
+
+
+    // Captura eventos de movimiento del mouse
+    @HostListener('window:mousemove')
+    @HostListener('window:mousedown')
+    @HostListener('window:keypress')
+    @HostListener('window:touchstart')
+  
+    refreshUserState(){
+      // Resetea el temporizador cada vez que se detecta actividad del usuario
+      this.inactiveservice.resetTimer();
+    }
 
 }
