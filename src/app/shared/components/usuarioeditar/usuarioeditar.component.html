@@ -1,1 +1,41 @@
-<p>usuarioeditar works!</p>
+<p-toast (onClose)="cerrarDialogo()" />
+<p-confirmDialog />
+<div class="container-form">
+  <h2 class="form-title">Actualizar Usuario <i class="pi pi-file-edit" style="font-size: 2rem"></i> </h2>
+
+  <div class="form-fields">
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Nombre Usuario</mat-label>
+      <input matInput [(ngModel)]="NombreUsuario">
+    </mat-form-field>
+
+ 
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Nombre Rol</mat-label>
+      <mat-select [(ngModel)]="IdRole" name="food">
+        @for (role of roles; track role) {
+          <mat-option [value]="role.IdRole">{{role.NombreRole}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+</div>
+
+    <div class="form-fields">
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Crea Nueva Contraseña</mat-label>
+      <input matInput type="password" [(ngModel)]="Password">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-input">
+      <mat-label>Confirma Contraseña</mat-label>
+      <input matInput type="password" [(ngModel)]="PasswordConfirmar">
+    </mat-form-field>
+
+    
+  </div>
+  <div class="button">
+    <button mat-flat-button color="primary" (click)="actualizar()" style="margin-left: 20px;"> <i class="pi pi-user-edit" style="font-size: 1.5rem"></i>Actualizar Usuario</button>
+    
+  </div>
+  
+</div>

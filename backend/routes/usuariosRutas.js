@@ -40,6 +40,88 @@ router.get('/roles', async (req, res) => {
     }
 });
 
+
+// Obtener usuarios
+router.get('/roles/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const pool = await getConnection();
+        const result = await pool.request().query('select * from tblRoles where EstadoRole = 1 and IdRole = '+id
+        );
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error al obtener a los Roles: ' + err.message);
+    }
+});
+
+
+//Actualizar Role
+router.put('/roles/:id', async (req, res) => {
+    const { id } = req.params;
+    const {NombreRole, DescripcionRole} = req.body;
+
+    try {
+        const pool = await getConnection();
+        await pool.request()
+            .input('IdRole', sql.Int, id)
+            .input('NombreRole', sql.VarChar, NombreRole)
+            .input('DescripcionRole', sql.VarChar, DescripcionRole)
+            .execute('stp_role_update');
+
+            res.status(201).json({ message: "Role Actualizado Con exito" });
+    } catch (err) {
+        res.status(500).send('Error al actualizar el Role: ' + err.message);
+    }
+});
+
+
+// Actualizar usuario Con Contraseña
+router.put('/user/:id', async (req, res) => {
+    const { id} = req.params;
+    const { NombreUsuario, IdRole, Password} = req.body;
+
+    try {
+     
+        const pool = await getConnection();
+        await pool.request()
+            .input('IdUsuario', sql.Int, id)
+            .input('NombreUsuario', sql.VarChar, NombreUsuario)
+            .input('IdRole', sql.Int, IdRole)
+            .input('Password', sql.VarChar, Password)
+            .execute('stp_usuario_update');
+
+            res.status(201).json({ message: "Usuario Actualizado Con exito" });
+
+    } catch (err) {
+        res.status(500).json({error:'Error al actualizar el usuario: ' + err.message});
+    }
+});
+
+
+// Actualizar usuario Sin Contraseña
+router.put('/usersc/:id', async (req, res) => {
+    const { id} = req.params;
+    const { NombreUsuario, IdRole} = req.body;
+
+    try {
+     
+        const pool = await getConnection();
+        await pool.request()
+            .input('IdUsuario', sql.Int, id)
+            .input('NombreUsuario', sql.VarChar, NombreUsuario)
+            .input('IdRole', sql.Int, IdRole)
+            .execute('stp_usuario_updatesc');
+
+            res.status(201).json({ message: "Usuario Actualizado Con exito" });
+
+    } catch (err) {
+        res.status(500).json({error:'Error al actualizar el usuario: ' + err.message});
+    }
+});
+
+
+
+
 // Obtener usuarios
 router.delete('/roles/:id', async (req, res) => {
     const { id } = req.params;

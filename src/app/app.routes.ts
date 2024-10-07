@@ -55,7 +55,7 @@ export const routes: Routes = [
             { path: 'updateCapacitacion/:IdProgramacionCapacitacion', component: UpdateCapacitacionesComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
             { path: 'reportes', component: ReportesComponent, canActivate: [roleGuard], data:{acceder: 'Reportes'}},
             { path: 'users', component: UsuariosComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
-            { path: 'updateuser/:IdUser', component: UsuarioeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
+            { path: 'updateuser', component: UsuarioeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             { path: 'roles', component:  RolesComponent,canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             { path: 'updaterole/:IdRole', component: RoleeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             

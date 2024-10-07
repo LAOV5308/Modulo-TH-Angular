@@ -18,6 +18,7 @@
         }
       </mat-select>
     </mat-form-field>
+  
 
     <mat-form-field appearance="fill" class="form-input">
       <mat-label>Crea Contraseña</mat-label>
@@ -33,7 +34,7 @@
   </div>
   <div class="button">
     <button mat-flat-button color="primary" (click)="impresion()" style="margin-left: 20px;"> <i class="pi pi-save" style="font-size: 1.5rem"></i>Agregar Usuario</button>
-    <button mat-flat-button color="accent" [routerLink]="['/system/roles']" style="margin-left: 20px;"> <i class="pi pi-address-book" style="font-size: 1.5rem"></i>Agregar Roles</button>
+    <button mat-flat-button color="accent" [routerLink]="['/system/roles']" style="margin-left: 20px;"> <i class="pi pi-address-book" style="font-size: 1.5rem"></i>Roles</button>
   </div>
   
 </div>
@@ -71,7 +72,8 @@
                     [rounded]="true" 
                     [outlined]="true" 
                     severity="success" 
-                    (onClick)="editar(user.IdUsuario)" />
+                   (onClick)="openDialog(user.IdUsuario)"
+                     />
                     
                 <p-button 
                  
@@ -87,3 +89,12 @@
       </ng-template>
   </p-table>
 </div>
+
+
+
+<!----EDITAR USUARIO   (onClick)="editar(user.IdUsuario)" -->
+
+
+
+
+

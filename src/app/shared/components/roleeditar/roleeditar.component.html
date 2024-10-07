@@ -1,19 +1,16 @@
-<p-toast />
+<p-toast (onClose)="regresar()"/>
 <p-confirmDialog />
 
 
-<button mat-flat-button color="primary" [routerLink]="['/system/users']" style="margin: 20px;"> <i class="pi pi-arrow-left" style="font-size: 1.5rem"></i>Regresar a Usuarios</button>
+<button mat-flat-button color="primary" [routerLink]="['/system/roles']" style="margin: 20px;"> <i class="pi pi-arrow-left" style="font-size: 1.5rem"></i>Regresar a Roles</button>
 
 
-<mat-tab-group>
-
-  <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">enhanced_encryption</mat-icon>
-      Agregar Nuevo Rol
+      Editar Rol
     </ng-template>
     <div class="container-form">
-      <h2 class="form-title">Crear Nuevo Rol <i class="pi pi-address-book" style="font-size: 2rem"></i> </h2>
+      <h2 class="form-title">Editar Rol <i class="pi pi-address-book" style="font-size: 2rem"></i> </h2>
     
       <div class="form-fields">
         <mat-form-field appearance="fill" class="form-input">
@@ -144,15 +141,9 @@
           </mat-expansion-panel>
         </mat-accordion>
        
-  
+        <div class="button">
+          <button mat-flat-button color="primary" (click)="actualizar()" style="margin: 20px;"> <i class="pi pi-pen-to-square" style="font-size: 1.5rem"></i>Actualizar Rol</button>
+        </div>
   
       
     </div>
-
-
-
-  </mat-tab>
-
-</mat-tab-group>
-
-

@@ -20,6 +20,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';// Importante para manejar la navegación
 
 
 @Component({
@@ -35,10 +36,12 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
   styleUrl: './roleeditar.component.css'
 })
 export class RoleeditarComponent implements OnInit {
-  
+  Role: Role[] = [];
+
   NombreRole: string = '';
   DescripcionRole: string = '';
   IdRole!: number;
+  
   roles:Role[] = [];
 
 
@@ -51,6 +54,7 @@ export class RoleeditarComponent implements OnInit {
   selectedCapacitaciones: any[] = [];
   selectedCatalogo: any[] = [];
   selectedReporte: any[] = [];
+
 
   talentoHumano: any[] = [
       { name: 'Consultar Empleados', key: 'ConsultarEmpleados' },
@@ -77,7 +81,7 @@ export class RoleeditarComponent implements OnInit {
 
 
   constructor(private usuariosService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, private router: Router
   ){
 
   }
@@ -91,6 +95,23 @@ export class RoleeditarComponent implements OnInit {
     });
     
     console.log(this.IdRole);
+
+    this.usuariosService.getRole(this.IdRole).subscribe({
+      next:(data: any) => {
+        this.Role = data;
+
+        this.NombreRole = this.Role[0].NombreRole;
+        this.DescripcionRole = this.Role[0].DescripcionRole;
+        
+        this.iniciarSeleccion();
+
+
+
+      },
+      error:(error: any) => {
+        console.log(error);
+      },
+    })
   }
 
   nodoTH(){
@@ -130,6 +151,121 @@ export class RoleeditarComponent implements OnInit {
     this.checkReporte = this.selectedReporte.length == this.reportes.length;
   }
 
+
+  iniciarSeleccion(){
+  this.selectedtalentoHumano = this.talentoHumano.filter(cat => {
+    if (cat.key === 'ConsultarEmpleados' && this.Role[0].ConsultarEmpleados) {
+      return true;
+    }
+    if (cat.key === 'HistorialEmpleados' && this.Role[0].HistorialEmpleados) {
+      return true;
+    }
+    if (cat.key === 'Incidencias' && this.Role[0].Incidencias) {
+      return true;
+    }
+    if (cat.key === 'Vacaciones' && this.Role[0].Vacaciones) {
+      return true;
+    }
+    if (cat.key === 'Dashboard' && this.Role[0].Dashboard) {
+      return true;
+    }
+    return false;
+  });
+
+
+  this.selectedCapacitaciones = this.capacitaciones.filter(cat => {
+    if (cat.key === 'ConsultarCapacitaciones' && this.Role[0].ConsultarCapacitaciones) {
+      return true;
+    }
+    return false;
+  });
+
+
+    this.selectedCatalogo = this.catalogos.filter(cat => {
+      if (cat.key === 'Usuarios' && this.Role[0].Usuarios) {
+        return true;
+      }
+      if (cat.key === 'Departamentos' && this.Role[0].Departamentos) {
+        return true;
+      }
+      if (cat.key === 'Puestos' && this.Role[0].Puestos) {
+        return true;
+      }
+      return false;
+    });
+
+
+this.selectedReporte = this.reportes.filter(cat => {
+    if (cat.key === 'Reportes' && this.Role[0].Reportes) {
+      return true;
+    }
+    return false;
+  });
+
+
+
+    this.seleccion();
+
+  }
+
+  actualizar(){
+    this.usuariosService.updateRole(this.IdRole, this.NombreRole, this.DescripcionRole).subscribe({
+      next:(data: any) => {
+
+        this.selectedtalentoHumano.forEach(element => {
+          this.usuariosService.addPermisos(this.IdRole, element.key).subscribe({
+            next:(data: any) => {console.log(data)},
+            error:(error: any) => {
+              console.log(error);
+            }
+          })
+        });
+
+        this.selectedCapacitaciones.forEach(element => {
+          this.usuariosService.addPermisos(this.IdRole, element.key).subscribe({
+            next:(data: any) => {console.log(data)},
+            error:(error: any) => {
+              console.log(error);
+            }
+          })
+        });
+
+
+        this.selectedCatalogo.forEach(element => {
+          this.usuariosService.addPermisos(this.IdRole, element.key).subscribe({
+            next:(data: any) => {console.log(data)},
+            error:(error: any) => {
+              console.log(error);
+            }
+          })
+        });
+
+
+        this.selectedReporte.forEach(element => {
+          this.usuariosService.addPermisos(this.IdRole, element.key).subscribe({
+            next:(data: any) => {console.log(data)},
+            error:(error: any) => {
+              console.log(error);
+            }
+          })
+        });
+
+        this.messageService.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Actualizado Con Exito' , life: 900});
+
+
+        
+
+      },
+      error:(error: any) => {
+        console.log(error);
+      },
+    });
+  }
+
+
+  regresar(){
+    this.router.navigate(['system/roles']);
+  }
 
 
 }

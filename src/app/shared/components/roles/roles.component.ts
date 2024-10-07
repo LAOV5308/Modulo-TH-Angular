@@ -11,7 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
-import { Role } from '../../../../../backend/models/user.model';
+import { Role, Usuario } from '../../../../../backend/models/user.model';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -36,6 +36,8 @@ export class RolesComponent implements OnInit{
   DescripcionRole: string = '';
   IdRole!: number;
   roles:Role[] = [];
+  usuarios: Usuario[] = [];
+  
 
 
  checkTalentoHumano!: boolean;
@@ -86,6 +88,16 @@ export class RolesComponent implements OnInit{
       next:(data: any) =>{
         this.roles = data;
         console.log(this.roles);
+      },
+      error:(error: any) =>{
+        console.log(error);
+
+      }
+    })
+
+    this.usuariosService.getUsers().subscribe({
+      next:(data: any) =>{
+        this.usuarios = data;
       },
       error:(error: any) =>{
         console.log(error);
@@ -184,7 +196,7 @@ export class RolesComponent implements OnInit{
             }
           })
         });
-
+        this.messageService.add({ severity: 'success', summary: 'Agregado', detail: 'Role Agregado Con exito' });
         this.reiniciar();
 
       },
@@ -202,34 +214,42 @@ export class RolesComponent implements OnInit{
 
   
   editar(IdRole: number){
-    this.router.navigate(['system/updaterole'+'/'+IdRole]);
+    this.router.navigate(['system/updaterole/'+IdRole]);
   }
   
 
   eliminar(IdRole: number){
-    this.confirmationService.confirm({
-      message: '¿Estas seguro que quieres eliminar?',
-      header: 'Eliminación',
-      icon: 'pi pi-exclamation-triangle',
-      acceptIcon:"pi pi-ban",
-      rejectIcon:"pi pi-chevron-circle-right",
-      rejectButtonStyleClass:"p-button-text",
-      accept: () => {
-        this.usuariosService.deleteRole(IdRole).subscribe({
-          next:(data: any) =>{
-            this.reiniciar();
-            this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Eliminado Correctamente' });
-          },
-          error:(error: any) =>{
-            console.log(error);
-          }
-        })
-          
-      },
-      reject: () => {
-         
-      }
-  });
+
+    if(this.usuarios.find(usuario => usuario.IdRole === IdRole)){
+      this.messageService.add({ severity: 'warn', summary: 'No Acceder', detail: 'Existen Usuarios con este Role' });
+    }else{
+      this.confirmationService.confirm({
+        message: '¿Estas seguro que quieres eliminar?',
+        header: 'Eliminación',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon:"pi pi-ban",
+        rejectIcon:"pi pi-chevron-circle-right",
+        rejectButtonStyleClass:"p-button-text",
+        accept: () => {
+          this.usuariosService.deleteRole(IdRole).subscribe({
+            next:(data: any) =>{
+              this.reiniciar();
+              this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Eliminado Correctamente' });
+            },
+            error:(error: any) =>{
+              console.log(error);
+            }
+          })
+            
+        },
+        reject: () => {
+           
+        }
+    });
+    }
+
+
+    
 
     
   }

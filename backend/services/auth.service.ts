@@ -35,8 +35,23 @@ export class AuthService {
     return this.http.get<Usuario[]>(this.apiUrl+'/'+IdUser);
   }
 
+  
+
+
   getRoles():Observable<Role[]> {
     return this.http.get<Role[]>(this.apiUrl+'/roles');
+  }
+
+  getRole(IdRole: number):Observable<Role[]> {
+    return this.http.get<Role[]>(this.apiUrl+'/roles/'+IdRole);
+  }
+
+  updateRole(IdRole:number, NombreRole:string, DescripcionRole:string):Observable<any> {
+    const body = {
+      NombreRole: NombreRole,
+      DescripcionRole: DescripcionRole
+    }
+    return this.http.put<any>(this.apiUrl+'/roles/'+IdRole, body);
   }
   
 
@@ -69,6 +84,27 @@ export class AuthService {
     };
 
     return this.http.post<any>(this.apiUrl+'/register', body);
+    
+  }
+
+  updateUser(IdUsuario: number,NombreUsuario:string, IdRole:number, Password:string):Observable<any> {
+    const body = {
+      NombreUsuario:NombreUsuario,
+      IdRole: IdRole,
+      Password: Password
+    };
+
+    return this.http.put<any>(this.apiUrl+'/user/'+IdUsuario, body);
+    
+  }
+
+  updateUserSinContrasena(IdUsuario: number,NombreUsuario:string, IdRole:number):Observable<any> {
+    const body = {
+      NombreUsuario:NombreUsuario,
+      IdRole: IdRole,
+    };
+
+    return this.http.put<any>(this.apiUrl+'/usersc/'+IdUsuario, body);
     
   }
 
