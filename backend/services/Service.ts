@@ -1,6 +1,6 @@
 export const Peticion = {
     production: true,
-    apiUrl: 'http://localhost:3000/'
+    apiUrl: 'http://192.168.0.101:3000/'
   };
 
   
