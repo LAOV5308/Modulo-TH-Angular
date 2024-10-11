@@ -1,6 +1,6 @@
 export const estados: string[] = [
     'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche',
-    'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Ciudad de México', 'Durango',
+    'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Ciudad de México','Distrito Federal', 'Durango', 'Estado de México',
     'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán',
     'Morelos', 'Nayarit', 'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro',
     'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco',
@@ -10,7 +10,7 @@ export const estados: string[] = [
 
   export const estados1: string[] = [
     'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche',
-    'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Ciudad de México', 'Durango',
+    'Chiapas', 'Chihuahua', 'Coahuila', 'Colima', 'Ciudad de México','Distrito Federal', 'Durango', 'Estado de México',
     'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'México', 'Michoacán',
     'Morelos', 'Nayarit', 'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro',
     'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco',
@@ -319,12 +319,16 @@ export const estados: string[] = [
     'Iztacalco',
     'Iztapalapa',
     'La Magdalena Contreras',
+    'La Paz Mexico',
     'Miguel Hidalgo',
     'Milpa Alta',
     'Tláhuac',
     'Tlalpan',
     'Venustiano Carranza',
     'Xochimilco'
+],
+'Distrito Federal': [
+    'Ecatepec',
 ],
 'Durango': [
     'Canatlán',
@@ -367,11 +371,16 @@ export const estados: string[] = [
     'Vicente Guerrero',
     'Nuevo Ideal'
 ],
+'Estado de México': [
+    'Nezahualcóyotl',
+    'Zona metropolitana del valle de México',
+    ' Valle de Toluca', 'Santiago Tianguistenco'
+],
 
     'Guanajuato': [
       'Abasolo', 'Acámbaro', 'Apaseo el Alto', 'Apaseo el Grande', 'Atarjea', 'Celaya', 'Comonfort',
       'Coroneo', 'Cortazar', 'Cuerámaro', 'Doctor Mora', 'Dolores Hidalgo Cuna de la Independencia Nacional', 'Guanajuato',
-      'Huanímaro', 'Irapuato', 'Jaral del Progreso', 'Jerécuaro', 'León', 'Manuel Doblado', 'Moroleón', 'Ocampo', 'Pénjamo',
+      'Huanímaro', 'Irapuato', 'Jaral del Progreso', 'Jerécuaro', 'León', 'Manuel Doblado','Miguel Hidalgo' ,'Moroleón', 'Ocampo', 'Pénjamo','Peruandiro',
       'Pueblo Nuevo', 'Purísima del Rincón', 'Romita', 'Salamanca', 'Salvatierra', 'San Diego de la Unión', 'San Felipe',
       'San Francisco del Rincón', 'San José Iturbide', 'San Luis de la Paz', 'San Miguel de Allende', 'Santa Catarina', 'Santa Cruz de Juventino Rosas',
       'Santiago Maravatío', 'Silao de la Victoria', 'Tarandacuao', 'Tarimoro', 'Tierra Blanca', 'Uriangato', 'Valle de Santiago', 'Victoria',
@@ -635,6 +644,7 @@ export const estados: string[] = [
     'Tepatitlán de Morelos',
     'Tequila',
     'Teuchitlán',
+    'Tijuana',
     'Tizapán el Alto',
     'Tlajomulco de Zúñiga',
     'San Pedro Tlaquepaque',
@@ -843,6 +853,7 @@ export const estados: string[] = [
     'Juárez',
     'Jungapeo',
     'Lagunillas',
+    'La Piedad',
     'Lázaro Cárdenas',
     'Los Reyes',
     'Madero',

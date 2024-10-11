@@ -137,7 +137,7 @@ this.empleados.forEach(element => {
 
 }*/
  
-
+/*
  showNotification() {
   this.show = true;
   setTimeout(() => this.show = false, 1000); // Notificación se oculta después de 3 segundos
@@ -145,9 +145,11 @@ this.empleados.forEach(element => {
   
 }
 
+
 entrar(){
   this.router.navigate(['/system']);
-}
+}*/
+
 
 onSubmit(): void {
   
@@ -168,8 +170,9 @@ onSubmit(): void {
 
         //console.log(this._authService.isLoggedIn());
         //alert(this._authService.getUserRole());
-        
-        this.router.navigate(['/system']);
+        //LLEVAR DIRECTAMENTE AL SYSTEM
+
+        this.router.navigate(['/system/bienvenida']);
         
         
       },

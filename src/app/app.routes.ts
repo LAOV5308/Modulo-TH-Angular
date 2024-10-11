@@ -25,6 +25,7 @@ import { UsuariosComponent } from './shared/components/usuarios/usuarios.compone
 import { RolesComponent } from './shared/components/roles/roles.component';
 import { RoleeditarComponent } from './shared/components/roleeditar/roleeditar.component';
 import { UsuarioeditarComponent } from './shared/components/usuarioeditar/usuarioeditar.component';
+import { BienvenidaComponent } from './shared/components/bienvenida/bienvenida.component';
 
 
 
@@ -36,6 +37,7 @@ export const routes: Routes = [
 
     { path: 'system', component: System1Component, canActivate: [authGuard],
         children: [
+            { path: 'bienvenida', component: BienvenidaComponent, canActivate: [authGuard]},
             { path: 'empleados', component: EmpleadosComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'} },
             { path: 'dashboard', component: DashboardComponent, canActivate: [roleGuard], data:{acceder: 'Dashboard'}},
             { path: 'incidencias', component: IncidenciasComponent, canActivate: [roleGuard], data:{acceder: 'Incidencias'}},

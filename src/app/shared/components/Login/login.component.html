@@ -23,9 +23,12 @@
             </p-iconField>
           </div>
           <div class="card-header">
-            <re-captcha (resolved)="onCaptchaResolved($event)" siteKey="6LeH8fspAAAAALh8ktjGmtZNymfq5U7apn5gxjBv" class="captcha"></re-captcha>
+           
           </div>
-          <button mat-raised-button color="primary" type="submit" [disabled]="!recaptchaResolved">Ingresar</button>
+         <!-- <div class="card-header">
+            <re-captcha (resolved)="onCaptchaResolved($event)" siteKey="6LeH8fspAAAAALh8ktjGmtZNymfq5U7apn5gxjBv" class="captcha"></re-captcha>
+          </div> [disabled]="!recaptchaResolved"-->
+          <button mat-raised-button color="primary" type="submit">Ingresar <i class="pi pi-sign-in"></i></button>
         </form>
       </mat-card-content>
     </mat-card>

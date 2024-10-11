@@ -131,13 +131,26 @@ export class UpdateEmpleadoComponent implements OnInit{
     'Re-ingreso',
   ];
   horariosemanal: string[] = [
-    '6:00 - 14:00',
-    '6:00 - 11:00',
-    '9:00 - 14:00',
-    '9:00 - 17:00',
-    '9:00 - 18:00',
-    '14:00 - 22:00',
-    '22:00 - 6:00'
+    '6:00- 14:00',
+'14:00 -22:00',
+'22:00 -6:00',
+'9:00- 17:00',
+'9:00 - 18:00',
+'6:00 - 14:00',
+'6:00 -11:00',
+'9:00- 14:00',
+'6:00 - A terminar ruta',
+'Según ruta',
+'Mañana noche tarde 1',
+'Rol Jefe de Producción',
+'Mixto',
+'8:00 - 16:00',
+'5:00am - 13:00',
+'7:00am -15:00',
+'Flexible',
+'10:00am - 6:00pm',
+'Diurno',
+'8:00 - 17:00'
   ];
   parentesco: string[] = [
     'Hijo/a',
@@ -147,23 +160,17 @@ export class UpdateEmpleadoComponent implements OnInit{
     'Hermano/a'
   ];
   escolaridad: string[] = [
-    'Sin escolaridad',
-    'Preescolar',
-    'Primaria incompleta',
-    'Primaria completa',
-    'Secundaria incompleta',
-    'Secundaria completa',
-    'Preparatoria o bachillerato incompleto',
-    'Preparatoria o bachillerato completo',
-    'Educación técnica o comercial incompleta',
-    'Educación técnica o comercial completa',
-    'Licenciatura incompleta',
-    'Licenciatura completa',
-    'Maestría incompleta',
-    'Maestría completa',
-    'Doctorado incompleto',
-    'Doctorado completo',
-];
+    "Sin Estudios", 
+    "Primaria", 
+    "Secundaria", 
+    "Preparatoria", 
+    "Universidad", 
+    "Licenciatura", 
+    "Licenciatura trunca", 
+    "Ingenieria", 
+    "Maestria",
+    "TSU"
+  ];
 
 
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 

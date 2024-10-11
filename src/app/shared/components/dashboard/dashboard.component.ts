@@ -208,7 +208,7 @@ Chart.defaults.set('plugins.datalabels', {
 
           //Genero
           switch(element.Sexo){
-            case 'Masculino':
+              case 'Masculino':
               this.Masculino++;
               break;
               case 'Femenino':
