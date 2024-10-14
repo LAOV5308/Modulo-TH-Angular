@@ -318,6 +318,10 @@ export class UpdateEmpleadoComponent implements OnInit{
 
         this.employeeForm.patchValue(this.empleados[0]);
         
+        //Fechas
+        this.employeeForm.patchValue({
+          Ingreso: this.sumarUnDia(this.empleados[0].Ingreso)
+      })
         
     this.employeeForm.patchValue({
       NombreDepartamento: this.empleados[0].IdDepartamento,
@@ -325,7 +329,7 @@ export class UpdateEmpleadoComponent implements OnInit{
         });
 
         this.puestoTemporal = this.empleados[0].NombrePuesto;
-        console.log(this.puestoTemporal);
+        //console.log(this.puestoTemporal);
 
 
 
@@ -491,6 +495,12 @@ export class UpdateEmpleadoComponent implements OnInit{
       this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
     }
 
+}
+
+sumarUnDia(fecha: Date): Date {
+  let nuevaFecha = new Date(fecha);
+  nuevaFecha.setDate(nuevaFecha.getDate() + 1);
+  return nuevaFecha;
 }
 
 

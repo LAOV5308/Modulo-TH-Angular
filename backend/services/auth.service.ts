@@ -140,7 +140,6 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    
     if (this.isLocalStorageAvailable()) {
       return localStorage.getItem('token');
     }
@@ -153,7 +152,6 @@ export class AuthService {
     if (token) {
       const decoded: any = jwtDecode(token);
       this.userRole = decoded.NombreRole;
-      console.log(this.userRole);
       return this.userRole;
     }
     return null;
@@ -174,19 +172,22 @@ export class AuthService {
     if (token) {
       const decoded: any = jwtDecode(token);
       this.IdUsuario = decoded.IdUsuario;
-      console.log(this.IdUsuario);
       return this.IdUsuario;
     }
     return null;
   }
   
   logout(): void {
+    //console.log(localStorage.getItem('token'));
     if (this.isLocalStorageAvailable()) {
+      //localStorage.clear();
       localStorage.removeItem('token');
-      this.userRole = '';
+
       //this.router.navigate(['/login']);
     }
+    //console.log(localStorage.getItem('token'))
     this.router.navigate(['/login']);
+
   }
 
 
@@ -201,55 +202,5 @@ export class AuthService {
     }
   }
 
-
-  passConsultarEmpleados(): boolean{
-
-    return false;
-  }
-
-  passHistorialEmpleados(): boolean{
-
-    return false;
-  }
-
-  passIncidencias(): boolean{
-
-    return false;
-  }
-
-  passVacaciones(): boolean{
-
-    return false;
-  }
-
-  passDashboard(): boolean{
-
-    return false;
-  }
-
-  passConsultarCapacitaciones(): boolean{
-
-    return false;
-  }
-
-  passDepartamentos(): boolean{
-
-    return false;
-  }
-
-  passPuestos(): boolean{
-
-    return false;
-  }
-
-  passUsuarios(): boolean{
-
-    return false;
-  }
-
-  passReportes(): boolean{
-
-    return false;
-  }
 
 }

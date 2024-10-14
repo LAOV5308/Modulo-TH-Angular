@@ -52,7 +52,7 @@ export class UsuariosComponent implements OnInit{
   this.usuarioService.getUsers().subscribe({
     next:(data: any)=>{
       this.Usuarios = data;
-      console.log(this.Usuarios);
+      //console.log(this.Usuarios);
     },
     error:(error: any)=>{
 

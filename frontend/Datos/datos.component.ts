@@ -193,7 +193,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
     'NombreDepartamento',
     'NombrePuesto',
     'Ingreso',
-    'Antiguedad',
+    //'Antiguedad',
     'HorarioSemanal',
     'TipoIngreso',
     //'Sueldo',
@@ -333,9 +333,6 @@ export class DatosComponent implements OnInit, AfterViewInit{
     }
 
   ngOnInit() {
-
-    
-
     //Traer a todos los empleados
     this.empleadosService.getEmpleados().subscribe({
       next: (data) => {
@@ -468,10 +465,16 @@ export class DatosComponent implements OnInit, AfterViewInit{
   
     return resultado || '0 Meses'; // En caso de que los días sean 0
   }
+
+  sumarUnDia(fecha: Date): Date {
+    let nuevaFecha = new Date(fecha);
+    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
+    return nuevaFecha;
+}
   
 
   consultar(idEmpleado: number){
-    this.router.navigate(['system/consultarEmpleado'+'/'+idEmpleado]);
+    this.router.navigate(['system/consultarEmpleado/'+idEmpleado]);
   }
 
   recuperar(NoNomina1: number, NombreEmpleado: string){

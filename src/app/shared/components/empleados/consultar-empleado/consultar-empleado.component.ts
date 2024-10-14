@@ -37,7 +37,7 @@ export class ConsultarEmpleadoComponent implements OnInit{
       this.NoNomina = Number(paramMap.get('NoNomina'));
       }
     });
-    console.log(this.NoNomina);
+   // console.log(this.NoNomina);
     
     this._empleadosService.getEmpleado(this.NoNomina).subscribe({
       next: (data) => {
@@ -52,9 +52,37 @@ export class ConsultarEmpleadoComponent implements OnInit{
       }
       
     });
+    
+  }
 
-    
-    
+  sumarUnDia(fecha: Date): Date {
+    let nuevaFecha = new Date(fecha);
+    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
+    return nuevaFecha;
+}
+
+  dias(dias: number): string {
+    const diasPorAño = 365;
+    const diasPorMes = 30;
+    // Calcula los años y meses
+    const años = Math.floor(dias / diasPorAño);
+    const meses = Math.floor((dias % diasPorAño) / diasPorMes);
+  
+    // Construye el resultado dependiendo de los años y meses
+    let resultado = '';
+  
+    if (años > 0) {
+      resultado += `${años} Año${años > 1 ? 's' : ''}`;
+    }
+  
+    if (meses > 0) {
+      if (años > 0) {
+        resultado += ' ';
+      }
+      resultado += `${meses} Mes${meses > 1 ? 'es' : ''}`;
+    }
+  
+    return resultado || '0 Meses'; // En caso de que los días sean 0
   }
 
 }

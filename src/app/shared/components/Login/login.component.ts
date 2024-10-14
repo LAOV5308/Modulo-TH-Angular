@@ -92,8 +92,15 @@ export class LoginComponent implements OnInit{
 
   ngOnInit() {
 
-    //Eliminar token del sistema
-    this._authService.logout();
+  //Eliminar cualquier token del sistema
+    if (this.isLocalStorageAvailable()) {
+      //localStorage.clear();
+      localStorage.removeItem('token');
+      //this.router.navigate(['/login']);
+    }
+    //this.limpiarlocalstorage();
+    
+    //this._authService.logout();
 
     //Obtener Empleados
     /*this.empleadosService.getEmpleados().subscribe({
@@ -199,5 +206,20 @@ showError() {
   //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
   this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error. Por Favor Checa tu Nombre de Usuario y Contraseña', life: 2000 });
 }
+
+
+
+private isLocalStorageAvailable(): boolean {
+  try {
+    const test = '__test__';
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+
 
 }

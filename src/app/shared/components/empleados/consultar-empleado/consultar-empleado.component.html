@@ -108,7 +108,7 @@
 
 
 <div style="display: flex; justify-content: flex-start;">
-  <button [routerLink]="['/system/empleados']" class="agregar"
+  <button [routerLink]="['/system/empleados']" class="agregar" style="margin: 1rem;"
   mat-raised-button 
   color="primary">
   <mat-icon>keyboard_return</mat-icon>Regresar
@@ -119,7 +119,7 @@
 <ng-container *ngIf="empleado.length > 0">
   <mat-card class="employee-card">
     <mat-card-header>
-      <mat-card-title>{{ empleado[0].Nombre }} {{ empleado[0].Apellidos }}</mat-card-title>
+      <mat-card-title>{{ empleado[0].Apellidos }} {{ empleado[0].Nombre }}</mat-card-title>
       <mat-card-subtitle>{{ empleado[0].NombrePuesto }}   <strong>NoNomina:</strong> {{ empleado[0].NoNomina }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -129,7 +129,7 @@
           <strong>Nivel:</strong> {{ empleado[0].Nivel }}
         </mat-grid-tile>
         <mat-grid-tile>
-          <strong>Id Departamento:</strong> {{ empleado[0].IdDepartamento }}
+          <strong>Departamento: </strong> {{ empleado[0].NombreDepartamento }}
         </mat-grid-tile>
         <mat-grid-tile>
           <strong>Nombre Responsable:</strong> {{ empleado[0].NombreResponsable }}
@@ -138,10 +138,10 @@
           <strong>Tipo Ingreso:</strong> {{ empleado[0].TipoIngreso }}
         </mat-grid-tile>
         <mat-grid-tile>
-          <strong>Ingreso:</strong> {{ empleado[0].Ingreso | date }}
+          <strong>Ingreso:</strong> {{ sumarUnDia(empleado[0].Ingreso) | date: 'dd/MM/yyyy'}}
         </mat-grid-tile>
         <mat-grid-tile>
-          <strong>Antigüedad:</strong> {{ empleado[0].Antiguedad }}
+          <strong>Antigüedad:</strong>{{dias(empleado[0].Antiguedad)}}
         </mat-grid-tile>
         <mat-grid-tile>
           <strong>Horario Semanal:</strong> {{ empleado[0].HorarioSemanal }}

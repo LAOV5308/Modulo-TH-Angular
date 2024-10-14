@@ -32,7 +32,6 @@ import { MatSelectModule } from '@angular/material/select';
 
 
 
-
 @Component({
   selector: 'app-usuarioeditar',
   standalone: true,
@@ -58,6 +57,7 @@ export class UsuarioeditarComponent implements OnInit{
   PasswordConfirmar!:string;
   roles: Role[] = [];
   IdUserActive!: number | null;
+  cambiarContrasena: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<UsuarioeditarComponent>,private usuariosService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService,
     private route: ActivatedRoute, @Inject(MAT_DIALOG_DATA) public data: {IdUser: number}){}
@@ -106,8 +106,20 @@ export class UsuarioeditarComponent implements OnInit{
 
   actualizar(){
     if(this.IdRole || this.NombreUsuario){
-      if(!this.Password || !this.PasswordConfirmar){
-        this.confirmationService.confirm({
+
+      if(!this.cambiarContrasena){
+        this.usuariosService.updateUserSinContrasena(this.IdUser,this.NombreUsuario, this.IdRole).subscribe({
+          next:(resp: any) =>{
+            console.log(resp);
+            this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Usuario Actualizado con Exito', life: 900});
+            this.cambiarContrasena = false;
+          },
+          error:(error: any) =>{
+            console.log(error);
+          },
+        })
+
+        /*this.confirmationService.confirm({
           message: '¿Mantener con la Contraseña Actual Del Usuario?',
           header: 'Confirmacion',
           icon: 'pi pi-exclamation-triangle',
@@ -115,30 +127,21 @@ export class UsuarioeditarComponent implements OnInit{
           rejectIcon:"none",
           rejectButtonStyleClass:"p-button-text",
           accept: () => {
-  
-            this.usuariosService.updateUserSinContrasena(this.IdUser,this.NombreUsuario, this.IdRole).subscribe({
-              next:(resp: any) =>{
-                console.log(resp);
-                this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Usuario Actualizado con Exito', life: 1000});
-              },
-              error:(error: any) =>{
-                console.log(error);
-              },
-            })
+            
           },
           reject: () => {
-  
-
-            
           }
-      }); }else{
+          });
+          */
+       }else{
               if(this.Password != this.PasswordConfirmar){
                 alert('No coinciden contraseñas');
               }else{
                 this.usuariosService.updateUser(this.IdUser,this.NombreUsuario, this.IdRole, this.Password).subscribe({
                   next:(resp: any) =>{
                     console.log(resp);
-                    this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Usuario Actualizado con Exito', life: 1000});
+                    this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Usuario Actualizado con Exito', life: 900});
+                    this.cambiarContrasena = false;
                   },
                   error:(error: any) =>{
                     console.log(error);
