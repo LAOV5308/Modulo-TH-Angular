@@ -1,5 +1,4 @@
 import { Routes, RouterModule} from '@angular/router';
-import { EmpleadosComponent } from './shared/components/empleados/empleados.component';
 import { ComponentDepartamentoComponent } from './shared/components/Departamentos/component-departamento.component';
 import { AddEmpleadoComponent } from './shared/components/empleados/add-empleado/add-empleado.component';
 import { PuestoComponentComponent } from './shared/components/Puestos/puesto-component.component';
@@ -26,7 +25,10 @@ import { RolesComponent } from './shared/components/roles/roles.component';
 import { RoleeditarComponent } from './shared/components/roleeditar/roleeditar.component';
 import { UsuarioeditarComponent } from './shared/components/usuarioeditar/usuarioeditar.component';
 import { BienvenidaComponent } from './shared/components/bienvenida/bienvenida.component';
-
+import { FaltasComponent } from './shared/components/faltas/faltas.component';
+import { ReportesNormativaComponent } from './shared/components/reportes-normativa/reportes-normativa.component';
+import { FaltasdiasComponent } from './shared/components/faltasdias/faltasdias.component';
+import { EmpleadosComponent } from './shared/components/empleados/empleados.component';
 
 
 export const routes: Routes = [
@@ -60,6 +62,11 @@ export const routes: Routes = [
             { path: 'updateuser', component: UsuarioeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             { path: 'roles', component:  RolesComponent,canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
             { path: 'updaterole/:IdRole', component: RoleeditarComponent, canActivate: [roleGuard], data:{acceder: 'Usuarios'}},
+            /*{ path: 'faltas', component: FaltasComponent, canActivate: [roleGuard], data:{acceder: 'Faltas'}},
+            { path: 'faltasdias/:IdFalta', component: FaltasdiasComponent, canActivate: [roleGuard], data:{acceder: 'Faltas'}},*/
+            { path: 'faltas', component: FaltasComponent},
+            { path: 'faltasdias/:IdFalta', component: FaltasdiasComponent},
+            { path: 'reportesnormativa', component: ReportesNormativaComponent, canActivate: [roleGuard], data:{acceder: 'ReportesNormativa'}},
             
         ]
     },

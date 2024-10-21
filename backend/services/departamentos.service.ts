@@ -19,7 +19,7 @@ export class DepartamentosService {
   constructor(private http: HttpClient) { }
 
   addDepartamentos(data: any):Observable<any>{
-    return this.http.post('http://localhost:3000/departamentos', data).pipe(
+    return this.http.post(this.apiUrl, data).pipe(
       catchError(this.handleError)
     );
   }

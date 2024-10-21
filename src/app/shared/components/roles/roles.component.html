@@ -194,6 +194,30 @@
   
   
                 </div>
+
+
+                <div class="division" >
+                  <!---Normativa-->
+                  <div class="titulo">
+                    <p-checkbox 
+                    [(ngModel)]="checkNormativa"
+                    [binary]="true" 
+                    [label]="'Normativa'"
+                    name="group"
+                    (onChange)="nodeNormativa()"
+                    />
+                  </div>
+                  <div *ngFor="let category of normativas" class="field-checkbox" style="margin-left: 30%;">
+                    <p-checkbox 
+                    (onChange)="seleccion()"
+                        [(ngModel)]="selectedNormativa"
+                        [label]="category.name"
+                        name="group"
+                        [value]="category" />
+                  </div>
+                  
+                  
+                                </div>
   
   
   

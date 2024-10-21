@@ -1,0 +1,238 @@
+<p-toast />
+<p-confirmDialog />
+<mat-tab-group>
+    <mat-tab> 
+        <ng-template mat-tab-label>
+            <i class="pi pi-calendar-times" style="font-size: 2rem; color:rgba(90, 252, 144, 0.829)"></i> Agregar Faltas
+          </ng-template>
+          <div class="title">
+            <h1> Faltas <i class="pi pi-calendar-times" style="font-size: 20px;"></i></h1>
+        </div>
+
+        <div class="information">
+          <div style="margin: 1rem;">
+            <button mat-raised-button color="primary" type="button" (click)="agregarForm()" [disabled]="false"><mat-icon>add_circle</mat-icon>Nueva Falta</button>
+          </div>
+
+          <div class="search">
+           
+            
+
+            <mat-form-field color="primary">
+              <mat-label>No. Nomina</mat-label>
+              <input matInput type="number" [(ngModel)]="NoNomina">
+            </mat-form-field>
+            <button mat-fab extended (click)="findEmpleados()" color="primary">
+              <mat-icon>search</mat-icon>
+              Buscar
+            </button>
+          </div>
+
+          <div class="empleado">
+            <mat-chip-listbox>
+              <mat-chip color="primary" selected><strong>No.Nomina:</strong> {{ NoNominaEmpleado }}</mat-chip>
+              <mat-chip color="primary" selected><strong>Nombre:</strong> {{ Nombre }}</mat-chip>
+              <mat-chip color="primary" selected><strong>Puesto:</strong> {{ NombrePuesto }}</mat-chip>
+              <mat-chip color="primary" selected><strong>Departamento:</strong> {{ NombreDepartamento }}</mat-chip>
+            </mat-chip-listbox>
+          </div>
+        </div>
+        
+        <div class="titleD">
+          <h1>Faltas en Proceso <i class="pi pi-file-edit" style="font-size: 20px;"></i></h1>
+        </div>
+
+        <div class="tabla">
+          <p-table 
+          #dt3
+  [value]="faltasabiertos" 
+  [paginator]="true"
+  [rows]="5"
+      [rowsPerPageOptions]="[5,10, 15, 25, 50]"
+
+      [globalFilterFields]="['NoNomina', 'Nombre', 'Apellidos', 'NombreDepartamento', 'Motivo', 'Sancion', 'Estatus', 'NivelSancion']"
+      dataKey="id"
+  styleClass="p-datatable-striped" 
+  [tableStyle]="{'min-width': '50rem'}">
+  <ng-template pTemplate="caption">
+    <div class="flex" >
+        <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+                <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input 
+                pInputText 
+                type="text" 
+                (input)="filterTable3($event)"  
+                placeholder="Busca alguna palabra" />
+        </p-iconField>
+    </div>
+</ng-template>
+
+      <ng-template pTemplate="header">
+          <tr>
+              <th>NoNomina</th>
+              <th>Nombre</th>
+              <th>Departamento</th>
+              <th>Fecha</th>
+              <th>Motivo</th>
+              <th>Sancion</th>
+              <th>Estado</th>
+             <!-- <th>Nivel Sancion</th>-->
+              <th>Dias de Cumplimiento</th>
+              <th>Acciones</th>
+              <th>Concluir</th>
+              
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-falta>
+          <tr>
+              <td>{{falta.NoNomina}}</td>
+              <td>{{falta.Apellidos +' '+ falta.Nombre}}</td>
+              <td>{{falta.NombreDepartamento}}</td>
+              <td>{{falta.FechaFalta.toString().split('T')[0].split('-').reverse().join('/')}}</td>
+              <td>{{falta.Motivo}}</td>
+              <td>{{falta.Sancion}}</td>
+              <td>{{falta.Estatus}}</td>
+              <!--<td>{{falta.NivelSancion}}</td>-->
+              <td>
+                <div *ngIf="falta.HorasExtras">
+                  <p-button 
+                  icon="pi pi-calendar-plus" 
+                  class="mr-2" 
+                  [rounded]="true" 
+                  [outlined]="true" 
+                  severity="info" 
+                  (onClick)="agregarDias(falta.IdFalta)" />
+                </div>
+              </td>
+              <td>
+
+                
+                <p-button 
+                icon="pi pi-trash" 
+                severity="danger" 
+                [rounded]="true" 
+                [outlined]="true" 
+                (onClick)="deletefalta(falta.IdFalta)"
+                />
+                 
+
+            </td>
+            
+              <td>
+                <p-checkbox 
+                inputId="binary" 
+                falseValue="true"
+                (onChange)="cerrar(falta.IdFalta)"
+                />
+              </td>
+             
+          </tr>
+      </ng-template>
+</p-table>
+
+        </div>
+
+
+
+        </mat-tab>
+    <mat-tab>  
+        <ng-template mat-tab-label>
+            <i class="pi pi-inbox" style="font-size: 2rem; color:rgb(0, 195, 255)"></i> Historial de Faltas
+          </ng-template>
+      
+
+<div style="text-align: center;">
+<h1>Historial de Faltas</h1>
+</div>
+
+
+          <div>
+            <p-table 
+            #dt2
+    [value]="faltascerrados" 
+    [paginator]="true"
+    [rows]="5"
+        [rowsPerPageOptions]="[5,10, 15, 25, 50]"
+
+        [globalFilterFields]="['NoNomina', 'Nombre', 'Apellidos', 'NombreDepartamento', 'Motivo', 'Sancion', 'Estatus', 'NivelSancion']"
+        dataKey="id"
+    styleClass="p-datatable-striped" 
+    [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      <div class="flex" >
+          <p-iconField iconPosition="left" class="ml-auto">
+              <p-inputIcon>
+                  <i class="pi pi-search"></i>
+              </p-inputIcon>
+              <input 
+                  pInputText 
+                  type="text" 
+                  (input)="filterTable($event)"  
+                  placeholder="Busca alguna palabra" />
+          </p-iconField>
+      </div>
+  </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th>NoNomina</th>
+                <th>Nombre</th>
+                <th>Departamento</th>
+                <th>Fecha</th>
+                <th>Motivo</th>
+                <th>Sancion</th>
+                <th>Estatus</th>
+                <!-- <th>Nivel Sancion</th>
+                <th>Dias de Cumplimiento</th>
+                <th>Acciones</th>-->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-falta>
+            <tr>
+                <td>{{falta.NoNomina}}</td>
+                <td>{{falta.Apellidos +' '+ falta.Nombre}}</td>
+                <td>{{falta.NombreDepartamento}}</td>
+                <td>{{falta.FechaFalta.toString().split('T')[0].split('-').reverse().join('/')}}</td>
+                <td>{{falta.Motivo}}</td>
+                <td>{{falta.Sancion}}</td>
+                <td>{{falta.Estatus}}</td>
+                <!--<td>{{falta.NivelSancion}}</td>
+                <td>
+                  <div *ngIf="falta.HorasExtras">
+                    <p-button 
+                    icon="pi pi-calendar-plus" 
+                    class="mr-2" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    severity="info" 
+                    (onClick)="agregarDias(falta.IdFalta)" />
+                  </div>
+                </td>
+                
+                <td>
+                  <p-button 
+                   
+                    icon="pi pi-pencil" 
+                    class="mr-2" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    severity="success"  />
+                  <p-button 
+                   
+                      icon="pi pi-trash" 
+                      severity="danger" 
+                      [rounded]="true" 
+                      [outlined]="true" />
+
+              </td>-->
+            </tr>
+        </ng-template>
+</p-table>
+
+          </div>
+        
+    </mat-tab>
+
+  </mat-tab-group>

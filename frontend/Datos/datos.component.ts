@@ -53,23 +53,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { SplitButtonModule } from 'primeng/splitbutton';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import 'moment/locale/es';
 
 
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
 
 @Component({
   selector: 'app-datos',
@@ -93,7 +81,7 @@ export const MY_DATE_FORMATS = {
     CommonModule
   ],
   providers: [EmpleadosService, CoreService,DepartamentosService, PuestosService, MessageService,
-    provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}]
+    provideMomentDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}]
   ,
   templateUrl: './datos.component.html',
   styleUrl: './datos.component.css'
@@ -101,7 +89,6 @@ export const MY_DATE_FORMATS = {
 export class DatosComponent implements OnInit, AfterViewInit{
   NoNomina: number = 0;
   Form: FormGroup;
-
     //Opciones de Eleccion
     sexo: string[] = [
       'Masculino',
@@ -336,6 +323,8 @@ export class DatosComponent implements OnInit, AfterViewInit{
     //Traer a todos los empleados
     this.empleadosService.getEmpleados().subscribe({
       next: (data) => {
+        
+        
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sortActive;
         this.dataSource.paginator = this.paginatorActive;
@@ -348,6 +337,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
 
     this.empleadosService.getEmpleadosInactive().subscribe({
       next: (data) => {
+        
         this.dataInactive = new MatTableDataSource(data);
         this.dataInactive.sort = this.sortInactive;
         this.dataInactive.paginator = this.paginatorInactive;

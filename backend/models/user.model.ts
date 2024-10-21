@@ -15,6 +15,9 @@ export interface Usuario {
     Puestos: boolean;
     Usuarios: boolean;
     Reportes: boolean;
+    //Nuevo
+    Faltas: boolean;
+    ReportesNormativa: boolean;
   }
 
 
@@ -33,4 +36,7 @@ export interface Usuario {
     Puestos: boolean;
     Usuarios: boolean;
     Reportes: boolean;
+    //Nuevo
+    Faltas: boolean;
+    ReportesNormativa: boolean;
   }

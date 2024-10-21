@@ -116,14 +116,14 @@
                   <label for="fechaInicio" class="font-bold block mb-2">Selecciona Dias*</label> 
                   <p-calendar [inline]="true" inputId="fechaInicio" selectionMode="multiple" 
                   [readonlyInput]="true" formControlName="Fecha"
-                  dateFormat="dd/mm/yy" [minDate]="hoy" [(ngModel)]="dates">
+                  dateFormat="dd/mm/yy" [(ngModel)]="dates">
                 </p-calendar>
                 </div>
                <!--formControlName="Fecha"-->
 
                 <div class="small-calendar" *ngIf="selectedFrecuencia !== 'Seleccion de Dias'">
                   <label for="fecharango" class="font-bold block mb-2">Selecciona Dia Inicio y Dia Fin*</label> 
-                  <p-calendar [(ngModel)]="rangeDates" inputId="fecharango" [minDate]="hoy" formControlName="FechaRango"
+                  <p-calendar [(ngModel)]="rangeDates" inputId="fecharango" formControlName="FechaRango"
                 [inline]="true"
                 selectionMode="range" 
                 [readonlyInput]="true" />
@@ -134,7 +134,7 @@
               <div class="small-calendar" >
                 <label for="fechaFin" class="font-bold block mb-2"> Fecha Fin </label>
                 <p-calendar [inline]="true" inputId="fechaFin" formControlName="FechaFin" 
-              dateFormat="dd/mm/yy" [minDate]="fechaStart" />
+              dateFormat="dd/mm/yy" />
               </div>
 
               <div class="small-calendar">

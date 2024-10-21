@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatosComponent } from '../../../../../frontend/Datos/datos.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { MatDialog } from '@angular/material/dialog';
 import { EmpleadosService } from '../../../../../backend/services/empleados.service';
-import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
 
 
 @Component({
@@ -31,18 +29,6 @@ export class EmpleadosComponent implements OnInit{
     
   }
 
-  agregarempleado(){
-   // const dialog = this._dialog.open(CreateEmpleadoComponent);
-    /*
-    dialog.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
-          this.datosDepartamentod.actualizar();
 
-        }
-      },
-    });*/
-
-  }
 
 }

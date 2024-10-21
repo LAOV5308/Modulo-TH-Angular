@@ -1,0 +1,86 @@
+<p-toast />
+<div class="title"><h2>Agregar Nueva Falta</h2>
+</div>
+
+<form [formGroup]="Form" (ngSubmit)="addFalta()">
+    <div class="content">
+        <!---  <div class="row">
+            <mat-form-field color="accent">
+                <mat-label>Nombre Departamento</mat-label>
+                <input matInput type="text" placeholder="T-H" formControlName="NombreDepartamento">
+            </mat-form-field>
+        </div>--->
+
+        <div class="row">
+          <mat-form-field>
+            <mat-label>Fecha Falta</mat-label>
+            <input matInput [matDatepicker]="pickeringreso" formControlName="FechaFalta">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="pickeringreso"></mat-datepicker-toggle>
+            <mat-datepicker #pickeringreso></mat-datepicker>
+          </mat-form-field>  
+        </div> 
+
+        <div class="row">
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Motivo</mat-label>
+            <mat-select formControlName="Motivo">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of Motivo" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Sancion</mat-label>
+            <mat-select formControlName="Sancion">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of Sancion" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+           
+
+        <!--<div class="row">
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Estatus</mat-label>
+            <mat-select formControlName="Estatus">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of Estatus" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="fill" color="primary">
+            <mat-label>Nivel de la Sancion</mat-label>
+            <mat-select formControlName="NivelSancion">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of NivelSancion" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>-->
+        
+    </div>
+    <section class="example-section">
+        <mat-radio-group formControlName="Estatus" color="primary">
+          <mat-radio-button class="example-margin" value="Justificada">Justificada</mat-radio-button>
+          <mat-radio-button class="example-margin" value="Injustificada">Injustificada</mat-radio-button>
+        </mat-radio-group>
+      </section>
+
+    <div class="comentario">
+    <mat-form-field appearance="fill" color="primary" class="comentario1">
+      <mat-label>Comentarios</mat-label>
+      <input matInput formControlName="Comentario">
+    </mat-form-field>
+    </div>
+
+
+    <div class="action">
+      <button mat-raised-button color="primary" type="submit" class="btnGuardar">Guardar</button>
+      <button mat-raised-button color="accent" type="button" (click)="reiniciarValores()">Cancelar</button>
+    </div>
+</form>

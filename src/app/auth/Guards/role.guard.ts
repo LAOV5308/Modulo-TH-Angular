@@ -50,6 +50,12 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
         case 'Reportes':
           hasAccess = authService.isLoggedIn() && UsuarioSeleccionado[0].Reportes;
           break;
+          case 'Faltas':
+          hasAccess = authService.isLoggedIn() && UsuarioSeleccionado[0].Faltas;
+          break;
+        case 'ReportesNormativa':
+          hasAccess = authService.isLoggedIn() && UsuarioSeleccionado[0].ReportesNormativa;
+          break;
         default:
           router.navigate(['/login']);
           return of(false);

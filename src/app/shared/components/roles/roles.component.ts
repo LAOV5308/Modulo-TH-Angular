@@ -44,11 +44,13 @@ export class RolesComponent implements OnInit{
  checkCapacitaciones!: boolean;
  checkCatalogo!: boolean;
  checkReporte!: boolean;
+ checkNormativa!: boolean;
 
   selectedtalentoHumano: any[] = [];
   selectedCapacitaciones: any[] = [];
   selectedCatalogo: any[] = [];
   selectedReporte: any[] = [];
+  selectedNormativa: any[] = [];
 
   talentoHumano: any[] = [
       { name: 'Consultar Empleados', key: 'ConsultarEmpleados' },
@@ -72,7 +74,13 @@ export class RolesComponent implements OnInit{
     { name: 'Reportes', key: 'Reportes' },
   ];
 
+  normativas: any[] = [
+    { name: 'Faltas', key: 'Faltas' },
+    { name: 'Reportes Normativa', key: 'ReportesNormativa' },
+  ];
 
+
+  
 
 
 
@@ -137,6 +145,13 @@ export class RolesComponent implements OnInit{
     }
   };
 
+  nodeNormativa(){
+    if(this.checkNormativa){
+      this.selectedNormativa = this.normativas;
+    }else{
+      this.selectedNormativa = [];
+    }
+  }
 
 
 
@@ -145,13 +160,14 @@ export class RolesComponent implements OnInit{
     this.checkCapacitaciones = this.selectedCapacitaciones.length === this.capacitaciones.length;
     this.checkCatalogo = this.selectedCatalogo.length == this.catalogos.length;
     this.checkReporte = this.selectedReporte.length == this.reportes.length;
+    this.checkNormativa = this.selectedNormativa.length == this.normativas.length;
   }
 
   agregar(){
     if(!this.NombreRole || !this.DescripcionRole){
       this.messageService.add({ severity: 'warn', summary: 'Campos Faltantes', detail: 'Faltan Campos Faltantes (Nombre Usuario y/o Descripción)' });
     }else{
-      if((this.selectedtalentoHumano.length + this.selectedCapacitaciones.length+this.selectedCatalogo.length+this.selectedReporte.length) == 0){
+      if((this.selectedtalentoHumano.length + this.selectedCapacitaciones.length+this.selectedCatalogo.length+this.selectedReporte.length+this.selectedNormativa.length) == 0){
         this.messageService.add({ severity: 'warn', summary: 'Permisos', detail: 'No se han Seleccionado Permisos' });
      }else{
       
@@ -196,6 +212,21 @@ export class RolesComponent implements OnInit{
             }
           })
         });
+
+        this.selectedNormativa.forEach(element => {
+          this.usuariosService.addPermisos(this.IdRole, element.key).subscribe({
+            next:(data: any) => {console.log(data)},
+            error:(error: any) => {
+              console.log(error);
+            }
+          })
+        });
+
+
+
+
+
+
         this.messageService.add({ severity: 'success', summary: 'Agregado', detail: 'Role Agregado Con exito' });
         this.reiniciar();
 

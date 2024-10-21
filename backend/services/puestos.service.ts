@@ -16,7 +16,7 @@ export class PuestosService {
   constructor(private http: HttpClient) { }
 
   addPuestos(data: any):Observable<any>{
-    return this.http.post('http://localhost:3000/puestos', data).pipe(
+    return this.http.post(this.apiUrl, data).pipe(
       catchError(this.handleError)
     );
   }

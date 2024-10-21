@@ -49,11 +49,13 @@ export class RoleeditarComponent implements OnInit {
  checkCapacitaciones!: boolean;
  checkCatalogo!: boolean;
  checkReporte!: boolean;
+ checkNormativa!: boolean;
 
   selectedtalentoHumano: any[] = [];
   selectedCapacitaciones: any[] = [];
   selectedCatalogo: any[] = [];
   selectedReporte: any[] = [];
+  selectedNormativa: any[] = [];
 
 
   talentoHumano: any[] = [
@@ -77,6 +79,12 @@ export class RoleeditarComponent implements OnInit {
   reportes: any[] = [
     { name: 'Reportes', key: 'Reportes' },
   ];
+
+  normativas: any[] = [
+    { name: 'Faltas', key: 'Faltas' },
+    { name: 'Reportes Normativa', key: 'ReportesNormativa' },
+  ];
+
 
 
 
@@ -143,12 +151,20 @@ export class RoleeditarComponent implements OnInit {
       this.selectedReporte = [];
     }
   };
+  nodeNormativa(){
+    if(this.checkNormativa){
+      this.selectedNormativa = this.normativas;
+    }else{
+      this.selectedNormativa = [];
+    }
+  }
 
   seleccion(){
     this.checkTalentoHumano = this.selectedtalentoHumano.length === this.talentoHumano.length;
     this.checkCapacitaciones = this.selectedCapacitaciones.length === this.capacitaciones.length;
     this.checkCatalogo = this.selectedCatalogo.length == this.catalogos.length;
     this.checkReporte = this.selectedReporte.length == this.reportes.length;
+    this.checkNormativa = this.selectedNormativa.length == this.normativas.length;
   }
 
 
@@ -202,6 +218,17 @@ this.selectedReporte = this.reportes.filter(cat => {
     return false;
   });
 
+  this.selectedNormativa = this.normativas.filter(cat => {
+    if (cat.key === 'Faltas' && this.Role[0].Faltas) {
+      return true;
+    }
+    if (cat.key === 'ReportesNormativa' && this.Role[0].ReportesNormativa) {
+      return true;
+    }
+    return false;
+  });
+
+
 
 
     this.seleccion();
@@ -242,6 +269,15 @@ this.selectedReporte = this.reportes.filter(cat => {
 
 
         this.selectedReporte.forEach(element => {
+          this.usuariosService.addPermisos(this.IdRole, element.key).subscribe({
+            next:(data: any) => {console.log(data)},
+            error:(error: any) => {
+              console.log(error);
+            }
+          })
+        });
+
+        this.selectedNormativa.forEach(element => {
           this.usuariosService.addPermisos(this.IdRole, element.key).subscribe({
             next:(data: any) => {console.log(data)},
             error:(error: any) => {

@@ -62,6 +62,7 @@ export class System1Component implements OnInit {
     this.usuarioService.getUser(this.IdUser).subscribe({
       next:(data: any) =>{
         this.usuario = data;
+        console.log(this.usuario);
       },
       error:(error : any) =>{
         console.log(error);

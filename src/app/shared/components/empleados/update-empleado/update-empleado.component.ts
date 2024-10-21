@@ -7,7 +7,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
-import {provideNativeDateAdapter} from '@angular/material/core';
+
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -27,13 +27,9 @@ import { HttpClientModule} from '@angular/common/http';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { ActivatedRoute, ParamMap } from "@angular/router";
-
-
-
-import 'moment/locale/fr';
 import { DepartamentosService } from '../../../../../../backend/services/departamentos.service';
 import { PuestosService } from '../../../../../../backend/services/puestos.service';
-import { log } from 'console';
+
 import { estados, estados1, estadosConCiudades } from '../../../recursos/estados';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -41,17 +37,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import 'moment/locale/es';
+
+
 
 @Component({
   selector: 'app-update-empleado',
@@ -79,10 +67,9 @@ export const MY_DATE_FORMATS = {
     MatGridListModule 
   ],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     provideMomentDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService,ConfirmationService
+  EmpleadosService, CoreService, DepartamentosService, PuestosService,ConfirmationService
   ],
   templateUrl: './update-empleado.component.html',
   styleUrl: './update-empleado.component.css'
@@ -173,7 +160,7 @@ export class UpdateEmpleadoComponent implements OnInit{
   ];
 
 
-  constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
+  constructor(private fb: FormBuilder, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
     private _coreService: CoreService,
     public route: ActivatedRoute,
@@ -233,7 +220,6 @@ export class UpdateEmpleadoComponent implements OnInit{
       NumeroTelefonoEmergencia:[''],
       // Añadir más controles de formulario aquí
     });
-    this._adapter.setLocale('en-GB'); // Esto configura el adaptador de fecha para usar el formato de fecha correcto
 
     //Condicion para la opcion de ciudad
     this.employeeForm.get('EntidadNacimiento')!.valueChanges.subscribe(state => {

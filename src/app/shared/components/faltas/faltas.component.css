@@ -1,0 +1,70 @@
+.information{
+    margin: 1rem;
+    text-align: center;
+    justify-items: center;
+    display: flex;
+}
+.search{
+    margin-top: 20px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-left: 2%;
+}
+.empleado{
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.title{
+    margin: 2rem;
+    text-align: center;
+    color: #54beae;
+    font-size: 14px;
+}
+
+.content{
+    margin-top: 10px;
+    height: 60%;
+    display: flex;
+    text-align: center;
+}
+
+.row{
+    margin-left: 2%;
+margin-right: 1rem;
+    width: 15%;
+}
+form{
+    margin-top: 2rem;
+}
+.action{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    justify-content: space-around;
+}
+.btnGuardar{
+    margin-right: 2rem;
+}
+
+.titleD{
+    text-align: center;
+    font-size: 14px;
+    color: rgb(2, 135, 192);
+}
+
+.comentario{
+    margin-left: 2%;
+    margin-top: 2rem;
+}
+.comentario1{
+    width: 87%;
+}
+
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+  }

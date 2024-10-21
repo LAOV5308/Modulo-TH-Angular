@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import {jsPDF} from 'jspdf';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {NgxDocViewerModule} from 'ngx-doc-viewer';
@@ -39,9 +39,9 @@ import { CapacitacionesEmpleado, CapacitacionesSuscripciones, CapacitacionProgra
 
 
 
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
-import {MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepickerModule, MatDatepickerIntl} from '@angular/material/datepicker';
+
+import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
 import 'moment/locale/es';
 import { BajasService } from '../../../../../backend/services/bajas.service';
 import { Baja } from '../../../../../backend/models/baja.model';
@@ -50,21 +50,29 @@ import { Calificaciones } from '../../../../../backend/models/capacitacion.model
 import { map, Observable } from 'rxjs';
 import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
 import { Departamento } from '../../../../../backend/models/departamento.model';
+import { Usuario } from '../../../../../backend/models/user.model';
+import { AuthService } from '../../../../../backend/services/auth.service';
+import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-reportes',
   standalone: true,
   imports: [NgxDocViewerModule,FormsModule, MatInputModule, MatSelectModule, MatFormFieldModule,NgFor,NgIf,ReactiveFormsModule,
     MatIconModule, MatButtonModule, MatToolbarModule,MatMenuModule, TableModule, CommonModule, IconFieldModule, InputIconModule, InputTextModule,
-    DropdownModule, ToastModule, RippleModule,MatDatepickerModule
+    DropdownModule, ToastModule, RippleModule,MatDatepickerModule, NgIf
   ],
 
-  providers:[EmpleadosService, VacacionesService, MessageService, IncidenciasService, CapacitacionService, provideNativeDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'},BajasService,
+  providers:[EmpleadosService, VacacionesService, MessageService, IncidenciasService, CapacitacionService, 
+    provideMomentDateAdapter(),
+    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}, // Español por defecto
+    BajasService,
     DepartamentosService
   ],
   templateUrl: './reportes.component.html',
   styleUrl: './reportes.component.css'
 })
+
+
 export class ReportesComponent implements OnInit{
   //doc = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
   empleados: Empleado[]=[];
@@ -100,8 +108,8 @@ export class ReportesComponent implements OnInit{
 
 
   @ViewChild('dt') dt!: Table; // Referencia a la tabla
-
-  
+  IdUser!: number | null;
+  usuario:Usuario[] =[];
 
 
 
@@ -121,8 +129,16 @@ filterGlobal(event: Event, field: string) {
 
 
   constructor(private empleadosService:EmpleadosService, private _fb: FormBuilder,public dialog: MatDialog, private vacacionesService: VacacionesService, private messageService: MessageService,
-    private incidenciasService: IncidenciasService, private capacitacionesService: CapacitacionService, private bajasService: BajasService, private departamentosService: DepartamentosService
+    private incidenciasService: IncidenciasService, private capacitacionesService: CapacitacionService, private bajasService: BajasService, private departamentosService: DepartamentosService,
+    private _adapter: DateAdapter<any>,
+    private _intl: MatDatepickerIntl,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,private usuarioService: AuthService
   ){
+
+
+
+
+
     this.FormEmpleados = this._fb.group({
       Opcion:['']
     });
@@ -132,6 +148,13 @@ filterGlobal(event: Event, field: string) {
     });
 
   }
+
+
+
+  getDateFormatString(): string {
+    return 'DD/MM/YYYY'; // Formato de fecha español por defecto
+  }
+
 
   openDialog() {
     const dialogRef = this.dialog.open(DatosComponent, {
@@ -208,6 +231,9 @@ this.showCapacitaciones = false;
 
   ngOnInit(): void {
     //this.reiniciarEmpleados();
+    this._locale = 'es-ES'; // Establecer español por defecto
+    this._adapter.setLocale(this._locale); 
+
     
     ///AQUI OBTENGO TODOS LOS DATOS
     this.departamentosService.getDepartamentos().subscribe({
@@ -258,6 +284,20 @@ this.showCapacitaciones = false;
       },
       error:(err: any)=>{
       }
+    })
+
+
+
+    this.IdUser = this.usuarioService.getIdUser();
+
+    this.usuarioService.getUser(this.IdUser).subscribe({
+      next:(data: any) =>{
+        this.usuario = data;
+        console.log(this.usuario);
+      },
+      error:(error : any) =>{
+        console.log(error);
+      },
     })
 
 
@@ -643,25 +683,22 @@ switch (this.FormEmpleados.value.Opcion) {
   
 
 imprimirvacaciones(){
+  
 if(this.selectedEmpleados == undefined){
   this.messageService.add({ severity: 'error', summary: 'Cuidado', detail: 'No se Encuentra seleccionado ningun Empleado',key: 'tl' });
 }else{
 
+  console.log(this.periodoSeleccionado);
+
 this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
   next:(data)=>{
     this.vacacionesEmpleadoPeriodo = data;
-    console.log(this.vacacionesEmpleadoPeriodo);
-  },
-  error:(error: any)=>{
-    console.log('Error' + error);
-  }
-})
 
   this.vacacionesService.getFechasVacacionesPerido(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
     next:(data)=>{
-      console.log(data);
+      //console.log(data);
       this.vacacionesEmpleado = data;
-      console.log(this.vacacionesEmpleado);
+      //console.log(this.vacacionesEmpleado);
 
 
 
@@ -719,9 +756,6 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
       
       console.log(this.vacacionesEmpleado)
       
-
-      
-
       // Simulación de datos de vacaciones (esto debe ser tu lógica)
       const rows = this.vacacionesEmpleado.map(vacacion => [
         //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
@@ -780,6 +814,16 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
     error:(err: any)=>{
     }
   });
+
+
+
+
+  },
+  error:(error: any)=>{
+    console.log('Error' + error);
+  }
+})
+
 
 
 }
