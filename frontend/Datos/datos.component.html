@@ -11,18 +11,19 @@ type="submit">Agregar Empleado
   
 
   <mat-tab>
-    <ng-template mat-tab-label>
+    <ng-template mat-tab-label >
+      
       <i class="pi pi-users" style="font-size: 2rem; color:rgb(0, 255, 140)"></i> Empleados Activos
     </ng-template>
     
     <br>
 <div class="center">
-  <h1><i class="pi pi-users" style="font-size: 2rem"></i> Datos de los Empleados</h1>
+  <h1><i class="pi pi-users" style="font-size: 2rem"></i> Datos de los Empleados Activos ({{empleados.length}})</h1>
 </div>
 
 <!-- lista-empleados.component.html -->
-<mat-label>Filter: </mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+<mat-label> Filtro: </mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. 201, Elena" #input>
 
 <div class="table-container">
 <table mat-table [dataSource]="dataSource" matSort matSortActive #sortActive="matSort">
@@ -117,7 +118,7 @@ type="submit">Agregar Empleado
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   <!-- Row shown when there is no matching data. -->
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="11">No data matching the filter "{{input.value}}"</td>
+    <td class="mat-cell" colspan="11">No hay resultados con "{{input.value}}"</td>
   </tr>
 
 </table>
@@ -134,12 +135,12 @@ type="submit">Agregar Empleado
 
     <br>
 <div class="center">
-  <h1><i class="pi pi-user-minus" style="font-size: 2rem"></i> Datos de los Empleados Inactivos</h1>
+  <h1><i class="pi pi-user-minus" style="font-size: 2rem"></i> Datos de los Empleados Inactivos ({{empleadosInactive.length}})</h1>
 </div>
 
 <!-- lista-empleados.component.html -->
-<mat-label>Filter: </mat-label>
-  <input matInput (keyup)="applyFilterInactive($event)" placeholder="Ex. Mia" #inputInactive>
+<mat-label> Filtro: </mat-label>
+  <input matInput (keyup)="applyFilterInactive($event)" placeholder="Ex. 103, Mia" #inputInactive>
 
 <div class="table-container">
 <table mat-table [dataSource]="dataInactive" matSort matSortInactive #sortInactive="matSort">
@@ -231,7 +232,7 @@ type="submit">Agregar Empleado
   <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
   <!-- Row shown when there is no matching data. -->
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">No data matching the filter "{{inputInactive.value}}"</td>
+    <td class="mat-cell" colspan="4">No hay resultados con "{{inputInactive.value}}"</td>
   </tr>
 
 </table>

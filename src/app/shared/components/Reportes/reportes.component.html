@@ -11,15 +11,15 @@
 </div>
 <mat-toolbar>
   
-<button *ngIf="usuario[0].ConsultarEmpleados" mat-button (click)="openEmpleados()" style="padding-left: 5px; background-color:dodgerblue; color: aliceblue;"><mat-icon>account_box</mat-icon>Empleados</button>
+<button matTooltip="Reportes de Empleados" *ngIf="usuario[0].ConsultarEmpleados" mat-button (click)="openEmpleados()" style="padding-left: 5px; background-color:dodgerblue; color: aliceblue;"><mat-icon>account_box</mat-icon>Empleados</button>
 
-<button *ngIf="usuario[0].Vacaciones" mat-button (click)="openVacaciones()" style="background-color:rgb(17, 156, 73); color: aliceblue; margin-left: 10px;"><mat-icon>calendar_today</mat-icon>Vacaciones</button>
-
-
-<button *ngIf="usuario[0].Incidencias" mat-button (click)="openIncidencias()" style="background-color:rgb(156, 17, 17); color: aliceblue; margin-left: 10px;"><mat-icon>info</mat-icon>Incidencias</button>
+<button matTooltip="Reportes de Vacaciones" *ngIf="usuario[0].Vacaciones" mat-button (click)="openVacaciones()" style="background-color:rgb(17, 156, 73); color: aliceblue; margin-left: 10px;"><mat-icon>calendar_today</mat-icon>Vacaciones</button>
 
 
-<button *ngIf="usuario[0].ConsultarCapacitaciones" mat-button [matMenuTriggerFor]="menuCapacitaciones" style="background-color:rgb(30, 188, 255); color: aliceblue; margin-left: 10px;"><mat-icon>menu</mat-icon>Capacitaciones</button>
+<button matTooltip="Reportes de Incidencias" *ngIf="usuario[0].Incidencias" mat-button (click)="openIncidencias()" style="background-color:rgb(156, 17, 17); color: aliceblue; margin-left: 10px;"><mat-icon>info</mat-icon>Incidencias</button>
+
+
+<button matTooltip="Reportes de Capacitaciones" *ngIf="usuario[0].ConsultarCapacitaciones" mat-button [matMenuTriggerFor]="menuCapacitaciones" style="background-color:rgb(30, 188, 255); color: aliceblue; margin-left: 10px;"><mat-icon>menu</mat-icon>Capacitaciones</button>
 <mat-menu #menuCapacitaciones="matMenu">
   
   <button mat-menu-item (click)="openCapacitaciones()">Participantes por Capacitacion</button>

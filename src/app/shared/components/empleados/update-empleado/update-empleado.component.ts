@@ -102,7 +102,9 @@ export class UpdateEmpleadoComponent implements OnInit{
   nivel: string[] = [
     '1',
     '2',
-    '3'
+    '3',
+    '4',
+    '5'
   ];
   
   estadocivil: string[] = [
@@ -300,7 +302,7 @@ export class UpdateEmpleadoComponent implements OnInit{
         //console.log(data);
         this.empleados = data;
 
-        //console.log(this.empleados[0].NombrePuesto);
+        console.log(this.empleados[0].Parentesco);
 
         this.employeeForm.patchValue(this.empleados[0]);
         

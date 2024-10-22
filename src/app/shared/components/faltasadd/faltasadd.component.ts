@@ -70,12 +70,13 @@ export class FaltasaddComponent implements OnInit {
     'Otro'
   ];
   Sancion: string[] = [
+    'N/A',
+    'Acta administrativa', 
+    'Baja',
+    'Descanso',
     'Horas extras', 
     'Servicio comunitario', 
-    'Descanso', 
-    'Rescisión contratual', 
-    'Acta administrativa', 
-    'Baja'
+    'Rescisión contratual'
   ];
 
   Estatus: string[] = [
@@ -102,10 +103,11 @@ export class FaltasaddComponent implements OnInit {
       FechaFalta: ['', Validators.required],
       Motivo: ['', Validators.required],
       Sancion: ['', Validators.required],
-      Estatus: [''],
+      Estatus: ['', Validators.required],
       NivelSancion:[''],
       HorasExtras:[''],
-      Comentario:['']
+      Comentario:[''],
+      EstadoFalta:['']
     });
   }
 
@@ -149,6 +151,19 @@ export class FaltasaddComponent implements OnInit {
       }else{
         this.Form.patchValue({
           HorasExtras: false
+        })
+      }
+
+
+
+      if(this.Form.get('Estatus')?.value == 'Justificada'){
+        this.Form.patchValue({
+          EstadoFalta: true
+        })
+        this.messageService.add({ severity: 'success', summary: 'Justificada', detail: 'Justificada con Exito' });
+      }else{
+        this.Form.patchValue({
+          EstadoFalta: false
         })
       }
       

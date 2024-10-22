@@ -8,6 +8,7 @@ import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class BajasService {
 
   

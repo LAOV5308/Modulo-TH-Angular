@@ -40,14 +40,16 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { NumberValueToken } from 'html2canvas/dist/types/css/syntax/tokenizer';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'app-faltas',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTabsModule, MatProgressSpinnerModule, MatFormFieldModule, MatButtonModule, MatInputModule,
     MatSelectModule, NgFor, MatIconModule, MatCardModule, MatChipsModule, MatDatepickerModule, ToastModule, TableModule, ButtonModule,
-    IconFieldModule, InputIconModule, InputTextModule, NgIf, MatRadioModule, CheckboxModule, ConfirmPopupModule, ConfirmDialogModule
+    IconFieldModule, InputIconModule, InputTextModule, NgIf, MatRadioModule, CheckboxModule, ConfirmPopupModule, ConfirmDialogModule,
+    MatTooltipModule
   ],
   providers:[FaltasService, EmpleadosService, provideMomentDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}, MessageService, ConfirmationService],
   templateUrl: './faltas.component.html',
@@ -58,7 +60,7 @@ export class FaltasComponent implements OnInit {
   allempleados: Empleado[]=[];
   faltasabiertos: Falta[]=[];
   faltascerrados: Falta[]=[];
-  Form: FormGroup;
+
   NoNomina: number | undefined;
   NoNominaEmpleado: number | undefined;
   Nombre: string | undefined;
@@ -75,12 +77,13 @@ export class FaltasComponent implements OnInit {
     'Otro'
   ];
   Sancion: string[] = [
+    'N/A',
+    'Acta administrativa', 
+    'Baja',
+    'Descanso',
     'Horas extras', 
     'Servicio comunitario', 
-    'Descanso', 
-    'Rescisión contratual', 
-    'Acta administrativa', 
-    'Baja'
+    'Rescisión contratual'
   ];
 
   Estatus: string[] = [
@@ -102,16 +105,7 @@ export class FaltasComponent implements OnInit {
   constructor(private _fb: FormBuilder, private faltaService: FaltasService, private empleadoService: EmpleadosService, private messageService: MessageService,
     private router: Router, private _dialog: MatDialog,private confirmationService: ConfirmationService
   ){
-    this.Form = this._fb.group({
-      NoNomina: [''],
-      FechaFalta: ['', Validators.required],
-      Motivo: ['', Validators.required],
-      Sancion: ['', Validators.required],
-      Estatus: ['', Validators.required],
-      NivelSancion:['', Validators.required],
-      HorasExtras:[''],
-      Comentario:['']
-    });
+
   }
 
   ngOnInit(): void {
@@ -147,41 +141,7 @@ export class FaltasComponent implements OnInit {
     
   }
 
-  addFalta(){
-    if(this.Form.valid && this.NoNominaEmpleado){
 
-      this.Form.patchValue({
-        NoNomina: this.NoNominaEmpleado
-      })
-
-      if(this.Form.get('Sancion')?.value == 'Horas extras'){
-        this.Form.patchValue({
-          HorasExtras: true
-        })
-      }else{
-        this.Form.patchValue({
-          HorasExtras: false
-        })
-      }
-      
-      console.log(this.Form.value);
-
-      this.faltaService.addFalta(this.Form.value).subscribe({
-        next:(data) => {
-          this.messageService.add({ severity: 'success', summary: 'Creada', detail: 'Falta Creada Con exito' });
-          this.ngOnInit();
-          this.reiniciarValores();
-        },
-        error:(error) => {
-          console.log(error);
-        },
-      })
-
-
-    }else{
-      this.messageService.add({ severity: 'error', summary: 'Campos Faltantes', detail: 'Existen Campos Faltantes (No. Nomina, detalles, etc)' });
-    }
-  }
 
   findEmpleados(){
 
@@ -200,8 +160,9 @@ export class FaltasComponent implements OnInit {
         }
       })
     }else{
+      this.messageService.add({ severity: 'error', summary: 'No Encontrado', detail: 'Emplado No Encontrado', life: 3000 });
       this.reiniciarValores();
-      alert('Empleado No encontrado');
+
       
       
     }
@@ -216,7 +177,6 @@ export class FaltasComponent implements OnInit {
     this.Nombre = undefined;
     this.NombrePuesto = undefined;
     this.NombreDepartamento = undefined;
-    this.Form.reset();
   }
 
 
@@ -260,7 +220,7 @@ export class FaltasComponent implements OnInit {
   cerrar(IdFalta: number){
 
     this.confirmationService.confirm({
-      message: 'Quieres cerrar la Falta',
+      message: '¿Quieres cerrar la Falta?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon:"none",
@@ -278,14 +238,14 @@ export class FaltasComponent implements OnInit {
         })
       },
       reject: () => {
-          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+          //this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
       }
   });
   }
 
   deletefalta(IdFalta: number){
     this.confirmationService.confirm({
-      message: 'Quieres eliminar la falta?',
+      message: '¿Quieres eliminar la falta?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       acceptIcon:"none",
@@ -303,7 +263,7 @@ export class FaltasComponent implements OnInit {
         })
       },
       reject: () => {
-          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+          //this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
       }
   });
 

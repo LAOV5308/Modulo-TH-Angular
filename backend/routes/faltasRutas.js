@@ -83,7 +83,7 @@ router.delete('/:id', async (req, res) => {
 
 //Agregar Falta
  router.post('/', async (req, res) => {
-    const { NoNomina, FechaFalta, Motivo, Sancion, Estatus, NivelSancion, HorasExtras, Comentario } = req.body;
+    const { NoNomina, FechaFalta, Motivo, Sancion, Estatus, NivelSancion, HorasExtras, Comentario,EstadoFalta } = req.body;
     try {
         const pool = await db.getConnection();
         const request = pool.request();
@@ -95,6 +95,7 @@ router.delete('/:id', async (req, res) => {
         request.input('NivelSancion', sql.VarChar, NivelSancion);
         request.input('HorasExtras', sql.Bit, HorasExtras);
         request.input('Comentario', sql.VarChar, Comentario);
+        request.input('EstadoFalta', sql.Bit, EstadoFalta);
         const result = await request.execute('stp_falta_add');
         res.status(201).json({ message: "Falta creada con éxito" });
     } catch (err) {

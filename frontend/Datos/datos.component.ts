@@ -56,7 +56,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import 'moment/locale/es';
 
-
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 @Component({
@@ -78,7 +78,7 @@ import 'moment/locale/es';
     MensajeGuardarEmpleadoComponent,
     TooltipModule,
     SplitButtonModule,
-    CommonModule
+    CommonModule, MatBadgeModule
   ],
   providers: [EmpleadosService, CoreService,DepartamentosService, PuestosService, MessageService,
     provideMomentDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}]
@@ -98,7 +98,9 @@ export class DatosComponent implements OnInit, AfterViewInit{
     nivel: string[] = [
       '1',
       '2',
-      '3'
+      '3',
+      '4',
+      '5'
     ];
     
     estadocivil: string[] = [
@@ -201,6 +203,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
   estados1: string[] = estados1;
 
   empleados: Empleado[] = [];
+  empleadosInactive: Empleado[] = [];
   dataSource!: MatTableDataSource<any>;
   dataInactive!: MatTableDataSource<any>;
     // Cambiar identificadores de ViewChild
@@ -341,7 +344,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         this.dataInactive = new MatTableDataSource(data);
         this.dataInactive.sort = this.sortInactive;
         this.dataInactive.paginator = this.paginatorInactive;
-        //this.empleados = data;
+        this.empleadosInactive = data;
       },
       error: (error) => {
         console.error('Error al cargar los Empleados Inactivos', error);

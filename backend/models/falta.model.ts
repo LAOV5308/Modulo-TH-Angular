@@ -13,6 +13,7 @@ export interface Falta {
     NombrePuesto: string;
     NombreDepartamento: string;
     Comentario: string;
+    EstatusFalta: boolean;
   }
 
 

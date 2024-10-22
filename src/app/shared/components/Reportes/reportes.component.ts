@@ -53,13 +53,14 @@ import { Departamento } from '../../../../../backend/models/departamento.model';
 import { Usuario } from '../../../../../backend/models/user.model';
 import { AuthService } from '../../../../../backend/services/auth.service';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-reportes',
   standalone: true,
   imports: [NgxDocViewerModule,FormsModule, MatInputModule, MatSelectModule, MatFormFieldModule,NgFor,NgIf,ReactiveFormsModule,
     MatIconModule, MatButtonModule, MatToolbarModule,MatMenuModule, TableModule, CommonModule, IconFieldModule, InputIconModule, InputTextModule,
-    DropdownModule, ToastModule, RippleModule,MatDatepickerModule, NgIf
+    DropdownModule, ToastModule, RippleModule,MatDatepickerModule, NgIf, MatTooltipModule
   ],
 
   providers:[EmpleadosService, VacacionesService, MessageService, IncidenciasService, CapacitacionService, 

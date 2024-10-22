@@ -98,6 +98,7 @@
               <td>
                 <div *ngIf="falta.HorasExtras">
                   <p-button 
+                  matTooltip="Consultar Fechas de Sanciones"
                   icon="pi pi-calendar-plus" 
                   class="mr-2" 
                   [rounded]="true" 
@@ -110,6 +111,7 @@
 
                 
                 <p-button 
+                matTooltip="Eliminar Falta"
                 icon="pi pi-trash" 
                 severity="danger" 
                 [rounded]="true" 
@@ -122,6 +124,7 @@
             
               <td>
                 <p-checkbox 
+                matTooltip="Cerrar Falta"
                 inputId="binary" 
                 falseValue="true"
                 (onChange)="cerrar(falta.IdFalta)"
@@ -183,6 +186,7 @@
                 <th>Fecha</th>
                 <th>Motivo</th>
                 <th>Sancion</th>
+                <th>Justificacion</th>
                 <th>Estatus</th>
                 <!-- <th>Nivel Sancion</th>
                 <th>Dias de Cumplimiento</th>
@@ -198,6 +202,7 @@
                 <td>{{falta.Motivo}}</td>
                 <td>{{falta.Sancion}}</td>
                 <td>{{falta.Estatus}}</td>
+                <td>{{falta.EstadoFalta ? 'Concluida': 'Abierta'}} </td>
                 <!--<td>{{falta.NivelSancion}}</td>
                 <td>
                   <div *ngIf="falta.HorasExtras">
