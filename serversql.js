@@ -12,6 +12,7 @@ const vacacionesRutas = require('./backend/routes/vacacionesRutas');
 const bajasRutas = require('./backend/routes/bajasRutas')
 const dashboardRutas = require('./backend/routes/dashboardRutas')
 const faltasRutas = require('./backend/routes/faltasRutas')
+const reportesRutas = require('./backend/routes/reportesRutas')
 
 const {sql, getConnection}= require('./backend/ConexionDB/dbConfig');
 const port = 3000;
@@ -47,6 +48,7 @@ app.use('/vacaciones', vacacionesRutas);
 app.use('/bajas', bajasRutas);
 app.use('/dashboard', dashboardRutas);
 app.use('/faltas', faltasRutas);
+app.use('/reportes', reportesRutas);
 
 
 app.listen(port, '0.0.0.0', () => {

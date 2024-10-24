@@ -13,7 +13,7 @@ type="submit">Agregar Empleado
   <mat-tab>
     <ng-template mat-tab-label >
       
-      <i class="pi pi-users" style="font-size: 2rem; color:rgb(0, 255, 140)"></i> Empleados Activos
+      <i class="pi pi-users" style="font-size: 2rem; color:rgb(0, 255, 140)"></i> Empleados Activos ({{empleados.length}})
     </ng-template>
     
     <br>
@@ -130,7 +130,7 @@ type="submit">Agregar Empleado
   </mat-tab>
   <mat-tab> 
     <ng-template mat-tab-label>
-      <i class="pi pi-users" style="font-size: 2rem; color:red"></i> Empleados Inactivos
+      <i class="pi pi-users" style="font-size: 2rem; color:red"></i> Empleados Inactivos ({{empleadosInactive.length}})
     </ng-template>
 
     <br>

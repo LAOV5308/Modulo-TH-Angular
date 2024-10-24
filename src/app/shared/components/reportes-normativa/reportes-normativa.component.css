@@ -1,0 +1,35 @@
+.content{
+  display: flex;
+}
+
+  .row{
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 25%;
+  }
+
+  .action{
+    text-align: center;
+margin-bottom: 10px;
+  }
+
+  .btnGuardar{
+    margin-right: 10px;
+  }
+
+  .information{
+    margin: 1rem;
+    text-align: center;
+    justify-items: center;
+    display: flex;
+}
+.search{
+    margin-top: 15px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-left: 2%;
+}
+.empleado{
+  margin-top: 15px;
+  justify-content: center;
+}

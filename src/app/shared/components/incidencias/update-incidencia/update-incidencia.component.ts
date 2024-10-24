@@ -34,20 +34,11 @@ import { Empleado } from '../../../../../../backend/models/empleado.model';
 import { Router } from '@angular/router';
 import { IncidenciasService } from '../../../../../../backend/services/incidencias.service';
 import { MessageConfirmCheckBoxComponent } from '../add-incidencia/message-confirm-check-box/message-confirm-check-box.component';
+//Fecha Español
+import 'moment/locale/es';
 
 
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
 
 @Component({
   selector: 'app-update-incidencia',
@@ -71,10 +62,9 @@ export const MY_DATE_FORMATS = {
     MessageConfirmCheckBoxComponent
   ],
   providers:[
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, IncidenciasService,
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+  EmpleadosService,CoreService, DepartamentosService, PuestosService, IncidenciasService,
   ],
   templateUrl: './update-incidencia.component.html',
   styleUrl: './update-incidencia.component.css'
@@ -88,7 +78,8 @@ export class UpdateIncidenciaComponent implements OnInit{
   motivos: string[] = [
     'Maternidad', 
     'Trayecto', 
-    'Enfermedad General'
+    'Enfermedad General',
+    'Probable Riesgo de Trabajo'
   ];
 
   constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,

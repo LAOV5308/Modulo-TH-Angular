@@ -1,1 +1,205 @@
-<p>reportes-normativa works!</p>
+
+<p-toast />
+    <p-confirmDialog />
+
+<h1 style="text-align: center; margin-top: 10px; color: darkcyan;">Reportes ({{reportes.length}})</h1>
+
+
+
+
+
+
+
+
+<mat-tab-group>
+  <mat-tab label="Consultar Reportes {{reportes.length}}"> 
+    <p-table 
+    #dt2
+[value]="reportes" 
+[paginator]="true"
+[rows]="5"
+[rowsPerPageOptions]="[5,10, 15, 25, 50]"
+
+[globalFilterFields]="['NoNomina', 'Nombre', 'Apellidos', 'NombreDepartamento', 'Motivo', 'Sancion', 'Estatus', 'NivelSancion']"
+dataKey="id"
+styleClass="p-datatable-striped" 
+[tableStyle]="{'min-width': '50rem'}">
+<ng-template pTemplate="caption">
+<div class="flex" >
+  <p-iconField iconPosition="left" class="ml-auto">
+      <p-inputIcon>
+          <i class="pi pi-search"></i>
+      </p-inputIcon>
+      <input 
+          pInputText 
+          type="text" 
+          (input)="filterTable($event)"  
+          placeholder="Busca alguna palabra" />
+  </p-iconField>
+</div>
+</ng-template>
+
+<ng-template pTemplate="header">
+    <tr>
+        <th>NoNomina</th>
+        <th>Nombre</th>
+        <th>Departamento</th>
+        <th>MotivoReporte</th>
+        <th>Persona Reporto</th>
+        <th>Fecha Reporte</th>
+        <th>Sancion Aplicada</th>
+        <th>NotasTalentoHumano</th>
+        <th>EstadoReporte</th>
+        <th>Acciones</th>
+        <!-- <th>Nivel Sancion</th>
+        <th>Dias de Cumplimiento</th>
+        <th>Acciones</th>-->
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-repor>
+    <tr>
+        <td>{{repor.NoNomina}}</td>
+        <td>{{repor.Apellidos}} {{repor.Nombre}} </td>
+        <td> {{repor.NombreDepartamento}}</td>
+        <td>{{repor.MotivoReporte}}</td>
+        <td>{{repor.PersonaReporto}}</td>
+        <td>{{repor.FechaReporte.toString().split('T')[0].split('-').reverse().join('/')}}</td>
+        <td>{{repor.SancionAplicada}}</td>
+        <td>{{repor.NotasTalentoHumano}}</td>
+        <td>{{repor.EstadoReporte ? 'Activa': 'Cerrada'}} </td>
+        <td>
+
+          <p-button 
+          (onClick)="editarReporte(repor.IdReporte)"
+            icon="pi pi-pencil" 
+            class="mr-2" 
+            [rounded]="true" 
+            [outlined]="true" 
+            severity="success"  />
+
+        <p-button 
+           (onClick)="deleteReporte(repor.IdReporte)"
+              icon="pi pi-trash" 
+              severity="danger" 
+              [rounded]="true" 
+              [outlined]="true" />
+            
+            
+            </td>
+
+        <!--<td>{{falta.NivelSancion}}</td>
+        <td>
+          <div *ngIf="falta.HorasExtras">
+            <p-button 
+            icon="pi pi-calendar-plus" 
+            class="mr-2" 
+            [rounded]="true" 
+            [outlined]="true" 
+            severity="info" 
+            (onClick)="agregarDias(falta.IdFalta)" />
+          </div>
+        </td>
+        
+        <td>
+          <p-button 
+           
+            icon="pi pi-pencil" 
+            class="mr-2" 
+            [rounded]="true" 
+            [outlined]="true" 
+            severity="success"  />
+          <p-button 
+           
+              icon="pi pi-trash" 
+              severity="danger" 
+              [rounded]="true" 
+              [outlined]="true" />
+
+      </td>-->
+    </tr>
+</ng-template>
+</p-table>
+ </mat-tab>
+  <mat-tab label="Agregar Reporte"> 
+
+    
+    <div *ngIf="empleados.length==0">
+      <h2>Empleado No Encontrado</h2>
+          </div>
+    <div class="information">
+      
+    
+      <div class="search">
+       
+        <mat-form-field color="primary">
+          <mat-label>No. Nomina</mat-label>
+          <input matInput type="number" (input)="consultaempleado()" [(ngModel)]="NoNomina">
+        </mat-form-field>
+    
+      </div>
+    
+      <div class="empleado">
+        
+        <mat-chip-listbox>
+          <mat-chip color="primary" selected><strong>No.Nomina:</strong> {{ NoNominaEmpleado }}</mat-chip>
+          <mat-chip color="primary" selected><strong>Nombre:</strong> {{ Nombre }}</mat-chip>
+          <mat-chip color="primary" selected><strong>Puesto:</strong> {{ NombrePuesto }}</mat-chip>
+          <mat-chip color="primary" selected><strong>Departamento:</strong> {{ NombreDepartamento }}</mat-chip>
+        </mat-chip-listbox>
+      </div>
+    </div>
+    
+    
+        
+          <form [formGroup]="Form" (ngSubmit)="addReporte()">
+            <div class="content">
+              <div class="row">
+                    <mat-form-field>
+                        <mat-label>Motivo del Reporte</mat-label>
+                        <input matInput type="text" formControlName="MotivoReporte">
+                    </mat-form-field>
+                </div>
+    
+                <div class="row">
+                  <mat-form-field>
+                      <mat-label>Nombre Persona Reporto</mat-label>
+                      <input matInput type="text" formControlName="PersonaReporto">
+                  </mat-form-field>
+              </div>
+        
+                <div class="row">
+                  <mat-form-field>
+                    <mat-label>Fecha Reporte</mat-label>
+                    <input matInput [matDatepicker]="pickeringreso" formControlName="FechaReporte">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="pickeringreso"></mat-datepicker-toggle>
+                    <mat-datepicker #pickeringreso></mat-datepicker>
+                  </mat-form-field>  
+    
+                </div> 
+                <div class="row">
+                  <mat-form-field>
+                      <mat-label>Sancion Aplicada</mat-label>
+                      <input matInput type="text" formControlName="SancionAplicada">
+                  </mat-form-field>
+              </div>
+                
+            </div>
+        
+            <div class="row">
+            <mat-form-field appearance="fill" color="primary" >
+              <mat-label>Notas Talento Humano</mat-label>
+              <input matInput formControlName="NotasTalentoHumano">
+            </mat-form-field>
+            </div>
+        
+        
+            <div class="action">
+              <button mat-raised-button color="primary" type="submit" class="btnGuardar">Guardar</button>
+              <button mat-raised-button color="accent" type="button" >Cancelar</button>
+            </div>
+        </form>
+
+  </mat-tab>
+  
+</mat-tab-group>

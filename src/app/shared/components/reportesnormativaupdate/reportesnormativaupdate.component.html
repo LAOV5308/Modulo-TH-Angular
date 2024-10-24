@@ -1,0 +1,52 @@
+<h1>Actualizar Reporte</h1>
+
+<form [formGroup]="Form" (ngSubmit)="updateReporte()">
+    <div class="content">
+      <div class="row">
+            <mat-form-field>
+                <mat-label>Motivo del Reporte</mat-label>
+                <input matInput type="text" formControlName="MotivoReporte">
+            </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field>
+              <mat-label>Nombre Persona Reporto</mat-label>
+              <input matInput type="text" formControlName="PersonaReporto">
+          </mat-form-field>
+      </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+          <mat-form-field>
+            <mat-label>Fecha Reporte</mat-label>
+            <input matInput [matDatepicker]="pickeringreso" formControlName="FechaReporte">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="pickeringreso"></mat-datepicker-toggle>
+            <mat-datepicker #pickeringreso></mat-datepicker>
+          </mat-form-field>  
+
+        </div> 
+        <div class="row">
+          <mat-form-field>
+              <mat-label>Sancion Aplicada</mat-label>
+              <input matInput type="text" formControlName="SancionAplicada">
+          </mat-form-field>
+      </div>
+    </div>
+    
+
+    <div class="notas" >
+    <mat-form-field appearance="fill" color="primary" class="notas1">
+      <mat-label>Notas Talento Humano</mat-label>
+      <input matInput formControlName="NotasTalentoHumano">
+    </mat-form-field>
+    </div>
+
+
+    <div class="action" style="text-align: center;">
+      <button mat-raised-button color="primary" type="submit" class="btnGuardar" style="margin-right: 1rem;">Actualizar</button>
+      <button mat-raised-button color="accent" type="button" (click)="cerrarDialogo()" >Cancelar</button>
+    </div>
+</form>

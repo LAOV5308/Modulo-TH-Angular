@@ -1,0 +1,22 @@
+.content{
+    display: flex;
+}
+.row{
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 45%;
+}
+
+.notas{
+    text-align: center; 
+}
+.notas1{
+    width: 70%;
+    margin-top: 1rem;
+}
+
+h1{
+    margin-top: 1rem;
+    text-align: center;
+    
+}

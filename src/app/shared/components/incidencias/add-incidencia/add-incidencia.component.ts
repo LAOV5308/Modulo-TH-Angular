@@ -26,7 +26,6 @@ import { HttpClientModule} from '@angular/common/http';
 import { MatIcon } from '@angular/material/icon';
 
 
-import 'moment/locale/fr';
 import { DepartamentosService } from '../../../../../../backend/services/departamentos.service';
 
 import { PuestosService } from '../../../../../../backend/services/puestos.service';
@@ -38,18 +37,8 @@ import { MessageConfirmCheckBoxComponent } from './message-confirm-check-box/mes
 import {FormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
-
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+//Fecha Español
+import 'moment/locale/es';
 
 @Component({
   selector: 'app-add-incidencia',
@@ -75,10 +64,9 @@ export const MY_DATE_FORMATS = {
     MatCheckboxModule
   ],
   providers:[
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService, IncidenciasService
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+  EmpleadosService, CoreService, DepartamentosService, PuestosService, IncidenciasService
   ],
   templateUrl: './add-incidencia.component.html',
   styleUrl: './add-incidencia.component.css'
@@ -94,7 +82,8 @@ export class AddIncidenciaComponent implements OnInit{
     'Falta',
     'Enfermedad General',
     'Maternidad', 
-    'Trayecto'
+    'Trayecto',
+    'Probable Riesgo de Trabajo'
   ];
 
   constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,
