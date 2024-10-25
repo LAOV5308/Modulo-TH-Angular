@@ -104,7 +104,7 @@ export class AddIncidenciaComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._empleadoService.getEmpleados().subscribe({
+    this._empleadoService.getEmpleadosAll().subscribe({
       next: (data) => {
         this.empleados = data;
       },

@@ -101,7 +101,7 @@ router.get('/:id', async (req, res) => {
     try {
         const sql = await db.getConnection();
         //const result = await sql.query('Select * FROM V_EmpleadosActiveIdDepartamento WHERE NoNomina = ' + id);
-        const result = await sql.query('Select * FROM V_EmpleadosActive WHERE NoNomina = ' + id);
+        const result = await sql.query('Select * FROM V_EmpleadosAll WHERE NoNomina = ' + id);
         res.json(result.recordset);
         //res.send('Empleado Encontrado Correctamente');
     } catch (err) {

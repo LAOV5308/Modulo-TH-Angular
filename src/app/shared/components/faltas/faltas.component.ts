@@ -162,8 +162,6 @@ export class FaltasComponent implements OnInit {
     }else{
       this.messageService.add({ severity: 'error', summary: 'No Encontrado', detail: 'Emplado No Encontrado', life: 3000 });
       this.reiniciarValores();
-
-      
       
     }
 

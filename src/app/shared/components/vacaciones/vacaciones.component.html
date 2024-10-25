@@ -44,8 +44,8 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
   </div>
   <div class="flex-auto" style="text-align: center;"><h3><strong>Puesto:</strong> {{empleados[0].NombrePuesto}}</h3></div>
   <div class="flex-auto" style="text-align: center;"><h3><strong>Departamento:</strong> {{empleados[0].NombreDepartamento}}</h3></div>
-  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].Aniversario !=null"><strong>Aniversario:</strong> {{addOneDay(empleados[0].Aniversario) | date:'dd/MM/yyyy'}}</h3></div>
-  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].IngresoImss !=null"><strong>Alta Imss:</strong> {{addOneDay(empleados[0].IngresoImss) | date:'dd/MM/yyyy'}}</h3></div>
+  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].Aniversario !=null"><strong>Aniversario:</strong> {{empleados[0].Aniversario.toString().split('T')[0].split('-').reverse().join('/')}}</h3></div>
+  <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].IngresoImss !=null"><strong>Alta Imss:</strong> {{empleados[0].IngresoImss.toString().split('T')[0].split('-').reverse().join('/')}}</h3></div>
   <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].Aniversario ==null"><strong>Aniversario:</strong> No Definido</h3></div>
   <div class="flex-auto" style="text-align: center;"><h3 *ngIf="empleados[0].IngresoImss ==null"><strong>Alta Imss:</strong> No Definido</h3></div>
   
@@ -94,8 +94,10 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
 </div>
 
 <div style="text-align: center; color: rgb(98, 174, 199); padding-top: 5px;" class="DiasDisponibles" *ngIf="empleados.length>0">
-<h3>Vacaciones Disponibles: {{diasVacacionesDisponibles}} dias
-</h3>
+<h4>Vacaciones Disponibles: {{diasVacacionesDisponibles}} dias
+</h4>
+<h4>Vacaciones Adelantadas: {{0}} dias
+</h4>
 </div>
   
   

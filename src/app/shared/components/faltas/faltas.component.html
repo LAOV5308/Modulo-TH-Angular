@@ -189,8 +189,8 @@
                 <th>Justificacion</th>
                 <th>Estatus</th>
                 <!-- <th>Nivel Sancion</th>
-                <th>Dias de Cumplimiento</th>
-                <th>Acciones</th>-->
+                <th>Dias de Cumplimiento</th>-->
+                <th>Acciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-falta>
@@ -203,6 +203,17 @@
                 <td>{{falta.Sancion}}</td>
                 <td>{{falta.Estatus}}</td>
                 <td>{{falta.EstadoFalta ? 'Concluida': 'Abierta'}} </td>
+                <td>
+                  <p-button 
+                  matTooltip="Eliminar Falta"
+                  icon="pi pi-trash" 
+                  severity="danger" 
+                  [rounded]="true" 
+                  [outlined]="true" 
+                  (onClick)="deletefalta(falta.IdFalta)"
+                  />
+                   
+              </td>
                 <!--<td>{{falta.NivelSancion}}</td>
                 <td>
                   <div *ngIf="falta.HorasExtras">
