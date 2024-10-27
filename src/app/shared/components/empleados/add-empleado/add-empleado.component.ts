@@ -84,7 +84,7 @@ export const MY_DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-  EmpleadosService, provideNativeDateAdapter(),CoreService, DepartamentosService, PuestosService
+  EmpleadosService, provideNativeDateAdapter(), DepartamentosService, PuestosService
 ],
     
   templateUrl: './add-empleado.component.html',
@@ -164,7 +164,6 @@ export class AddEmpleadoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private _adapter: DateAdapter<any>, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
-    private _coreService: CoreService,
     private _puestosService: PuestosService,
     public dialog: MatDialog,
     private router: Router, private messageService: MessageService
@@ -342,9 +341,9 @@ export class AddEmpleadoComponent implements OnInit {
     
     if(this.enter){
           //Mensaje de Confirmacion
-          console.log(this.employeeForm.value.NombrePuesto.NombrePuesto);
+          //console.log(this.employeeForm.value.NombrePuesto.NombrePuesto);
           //Validaciones en caso de campos vacios
-          console.log(this.employeeForm.value);
+          //console.log(this.employeeForm.value);
           if(this.employeeForm.value.Sueldo == 0){
             this.employeeForm.patchValue({
               Sueldo: null
@@ -387,7 +386,7 @@ export class AddEmpleadoComponent implements OnInit {
             NumeroTelefonoEmergencia: this.employeeForm.value.NumeroTelefonoEmergencia+'',
           })
           
-          console.log(this.employeeForm.value);
+          //console.log(this.employeeForm.value);
           this._empleadosService.addEmpleados(this.employeeForm.value).subscribe({
             next: (resp: any) => {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empleado Agregado Satisfactoriamente  *o*' });
@@ -397,8 +396,7 @@ export class AddEmpleadoComponent implements OnInit {
 
             },
             error: (err: any) => {
-                console.error('Error: ' + err);
-                this._coreService.openSnackBar('error ' + err);
+                console.log('Error: ' + err);
             }
         });
 
@@ -415,7 +413,7 @@ export class AddEmpleadoComponent implements OnInit {
       });
 
     }else{
-      this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+      this.messageService.add({ severity: 'warn', summary: 'Campos Faltantes', detail: 'Por favor, complete el formulario correctamente' });
     }
 
 }

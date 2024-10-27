@@ -331,7 +331,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         this.dataSource.sort = this.sortActive;
         this.dataSource.paginator = this.paginatorActive;
         this.empleados = data;
-        console.log(this.empleados);
+        //console.log(this.empleados);
       },
       error: (error) => {
         console.error('Error al cargar los Empleados', error);
@@ -345,7 +345,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         this.dataInactive.sort = this.sortInactive;
         this.dataInactive.paginator = this.paginatorInactive;
         this.empleadosInactive = data;
-        console.log(this.empleadosInactive);
+       // console.log(this.empleadosInactive);
       },
       error: (error) => {
         console.error('Error al cargar los Empleados Inactivos', error);
@@ -623,7 +623,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
             NumeroTelefonoEmergencia: this.employeeForm.value.NumeroTelefonoEmergencia+"",
           })
           
-          console.log(this.employeeForm.value);
+          //console.log(this.employeeForm.value);
           this._empleadosService.addEmpleados(this.employeeForm.value).subscribe({
             next: (resp: any) => {
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empleado Agregado Satisfactoriamente  *o*' });

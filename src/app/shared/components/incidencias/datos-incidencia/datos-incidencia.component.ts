@@ -130,7 +130,7 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
     this._incidenciasService.getIncidencias().subscribe({
       next: (data) => {
         this.incidencias = data;
-        console.log(this.incidencias);
+        //console.log(this.incidencias);
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sortActive;
         this.dataSource.paginator = this.paginatorActive;
@@ -155,7 +155,7 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
     this._incidenciasService.getIncidenciasAll().subscribe({
       next: (data) => {
         this.incidenciasAll = data;
-        console.log(this.incidencias);
+        //console.log(this.incidencias);
         this.dataAll = new MatTableDataSource(data);
         this.dataAll.sort = this.sortAll;
         this.dataAll.paginator = this.paginatorAll;

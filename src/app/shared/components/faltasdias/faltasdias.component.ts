@@ -57,7 +57,7 @@ export class FaltasdiasComponent implements OnInit{
     this.faltasService.getFalta(this.IdFalta).subscribe({
       next:(data) =>{
         this.faltas = data;
-        console.log(this.faltas);
+        //console.log(this.faltas);
       },
       error:(error) =>{
         console.log(error)
@@ -67,7 +67,7 @@ export class FaltasdiasComponent implements OnInit{
     this.faltasService.getfechaspagar(this.IdFalta).subscribe({
       next:(data) =>{
         this.fechaspagar = data;
-        console.log(this.fechaspagar);
+        //console.log(this.fechaspagar);
       },
       error:(error) =>{
         console.log(error)
@@ -76,7 +76,7 @@ export class FaltasdiasComponent implements OnInit{
 
 
 
-    console.log(this.IdFalta);
+    //console.log(this.IdFalta);
   }
   
 
@@ -92,7 +92,7 @@ export class FaltasdiasComponent implements OnInit{
     if(this.IdFalta && this.fechapagar){
       this.faltasService.addFechaPagar(this.IdFalta, this.fechapagar ,this.comentario).subscribe({
         next:(data) =>{
-          console.log(data);
+          //console.log(data);
           this.fechapagar = undefined;
           this.comentario = ''
           this.ngOnInit();

@@ -109,9 +109,9 @@ NivelSancion: string[]=[
   ngOnInit(): void {
     this.reportesService.getReportes().subscribe({
       next:(data)=>{
-        console.log(data);
+        //console.log(data);
         this.reportes = data;
-        console.log(this.reportes);
+        //console.log(this.reportes);
       },
       error:(error)=>{
         console.log(error);
@@ -122,7 +122,7 @@ NivelSancion: string[]=[
   consultaempleado(){
     this.empleadosService.getEmpleado(this.NoNomina).subscribe({
       next:(data)=>{  
-        console.log(data);
+        //console.log(data);
         this.empleados = data;
 
         if(this.empleados.length>=1){
@@ -155,7 +155,7 @@ if(this.Form.valid){
     NoNomina: this.NoNomina
   })
 
-  console.log(this.Form.value);
+  //console.log(this.Form.value);
 
   this.reportesService.addReporte(this.Form.value).subscribe({
     next:(data)=>{

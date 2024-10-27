@@ -201,7 +201,7 @@ Chart.defaults.set('plugins.datalabels', {
         this.promedioantiguedad = this.promedioAntiguedad(this.empleadosActive).toFixed(1);
         
 
-        console.log(this.empleadosActive);
+        //console.log(this.empleadosActive);
         this.CantidadEmpleados = this.empleadosActive.length;
 
         this.empleadosActive.forEach(element => {
@@ -273,7 +273,7 @@ const datasets = this.bajasDashboard.map((dept, index) => ({
       next:(rangoAntiguedad: any)=>{
         this.rangosAntiguedadActive = rangoAntiguedad;
         //this.edades = edades;
-        console.log(this.rangosAntiguedadActive);
+       // console.log(this.rangosAntiguedadActive);
 
 // Crea un dataset para cada entrada en el estado civil
 const datasets = this.rangosAntiguedadActive.map((dept, index) => ({
@@ -308,7 +308,7 @@ const datasets = this.rangosAntiguedadActive.map((dept, index) => ({
       next:(rangoAntiguedad: any)=>{
         this.rangosAntiguedadSalidas = rangoAntiguedad;
         //this.edades = edades;
-        console.log(this.rangosAntiguedadSalidas);
+        //console.log(this.rangosAntiguedadSalidas);
 
 // Crea un dataset para cada entrada en el estado civil
 const datasets = this.rangosAntiguedadSalidas.map((dept, index) => ({
@@ -343,8 +343,8 @@ const datasets = this.rangosAntiguedadSalidas.map((dept, index) => ({
     this.bajasService.getAllBajas().subscribe({
       next:(bajas: any)=>{
         this.bajas = bajas;
-        console.log(this.bajas);
-        ;
+        //console.log(this.bajas);
+        
          this.promedioantiguedadBaja= this.promedioAntiguedadBajas(this.bajas).toFixed(1);
 
       },
@@ -356,7 +356,7 @@ const datasets = this.rangosAntiguedadSalidas.map((dept, index) => ({
     this.dashboardservice.getbajasDepartamento().subscribe({
       next:(bajas: any)=>{
         this.bajasDepartamentos = bajas;
-        console.log(this.bajasDepartamentos);
+        //console.log(this.bajasDepartamentos);
 
         
 // Inicializa el arreglo de labels y data
@@ -402,7 +402,7 @@ const data = this.bajasDepartamentos.map(dept => dept.CantidadEmpleados);
       next: (departamentos: any) => {
 
         this.departamentos = departamentos;
-        console.log(this.departamentos);
+       // console.log(this.departamentos);
 
 // Inicializa el arreglo de labels y data
 const labels = this.departamentos.map(dept => dept.NombreDepartamento);
@@ -436,7 +436,7 @@ const data = this.departamentos.map(dept => dept.CantidadEmpleados);
     this.dashboardservice.getEmpleadosporEstadoCivil().subscribe({
       next: (estadocivil: any) => {
         this.estadocivil = estadocivil;
-        console.log(this.estadocivil);
+        //console.log(this.estadocivil);
 
 // Crea un dataset para cada entrada en el estado civil
 const datasets = this.estadocivil.map((dept, index) => ({
@@ -504,7 +504,7 @@ const datasets = this.edades.map((dept, index) => ({
     this.dashboardservice.getIncidencias(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.incidenciasPeriodo = data;
-        console.log(this.incidenciasPeriodo);
+        //console.log(this.incidenciasPeriodo);
     
         // Inicializa un objeto para almacenar los datos por motivo
         const motivoData:any = {};
@@ -544,7 +544,7 @@ const datasets = this.edades.map((dept, index) => ({
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -555,7 +555,7 @@ const datasets = this.edades.map((dept, index) => ({
     this.dashboardservice.getCapacitaciones(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.capacitacionesPeriodo = data;
-        console.log(this.capacitacionesPeriodo);
+        //console.log(this.capacitacionesPeriodo);
     
         // Inicializa un objeto para almacenar los datos por motivo
         const motivoData:any = {};
@@ -595,7 +595,7 @@ const datasets = this.edades.map((dept, index) => ({
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -645,7 +645,7 @@ const datasets = this.edades.map((dept, index) => ({
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -785,7 +785,7 @@ this.dataline = {
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -839,7 +839,7 @@ this.dataline = {
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -923,7 +923,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
     this.dashboardservice.getIncidencias(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.incidenciasPeriodo = data;
-        console.log(this.incidenciasPeriodo);
+        //console.log(this.incidenciasPeriodo);
     
         // Inicializa un objeto para almacenar los datos por motivo
         const motivoData:any = {};
@@ -963,7 +963,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -974,7 +974,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
     this.dashboardservice.getCapacitaciones(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.capacitacionesPeriodo = data;
-        console.log(this.capacitacionesPeriodo);
+        //console.log(this.capacitacionesPeriodo);
     
         // Inicializa un objeto para almacenar los datos por motivo
         const motivoData:any = {};
@@ -1014,7 +1014,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -1063,7 +1063,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
           }
         };
     
-        console.log(datasets);
+       // console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -1115,7 +1115,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
           }
         };
     
-        console.log(datasets);
+       // console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -1166,7 +1166,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
           }
         };
     
-        console.log(datasets);
+        //console.log(datasets);
       },
       error: (err) => {
         console.log('Error' + err);
@@ -1187,7 +1187,7 @@ consulta(){
     this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio,this.fechaFin).subscribe({
       next: (capacitacionesD: any) => {
         this.capacitacionesDepartamento = capacitacionesD;
-        console.log(this.capacitacionesDepartamento);
+        //console.log(this.capacitacionesDepartamento);
         this.capacitacionesDepartamento.forEach(element => {
           this.horasTotales = this.horasTotales + element.TotalHoras
         });
@@ -1275,14 +1275,14 @@ consulta(){
   }
 
   // Después de asignar las fechas, puedes realizar la consulta a tu servicio
-  console.log('Fecha Inicio:', this.fechaInicio);
-  console.log('Fecha Fin:', this.fechaFin);
+  //console.log('Fecha Inicio:', this.fechaInicio);
+  //console.log('Fecha Fin:', this.fechaFin);
 
 
   this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio,this.fechaFin).subscribe({
     next: (capacitacionesD: any) => {
       this.capacitacionesDepartamento = capacitacionesD;
-      console.log(this.capacitacionesDepartamento);
+      //console.log(this.capacitacionesDepartamento);
 
       this.capacitacionesDepartamento.forEach(element => {
         this.horasTotales = this.horasTotales + element.TotalHoras

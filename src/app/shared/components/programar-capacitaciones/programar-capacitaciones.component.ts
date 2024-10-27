@@ -209,12 +209,12 @@ mensaje: boolean = false;
 
 
   imprimir(){
-    console.log(this.targetEmpleados)
-    console.log(this.employeeForm.value);
+    //console.log(this.targetEmpleados)
+    //console.log(this.employeeForm.value);
   }
   
   onSubmit(){
-    console.log(this.rangeDates);
+    //console.log(this.rangeDates);
     //alert(this.datetime12h);
     /*
 
@@ -312,18 +312,18 @@ this.datesAux = this.dates;
       Fecha: null
     });
 
-    console.log(this.employeeForm.value);
+    //console.log(this.employeeForm.value);
   
         this.capacitacionesService.addCapacitacion(this.employeeForm.value).subscribe({
           next: (resp: any) => {
             //window.alert('Agregado con exito');
-            console.log('Capacitación agregada:', resp);
+            //console.log('Capacitación agregada:', resp);
         this.idProgramacionCapacitacion = resp.IdProgramacionCapacitacion;  // Guarda el IdProgramacionCapacitacion
-        console.log('ID de la programación:', this.idProgramacionCapacitacion);
+       // console.log('ID de la programación:', this.idProgramacionCapacitacion);
         //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
 
 
-console.log(this.datesAux + ' '+this.rangeDates +''+this.idProgramacionCapacitacion);
+//console.log(this.datesAux + ' '+this.rangeDates +''+this.idProgramacionCapacitacion);
 //Programar Capacitaciones para los dias
 if(this.datesAux!=undefined){
 //alert('Entro en fechas');

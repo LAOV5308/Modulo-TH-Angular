@@ -73,7 +73,7 @@ export class UsuarioeditarComponent implements OnInit{
 
     this.IdUser = this.data.IdUser;
 
-    console.log(this.IdUser);
+    //console.log(this.IdUser);
 
 
     this.usuariosService.getRoles().subscribe({
@@ -89,7 +89,7 @@ export class UsuarioeditarComponent implements OnInit{
 
     this.usuariosService.getUser(this.IdUser).subscribe({
       next:(data: any) => {
-        console.log(data);
+        //console.log(data);
         this.User = data;
 
         this.NombreUsuario = this.User[0].NombreUsuario;
@@ -110,7 +110,7 @@ export class UsuarioeditarComponent implements OnInit{
       if(!this.cambiarContrasena){
         this.usuariosService.updateUserSinContrasena(this.IdUser,this.NombreUsuario, this.IdRole).subscribe({
           next:(resp: any) =>{
-            console.log(resp);
+            //console.log(resp);
             this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Usuario Actualizado con Exito', life: 900});
             this.cambiarContrasena = false;
           },
@@ -139,7 +139,7 @@ export class UsuarioeditarComponent implements OnInit{
               }else{
                 this.usuariosService.updateUser(this.IdUser,this.NombreUsuario, this.IdRole, this.Password).subscribe({
                   next:(resp: any) =>{
-                    console.log(resp);
+                    //console.log(resp);
                     this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Usuario Actualizado con Exito', life: 900});
                     this.cambiarContrasena = false;
                   },

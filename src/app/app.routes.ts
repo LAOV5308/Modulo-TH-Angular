@@ -4,7 +4,7 @@ import { AddEmpleadoComponent } from './shared/components/empleados/add-empleado
 import { PuestoComponentComponent } from './shared/components/Puestos/puesto-component.component';
 import { UpdateEmpleadoComponent } from './shared/components/empleados/update-empleado/update-empleado.component';
 import { IncidenciasComponent } from './shared/components/incidencias/incidencias.component';
-import { DatosCapacitacionCatalogoComponent } from './shared/components/capacitacionesCatalogo/datos-capacitacion-catalogo/datos-capacitacion-catalogo.component';
+//import { DatosCapacitacionCatalogoComponent } from './shared/components/capacitacionesCatalogo/datos-capacitacion-catalogo/datos-capacitacion-catalogo.component';
 import { LoginComponent } from './shared/components/Login/login.component';
 import { authGuard } from './auth/Guards/auth.guard';
 import { roleGuard } from './auth/Guards/role.guard';
@@ -43,7 +43,6 @@ export const routes: Routes = [
             { path: 'empleados', component: EmpleadosComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarEmpleados'} },
             { path: 'dashboard', component: DashboardComponent, canActivate: [roleGuard], data:{acceder: 'Dashboard'}},
             { path: 'incidencias', component: IncidenciasComponent, canActivate: [roleGuard], data:{acceder: 'Incidencias'}},
-            { path: 'catalogocapacitaciones', component: DatosCapacitacionCatalogoComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
             { path: 'programarcapacitaciones', component: ProgramarCapacitacionesComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
             { path: 'consultarcapacitaciones', component: ConsultarCapacitacionesComponent, canActivate: [roleGuard], data:{acceder: 'ConsultarCapacitaciones'}},
             { path: 'puestos', component: PuestoComponentComponent, canActivate: [roleGuard], data:{acceder: 'Puestos'}},

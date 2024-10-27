@@ -171,7 +171,7 @@ orig: string[] = [
     this.capacitacionesService.getCapacitaciones().subscribe({
       next: (data) => {
         this.capacitaciones = data;
-        console.log(this.capacitaciones);
+        //console.log(this.capacitaciones);
         //console.log('data');
         this.updateCalendarEvents();
         
@@ -187,7 +187,7 @@ orig: string[] = [
         this.capacitacionesprogramadas = data;
         
         //console.log('data');
-        console.log(this.capacitacionesprogramadas);
+        //console.log(this.capacitacionesprogramadas);
         this.updateCalendarEvents();
         
       },
@@ -487,12 +487,12 @@ convertirFechaATiempo(fechaISO: string): string {
     this.capacitacionesService.getsingleProgramacionCapacitacion(clickInfo.event.id).subscribe({
       next: (data) => {
         this.programacionConsulta = data;
-console.log(this.programacionConsulta);
+//console.log(this.programacionConsulta);
 
         /*console.log('Programacion Consulta');
         console.log(data);*/
 
-        console.log(this.programacionConsulta);
+        //console.log(this.programacionConsulta);
 
         const today = new Date();
 
@@ -515,7 +515,7 @@ this.cerrado = this.programacionConsulta[0].Cerrado;
         // Agregar un día
         this.fechaDate.setDate(this.fechaDate.getDate() + 1);
 
-        console.log(this.fechaDate);
+      //  console.log(this.fechaDate);
 
 // Formatear la fecha en un string legible
 //const day = today.getDate();
@@ -582,7 +582,7 @@ this.capacitacionesService.getsingleCalificaciones(this.idProgramacionCapacitaci
           
           this.capacitacionesService.concluirProgramacionCapacitacion(this.idProgramacionCapacitacion).subscribe({
             next:(data: any) =>{
-              console.log(data);
+             // console.log(data);
               this.ngAfterViewInit();
               this.recargarCapacitacion();
             
@@ -1037,12 +1037,12 @@ recargarCapacitacion(){
     this.capacitacionesService.getsingleProgramacionCapacitacion(this.idProgramacionFecha).subscribe({
       next: (data) => {
         this.programacionConsulta = data;
-console.log(this.programacionConsulta);
+//console.log(this.programacionConsulta);
 
         /*console.log('Programacion Consulta');
         console.log(data);*/
 
-        console.log(this.programacionConsulta);
+        //console.log(this.programacionConsulta);
 
         const today = new Date();
 
@@ -1065,7 +1065,7 @@ this.cerrado = this.programacionConsulta[0].Cerrado;
         // Agregar un día
         this.fechaDate.setDate(this.fechaDate.getDate() + 1);
 
-        console.log(this.fechaDate);
+        //console.log(this.fechaDate);
 
 // Formatear la fecha en un string legible
 //const day = today.getDate();

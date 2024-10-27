@@ -72,7 +72,7 @@ this.infoEmpleado(value);
   }
   onSubmit() {
     if (this.employeeForm.valid) {
-      console.log(this.employeeForm.value);
+      //console.log(this.employeeForm.value);
       // Lógica para manejar la inserción del empleado
     }
   }

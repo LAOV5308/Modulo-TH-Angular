@@ -115,7 +115,7 @@ export class ReportesComponent implements OnInit{
 
 
 verEmpleados(){
-  console.log(this.selectedEmpleados);
+  //console.log(this.selectedEmpleados);
 }
 
 periodo(){
@@ -164,7 +164,7 @@ filterGlobal(event: Event, field: string) {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      //console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -294,7 +294,7 @@ this.showCapacitaciones = false;
     this.usuarioService.getUser(this.IdUser).subscribe({
       next:(data: any) =>{
         this.usuario = data;
-        console.log(this.usuario);
+        //console.log(this.usuario);
       },
       error:(error : any) =>{
         console.log(error);
@@ -384,11 +384,11 @@ this.showCapacitaciones = false;
 if(this.FormEmpleados.value.Opcion){
 
   this.opcionSeleccionada = this.FormEmpleados.value.Opcion;
-  console.log(this.opcionSeleccionada);
-  console.log(this.departamentoSeleccionado);
+  //console.log(this.opcionSeleccionada);
+  //console.log(this.departamentoSeleccionado);
 
   /*
-  console.log(this.Form.value.Opcion);
+  //console.log(this.Form.value.Opcion);
   alert(this.Form.value.Opcion);*/
 
 
@@ -689,7 +689,7 @@ if(this.selectedEmpleados == undefined){
   this.messageService.add({ severity: 'error', summary: 'Cuidado', detail: 'No se Encuentra seleccionado ningun Empleado',key: 'tl' });
 }else{
 
-  console.log(this.periodoSeleccionado);
+  //console.log(this.periodoSeleccionado);
 
 this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
   next:(data)=>{
@@ -697,9 +697,9 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
 
   this.vacacionesService.getFechasVacacionesPerido(this.selectedEmpleados.NoNomina, this.periodoSeleccionado).subscribe({
     next:(data)=>{
-      //console.log(data);
+      ////console.log(data);
       this.vacacionesEmpleado = data;
-      //console.log(this.vacacionesEmpleado);
+      ////console.log(this.vacacionesEmpleado);
 
 
 
@@ -755,7 +755,7 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
       const columns = ['Fecha', 'Periodo', 'Comentarios'];
       
       
-      console.log(this.vacacionesEmpleado)
+      //console.log(this.vacacionesEmpleado)
       
       // Simulación de datos de vacaciones (esto debe ser tu lógica)
       const rows = this.vacacionesEmpleado.map(vacacion => [
@@ -871,7 +871,7 @@ doc.save(fileName);
     this.incidenciasService.getIncidenciasPorEmpleado(this.selectedEmpleados.NoNomina).subscribe({
       next:(data)=>{
         this.incidencias = data;
-        console.log(this.incidencias);
+        //console.log(this.incidencias);
         var diasTotales = 0;
 
 
@@ -1102,7 +1102,7 @@ doc.save(fileName);
       next:(data)=>{
         this.capacitacionesEmpleado = data;
 
-        console.log(this.capacitacionesEmpleado);
+        //console.log(this.capacitacionesEmpleado);
 
         const doc = new jsPDF({
           orientation: 'landscape'
@@ -1398,7 +1398,7 @@ consultarCapacitaciones(){
     this.capacitacionesService.getConsultaCapacitaciones(this.fechainicio, this.fechafin).subscribe({
       next:(data: any) =>{
         this.capacitacionesConsultadas = data;
-        console.log(this.capacitacionesConsultadas);
+        //console.log(this.capacitacionesConsultadas);
           this.btnSeleccionarCapacitacion = false;
         
 
@@ -1415,7 +1415,7 @@ consultarCapacitaciones(){
 }
 imprimirConsultaProgramaciones(){
 
-  console.log(this.capacitacionSeleccionada.IdProgramacionCapacitacion);
+  //console.log(this.capacitacionSeleccionada.IdProgramacionCapacitacion);
 
   if(this.capacitacionSeleccionada == undefined){
     this.messageService.add({ severity: 'error', summary: 'Cuidado', detail: 'No se Encuentra seleccionado ningun Empleado',key: 'tl' });
@@ -1437,7 +1437,7 @@ imprimirConsultaProgramaciones(){
         );
       }
       
-      //console.log(this.capacitacionesSuscritas);
+      ////console.log(this.capacitacionesSuscritas);
       //this.capacitacionesEmpleado = data;
 
 

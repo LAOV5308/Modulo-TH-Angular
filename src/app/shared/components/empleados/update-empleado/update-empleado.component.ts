@@ -232,7 +232,7 @@ export class UpdateEmpleadoComponent implements OnInit{
     
     this.employeeForm.get('NombreDepartamento')!.valueChanges.subscribe(departamentoId => {
       this.filterPuestos(departamentoId);
-      console.log('Departamento id: '+ departamentoId);
+      ////console.log('Departamento id: '+ departamentoId);
     });
 
 
@@ -262,10 +262,10 @@ export class UpdateEmpleadoComponent implements OnInit{
       this._puestosService.getPuestosByDepartamento(departamentoId).subscribe({
         next: (data) => {
           this.filteredPuestos = data;
-          console.log(this.filteredPuestos);
+          //console.log(this.filteredPuestos);
         },
         error: (error) => {
-          console.error('Error al cargar los puestos filtrados', error);
+          console.log('Error al cargar los puestos filtrados', error);
         }
       });
     } else {
@@ -282,13 +282,13 @@ export class UpdateEmpleadoComponent implements OnInit{
         this.departamentos = data;
       },
       error: (error) => {
-        console.error('Error al cargar los departamentos', error);
+        console.log('Error al cargar los departamentos', error);
       }
     });
 
 
     this.route.paramMap.subscribe((paramMap: ParamMap) =>{
-      //console.log(paramMap.has('NoNomina'));
+      ////console.log(paramMap.has('NoNomina'));
     if(paramMap.has('NoNomina')){
       this.NoNomina1 = Number(paramMap.get('NoNomina'));
       }
@@ -300,10 +300,10 @@ export class UpdateEmpleadoComponent implements OnInit{
       next: (data) => {
         
         this.employeeForm.patchValue(data);
-        //console.log(data);
+        ////console.log(data);
         this.empleados = data;
 
-        console.log(data);
+        //console.log(data);
 
         this.employeeForm.patchValue(this.empleados[0]);
         
@@ -323,7 +323,7 @@ export class UpdateEmpleadoComponent implements OnInit{
 
         //Puesto Temporal
         this.puestoTemporal = this.empleados[0].NombrePuesto;
-        //console.log(this.puestoTemporal);
+        ////console.log(this.puestoTemporal);
 
         this.calculateAge();
 
@@ -373,7 +373,7 @@ export class UpdateEmpleadoComponent implements OnInit{
         })*/
       },
       error: (error) => {
-        console.error('Error al cargar los Empleados', error);
+        console.log('Error al cargar los Empleados', error);
       }
       
     });
@@ -384,14 +384,14 @@ export class UpdateEmpleadoComponent implements OnInit{
   onSubmit(): void {
     /*
     if (this.employeeForm.valid) {
-      console.log(this.employeeForm.value);
+      //console.log(this.employeeForm.value);
     }*/
 
     if (this.employeeForm.valid) {
       /*
-      console.log(this.employeeForm.value);
+      //console.log(this.employeeForm.value);
 
-      console.log(this.employeeForm.value.NombrePuesto);*/
+      //console.log(this.employeeForm.value.NombrePuesto);*/
 
 
       if(this.employeeForm.value.Sueldo == 0){
@@ -427,9 +427,9 @@ export class UpdateEmpleadoComponent implements OnInit{
             NumeroTelefono2: this.employeeForm.value.NumeroTelefono2+'',
             NumeroTelefonoEmergencia: this.employeeForm.value.NumeroTelefonoEmergencia+'',
           })
-          console.log(this.employeeForm.value);
+          //console.log(this.employeeForm.value);
 
-          console.log(this.puestoTemporal+''+ this.employeeForm.value.NombrePuesto);
+          //console.log(this.puestoTemporal+''+ this.employeeForm.value.NombrePuesto);
 
           //Cambio de Puesto
           if(this.puestoTemporal != this.employeeForm.value.NombrePuesto){
@@ -450,13 +450,13 @@ export class UpdateEmpleadoComponent implements OnInit{
                           this.router.navigate(['/system/empleados']);
                       },
                       error: (err: any) => {
-                          console.error('Error: ' + err);
+                          console.log('Error: ' + err);
                       }
                   });
                     
                   },
                   error: (err: any) => {
-                    console.error('Error: ' + err);
+                    console.log('Error: ' + err);
                     this.messageService.add({ severity: 'error', summary: 'error', detail: 'Error al agregar empleado' });
                   }
                 });
@@ -476,7 +476,7 @@ export class UpdateEmpleadoComponent implements OnInit{
                   this.router.navigate(['/system/empleados']);
               },
               error: (err: any) => {
-                  console.error('Error: ' + err);
+                  console.log('Error: ' + err);
               }
           });
           }

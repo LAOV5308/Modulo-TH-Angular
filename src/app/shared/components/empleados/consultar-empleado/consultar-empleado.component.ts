@@ -34,18 +34,18 @@ export class ConsultarEmpleadoComponent implements OnInit{
   ngOnInit(): void {
 
     this.route.paramMap.subscribe((paramMap: ParamMap) =>{
-      //console.log(paramMap.has('NoNomina'));
+      //////console.log(paramMap.has('NoNomina'));
     if(paramMap.has('NoNomina')){
       this.NoNomina = Number(paramMap.get('NoNomina'));
       }
     });
-   // console.log(this.NoNomina);
+   // //console.log(this.NoNomina);
     
     this._empleadosService.getEmpleado(this.NoNomina).subscribe({
       next: (data) => {
         
         //this.employeeForm.patchValue(data);
-        //console.log(data);
+        ////console.log(data);
         this.empleado = data;
         //this.empleados.push(data);
       },
