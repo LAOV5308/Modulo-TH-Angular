@@ -1,110 +1,3 @@
-<!--
-<ng-container *ngIf="empleado.length > 0">
-  <mat-card class="employee-card">
-    <mat-card-header>
-      <mat-card-title>{{ empleado[0].Nombre }} {{ empleado[0].Apellidos }}</mat-card-title>
-      <mat-card-subtitle>{{ empleado[0].NombrePuesto }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="employee-details">
-        <div class="detail-item">
-          <strong>Edad:</strong> {{ empleado[0].Edad }} Años
-        </div>
-        <div class="detail-item">
-          <strong>NoNomina:</strong> {{ empleado[0].NoNomina }}
-        </div>
-        <div class="detail-item">
-          <strong>Nivel:</strong> {{ empleado[0].Nivel }}
-        </div>
-        <div class="detail-item">
-          <strong>Id Departamento:</strong> {{ empleado[0].IdDepartamento }}
-        </div>
-        <div class="detail-item">
-          <strong>Nombre Responsable:</strong> {{ empleado[0].NombreResponsable }}
-        </div>
-        <div class="detail-item">
-          <strong>Tipo Ingreso:</strong> {{ empleado[0].TipoIngreso }}
-        </div>
-        <div class="detail-item">
-          <strong>Ingreso:</strong> {{ empleado[0].Ingreso | date }}
-        </div>
-        <div class="detail-item">
-          <strong>Antigüedad:</strong> {{ empleado[0].Antiguedad }}
-        </div>
-        <div class="detail-item">
-          <strong>Horario Semanal:</strong> {{ empleado[0].HorarioSemanal }}
-        </div>
-        <div class="detail-item">
-          <strong>NSS:</strong> {{ empleado[0].NSS }}
-        </div>
-        <div class="detail-item">
-          <strong>UMF:</strong> {{ empleado[0].UMF }}
-        </div>-->
-
-
-<!--
-        <div class="detail-item">
-          <strong>Sexo:</strong> {{ empleado[0].Sexo }}
-        </div>
-        <div class="detail-item">
-          <strong>Estado Civil:</strong> {{ empleado[0].EstadoCivil }}
-        </div>
-        <div class="detail-item">
-          <strong>Fecha de Nacimiento:</strong> {{ empleado[0].FechaNacimiento | date }}
-        </div>
-        
-
-        <div class="detail-item">
-          <strong>Entidad de Nacimiento:</strong> {{ empleado[0].EntidadNacimiento }}
-        </div>
-        <div class="detail-item">
-          <strong>Ciudad de Nacimiento:</strong> {{ empleado[0].CiudadNacimiento }}
-        </div>
-        <div class="detail-item">
-          <strong>CURP:</strong> {{ empleado[0].CURP }}
-        </div>
-        <div class="detail-item">
-          <strong>RFC:</strong> {{ empleado[0].RFC }}
-        </div>
-        <div class="detail-item">
-          <strong>Domicilio INE:</strong> {{ empleado[0].DomicilioIne }}
-        </div>
-        <div class="detail-item">
-          <strong>Población:</strong> {{ empleado[0].Poblacion }}
-        </div>
-        <div class="detail-item">
-          <strong>Entidad Dirección:</strong> {{ empleado[0].EntidadDireccion }}
-        </div>
-        <div class="detail-item">
-          <strong>CP:</strong> {{ empleado[0].CP }}
-        </div>
-        <div class="detail-item">
-          <strong>Correo Electrónico:</strong> {{ empleado[0].CorreoElectronico }}
-        </div>
-        <div class="detail-item">
-          <strong>Número Teléfono 1:</strong> {{ empleado[0].NumeroTelefono1 }}
-        </div>
-        <div class="detail-item">
-          <strong>Número Teléfono 2:</strong> {{ empleado[0].NumeroTelefono2 }}
-        </div>
-        <div class="detail-item">
-          <strong>Nombre Beneficiario:</strong> {{ empleado[0].NombreBeneficiario }}
-        </div>
-        <div class="detail-item">
-          <strong>Parentesco:</strong> {{ empleado[0].Parentesco }}
-        </div>
-        <div class="detail-item">
-          <strong>Fecha Nacimiento Beneficiario:</strong> {{ empleado[0].FechaNacimientoBeneficiario | date }}
-        </div>
-        <div class="detail-item">
-          <strong>Número Teléfono Emergencia:</strong> {{ empleado[0].NumeroTelefonoEmergencia }}
-        </div>-->
-
-<!--
-      </div>
-    </mat-card-content>
-  </mat-card>
-</ng-container>-->
 
 
 <div style="display: flex; justify-content: flex-start;">
@@ -115,15 +8,21 @@
 </button>
 </div>
 
+<div (click)="imprimir('empleado')" style="text-align: end; padding-right: 25%;">
+  <button 
+  mat-raised-button 
+  color="primary">
+  <mat-icon>download</mat-icon>Pdf
+</button>
+</div>
 
 <ng-container *ngIf="empleado.length > 0">
-  <mat-card class="employee-card">
+  <mat-card class="employee-card" id="empleado">
     <mat-card-header>
       <mat-card-title>{{ empleado[0].Apellidos }} {{ empleado[0].Nombre }}</mat-card-title>
       <mat-card-subtitle>{{ empleado[0].NombrePuesto }}   <strong>NoNomina:</strong> {{ empleado[0].NoNomina }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      
       <mat-grid-list cols="2" rowHeight="50px">
         <mat-grid-tile>
           <strong>Nivel:</strong> {{ empleado[0].Nivel }}
@@ -138,7 +37,7 @@
           <strong>Tipo Ingreso:</strong> {{ empleado[0].TipoIngreso }}
         </mat-grid-tile>
         <mat-grid-tile>
-          <strong>Ingreso:</strong> {{ sumarUnDia(empleado[0].Ingreso) | date: 'dd/MM/yyyy'}}
+          <strong>Ingreso:</strong> {{ empleado[0].Ingreso.toString().split('T')[0].split('-').reverse().join('/')}}
         </mat-grid-tile>
         <mat-grid-tile>
           <strong>Antigüedad:</strong>{{dias(empleado[0].Antiguedad)}}
@@ -152,6 +51,58 @@
         <mat-grid-tile>
           <strong>UMF:</strong> {{ empleado[0].UMF }}
         </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Sexo:</strong> {{ empleado[0].Sexo }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Estado Civil:</strong> {{ empleado[0].EstadoCivil }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Fecha de Nacimiento:</strong> {{ empleado[0].FechaNacimiento.toString().split('T')[0].split('-').reverse().join('/') }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Edad:</strong> {{ empleado[0].Edad }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Entidad de Nacimiento:</strong> {{ empleado[0].EntidadNacimiento }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Ciudad de Nacimiento:</strong> {{ empleado[0].CiudadNacimiento }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>CURP:</strong> {{ empleado[0].CURP }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>RFC:</strong> {{ empleado[0].RFC }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Domicilio INE:</strong> {{ empleado[0].DomicilioIne }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Población:</strong> {{ empleado[0].Poblacion }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Entidad Dirección:</strong> {{ empleado[0].EntidadDireccion }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>CP:</strong> {{ empleado[0].CP }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Correo Electrónico:</strong> {{ empleado[0].CorreoElectronico }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Número Teléfono 1:</strong> {{ empleado[0].NumeroTelefono1 }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Número Teléfono 2:</strong> {{ empleado[0].NumeroTelefono2 }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Nombre Beneficiario:</strong> {{ empleado[0].NombreBeneficiario }}
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <strong>Número Teléfono Emergencia:</strong> {{ empleado[0].NumeroTelefonoEmergencia }}
+        </mat-grid-tile>
+
         <!--
         <mat-grid-tile>
           <strong>Sueldo:</strong> {{ empleado[0].Sueldo | currency }}
@@ -216,7 +167,9 @@
           <strong>Número Teléfono Emergencia:</strong> {{ empleado[0].NumeroTelefonoEmergencia }}
         </mat-grid-tile>-->
       </mat-grid-list>
+      
     
     </mat-card-content>
   </mat-card>
+  
 </ng-container>

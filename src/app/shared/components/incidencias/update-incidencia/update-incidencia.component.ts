@@ -37,6 +37,9 @@ import { MessageConfirmCheckBoxComponent } from '../add-incidencia/message-confi
 //Fecha Español
 import 'moment/locale/es';
 
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
 
 
 
@@ -44,6 +47,7 @@ import 'moment/locale/es';
   selector: 'app-update-incidencia',
   standalone: true,
   imports: [
+    ToastModule,
     MatFormFieldModule,
     MatDialogModule,
     MatDialogModule,
@@ -64,7 +68,7 @@ import 'moment/locale/es';
   providers:[
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-  EmpleadosService,CoreService, DepartamentosService, PuestosService, IncidenciasService,
+  EmpleadosService,CoreService, DepartamentosService, PuestosService, IncidenciasService,MessageService
   ],
   templateUrl: './update-incidencia.component.html',
   styleUrl: './update-incidencia.component.css'
@@ -76,18 +80,20 @@ export class UpdateIncidenciaComponent implements OnInit{
   selectedEmpleado: Empleado | null = null;
 
   motivos: string[] = [
-    'Maternidad', 
-    'Trayecto', 
+    'Falta',
     'Enfermedad General',
+    'Maternidad', 
+    'Trayecto',
     'Probable Riesgo de Trabajo'
   ];
 
-  constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,
+  constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, 
     private _dialogRef: MatDialogRef<UpdateIncidenciaComponent>,
     private router: Router,
     private _empleadoService: EmpleadosService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private messageService: MessageService
     
   ) {
     this.incidenciaForm = this.fb.group({
@@ -103,9 +109,28 @@ export class UpdateIncidenciaComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._empleadoService.getEmpleados().subscribe({
+    this._empleadoService.getEmpleadosAll().subscribe({
       next: (data) => {
         this.empleados = data;
+
+        this.incidenciaForm.patchValue({
+          NoNomina: this.data.NoNomina,
+          Motivo: this.data.Motivo,
+          FechaInicio: this.data.FechaInicio ? this.zonahoraria(this.data.FechaInicio): null,
+            FechaFin: this.data.FechaFin ? this.zonahoraria(this.data.FechaFin): null,
+            CategoriaIncidencia: this.data.CategoriaIncidencia,
+            FolioAlta: this.data.FolioAlta,
+            FolioBaja: this.data.FolioBaja
+        });
+    
+       // console.log(this.data.NoNomina);
+        this.updateEmployeeInfo(this.data.NoNomina);
+    
+        this.incidenciaForm.get('NoNomina')!.valueChanges.subscribe(value => {
+          this.updateEmployeeInfo(value);
+        });
+    
+        
       },
       error: (error) => {
         console.error('Error al cargar los empleados', error);
@@ -116,22 +141,6 @@ export class UpdateIncidenciaComponent implements OnInit{
     //this.incidenciaForm.patchValue(this.data);
 
 
-    this.incidenciaForm.patchValue({
-      NoNomina: this.data.NoNomina,
-      Motivo: this.data.Motivo,
-      FechaInicio: this.incrementarUnDia(new Date(this.data.FechaInicio)),
-        FechaFin: this.incrementarUnDia(new Date(this.data.FechaFin)),
-        CategoriaIncidencia: this.data.CategoriaIncidencia,
-        FolioAlta: this.data.FolioAlta,
-        FolioBaja: this.data.FolioBaja
-    });
-
-    console.log(this.data.NoNomina);
-    this.updateEmployeeInfo(this.data.NoNomina);
-
-    this.incidenciaForm.get('NoNomina')!.valueChanges.subscribe(value => {
-      this.updateEmployeeInfo(value);
-    });
     
 
 
@@ -146,32 +155,39 @@ export class UpdateIncidenciaComponent implements OnInit{
   }
 
   //Incrementar un dia
-  incrementarUnDia(fecha: Date): Date {
+
+  zonahoraria(fecha: Date): Date {
+    const fechaReporte = new Date(fecha); // Recibe la fecha del servidor
+  return new Date(fechaReporte.getTime() + fechaReporte.getTimezoneOffset() * 60000); 
+  }
+
+  
+ /* incrementarUnDia(fecha: Date): Date {
     fecha.setDate(fecha.getDate() + 1);
     return fecha;
-  }
+  }*/
 
 
   onSubmit(): void {
     
       if (this.incidenciaForm.valid) {
-        console.log(this.incidenciaForm.value);
+        //console.log(this.incidenciaForm.value);
 
           
         this._incidenciasService.updateIncidencia(this.data.IdIncidencias ,this.incidenciaForm.value).subscribe({
           next: (resp: any) => {
-              this._coreService.openSnackBar('Incidencia actualizado successfully', resp);
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Incidencia added successfully' });
+            
               this._dialogRef.close(true);
               //this.router.navigate(['/empleados'])
           },
           error: (err: any) => {
               console.error('Error: ' + err);
-              this._coreService.openSnackBar('Error al agregar Incidencia');
           }
       });
       
       }else{
-        this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+        this.messageService.add({ severity: 'info', summary: 'Campos Faltantes', detail: 'Por favor, complete el formulario correctamente' });
       }
 
 

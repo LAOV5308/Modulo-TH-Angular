@@ -23,17 +23,10 @@ import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+//Fecha Español
+
+import 'moment/locale/es';
+
 
 @Component({
   selector: 'app-add-baja',
@@ -55,10 +48,8 @@ export const MY_DATE_FORMATS = {
     MatCardModule
   ],
   providers:[
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
-    provideMomentDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-    EmpleadosService, provideNativeDateAdapter(), CoreService],
+    provideMomentDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
+    EmpleadosService, CoreService],
   templateUrl: './add-baja.component.html',
   styleUrl: './add-baja.component.css'
 })
@@ -74,7 +65,6 @@ export class AddBajaComponent implements OnInit{
   private _dialogRef: MatDialogRef<AddBajaComponent>,
   @Inject(MAT_DIALOG_DATA) public data: any,
   private _coreService: CoreService,
-  private _adapter: DateAdapter<any>
 ){
   this.Form = this._fb.group({
     //NoNomina: [{value: ' ', disabled: true}, Validators.required],
@@ -87,8 +77,7 @@ export class AddBajaComponent implements OnInit{
     FechaInicio: [''],
     FechaFin: ['']
 
-  });
-  this._adapter.setLocale('en-GB'); // Esto configura el adaptador de fecha para usar el formato de fecha correcto
+  }); 
 }
 
 //Opciones de Eleccion

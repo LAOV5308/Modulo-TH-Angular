@@ -36,8 +36,11 @@ export class EmpleadosService {
     );
   }
 
-  recuperarEmpleado(data: any): Observable<any> {
-    return this.http.post(this.apiUrl+'/recuperar/', data).pipe(
+  recuperarEmpleado(NoNomina: number): Observable<any> {
+    const body = {
+      NoNomina: NoNomina,
+    };
+    return this.http.post(this.apiUrl+'/recuperar/', body).pipe(
       catchError(this.handleError)
     );
   }

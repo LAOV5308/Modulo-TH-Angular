@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 //Modulos de Importaciones
 import { HttpClientModule  } from '@angular/common/http';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButton, MatFabButton, MatIconButton } from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -57,12 +57,16 @@ import {MAT_DATE_LOCALE} from '@angular/material/core';
 import 'moment/locale/es';
 
 import {MatBadgeModule} from '@angular/material/badge';
+import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-datos',
   standalone: true,
-  imports: [ButtonModule, NgIf, MatCardModule,ToastModule, CardModule,MatDialogModule, MatInputModule, 
+  imports: [
+    MatButtonModule,
+    ButtonModule, NgIf, MatCardModule,ToastModule, CardModule,MatDialogModule, MatInputModule, 
     MatDatepickerModule, MatNativeDateModule, MatRadioModule, MatSelectModule, ReactiveFormsModule,
     HttpClientModule,
     NgFor, MatButton, MatExpansionModule,
@@ -78,7 +82,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     MensajeGuardarEmpleadoComponent,
     TooltipModule,
     SplitButtonModule,
-    CommonModule, MatBadgeModule
+    CommonModule, MatBadgeModule, ToastModule
   ],
   providers: [EmpleadosService, CoreService,DepartamentosService, PuestosService, MessageService,
     provideMomentDateAdapter(),{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}]
@@ -88,7 +92,6 @@ import {MatBadgeModule} from '@angular/material/badge';
 })
 export class DatosComponent implements OnInit, AfterViewInit{
   NoNomina: number = 0;
-  Form: FormGroup;
     //Opciones de Eleccion
     sexo: string[] = [
       'Masculino',
@@ -182,6 +185,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
     'NombreDepartamento',
     'NombrePuesto',
     'Ingreso',
+    'Salida',
     //'Antiguedad',
     'HorarioSemanal',
     'TipoIngreso',
@@ -212,8 +216,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
     @ViewChild('sortInactive') sortInactive!: MatSort;
     @ViewChild('paginatorInactive') paginatorInactive!: MatPaginator;
 
-  constructor(private empleadosService: EmpleadosService, 
-    private _coreService: CoreService,
+  constructor(private empleadosService: EmpleadosService,
     private _dialog: MatDialog,
     private router: Router,
     private _fb: FormBuilder,
@@ -222,10 +225,6 @@ export class DatosComponent implements OnInit, AfterViewInit{
     private messageService: MessageService,
     private _departamentosService: DepartamentosService
   ) { 
-      this.Form = this._fb.group({
-        NoNomina: ''
-      });
-  
 
       this.employeeForm = this._fb.group({
       
@@ -332,6 +331,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         this.dataSource.sort = this.sortActive;
         this.dataSource.paginator = this.paginatorActive;
         this.empleados = data;
+        console.log(this.empleados);
       },
       error: (error) => {
         console.error('Error al cargar los Empleados', error);
@@ -345,6 +345,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
         this.dataInactive.sort = this.sortInactive;
         this.dataInactive.paginator = this.paginatorInactive;
         this.empleadosInactive = data;
+        console.log(this.empleadosInactive);
       },
       error: (error) => {
         console.error('Error al cargar los Empleados Inactivos', error);
@@ -420,19 +421,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
     }
   }
 
-  agregar(){
-    /*
-    const dialog = this._dialog.open(CreateEmpleadoComponent);
-    dialog.afterClosed().subscribe({
-      next:(val)=>{
-        if(val){
-          this.actualizar();
-        }
-      }
-    });*/
-
-
-  }
+ 
 
   dias(dias: number): string {
     const diasPorAño = 365;
@@ -459,13 +448,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
     return resultado || '0 Meses'; // En caso de que los días sean 0
   }
 
-  sumarUnDia(fecha: Date): Date {
-    let nuevaFecha = new Date(fecha);
-    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
-    return nuevaFecha;
-}
-  
-
+ 
   consultar(idEmpleado: number){
     this.router.navigate(['system/consultarEmpleado/'+idEmpleado]);
   }
@@ -488,19 +471,16 @@ export class DatosComponent implements OnInit, AfterViewInit{
           NoNomina: NoNomina1
         }];*/
 
-        this.Form.patchValue({
-          NoNomina: NoNomina1
-        })
+        
 
-    this.empleadosService.recuperarEmpleado(this.Form.value).subscribe({
+    this.empleadosService.recuperarEmpleado(NoNomina1).subscribe({
       next: (resp: any) => {
-        this._coreService.openSnackBar('Empleado Recuperado successfully', resp);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empleado Recuperado Correctamente' });
         this.actualizar();
 
     },
     error: (err: any) => {
         console.error('Error: ' + err);
-        this._coreService.openSnackBar('Error al recuperar Empleado');
     }
     });
         
@@ -528,7 +508,9 @@ export class DatosComponent implements OnInit, AfterViewInit{
   eliminar(data: any){
 
     const dialogU = this._dialog.open(AddBajaComponent,{
-      data
+      data,
+      height: 'auto',  // Ajusta la altura
+      width: 'auto'    // Ajusta el ancho
     });
 
     
@@ -653,7 +635,6 @@ export class DatosComponent implements OnInit, AfterViewInit{
             },
             error: (err: any) => {
                 console.error('Error: ' + err);
-                this._coreService.openSnackBar('error ' + err);
             }
         });
 
@@ -670,7 +651,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
       });
 
     }else{
-      this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+      this.messageService.add({ severity: 'info', summary: 'Cuidado', detail: 'Por favor, complete el formulario correctamente' });
     }
 
 }
@@ -730,5 +711,10 @@ limpiarCampos(){
   });
 
 }
+
+/*
+downloadcsv(){
+  new AngularCsv(this.empleados, 'EmpleadosActivos');
+}*/
 
 }

@@ -45,5 +45,6 @@ export interface Empleado {
   EstadoEmpleado: boolean;
   Vacaciones: boolean;
   Edad: number;
+  FechaBaja: Date;
   //disabled?: boolean; 
 }

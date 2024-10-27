@@ -1,15 +1,14 @@
 <p-confirmDialog />
-<br/>
-<div style="display: flex; justify-content: flex-start; padding-bottom: 2rem;">
+<div style="display: flex; justify-content: flex-start; padding-bottom: 2rem; padding-left: 2rem;">
   <button [routerLink]="['/system/empleados']" class="agregar"
   mat-raised-button 
   color="primary">
-  <mat-icon>keyboard_return</mat-icon>Regresar
+  <i class="pi pi-arrow-left" style="font-size: 1.5rem"></i> Regresar
 </button>
 </div>
 <mat-card class="matcard">
   
-  <h1>Actualizar Empleado<mat-icon>people</mat-icon></h1>
+  <h1 style="text-align: center;">Actualizar Empleado <i class="pi pi-address-book" style="font-size: 1.5rem"></i></h1>
   <mat-card-header class="matcardheader">
     
     <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
@@ -332,8 +331,12 @@
   
         <!--</mat-expansion-panel>-->
       <!--</mat-accordion>-->
-  
-      <button mat-raised-button color="primary" type="submit">Actualizar</button>
+  <div style="padding-left: 45%; padding-top: 2rem; padding-bottom: 2rem;">
+    <button mat-raised-button color="primary" type="submit">
+      <i class="pi pi-save" style="font-size: 1.5rem"></i>Actualizar
+    </button>
+  </div>
+      
        <!--Le quite aqui lo del darle click-->
     </form>
   </mat-card-header>

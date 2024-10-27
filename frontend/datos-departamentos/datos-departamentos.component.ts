@@ -15,7 +15,10 @@ import { AddDepartamentoComponent } from '../../src/app/shared/components/Depart
 import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
-
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { EmpleadosService } from '../../backend/services/empleados.service';
+import { Empleado } from '../../backend/models/empleado.model';
 
 
 @Component({
@@ -26,9 +29,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatSort, MatTableModule, MatIcon,
     MatPaginator, MatFormFieldModule, NgIf,
     AddDepartamentoComponent,
-    UpdateDepartamentoComponent
+    UpdateDepartamentoComponent,
+    ToastModule
   ],
-  providers: [DepartamentosService, CoreService],
+  providers: [DepartamentosService, MessageService,EmpleadosService],
   templateUrl: './datos-departamentos.component.html',
   styleUrl: './datos-departamentos.component.css'
 })
@@ -39,18 +43,19 @@ export class DatosDepartamentosComponent implements OnInit, AfterViewInit{
     'IdDepartamento',
     'NombreDepartamento',
     'NombreResponsable',
-    'EstadoDepartamento',
     'Acciones'
   ];
 
   departamentos: Departamento[] = [];
+  empleados: Empleado[] = [];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private _departamentosService: DepartamentosService,
-      private _coreService: CoreService,
+    private messageService: MessageService,
       private _dialog: MatDialog,
+      private empleadosService: EmpleadosService
   ) { }
 
   ngAfterViewInit(): void {
@@ -74,6 +79,16 @@ export class DatosDepartamentosComponent implements OnInit, AfterViewInit{
       },
       error: (error) => {
         console.error('Error al cargar los departamentos', error);
+      }
+    });
+
+    this.empleadosService.getEmpleados().subscribe({
+      next: (data) => {
+        this.empleados = data;
+        
+      },
+      error: (error) => {
+        console.error('Error', error);
       }
     });
   }
@@ -107,15 +122,22 @@ export class DatosDepartamentosComponent implements OnInit, AfterViewInit{
   eliminar(id: number){
     //window.alert("Elimina"+id);
     //Eliminar
-    this._departamentosService.deleteDepartamentos(id).subscribe({
-      next: (res) => {
-        this.actualizar();
-        this._coreService.openSnackBar('Departamento Eliminado!', 'done');
-      },
-      error: (error) => {
-        console.error('Error al cargar los departamentos', error);
-      }
-    });
+
+    if(this.empleados.find(empleado => empleado.IdDepartamento === id)){
+      this.messageService.add({ severity: 'warn', summary: 'No se puede Eliminar', detail: 'Existen Empleados Activos con este Departamento' });
+    }else{
+      this._departamentosService.deleteDepartamentos(id).subscribe({
+        next: (res) => {
+          this.actualizar();
+          this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Eliminado Correctamente' });
+        },
+        error: (error) => {
+          console.error('Error al cargar los departamentos', error);
+        }
+      });
+    }
+
+    
     
   }
 

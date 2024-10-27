@@ -15,16 +15,20 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { PuestosService } from '../../backend/services/puestos.service';
 import { AddPuestoComponent } from '../../src/app/shared/components/Puestos/add-puesto/add-puesto.component';
 import { UpdatePuestoComponent } from '../../src/app/shared/components/Puestos/update-puesto/update-puesto.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { EmpleadosService } from '../../backend/services/empleados.service';
+import { Empleado } from '../../backend/models/empleado.model';
 
 
 @Component({
   selector: 'app-datos-puestos',
   standalone: true,
-  imports: [HttpClientModule,
+  imports: [ToastModule,HttpClientModule,
     NgFor, DatePipe, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
     MatPaginator, MatFormFieldModule, UpdatePuestoComponent, AddPuestoComponent],
-    providers: [PuestosService, CoreService],
+    providers: [PuestosService, MessageService,EmpleadosService],
   templateUrl: './datos-puestos.component.html',
   styleUrl: './datos-puestos.component.css'
 })
@@ -33,23 +37,33 @@ export class DatosPuestosComponent implements OnInit, AfterViewInit{
     'IdPuesto',
     'NombrePuesto',
     'NombreDepartamento',
-    'EstadoPuesto',
     'Acciones'
   ];
   algo: any;
   puestos: Puesto[] = [];
   dataSource!: MatTableDataSource<any>;
+  empleados:Empleado[]=[];
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private _puestosService: PuestosService,
-      private _coreService: CoreService,
       private _dialog: MatDialog,
+      private messageService: MessageService,
+      private empleadosService: EmpleadosService
   ) { this.cargarPuestos()}
 
 ngOnInit(): void {
 
   this.cargarPuestos();
+
+  this.empleadosService.getEmpleados().subscribe({
+    next: (data) => {
+      this.empleados = data;
+    },
+    error: (error) => {
+      console.error('Error al cargar los puestos', error);
+    }
+  });
   
 }
 
@@ -106,10 +120,11 @@ editar(data: any){
 eliminar(id: number){
   //window.alert("Elimina"+id);
   //Eliminar
+  //if(this.empleados.find(empleado => empleado.IdDepartamento === id)){}else{}
   this._puestosService.deletePuestos(id).subscribe({
     next: (res) => {
       this.actualizar();
-      this._coreService.openSnackBar('Puesto Eliminado!', 'done');
+      this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Eliminado Con exito' });
     },
     error: (error) => {
       console.error('Error al cargar los puestos', error);

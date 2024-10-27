@@ -54,7 +54,7 @@
                         <ng-template pTemplate="body" let-vacacion>
                             <tr>
                                 <td></td>
-                                <td>{{addOneDay(vacacion.Fecha) | date:'dd-MM-yyyy'}}</td>
+                                <td>{{vacacion.Fecha.toString().split('T')[0].split('-').reverse().join('/')}}</td>
                                 <td>{{vacacion.Periodo}}</td>
                                 <td>{{vacacion.Comentarios}}</td>
                             </tr>
@@ -94,12 +94,12 @@
                             <tr>
                                 <td>{{baja.IdBaja}}</td>
                                 <td>{{baja.NoNomina}}</td>
-                                <td>{{baja.Nombre + ' '+baja.Apellidos}}</td>
+                                <td>{{baja.Apellidos + ' '+baja.Nombre}}</td>
                                 <td>{{baja.NombrePuesto}}</td>
                                 <td>{{baja.NombreDepartamento}}</td>
                                 <td>{{baja.NombreResponsable}}</td>
-                                <td>{{addOneDay(baja.FechaIngreso) | date:'dd-MM-yyyy' }}</td>
-                                <td>{{addOneDay(baja.FechaSalida) | date:'dd-MM-yyyy' }}</td>
+                                <td>{{baja.FechaIngreso.toString().split('T')[0].split('-').reverse().join('/')}}</td>
+                                <td>{{baja.FechaSalida.toString().split('T')[0].split('-').reverse().join('/') }}</td>
                                 <td>{{baja.Antiguedad}}</td>
                             </tr>
                         </ng-template>
@@ -140,13 +140,13 @@
                             <tr>
                                 <td>{{baja.IdIncidencias}}</td>
                                 <td>{{baja.NoNomina}}</td>
-                                <td>{{baja.Nombre + ' '+baja.Apellidos}}</td>
+                                <td>{{baja.Apellidos + ' '+baja.Nombre}}</td>
                                 <td>{{baja.NombrePuesto}}</td>
                                 <td>{{baja.NombreDepartamento}}</td>
                                 <td>{{baja.NombreResponsable}}</td>
                                 <td>{{baja.Motivo}}</td>
-                                <td>{{addOneDay(baja.FechaInicio) | date:'dd-MM-yyyy' }}</td>
-                                <td>{{addOneDay(baja.FechaFin) | date:'dd-MM-yyyy' }}</td>
+                                <td>{{baja.FechaInicio.toString().split('T')[0].split('-').reverse().join('/')}}</td>
+                                <td>{{baja.FechaFin.toString().split('T')[0].split('-').reverse().join('/') }}</td>
                                 <td>{{baja.DiasSubsidios}}</td>
                             </tr>
                         </ng-template>

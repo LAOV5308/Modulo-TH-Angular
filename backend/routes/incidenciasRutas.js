@@ -52,6 +52,27 @@ router.post('/empleado', async (req, res) => {
 });
 
 
+//Eliminar Incidencia
+router.delete('/:id', async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdIncidencias', sql.Int, id);
+
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_incidencias_delete');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Incidencia eliminada con exito" });
+
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error al actualizar la Incidencia: ' + err.message });
+    }
+});
+
 
 // Obtener todos los empleados all
 /*

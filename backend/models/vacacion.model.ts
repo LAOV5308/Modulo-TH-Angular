@@ -5,7 +5,8 @@ export interface FechaVacacion {
     Comentarios: string;
     EstadoVacacion: boolean;
     Periodo: string;
-    IdVacacion: number;
+    IdVacacion: number | null;
+    VacacionAdelantada: boolean;
   }
 
   export interface Vacacion {

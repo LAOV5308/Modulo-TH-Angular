@@ -26,6 +26,8 @@ import { UpdateIncidenciaComponent } from '../update-incidencia/update-incidenci
 import {MatTabsModule} from '@angular/material/tabs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-datos-incidencia',
@@ -41,10 +43,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MessageConfirmCheckBoxComponent,
     UpdateIncidenciaComponent,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ConfirmDialogModule
   
   ],
-    providers:[EmpleadosService, CoreService, IncidenciasService],
+    providers:[EmpleadosService, CoreService, IncidenciasService, ConfirmationService, MessageService],
   templateUrl: './datos-incidencia.component.html',
   styleUrl: './datos-incidencia.component.css',
   //encapsulation: ViewEncapsulation.None
@@ -55,6 +58,20 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
   disabled = false;
 
   displayedColumns: string[] = [
+    'IdIncidencias',
+    'NoNomina',
+  'NombreCompleto',
+  'NombrePuesto',
+  'NombreDepartamento',
+  'CategoriaIncidencia',
+  'Motivo',
+  'FechaInicio',
+  'FechaFin',
+  'DiasSubsidios',
+  'Acciones'
+  ];
+
+  displayedColumns1: string[] = [
     'IdIncidencias',
     'NoNomina',
   'NombreCompleto',
@@ -86,9 +103,8 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
   @ViewChild('paginatorAll') paginatorAll!: MatPaginator;
 
   constructor(private _incidenciasService: IncidenciasService,
-    private _coreService: CoreService,
     private _dialog: MatDialog,
-    private _empleadosService: EmpleadosService
+    private _empleadosService: EmpleadosService, private confirmationService: ConfirmationService, private messageService: MessageService
   
   ){}
 
@@ -152,13 +168,6 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
     
   }
 
-  ajustarFecha(fecha: string): string {
-    let date = new Date(fecha);
-    let userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    date = new Date(date.getTime() + userTimezoneOffset); // Ajuste para corregir la zona horaria
-    return date.toISOString().split('T')[0]; // Devuelve solo la parte de la fecha (YYYY-MM-DD)
-  }
-
   agregar(){
     const dialog = this._dialog.open(AddIncidenciaComponent);
     dialog.afterClosed().subscribe({
@@ -182,9 +191,6 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
         }
       }
     });
-
-  }
-  eliminar(Id: number){
 
   }
 
@@ -241,13 +247,12 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
       if (result) {
         this._incidenciasService.closeIncidencia(IdIncidencias, null).subscribe({
           next: (resp: any) => {
-            this._coreService.openSnackBar('Incidencia Cerrada con exito', resp);
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Incidencia added successfully' });
             this.actualizar();
             //this.router.navigate(['/empleados'])
         },
         error: (err: any) => {
             console.error('Error: ' + err);
-            this._coreService.openSnackBar('Error al cerrar incidencia');
         }
     });
 
@@ -261,7 +266,33 @@ export class DatosIncidenciaComponent implements OnInit, AfterViewInit{
 
   }
     
+deleteIncidencia(IdIncidencias: number){
+  this.confirmationService.confirm({
+    message: '¿Quieres eliminar esta incidencia?',
+    header: 'Confirmation',
+    icon: 'pi pi-exclamation-triangle',
+    acceptIcon:"none",
+    rejectIcon:"none",
+    rejectButtonStyleClass:"p-button-text",
+    accept: () => {
+      this._incidenciasService.deleteIncidencias(IdIncidencias).subscribe({
+        next: (resp: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Incidencia Eliminada Correctamente' });
+          this.actualizar();
+          //this.router.navigate(['/empleados'])
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+    },
+    reject: () => {
+       
+    }
+});
 
+ 
+}
 
 
 

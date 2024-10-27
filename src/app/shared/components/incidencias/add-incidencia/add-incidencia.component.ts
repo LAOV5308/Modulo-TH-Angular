@@ -36,6 +36,9 @@ import { MessageConfirmCheckBoxComponent } from './message-confirm-check-box/mes
 
 import {FormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
 
 //Fecha Español
 import 'moment/locale/es';
@@ -61,12 +64,13 @@ import 'moment/locale/es';
     MatIcon,
     MessageConfirmCheckBoxComponent,
     FormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ToastModule
   ],
   providers:[
     provideMomentDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-  EmpleadosService, CoreService, DepartamentosService, PuestosService, IncidenciasService
+  EmpleadosService, CoreService, DepartamentosService, PuestosService, IncidenciasService, MessageService
   ],
   templateUrl: './add-incidencia.component.html',
   styleUrl: './add-incidencia.component.css'
@@ -86,11 +90,13 @@ export class AddIncidenciaComponent implements OnInit{
     'Probable Riesgo de Trabajo'
   ];
 
-  constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, private _coreService: CoreService,
+  constructor(private fb: FormBuilder, private _incidenciasService: IncidenciasService, 
+    //private _coreService: CoreService,
     private _dialogRef: MatDialogRef<AddIncidenciaComponent>,
     private router: Router,
     private _empleadoService: EmpleadosService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private messageService: MessageService
   ) {
     this.incidenciaForm = this.fb.group({
       NoNomina: ['', Validators.required],
@@ -142,18 +148,20 @@ export class AddIncidenciaComponent implements OnInit{
         console.log(this.incidenciaForm.value);
         this._incidenciasService.addIncidencias(this.incidenciaForm.value).subscribe({
           next: (resp: any) => {
-              this._coreService.openSnackBar('Incidencia added successfully', resp);
+              
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Incidencia added successfully' });
               this._dialogRef.close(true);
               //this.router.navigate(['/empleados'])
           },
           error: (err: any) => {
               console.error('Error: ' + err);
-              this._coreService.openSnackBar('Error al agregar Incidencia');
+              //this._coreService.openSnackBar('Error al agregar Incidencia');
           }
       });
       
     }else{
-      this._coreService.openSnackBar('NoNomina NO-Encontrado/No-Activo');
+      
+      this.messageService.add({ severity: 'info', summary: 'No Encontrado', detail: 'NoNomina NO-Encontrado' });
       this.incidenciaForm.patchValue({
         NoNomina: null,
       });
@@ -161,7 +169,8 @@ export class AddIncidenciaComponent implements OnInit{
 
     }
       }else{
-        this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+       
+        this.messageService.add({ severity: 'info', summary: 'Campos Faltantes', detail: 'Por favor, complete el formulario correctamente' });
       }
 
 

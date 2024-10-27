@@ -29,6 +29,7 @@
   
     .editar, .eliminar{
       border-radius: 40%;
+      margin-right: 2px;
     }
   
    h1{

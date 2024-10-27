@@ -86,6 +86,25 @@ router.post('/', async (req, res) => {
 
 });
 
+
+router.post('/adelantada', async (req, res) => {
+    const { NoNomina,Fecha, Comentarios} = req.body;
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('NoNomina', sql.Int, NoNomina);
+        request.input('Fecha', sql.Date, Fecha);
+        request.input('Comentarios', sql.VarChar, Comentarios);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_vacacionfechaadelantada_add');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Vacacion creada con éxito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al agregar la vacacion: ' + err.message });
+    }
+
+});
+
 router.post('/increase', async (req, res) => {
     const { IdVacacion} = req.body;
     try {
@@ -150,19 +169,16 @@ router.post('/vacacionesperiodo', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { DiasDisponibles, DiasUtilizados} = req.body;
-
     try {
         const pool = await getConnection();
         const request = pool.request();
         request.input('IdVacacion', sql.Int, id);
         request.input('DiasDisponibles', sql.Int, DiasDisponibles);
         request.input('DiasUtilizados', sql.Int, DiasUtilizados);
-
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_vacaciondias_update');
         //const result = await request.execute('stp_prueba_add');
         res.status(201).json({ message: "Vacacion Actualizada con exito" });
-
 
     } catch (err) {
         res.status(500).json({ message: 'Error al actualizar: ' + err.message });
@@ -186,5 +202,26 @@ router.post('/diasvacaciones', async (req, res) => {
         res.status(500).json({ message: 'Error: ' + err.message });
     }
 });
+
+
+
+router.post('/adelantarasignar', async (req, res) => {
+    const { IdFechaVacacion, Periodo, IdVacacion } = req.body;
+
+    try {
+        /*const sql = await db.getConnection();
+        const request = sql.request();*/
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('IdFechaVacacion', sql.Int, IdFechaVacacion);
+        request.input('Periodo', sql.VarChar, Periodo);
+        request.input('IdVacacion', sql.Int, IdVacacion);
+        const result = await request.execute('stp_vacacionadelantada_asignar');
+        res.status(201).json({ message: "Asignado Correctamente" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
+
 
 module.exports = router;

@@ -60,8 +60,14 @@ export class VacacionesComponent implements OnInit {
   formattedDates: null | string = '';
   NoNomina: number | undefined;
   visible:boolean = false;
+  visible1:boolean = false;
   btnAgregar: boolean = false;
 vacaciones: FechaVacacion[]=[];
+
+//Vacaciones Adelantadas
+vacacionesAdelantadas: FechaVacacion[]=[];
+
+
 consultavacaciones: Vacacion[]=[];
 vacacionesPeriodo: Vacacion[]=[];
 PeriodosPrueba: Periodo[] = [];
@@ -73,8 +79,12 @@ desactivarPeriodos: boolean = false;
 IdVacacion!: number;
 diasVacacionesDisponibles: number = 0;
 todosDiasDisponibles: DiasDisponibles[]=[];
-
+countVacacionesAdelantadas!: number;
+adelantar: boolean = false;
+totaldias!: number;
+mensaje!: string;
 Opciones: string[] = ['2020', '2021', '2022', '2023', '2024'];
+PeriodoSeleccionado!:string;
 opcionSeleccionada: string = '';
   /*vacaciones:any[]=[
     {code:'123', name:'Luis', category:'Algo', quantity:'Pesos'},
@@ -119,6 +129,52 @@ this.desactivarPeriodos = true;
   })
 
 }
+
+
+obtenerVacacion1(Periodo: string){
+  console.log(this.NoNomina +' '+ Periodo);
+  this.vacacionesService.getVacaciones(this.NoNomina, Periodo).subscribe({
+    next:(data: any) => {
+      console.log(data);
+      this.vacacionesPeriodo = data;
+      console.log(this.vacacionesPeriodo);
+      this.IdVacacion = this.vacacionesPeriodo[0].IdVacacion;
+      this.DiasDisponibles = this.vacacionesPeriodo[0].DiasDisponibles;
+      this.DiasDeLey = this.vacacionesPeriodo[0].DiasVacaciones;
+      this.PeriodoSeleccionado = this.vacacionesPeriodo[0].Periodo;
+
+      this.DiasRestantes = this.DiasDisponibles;
+      this.desactivarCalendario = false;
+      //this.desactivarPeriodos = true;
+      
+      this.operacionDiasAdelantadoasConSeleccion(this.DiasDisponibles);
+      console.log(this.vacacionesAdelantadas);
+      
+      
+    },
+    error:(err: any) => {
+      console.log('Error: ', err);
+    },
+  })
+
+}
+
+operacionDiasAdelantadoasConSeleccion(diasDisponibles: number){
+  if(diasDisponibles>=this.countVacacionesAdelantadas){
+    this.totaldias = diasDisponibles - this.countVacacionesAdelantadas;
+    if(this.totaldias==0){
+      this.mensaje = 'Los dias estan saldados: '+this.totaldias +" Dias";
+    }else{
+      this.mensaje = 'Dias Restantes: '+this.totaldias +" Dias";
+    }
+  }else{
+    this.totaldias = this.countVacacionesAdelantadas - diasDisponibles;
+    this.mensaje = 'Restantes Dias Adelantados: '+this.totaldias +" Dias";
+  }
+
+
+}
+
   ngOnInit() {
 
     /*
@@ -200,8 +256,92 @@ this.desactivarPeriodos = true;
     console.log(this.consultavacaciones.length);
     this.visible=true;
   }
+
+
+  showDialog1(){
+    
+    console.log(this.NoNomina, this.opcionSeleccionada);
+
+    this.vacacionesService.getVacacionesPeriodo(this.NoNomina).subscribe({
+      next: (data: any)=> {
+        this.PeriodosPrueba = [];
+        this.consultavacaciones = data;
+        console.log(this.consultavacaciones);
+        
+        this.consultavacaciones.forEach(element => {
+          console.log(element);
+          const nuevoPeriodo: Periodo = {
+            value: element.Periodo,
+            label: element.Periodo+': Disponibles: ' + element.DiasDisponibles + ' Dias',
+            diasRestantes: element.DiasDisponibles
+          };
+          
+          // Agregar el nuevo objeto al array PeriodosPrueba
+          this.PeriodosPrueba.push(nuevoPeriodo);
+          
+        });
+
+
+        console.log(this.PeriodosPrueba);
+       
+        //console.log(this.consultavacaciones[0].DiasDisponibles);
+      },
+      error: (err: any)=> {
+        console.log('Error ', err)
+      },
+    })
+
+    //console.log(this.Periodos.length);
+    console.log(this.consultavacaciones.length);
+    this.visible1=true;
+    //this.adelantar = true;
+  }
+
+
+  showDialogDias(){
+    
+    console.log(this.NoNomina, this.opcionSeleccionada);
+
+    this.vacacionesService.getVacacionesPeriodo(this.NoNomina).subscribe({
+      next: (data: any)=> {
+        this.PeriodosPrueba = [];
+        this.consultavacaciones = data;
+        console.log(this.consultavacaciones);
+        
+        this.consultavacaciones.forEach(element => {
+          console.log(element);
+          const nuevoPeriodo: Periodo = {
+            value: element.Periodo,
+            label: element.Periodo+': Disponibles: ' + element.DiasDisponibles + ' Dias',
+            diasRestantes: element.DiasDisponibles
+          };
+          
+          // Agregar el nuevo objeto al array PeriodosPrueba
+          this.PeriodosPrueba.push(nuevoPeriodo);
+          
+        });
+
+
+        console.log(this.PeriodosPrueba);
+       
+        //console.log(this.consultavacaciones[0].DiasDisponibles);
+      },
+      error: (err: any)=> {
+        console.log('Error ', err)
+      },
+    })
+
+    //console.log(this.Periodos.length);
+    console.log(this.consultavacaciones.length);
+    this.adelantar = true;
+  }
+
+
+
   cerrar(){
     this.visible = false;
+    this.visible1 = false;
+    this.adelantar = false;
   }
 
   
@@ -244,6 +384,28 @@ this.desactivarPeriodos = true;
     }
   }
 
+  formatSelectedDates1() {
+    console.log(this.dates);
+    console.log(this.dates?.length);
+
+    if(this.dates == undefined){
+      this.formattedDates = '';
+      this.DiasRestantes = this.DiasDisponibles;
+    }
+    else{
+      // Formatear las fechas seleccionadas
+      this.formattedDates = '';
+      if(this.dates != undefined){
+        this.dates.forEach(element => {
+          this.formattedDates = this.formattedDates+' '+this.datePipe.transform(element, 'dd/MM/yyyy')+', '
+        });
+      }
+      
+
+      
+    }
+  }
+
   getFormatoFecha(fecha: Date): any {
     const newfech = new Date(fecha).toISOString().split('T')[0]
      return newfech;
@@ -267,6 +429,7 @@ ConsultarFechas(){
 
 this.reiniciar();
 this.diasVacacionesDisponibles = 0;
+
 if(this.NoNomina != undefined){
   this.empleadosService.getEmpleado(this.NoNomina).subscribe({
     next:(data:any) =>{
@@ -287,9 +450,10 @@ if(this.NoNomina != undefined){
 
 if(this.empleados.length > 0){
   console.log(this.empleados[0].Vacaciones);
-  if(this.empleados[0].Vacaciones){
 
+  //if(this.empleados[0].Vacaciones){
     this.btnAgregar = true;
+
   if(this.date1!=undefined && this.date2!=undefined){
     this.consultaForm.patchValue({
       NoNomina: this.NoNomina,
@@ -302,29 +466,39 @@ if(this.empleados.length > 0){
       next:(data: FechaVacacion[]) => {
         console.log(data);
         this.vacaciones = data;
+        this.countVacacionesAdelantadas = this.vacaciones.filter(vacacion => vacacion.VacacionAdelantada).length;
+        this.vacacionesAdelantadas = this.vacaciones.filter(vacacion => vacacion.VacacionAdelantada);
       },
       error:(err: any) => {
         console.log('Error ', err);
       },
     })
 
-
-
   }else{
     //Todas Las Vacaciones del Colaborador
     console.log(this.date1 +' -- ' + this.date2);
+
+
     this.vacacionesService.getFechasVacaciones(this.NoNomina).subscribe({
     next:(data: FechaVacacion[]) => {
       this.vacaciones = data;
       console.log(this.vacaciones);
+      // Filtrar solo las vacaciones adelantadas y contar el número de elementos
+ this.countVacacionesAdelantadas = this.vacaciones.filter(vacacion => vacacion.VacacionAdelantada).length;
+
+ this.vacacionesAdelantadas = this.vacaciones.filter(vacacion => vacacion.VacacionAdelantada);
+//console.log(this.vacacionesAdelantadas);
+
     },
     error:(err: any) => {
       console.log('Error', err);
     }
   })
+
+
   }
 
-  }else{
+  /*}else{
     //this.messageService.add({ severity: 'error', summary: 'No hay Vacaciones', detail: 'Empleado Aun No tiene Vacaciones', sticky: true });
     this.confirmationService.confirm({
       message: 'Empleado Aun NO Cumple con el Primer Aniversario',
@@ -339,13 +513,13 @@ if(this.empleados.length > 0){
     this.vacaciones = [];
   this.btnAgregar = false;
 
-  }
+  }*/
 
   
 
   
 }else{
-  this.messageService.add({ severity: 'error', summary: 'No Hay Vacaciones del empleado', detail: 'No hay Vacaciones' });
+  this.messageService.add({ severity: 'info', summary: 'No Existe', detail: 'Empleado No Existe en la Base de Datos' });
   this.vacaciones = [];
   this.btnAgregar = false;
 };
@@ -355,6 +529,7 @@ if(this.empleados.length > 0){
       //this.messageService.add({ severity: 'error', summary: 'No Hay Vacaciones del empleado', detail: 'No hay Vacaciones' });
     }
   });
+
 
 }else{
   this.messageService.add({ severity: 'info', summary: 'Agrega No. Nomina', detail: 'No hay No. Nomina' });
@@ -421,6 +596,120 @@ if(this.empleados.length > 0){
       }
     })
 
+ }
+ OnSubmitVacacionAdelantar(){
+  this.vacacionForm.patchValue({
+    NoNomina: this.NoNomina,
+    Comentarios: this.comentarios,
+  });
+
+  /*this.vacacionForm.patchValue({
+    Comentarios: this.comentarios
+  })*/
+
+  /*if(this.comentarios){
+    this.vacacionForm.patchValue({
+      Comentarios: this.comentarios
+    })
+  }*/
+
+  console.log(this.vacacionForm.value);
+  
+  this.dates?.forEach(fecha => {
+    this.vacacionForm.patchValue({
+      Fecha: fecha,
+    });
+
+    console.log(this.vacacionForm.value);
+
+    
+this.vacacionesService.addVacacionAdelantada(this.vacacionForm.value).subscribe({
+    next:(data: any)=>{
+      this.ConsultarFechas();
+    console.log(data);
+    },
+    error:(err: any)=>{
+      console.log('Error', err)
+    }
+  });
+
+  });
+
+  this.cerrar();
+
+ }
+
+ adelantarVacaciones(){
+  console.log(this.DiasRestantes, this.countVacacionesAdelantadas);
+  console.log(this.IdVacacion, this.PeriodoSeleccionado);
+
+
+  if(this.DiasRestantes>=this.countVacacionesAdelantadas){
+    //Cuando los dias restantes y los dias adelantados sean iguales
+    console.log(this.DiasDeLey);
+    console.log(this.DiasRestantes - this.countVacacionesAdelantadas);
+    console.log(this.DiasDeLey - (this.DiasRestantes - this.countVacacionesAdelantadas) );
+
+    for (let i = 0; i < this.vacacionesAdelantadas.length; i++) {
+      console.log(this.vacacionesAdelantadas[i]);
+      this.vacacionesService.asignarvacacionesadelantadas(this.vacacionesAdelantadas[i].IdFechaVacacion, this.PeriodoSeleccionado, this.IdVacacion).subscribe({
+        next:(data)=>{
+          console.log(data);
+        },
+        error:(error)=>{
+          console.log(error);
+        },
+      })
+    }
+
+    this.vacacionesService.updateDiasVacaciones(this.IdVacacion,(this.DiasRestantes - this.countVacacionesAdelantadas), (this.DiasDeLey - (this.DiasRestantes - this.countVacacionesAdelantadas) )).subscribe({
+      next:(data: any)=>{
+       //console.log(data);
+      this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Vacacion Agregada con Exito' });
+     
+  
+      //this.obtenerVacacion(this.opcionSeleccionada);
+  
+      },
+      error:(err: any)=>{
+        console.log('Error', err)
+      }
+    })
+    
+    this.cerrar();
+    this.ConsultarFechas();
+
+  }else{
+    //Cuando los los dias adelantados sean mayores los dias restantes
+    console.log(this.IdVacacion);
+    for (let i = 0; i < this.DiasRestantes; i++) {
+      console.log(this.vacacionesAdelantadas[i]);
+      this.vacacionesService.asignarvacacionesadelantadas(this.vacacionesAdelantadas[i].IdFechaVacacion, this.PeriodoSeleccionado, this.IdVacacion).subscribe({
+        next:(data)=>{
+          console.log(data);
+        },
+        error:(error)=>{
+          console.log(error);
+        },
+      })
+    }
+
+    this.vacacionesService.updateDiasVacaciones(this.IdVacacion, 0, this.DiasDeLey ).subscribe({
+      next:(data: any)=>{
+       //console.log(data);
+      this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Vacacion Agregada con Exito' });
+     
+  
+      //this.obtenerVacacion(this.opcionSeleccionada);
+  
+      },
+      error:(err: any)=>{
+        console.log('Error', err)
+      }
+    })
+    this.cerrar();
+    this.ConsultarFechas();
+  }
  }
 
  CancelarVacacion(IdFechaVacacion: number, IdVacacion: number){

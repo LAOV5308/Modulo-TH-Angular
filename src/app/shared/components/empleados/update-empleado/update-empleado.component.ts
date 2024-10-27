@@ -35,6 +35,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ToastModule } from 'primeng/toast';
 
 
 import 'moment/locale/es';
@@ -69,7 +70,7 @@ import 'moment/locale/es';
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     provideMomentDateAdapter(),
-  EmpleadosService, CoreService, DepartamentosService, PuestosService,ConfirmationService
+  EmpleadosService, CoreService, DepartamentosService, PuestosService,ConfirmationService, MessageService
   ],
   templateUrl: './update-empleado.component.html',
   styleUrl: './update-empleado.component.css'
@@ -164,12 +165,11 @@ export class UpdateEmpleadoComponent implements OnInit{
 
   constructor(private fb: FormBuilder, private _departamentosService: DepartamentosService, 
     private _empleadosService: EmpleadosService,
-    private _coreService: CoreService,
     public route: ActivatedRoute,
     private _puestosService: PuestosService,
     private router: Router,
-    private confirmationService: ConfirmationService
-
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
     
   ) { 
     
@@ -181,7 +181,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       NombreDepartamento:['', Validators.required],
       NombrePuesto:['', Validators.required],
       TipoIngreso:[''],
-      Ingreso:[''],
+      Ingreso:['', Validators.required],
       HorarioSemanal:[''],
       Sueldo:[''],
       IngresoImss:[''],
@@ -196,7 +196,7 @@ export class UpdateEmpleadoComponent implements OnInit{
       Apellidos:['', Validators.required],
       Sexo:['', Validators.required],
       EstadoCivil:['', Validators.required],
-      FechaNacimiento:[''],
+      FechaNacimiento:['',Validators.required],
       EntidadNacimiento:[''],
       CiudadNacimiento:[''],
       CURP:[''],
@@ -293,7 +293,8 @@ export class UpdateEmpleadoComponent implements OnInit{
       this.NoNomina1 = Number(paramMap.get('NoNomina'));
       }
     });
-    console.log(this.NoNomina1);
+
+
     
     this._empleadosService.getEmpleado(this.NoNomina1).subscribe({
       next: (data) => {
@@ -302,13 +303,17 @@ export class UpdateEmpleadoComponent implements OnInit{
         //console.log(data);
         this.empleados = data;
 
-        console.log(this.empleados[0].Parentesco);
+        console.log(data);
 
         this.employeeForm.patchValue(this.empleados[0]);
         
         //Fechas
         this.employeeForm.patchValue({
-          Ingreso: this.sumarUnDia(this.empleados[0].Ingreso)
+          Ingreso: this.zonahoraria(this.empleados[0].Ingreso),
+          IngresoImss: this.empleados[0].IngresoImss ? this.zonahoraria(this.empleados[0].Ingreso):null,
+          BajaImss: this.empleados[0].BajaImss ? this.zonahoraria(this.empleados[0].BajaImss):null,
+          FechaNacimiento: this.empleados[0].FechaNacimiento ? this.zonahoraria(this.empleados[0].FechaNacimiento):null,
+          FechaNacimientoBeneficiario: this.empleados[0].FechaNacimientoBeneficiario ? this.zonahoraria(this.empleados[0].FechaNacimientoBeneficiario):null
       })
         
     this.employeeForm.patchValue({
@@ -316,10 +321,11 @@ export class UpdateEmpleadoComponent implements OnInit{
       NombrePuesto:this.empleados[0].NombrePuesto,
         });
 
+        //Puesto Temporal
         this.puestoTemporal = this.empleados[0].NombrePuesto;
         //console.log(this.puestoTemporal);
 
-
+        this.calculateAge();
 
         
         /*
@@ -440,19 +446,18 @@ export class UpdateEmpleadoComponent implements OnInit{
                     //this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
                     this._empleadosService.updateEmpleados(this.NoNomina1,this.employeeForm.value).subscribe({
                       next: (resp: any) => {
-                          this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empleado Actualizado successfully' });
                           this.router.navigate(['/system/empleados']);
                       },
                       error: (err: any) => {
                           console.error('Error: ' + err);
-                          this._coreService.openSnackBar('Error al agregar Empleado');
                       }
                   });
                     
                   },
                   error: (err: any) => {
                     console.error('Error: ' + err);
-                    this._coreService.openSnackBar('Error al agregar Empleado');
+                    this.messageService.add({ severity: 'error', summary: 'error', detail: 'Error al agregar empleado' });
                   }
                 });
                 
@@ -467,12 +472,11 @@ export class UpdateEmpleadoComponent implements OnInit{
 
             this._empleadosService.updateEmpleados(this.NoNomina1,this.employeeForm.value).subscribe({
               next: (resp: any) => {
-                  this._coreService.openSnackBar('Empleado Actualizado successfully', resp);
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empleado Actualizado successfully' });
                   this.router.navigate(['/system/empleados']);
               },
               error: (err: any) => {
                   console.error('Error: ' + err);
-                  this._coreService.openSnackBar('Error al agregar Empleado');
               }
           });
           }
@@ -480,15 +484,14 @@ export class UpdateEmpleadoComponent implements OnInit{
       
 
     }else{
-      this._coreService.openSnackBar('Por favor, complete el formulario correctamente');
+      this.messageService.add({ severity: 'info', summary: 'Campos Faltantes', detail: 'Completa los Campos Por Favor' });
     }
 
 }
 
-sumarUnDia(fecha: Date): Date {
-  let nuevaFecha = new Date(fecha);
-  nuevaFecha.setDate(nuevaFecha.getDate() + 1);
-  return nuevaFecha;
+zonahoraria(fecha: Date): Date {
+  const fechaReporte = new Date(fecha); // Recibe la fecha del servidor
+return new Date(fechaReporte.getTime() + fechaReporte.getTimezoneOffset() * 60000); 
 }
 
 

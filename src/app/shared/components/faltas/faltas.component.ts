@@ -66,6 +66,7 @@ export class FaltasComponent implements OnInit {
   Nombre: string | undefined;
   NombrePuesto: string | undefined;
   NombreDepartamento: string | undefined;
+  btnagregar:boolean = true;
 
   @ViewChild('dt2') dt2!: Table;
   @ViewChild('dt3') dt3!: Table;
@@ -146,6 +147,7 @@ export class FaltasComponent implements OnInit {
   findEmpleados(){
 
     if(this.allempleados.find(empleado => empleado.NoNomina === this.NoNomina)){
+      this.btnagregar = false;
       this.empleadoService.getEmpleado(this.NoNomina).subscribe({
         next:(data) => {
           this.empleados = data;
@@ -162,6 +164,7 @@ export class FaltasComponent implements OnInit {
     }else{
       this.messageService.add({ severity: 'error', summary: 'No Encontrado', detail: 'Emplado No Encontrado', life: 3000 });
       this.reiniciarValores();
+      this.btnagregar = true;
       
     }
 
@@ -175,6 +178,7 @@ export class FaltasComponent implements OnInit {
     this.Nombre = undefined;
     this.NombrePuesto = undefined;
     this.NombreDepartamento = undefined;
+    this.btnagregar = true;
   }
 
 
@@ -211,6 +215,7 @@ export class FaltasComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next:(val: any)=>{
         this.ngOnInit();
+        this.reiniciarValores();
       }
     });
   }

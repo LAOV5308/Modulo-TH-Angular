@@ -1,6 +1,7 @@
 
+<p-toast />
 
-<div class="center">
+<div class="center" >
 
   <h1> <i class="pi pi-building" style="font-size: 2rem"></i> Departamentos Disponibles <i class="pi pi-building" style="font-size: 2rem"></i></h1>
 </div>
@@ -8,12 +9,12 @@
 <!--Aplicar el filtro-->
 
 
-<div class="header-container">
+<div class="header-container" style="margin-left: 10px;">
   <button class="agregar"
     mat-raised-button 
     color = "primary"
     (click)="agregar()"
-    type="submit"><mat-icon>add_circle</mat-icon> Agregar Departamento
+    type="submit"><mat-icon>add_circle</mat-icon> Agregar Nuevo Departamento
     </button>
 
 
@@ -47,10 +48,6 @@
         <td mat-cell *matCellDef="let row"> {{row.NombreResponsable}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="EstadoDepartamento">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Estatus</th>
-        <td mat-cell *matCellDef="let row"> {{row.EstadoDepartamento ? 'Activo' : 'Inactivo'}}</td>
-      </ng-container>
 
 
       <ng-container matColumnDef="Acciones">
@@ -70,7 +67,7 @@
 
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="5">No data matching the filter "{{input.value}}"</td>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
       </tr>
 
 

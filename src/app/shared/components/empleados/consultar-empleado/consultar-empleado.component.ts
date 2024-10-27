@@ -10,7 +10,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import {jsPDF} from 'jspdf';
+import 'jspdf-autotable';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-consultar-empleado',
@@ -55,11 +57,11 @@ export class ConsultarEmpleadoComponent implements OnInit{
     
   }
 
-  sumarUnDia(fecha: Date): Date {
+  /*sumarUnDia(fecha: Date): Date {
     let nuevaFecha = new Date(fecha);
     nuevaFecha.setDate(nuevaFecha.getDate() + 1);
     return nuevaFecha;
-}
+  }*/
 
   dias(dias: number): string {
     const diasPorAño = 365;
@@ -83,6 +85,43 @@ export class ConsultarEmpleadoComponent implements OnInit{
     }
   
     return resultado || '0 Meses'; // En caso de que los días sean 0
+  }
+
+  imprimir(Id: string){
+    const chartElement = document.getElementById(Id);
+  if (chartElement) {
+    html2canvas(chartElement).then(canvas => {
+      const doc = new jsPDF({
+        orientation: 'landscape',  // Establecer orientación horizontal
+      });
+      const img1 = new Image();
+      const img2 = new Image();
+      img1.src = 'assets/famo.png'; // Ruta de tu primera imagen local
+      img2.src = 'assets/logo.png'; // Ruta de tu segunda imagen local
+       // Agregar la primera imagen al PDF en la esquina superior izquierda
+    doc.addImage(img1, 'PNG', 10, 10, 20, 10); // Coordenadas x, y y dimensiones width, height
+    // Agregar la segunda imagen al PDF en la esquina superior derecha
+    doc.addImage(img2, 'PNG', 250, 10, 20, 20); // Coordenadas x, y y dimensiones width, height
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 40, 20, 200, 160); // Ajusta las coordenadas y tamaño
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    // Agregar la fecha y hora en la parte inferior del documento
+    doc.text(`Fecha de impresión: ${dateStr}`, 10, 190);
+    doc.text(`Hora de impresión: ${timeStr}`, 10, 200);
+    // Formatear la fecha para el nombre del archivo
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+    const year = now.getFullYear();
+    const fileName = `Information ${this.NoNomina.toString()}_${day}_${month}_${year}.pdf`;
+    // Guardar el PDF con el nombre dinámico
+    doc.save(fileName)
+
+    });
+  } else {
+    console.error('No se encontró el gráfico para imprimir');
+  }
   }
 
 }

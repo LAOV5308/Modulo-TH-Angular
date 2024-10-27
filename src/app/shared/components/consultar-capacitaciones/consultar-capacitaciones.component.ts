@@ -197,7 +197,7 @@ orig: string[] = [
     });
 
     //Aqui traeremos los empleados que estan en dicha Capacitacion
-    this.empleadoService.getEmpleados().subscribe({
+    this.empleadoService.getEmpleadosAll().subscribe({
       next: (data) => {
         this.empleados = data;
         this.sourceEmpleados = data;

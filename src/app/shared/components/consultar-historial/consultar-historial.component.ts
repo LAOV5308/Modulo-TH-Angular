@@ -93,7 +93,7 @@ export class ConsultarHistorialComponent implements OnInit{
           //this.empleados = data;
           /*this.ultimo = this.bajas.length-1;*/
           if(this.empleadosA.length>0){
-          this.Nombre = this.empleadosA[0].Nombre+ ' '+this.empleadosA[0].Apellidos+'';
+          this.Nombre = this.empleadosA[0].Apellidos+ ' '+this.empleadosA[0].Nombre+'';
           this.NombrePuesto = this.empleadosA[0].NombrePuesto;
           this.NombreDepartamento = this.empleadosA[0].NombreDepartamento;
           }

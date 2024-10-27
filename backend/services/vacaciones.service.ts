@@ -22,6 +22,10 @@ addVacacion(data: any):Observable<any>{
   return this.http.post(this.apiUrl, data);
 }
 
+addVacacionAdelantada(data: any):Observable<any>{
+  return this.http.post(this.apiUrl+'/adelantada', data);
+}
+
 getFechasVacaciones(NoNomina: number | undefined): Observable<FechaVacacion[]> {
   return this.http.get<FechaVacacion[]>(this.apiUrl+'/'+NoNomina);
 }
@@ -71,6 +75,7 @@ getVacaciones(NoNomina: number | undefined, Periodo: string): Observable<Vacacio
   };
   return this.http.post<Vacacion[]>(`${this.apiUrl}/all`, body);
 }
+
 updateDiasVacaciones(IdVacacion: number, DiasDisponibles: number, DiasUtilizados: number ): Observable<any> {
   const body = {
     DiasDisponibles: DiasDisponibles,
@@ -78,6 +83,8 @@ updateDiasVacaciones(IdVacacion: number, DiasDisponibles: number, DiasUtilizados
   };
   return this.http.put(this.apiUrl+'/'+IdVacacion, body);
 }
+
+
 incrementarDiasVacaciones(IdVacacion: number): Observable<any> {
   const body = {
     IdVacacion: IdVacacion
@@ -92,6 +99,17 @@ incrementarDiasVacaciones(IdVacacion: number): Observable<any> {
 getVacacionesRango(data: any): Observable<any[]> {
   return this.http.post<any[]>(this.apiUrl+'/rango', data);
 }
+
+asignarvacacionesadelantadas(IdFechaVacacion:number, Periodo: string, IdVacacion:number): Observable<any[]> {
+  const body = {
+    IdFechaVacacion: IdFechaVacacion,
+    Periodo: Periodo,
+    IdVacacion: IdVacacion
+  };
+
+  return this.http.post<any[]>(this.apiUrl+'/adelantarasignar', body);
+}
+
 
 deleteVacacion(IdVacacion: number): Observable<any> {
   return this.http.delete(this.apiUrl+'/'+IdVacacion);

@@ -1,3 +1,4 @@
+<p-toast />
 <mat-card class="container">
     <div class="form-section">
       <h2>Agregar Incidencia</h2>
@@ -37,8 +38,7 @@
         
         <mat-radio-group formControlName="CategoriaIncidencia">
           <mat-radio-button class="radiobuttonst2" value="N/A">N/A</mat-radio-button>
-          <mat-radio-button class="radiobuttonst2" value="ST2">ST2</mat-radio-button>
-          <mat-radio-button class="radiobuttonst7" value="ST7">ST7</mat-radio-button>
+          <mat-radio-button class="radiobuttonst7" value="ST2">ST2</mat-radio-button>
         </mat-radio-group>
         
         <mat-form-field appearance="fill" color="accent">
@@ -60,7 +60,7 @@
     <div class="info-section">
         <h2>Informacion Empleado</h2>
         <div class="info-item">
-          <span>{{ selectedEmpleado?.Nombre }} {{ selectedEmpleado?.Apellidos }}</span>
+          <span>{{ selectedEmpleado?.Apellidos }} {{ selectedEmpleado?.Nombre }}</span>
         </div>
         <div class="info-item">
           <span>{{ selectedEmpleado?.NombrePuesto }}</span>
