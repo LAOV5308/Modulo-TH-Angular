@@ -120,16 +120,20 @@ editar(data: any){
 eliminar(id: number){
   //window.alert("Elimina"+id);
   //Eliminar
-  //if(this.empleados.find(empleado => empleado.IdDepartamento === id)){}else{}
-  this._puestosService.deletePuestos(id).subscribe({
-    next: (res) => {
-      this.actualizar();
-      this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Eliminado Con exito' });
-    },
-    error: (error) => {
-      console.error('Error al cargar los puestos', error);
-    }
-  });
+  if(this.empleados.find(empleado => empleado.IdPuesto === id)){
+    this.messageService.add({ severity: 'info', summary: 'No se puede Eliminar', detail: 'Hay empleados Activos con este Puesto' });
+  }else{
+    this._puestosService.deletePuestos(id).subscribe({
+      next: (res) => {
+        this.actualizar();
+        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Eliminado Con exito' });
+      },
+      error: (error) => {
+        console.error('Error al cargar los puestos', error);
+      }
+    });
+  }
+ 
   
 }
 

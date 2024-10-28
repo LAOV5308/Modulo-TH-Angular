@@ -6,6 +6,7 @@ export interface Empleado {
   Nivel: string;
   //Departamento:Departamento;
   IdDepartamento: number;
+  IdPuesto: number;
   NombreDepartamento: string;
   NombrePuesto: string;
   NombreResponsable: string;
