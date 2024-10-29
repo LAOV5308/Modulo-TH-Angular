@@ -61,6 +61,10 @@ import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
 import {MatButtonModule} from '@angular/material/button';
 
+
+
+
+
 @Component({
   selector: 'app-datos',
   standalone: true,
@@ -208,8 +212,9 @@ export class DatosComponent implements OnInit, AfterViewInit{
 
   empleados: Empleado[] = [];
   empleadosInactive: Empleado[] = [];
-  dataSource!: MatTableDataSource<any>;
-  dataInactive!: MatTableDataSource<any>;
+  dataSource!: MatTableDataSource<any> | any;
+  dataInactive!: MatTableDataSource<any> ;
+
     // Cambiar identificadores de ViewChild
     @ViewChild('sortActive') sortActive!: MatSort;
     @ViewChild('paginatorActive') paginatorActive!: MatPaginator;
@@ -286,10 +291,9 @@ export class DatosComponent implements OnInit, AfterViewInit{
       this.employeeForm.get('departamento')!.valueChanges.subscribe(departamentoId => {
         this.filterPuestos(departamentoId);
       });
-
-
     }
-
+  
+    
 
     filterPuestos(departamentoId: number): void {
       if (departamentoId) {
@@ -659,12 +663,15 @@ export class DatosComponent implements OnInit, AfterViewInit{
   
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
+    
+    
 
 
 applyFilterInactive(event: Event) {

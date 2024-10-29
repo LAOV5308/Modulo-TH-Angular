@@ -19,8 +19,12 @@
             <label for="Password">Contraseña</label>
             <!--<p-password [toggleMask]="true" [feedback]="false" placeholder="Contraseña" formControlName="Password" class="password-input"/>-->
             <p-iconField>
-              <input pInputText id="Password" type="password" placeholder="Contraseña" formControlName="Password"/>
+              <input pInputText id="Password" type="password" placeholder="Contraseña" formControlName="Password" (keyup)="checkCapsLock($event)" />
+              <div *ngIf="capsLockOn" style="color: rgb(0, 132, 255); font-size: 12px;">
+                La tecla de mayúsculas está activada
+              </div>
             </p-iconField>
+
           </div>
           <div class="card-header">
            

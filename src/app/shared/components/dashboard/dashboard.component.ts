@@ -1179,6 +1179,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
 
 consulta(){
   this.horasTotales = 0;
+
   if (!this.mesSeleccionado){
       const ano = parseInt(this.anoSeleccionado, 10);
       this.fechaInicio = new Date(ano, 0, 1);
@@ -1287,6 +1288,7 @@ consulta(){
       this.capacitacionesDepartamento.forEach(element => {
         this.horasTotales = this.horasTotales + element.TotalHoras
       });
+      
 // Inicializa el arreglo de labels y data
 const labels = this.capacitacionesDepartamento.map(dept => dept.NombreDepartamento);
 const data = this.capacitacionesDepartamento.map(dept => dept.TotalHoras);

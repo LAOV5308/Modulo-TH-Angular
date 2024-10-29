@@ -66,8 +66,9 @@ export class FaltasaddComponent implements OnInit {
   Motivo: string[] = [
     'Enfermedad', 
     'Trámite', 
-    'Asunto familiar', 
-    'Otro'
+    'Motivo familiar', 
+    'Otro',
+    'Vacaciones'
   ];
   Sancion: string[] = [
     'N/A',
@@ -76,7 +77,9 @@ export class FaltasaddComponent implements OnInit {
     'Descanso',
     'Horas extras', 
     'Servicio comunitario', 
-    'Rescisión contratual'
+    'Rescisión contratual',
+    'Sin pago de comisiones',
+    'Vacaciones'
   ];
 
   Estatus: string[] = [

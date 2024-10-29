@@ -78,6 +78,8 @@ export class LoginComponent implements OnInit{
   hide: boolean = true;
   value!: string;
 
+  capsLockOn: boolean = false;
+
   constructor(private empleadosService: EmpleadosService, private router: Router,
     private _authService: AuthService,
     private fb: FormBuilder,private messageService: MessageService
@@ -121,7 +123,9 @@ export class LoginComponent implements OnInit{
   }
 
 
-
+  checkCapsLock(event: KeyboardEvent): void {
+    this.capsLockOn = event.getModifierState('CapsLock');
+  }
 
   show = false;
 

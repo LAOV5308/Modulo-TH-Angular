@@ -7,7 +7,7 @@ const {sql, getConnection} = require('../ConexionDB/dbConfig');
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_IncidenciasActive');
+        const result = await sql.query('Select * from V_IncidenciasActive order by IdIncidencias DESC');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 router.get('/close/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_IncidenciasClose');
+        const result = await sql.query('Select * from V_IncidenciasClose order by IdIncidencias DESC');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -29,7 +29,7 @@ router.get('/close/', async (req, res) => {
 router.get('/all/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_IncidenciasAll');
+        const result = await sql.query('Select * from V_IncidenciasAll order by IdIncidencias DESC');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');

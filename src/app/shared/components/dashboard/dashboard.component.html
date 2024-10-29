@@ -215,7 +215,7 @@
     
       <div class="p-grid p-p-4">
         <div class="p-col-4" id="bajasporDepartamento">
-          <p-chart type="polarArea" [data]="datapolar" height="250px" responsive="true"></p-chart>
+          <p-chart type="doughnut" [data]="datapolar" height="250px" responsive="true"></p-chart>
       </div>
     </div>  
     
@@ -427,7 +427,7 @@
 </mat-card-header>
 <mat-card-content class="dashboard-card-content">
   <div id="PeriodoIncidenciasPorMes">
-    <p-chart type="line" [data]="dataline" height="250px" responsive="true"></p-chart>
+    <p-chart type="bar" [data]="dataline" height="250px" responsive="true"></p-chart>
   </div>
 </mat-card-content>
 </mat-card>
@@ -450,7 +450,7 @@
 </mat-card-header>
 <mat-card-content class="dashboard-card-content">
     <div id="PeriodoDiasCapacitaciones">
-      <p-chart type="line" [data]="datalineCapacitaciones" height="250px" responsive="true"></p-chart>
+      <p-chart type="bar" [data]="datalineCapacitaciones" height="250px" responsive="true"></p-chart>
     </div>
 </mat-card-content>
 </mat-card>
@@ -474,7 +474,7 @@
 </mat-card-header>
 <mat-card-content class="dashboard-card-content">
   <div id="PeriodoContrataciones">
-    <p-chart type="line" [data]="datalineContrataciones" height="250px" responsive="true"></p-chart>
+    <p-chart type="bar" [data]="datalineContrataciones" height="250px" responsive="true"></p-chart>
   </div>
 </mat-card-content>
 </mat-card>
@@ -499,7 +499,7 @@
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
     <div id="PeriodoSalidasEdades">
-      <p-chart type="line" [data]="datalineSalidasFechas" height="250px" responsive="true"></p-chart>
+      <p-chart type="bar" [data]="datalineSalidasFechas" height="250px" responsive="true"></p-chart>
     </div>
     
   </mat-card-content>
@@ -525,7 +525,7 @@
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
     <div id="PeriodoDiasIncidenciasPorDepartamento">
-      <p-chart type="line" [data]="datalineDiasIncidencias" height="250px" responsive="true"></p-chart>
+      <p-chart type="bar" [data]="datalineDiasIncidencias" height="250px" responsive="true"></p-chart>
     </div>
     
   </mat-card-content>

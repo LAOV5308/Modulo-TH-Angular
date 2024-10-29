@@ -3,10 +3,10 @@
 <mat-tab-group>
     <mat-tab> 
         <ng-template mat-tab-label>
-            <i class="pi pi-calendar-times" style="font-size: 2rem; color:rgba(90, 252, 144, 0.829)"></i> Agregar Faltas
+            <i class="pi pi-calendar-times" style="font-size: 2rem; color:rgba(90, 252, 144, 0.829)"></i> Agregar Faltas ({{faltasabiertos.length}})
           </ng-template>
           <div class="title">
-            <h1> Faltas <i class="pi pi-calendar-times" style="font-size: 20px;"></i></h1>
+            <h1> Faltas  <i class="pi pi-calendar-times" style="font-size: 20px;"></i></h1>
         </div>
 
         <div class="information">
@@ -41,7 +41,7 @@
         </div>
         
         <div class="titleD">
-          <h1>Faltas en Proceso <i class="pi pi-file-edit" style="font-size: 20px;"></i></h1>
+          <h1>Faltas en Proceso ({{faltasabiertos.length}})<i class="pi pi-file-edit" style="font-size: 20px;"></i></h1>
         </div>
 
         <div class="tabla">
@@ -144,7 +144,7 @@
         </mat-tab>
     <mat-tab>  
         <ng-template mat-tab-label>
-            <i class="pi pi-inbox" style="font-size: 2rem; color:rgb(0, 195, 255)"></i> Historial de Faltas
+            <i class="pi pi-inbox" style="font-size: 2rem; color:rgb(0, 195, 255)"></i> Historial de Faltas ({{faltascerrados.length}})
           </ng-template>
       
 
