@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { DatosPuestosComponent } from '../../../../../frontend/datos-puestos/datos-puestos.component';
+import { DatosPuestosComponent } from './datos-puestos/datos-puestos.component';
 
 
 

@@ -17,7 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import { DatosComponent } from '../../../../../frontend/Datos/datos.component';
+import { DatosComponent } from '../empleados/Datos/datos.component';
 
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';

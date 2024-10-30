@@ -18,7 +18,7 @@ import { Empleado } from '../../../../../backend/models/empleado.model';
 import { Departamento } from '../../../../../backend/models/departamento.model';
 import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
 import { DashboardService } from '../../../../../backend/services/dashboard.service';
-import { D_Bajas, D_CambiosPorDepartamento, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo, D_IncidenciasPorDepartamento, D_RangoAntiguedad, D_SalidasEdades, D_SumaIncidenciasPorDepartamento, D_HorasCapacitacionDepartamento } from '../../../../../backend/models/dashboard.model';
+import { D_Bajas, D_CambiosPorDepartamento, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo, D_IncidenciasPorDepartamento, D_RangoAntiguedad, D_SalidasEdades, D_SumaIncidenciasPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento } from '../../../../../backend/models/dashboard.model';
 import { IncidenciasService } from '../../../../../backend/services/incidencias.service';
 import { Incidencia } from '../../../../../backend/models/incidencia.model';
 
@@ -61,6 +61,7 @@ import { ToastModule } from 'primeng/toast';
 export class DashboardComponent implements OnInit {
   capacitaciones: Capacitacion[]=[];
   capacitacionesDepartamento: D_HorasCapacitacionDepartamento[]=[];
+  faltasDepartamento: D_FaltasDepartamento[]=[];
   empleadosActive: Empleado[] = [];
   empleadosInactive: Empleado[] = [];
   CantidadEmpleados: number = 0;
@@ -91,12 +92,31 @@ export class DashboardComponent implements OnInit {
   incidenciasPorDepartamento: D_IncidenciasPorDepartamento[]=[];
   edades: D_Edades[]=[];
   periodoSeleccionado: string = '2024';
+
   anoSeleccionado: string = '2024';
+  anoSeleccionadoFaltas: string = '2024';
+  anoSeleccionadoIncidencias: string ='2024';
+
+
   mesSeleccionado!: string;
+  mesSeleccionadoFaltas!: string;
+  mesSeleccionadoIncidencias!: string;
+
+
   periodos: string[]=['2022','2023', '2024', '2025', '2026'];
+  periodosFaltas: string[]=['2022','2023', '2024', '2025', '2026'];
+
   fechaInicio!: Date;
   fechaFin!: Date;
+  fechaInicioFaltas!: Date;
+  fechaFinFaltas!: Date;
+  fechaInicioIncidencias!: Date;
+  fechaFinIncidencias!: Date;
+
+
   horasTotales!: number;
+  diasTotales!:number;
+  incidenciasTotales!:number;
 
   //Opciones de Eleccion de Meses
   meses: string[] = [
@@ -137,6 +157,7 @@ export class DashboardComponent implements OnInit {
     databarRangosAntiguedadActive: any;
     databarRangosAntiguedadInactive: any;
     databarIncidenciasPorDepartamento: any;
+    databarfaltas: any;
 
     //DataLine se encarga de Periodo Por mes
     dataline: any;
@@ -171,6 +192,8 @@ Chart.defaults.set('plugins.datalabels', {
     this.Otro = 0;
 
     this.consulta();
+    this.consultaFaltas();
+    this.consultaIncidencias();
     
 
 
@@ -692,53 +715,9 @@ this.dataline = {
         console.log('Error'+err);
       }
     });
-
-
+//ewf
     //Obtener Incidencias Por Departamento
-    this.dashboardservice.getIncidenciasPorDepartamento().subscribe({
-      next: (data: any) => {
-        this.incidenciasPorDepartamento = data;
-
-
-    // Extraer los nombres únicos de los departamentos
-    const labels = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.NombreDepartamento))];
-
-    // Extraer los motivos únicos
-    const motivosUnicos = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.Motivo))];
-
-
-      // Crear los datasets por cada motivo
-      const datasets = motivosUnicos.map(motivo => {
-        return {
-          label: motivo,  // Etiqueta del dataset (Motivo de la incidencia)
-          data: labels.map(departamento => {
-            // Encontrar la cantidad de motivos para cada departamento
-            const incidencia = this.incidenciasPorDepartamento.find(
-              inc => inc.NombreDepartamento === departamento && inc.Motivo === motivo
-            );
-            return incidencia ? incidencia.CantidadMotivos : 0;  // Si hay incidencia, se toma la cantidad, sino 0
-          })
-        };
-      });
-
-        // Configurar la gráfica de barras
-        this.databarIncidenciasPorDepartamento = {
-          labels: labels,
-          datasets: datasets,
-          options: {
-            plugins: {
-              colors: {
-                enabled: true
-              }
-            }
-          }
-        };
-    
-      },
-      error: (err) => {
-        console.log('Error' + err);
-      }
-    });
+   
 
 
     //Obtener Salidas por Edades por mes
@@ -1180,142 +1159,437 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
 consulta(){
   this.horasTotales = 0;
 
-  if (!this.mesSeleccionado){
-      const ano = parseInt(this.anoSeleccionado, 10);
-      this.fechaInicio = new Date(ano, 0, 1);
+  if (!this.mesSeleccionado) {
+    const ano = parseInt(this.anoSeleccionado, 10);
+    this.fechaInicio = new Date(ano, 0, 1);
     this.fechaFin = new Date(ano, 11, 31);
 
-    this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio,this.fechaFin).subscribe({
+    this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio, this.fechaFin).subscribe({
       next: (capacitacionesD: any) => {
         this.capacitacionesDepartamento = capacitacionesD;
         //console.log(this.capacitacionesDepartamento);
         this.capacitacionesDepartamento.forEach(element => {
           this.horasTotales = this.horasTotales + element.TotalHoras
         });
-  // Inicializa el arreglo de labels y data
-  const labels = this.capacitacionesDepartamento.map(dept => dept.NombreDepartamento);
-  const data = this.capacitacionesDepartamento.map(dept => dept.TotalHoras);
-  
+        // Inicializa el arreglo de labels y data
+        const labels = this.capacitacionesDepartamento.map(dept => dept.NombreDepartamento);
+        const data = this.capacitacionesDepartamento.map(dept => dept.TotalHoras);
+
         //Datapie Chart
-    this.datapieCapacitaciones = {
-      labels: labels,
-      datasets: [
-          {
+        this.datapieCapacitaciones = {
+          labels: labels,
+          datasets: [
+            {
               data: data,
-          }],
+            }],
           options: {
             plugins: {
-                colors: {
-                    enabled: true
-                }
+              colors: {
+                enabled: true
+              }
             }
-        }
-      };
-  
+          }
+        };
+
       },
       error: (err) => {
-        console.log('Error'+err);
+        console.log('Error' + err);
       }
-  
+
     });
 
-    //return; // No hagas la consulta hasta que ambos valores estén seleccionados
-    
+
   }
-  else{
+  else {
     const ano = parseInt(this.anoSeleccionado, 10); // Convertir el año a número
-  switch (this.mesSeleccionado) {
-    case 'Enero':
-      this.fechaInicio = new Date(ano, 0, 1);  // Enero es el mes 0 en JavaScript
-      this.fechaFin = new Date(ano, 0, 31);    // Último día de enero
-      break;
-    case 'Febrero':
-      this.fechaInicio = new Date(ano, 1, 1);
-      this.fechaFin = new Date(ano, 1, this.isLeapYear(ano) ? 29 : 28);  // Manejar años bisiestos
-      break;
-    case 'Marzo':
-      this.fechaInicio = new Date(ano, 2, 1);
-      this.fechaFin = new Date(ano, 2, 31);
-      break;
-    case 'Abril':
-      this.fechaInicio = new Date(ano, 3, 1);
-      this.fechaFin = new Date(ano, 3, 30);
-      break;
-    case 'Mayo':
-      this.fechaInicio = new Date(ano, 4, 1);
-      this.fechaFin = new Date(ano, 4, 31);
-      break;
-    case 'Junio':
-      this.fechaInicio = new Date(ano, 5, 1);
-      this.fechaFin = new Date(ano, 5, 30);
-      break;
-    case 'Julio':
-      this.fechaInicio = new Date(ano, 6, 1);
-      this.fechaFin = new Date(ano, 6, 31);
-      break;
-    case 'Agosto':
-      this.fechaInicio = new Date(ano, 7, 1);
-      this.fechaFin = new Date(ano, 7, 31);
-      break;
-    case 'Septiembre':
-      this.fechaInicio = new Date(ano, 8, 1);
-      this.fechaFin = new Date(ano, 8, 30);
-      break;
-    case 'Octubre':
-      this.fechaInicio = new Date(ano, 9, 1);
-      this.fechaFin = new Date(ano, 9, 31);
-      break;
-    case 'Noviembre':
-      this.fechaInicio = new Date(ano, 10, 1);
-      this.fechaFin = new Date(ano, 10, 30);
-      break;
-    case 'Diciembre':
-      this.fechaInicio = new Date(ano, 11, 1);
-      this.fechaFin = new Date(ano, 11, 31);
-      break;
-  }
-
-  // Después de asignar las fechas, puedes realizar la consulta a tu servicio
-  //console.log('Fecha Inicio:', this.fechaInicio);
-  //console.log('Fecha Fin:', this.fechaFin);
-
-
-  this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio,this.fechaFin).subscribe({
-    next: (capacitacionesD: any) => {
-      this.capacitacionesDepartamento = capacitacionesD;
-      //console.log(this.capacitacionesDepartamento);
-
-      this.capacitacionesDepartamento.forEach(element => {
-        this.horasTotales = this.horasTotales + element.TotalHoras
-      });
-      
-// Inicializa el arreglo de labels y data
-const labels = this.capacitacionesDepartamento.map(dept => dept.NombreDepartamento);
-const data = this.capacitacionesDepartamento.map(dept => dept.TotalHoras);
-
-      //Datapie Chart
-  this.datapieCapacitaciones = {
-    labels: labels,
-    datasets: [
-        {
-            data: data,
-        }],
-        options: {
-          plugins: {
-              colors: {
-                  enabled: true
-              }
-          }
-      }
-    };
-
-    },
-    error: (err) => {
-      console.log('Error'+err);
+    switch (this.mesSeleccionado) {
+      case 'Enero':
+        this.fechaInicio = new Date(ano, 0, 1);  // Enero es el mes 0 en JavaScript
+        this.fechaFin = new Date(ano, 0, 31);    // Último día de enero
+        break;
+      case 'Febrero':
+        this.fechaInicio = new Date(ano, 1, 1);
+        this.fechaFin = new Date(ano, 1, this.isLeapYear(ano) ? 29 : 28);  // Manejar años bisiestos
+        break;
+      case 'Marzo':
+        this.fechaInicio = new Date(ano, 2, 1);
+        this.fechaFin = new Date(ano, 2, 31);
+        break;
+      case 'Abril':
+        this.fechaInicio = new Date(ano, 3, 1);
+        this.fechaFin = new Date(ano, 3, 30);
+        break;
+      case 'Mayo':
+        this.fechaInicio = new Date(ano, 4, 1);
+        this.fechaFin = new Date(ano, 4, 31);
+        break;
+      case 'Junio':
+        this.fechaInicio = new Date(ano, 5, 1);
+        this.fechaFin = new Date(ano, 5, 30);
+        break;
+      case 'Julio':
+        this.fechaInicio = new Date(ano, 6, 1);
+        this.fechaFin = new Date(ano, 6, 31);
+        break;
+      case 'Agosto':
+        this.fechaInicio = new Date(ano, 7, 1);
+        this.fechaFin = new Date(ano, 7, 31);
+        break;
+      case 'Septiembre':
+        this.fechaInicio = new Date(ano, 8, 1);
+        this.fechaFin = new Date(ano, 8, 30);
+        break;
+      case 'Octubre':
+        this.fechaInicio = new Date(ano, 9, 1);
+        this.fechaFin = new Date(ano, 9, 31);
+        break;
+      case 'Noviembre':
+        this.fechaInicio = new Date(ano, 10, 1);
+        this.fechaFin = new Date(ano, 10, 30);
+        break;
+      case 'Diciembre':
+        this.fechaInicio = new Date(ano, 11, 1);
+        this.fechaFin = new Date(ano, 11, 31);
+        break;
     }
 
-  });
+    this.dashboardservice.getSumaHorasCapacitacionPorDepartamento(this.fechaInicio, this.fechaFin).subscribe({
+      next: (capacitacionesD: any) => {
+        this.capacitacionesDepartamento = capacitacionesD;
+        //console.log(this.capacitacionesDepartamento);
 
+        this.capacitacionesDepartamento.forEach(element => {
+          this.horasTotales = this.horasTotales + element.TotalHoras
+        });
+
+        // Inicializa el arreglo de labels y data
+        const labels = this.capacitacionesDepartamento.map(dept => dept.NombreDepartamento);
+        const data = this.capacitacionesDepartamento.map(dept => dept.TotalHoras);
+
+        //Datapie Chart
+        this.datapieCapacitaciones = {
+          labels: labels,
+          datasets: [
+            {
+              data: data,
+            }],
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+
+    });
+  }
+};
+
+
+
+consultaFaltas(){
+  this.diasTotales = 0;
+
+  if (!this.mesSeleccionadoFaltas) {
+
+    const ano = parseInt(this.anoSeleccionadoFaltas, 10);
+    this.fechaInicioFaltas = new Date(ano, 0, 1);
+    this.fechaFinFaltas = new Date(ano, 11, 31);
+
+    this.dashboardservice.getFaltasPorDepartamento(this.fechaInicioFaltas, this.fechaFinFaltas).subscribe({
+      next: (dataFaltas: any) => {
+        this.faltasDepartamento= dataFaltas;
+
+      this.faltasDepartamento.forEach(element => {
+        this.diasTotales = this.diasTotales + element.CantidadFaltasDepartamento;
+          
+        });
+        // Inicializa el arreglo de labels y data
+        const labels = this.faltasDepartamento.map(dept => dept.NombreDepartamento);
+        const data = this.faltasDepartamento.map(dept => dept.CantidadFaltasDepartamento);
+
+        //Datapie Chart
+        this.databarfaltas = {
+          labels: labels,
+          datasets: [
+            {
+              data: data,
+            }],
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+
+    });
+  }
+  else {
+    const ano = parseInt(this.anoSeleccionadoFaltas, 10); // Convertir el año a número
+    switch (this.mesSeleccionadoFaltas) {
+      case 'Enero':
+        this.fechaInicioFaltas = new Date(ano, 0, 1);  // Enero es el mes 0 en JavaScript
+        this.fechaFinFaltas = new Date(ano, 0, 31);    // Último día de enero
+        break;
+      case 'Febrero':
+        this.fechaInicioFaltas = new Date(ano, 1, 1);
+        this.fechaFinFaltas = new Date(ano, 1, this.isLeapYear(ano) ? 29 : 28);  // Manejar años bisiestos
+        break;
+      case 'Marzo':
+        this.fechaInicioFaltas = new Date(ano, 2, 1);
+        this.fechaFinFaltas = new Date(ano, 2, 31);
+        break;
+      case 'Abril':
+        this.fechaInicioFaltas = new Date(ano, 3, 1);
+        this.fechaFinFaltas = new Date(ano, 3, 30);
+        break;
+      case 'Mayo':
+        this.fechaInicioFaltas = new Date(ano, 4, 1);
+        this.fechaFinFaltas = new Date(ano, 4, 31);
+        break;
+      case 'Junio':
+        this.fechaInicioFaltas = new Date(ano, 5, 1);
+        this.fechaFinFaltas = new Date(ano, 5, 30);
+        break;
+      case 'Julio':
+        this.fechaInicioFaltas = new Date(ano, 6, 1);
+        this.fechaFinFaltas = new Date(ano, 6, 31);
+        break;
+      case 'Agosto':
+        this.fechaInicioFaltas = new Date(ano, 7, 1);
+        this.fechaFinFaltas = new Date(ano, 7, 31);
+        break;
+      case 'Septiembre':
+        this.fechaInicioFaltas = new Date(ano, 8, 1);
+        this.fechaFinFaltas = new Date(ano, 8, 30);
+        break;
+      case 'Octubre':
+        this.fechaInicioFaltas = new Date(ano, 9, 1);
+        this.fechaFinFaltas = new Date(ano, 9, 31);
+        break;
+      case 'Noviembre':
+        this.fechaInicioFaltas = new Date(ano, 10, 1);
+        this.fechaFinFaltas = new Date(ano, 10, 30);
+        break;
+      case 'Diciembre':
+        this.fechaInicioFaltas = new Date(ano, 11, 1);
+        this.fechaFinFaltas = new Date(ano, 11, 31);
+        break;
+    }
+
+    this.dashboardservice.getFaltasPorDepartamento(this.fechaInicioFaltas, this.fechaFinFaltas).subscribe({
+      next: (dataFaltas: any) => {
+        this.faltasDepartamento= dataFaltas;
+
+        this.faltasDepartamento.forEach(element => {
+          this.diasTotales = this.diasTotales + element.CantidadFaltasDepartamento;
+            
+          });
+        // Inicializa el arreglo de labels y data
+        const labels = this.faltasDepartamento.map(dept => dept.NombreDepartamento);
+        const data = this.faltasDepartamento.map(dept => dept.CantidadFaltasDepartamento);
+
+        //Datapie Chart
+        this.databarfaltas = {
+          labels: labels,
+          datasets: [
+            {
+              data: data,
+            }],
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+
+    });
+
+  }
+};
+
+
+consultaIncidencias(){
+  this.incidenciasTotales = 0;
+
+  if (!this.mesSeleccionadoIncidencias) {
+
+    const ano = parseInt(this.anoSeleccionadoIncidencias, 10);
+    this.fechaInicioIncidencias = new Date(ano, 0, 1);
+    this.fechaFinIncidencias = new Date(ano, 11, 31);
+
+
+    this.dashboardservice.getIncidenciasPorDepartamento(this.fechaInicioIncidencias, this.fechaFinIncidencias).subscribe({
+      next: (data: any) => {
+        this.incidenciasPorDepartamento = data;
+        console.log(this.incidenciasPorDepartamento);
+
+      this.incidenciasPorDepartamento.forEach(element => {
+          this.incidenciasTotales = this.incidenciasTotales+element.CantidadMotivos;
+        });
+
+
+    // Extraer los nombres únicos de los departamentos
+    const labels = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.NombreDepartamento))];
+
+    // Extraer los motivos únicos
+    const motivosUnicos = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.Motivo))];
+
+
+      // Crear los datasets por cada motivo
+      const datasets = motivosUnicos.map(motivo => {
+        return {
+          label: motivo,  // Etiqueta del dataset (Motivo de la incidencia)
+          data: labels.map(departamento => {
+            // Encontrar la cantidad de motivos para cada departamento
+            const incidencia = this.incidenciasPorDepartamento.find(
+              inc => inc.NombreDepartamento === departamento && inc.Motivo === motivo
+            );
+            return incidencia ? incidencia.CantidadMotivos : 0;  // Si hay incidencia, se toma la cantidad, sino 0
+          })
+        };
+      });
+
+        // Configurar la gráfica de barras
+        this.databarIncidenciasPorDepartamento = {
+          labels: labels,
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+
+  }
+  else {
+    const ano = parseInt(this.anoSeleccionadoIncidencias, 10); // Convertir el año a número
+    switch (this.mesSeleccionadoIncidencias) {
+      case 'Enero':
+        this.fechaInicioIncidencias = new Date(ano, 0, 1);  // Enero es el mes 0 en JavaScript
+        this.fechaFinIncidencias = new Date(ano, 0, 31);    // Último día de enero
+        break;
+      case 'Febrero':
+        this.fechaInicioIncidencias = new Date(ano, 1, 1);
+        this.fechaFinIncidencias = new Date(ano, 1, this.isLeapYear(ano) ? 29 : 28);  // Manejar años bisiestos
+        break;
+      case 'Marzo':
+        this.fechaInicioIncidencias = new Date(ano, 2, 1);
+        this.fechaFinIncidencias = new Date(ano, 2, 31);
+        break;
+      case 'Abril':
+        this.fechaInicioIncidencias = new Date(ano, 3, 1);
+        this.fechaFinIncidencias = new Date(ano, 3, 30);
+        break;
+      case 'Mayo':
+        this.fechaInicioIncidencias = new Date(ano, 4, 1);
+        this.fechaFinIncidencias = new Date(ano, 4, 31);
+        break;
+      case 'Junio':
+        this.fechaInicioIncidencias = new Date(ano, 5, 1);
+        this.fechaFinIncidencias = new Date(ano, 5, 30);
+        break;
+      case 'Julio':
+        this.fechaInicioIncidencias = new Date(ano, 6, 1);
+        this.fechaFinIncidencias = new Date(ano, 6, 31);
+        break;
+      case 'Agosto':
+        this.fechaInicioIncidencias = new Date(ano, 7, 1);
+        this.fechaFinIncidencias = new Date(ano, 7, 31);
+        break;
+      case 'Septiembre':
+        this.fechaInicioIncidencias = new Date(ano, 8, 1);
+        this.fechaFinIncidencias = new Date(ano, 8, 30);
+        break;
+      case 'Octubre':
+        this.fechaInicioIncidencias = new Date(ano, 9, 1);
+        this.fechaFinIncidencias = new Date(ano, 9, 31);
+        break;
+      case 'Noviembre':
+        this.fechaInicioIncidencias = new Date(ano, 10, 1);
+        this.fechaFinIncidencias = new Date(ano, 10, 30);
+        break;
+      case 'Diciembre':
+        this.fechaInicioIncidencias = new Date(ano, 11, 1);
+        this.fechaFinIncidencias = new Date(ano, 11, 31);
+        break;
+    }
+
+    this.dashboardservice.getIncidenciasPorDepartamento(this.fechaInicioIncidencias, this.fechaFinIncidencias).subscribe({
+      next: (data: any) => {
+        this.incidenciasPorDepartamento = data;
+        console.log(this.incidenciasPorDepartamento);
+
+        this.incidenciasPorDepartamento.forEach(element => {
+          this.incidenciasTotales = this.incidenciasTotales+element.CantidadMotivos;
+        });
+
+    // Extraer los nombres únicos de los departamentos
+    const labels = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.NombreDepartamento))];
+
+    // Extraer los motivos únicos
+    const motivosUnicos = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.Motivo))];
+
+
+      // Crear los datasets por cada motivo
+      const datasets = motivosUnicos.map(motivo => {
+        return {
+          label: motivo,  // Etiqueta del dataset (Motivo de la incidencia)
+          data: labels.map(departamento => {
+            // Encontrar la cantidad de motivos para cada departamento
+            const incidencia = this.incidenciasPorDepartamento.find(
+              inc => inc.NombreDepartamento === departamento && inc.Motivo === motivo
+            );
+            return incidencia ? incidencia.CantidadMotivos : 0;  // Si hay incidencia, se toma la cantidad, sino 0
+          })
+        };
+      });
+
+        // Configurar la gráfica de barras
+        this.databarIncidenciasPorDepartamento = {
+          labels: labels,
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
 
   }
 };
@@ -1797,6 +2071,11 @@ impresionEmpleadosEstadoCivil(chartId: string) {
   } else {
     console.error('No se encontró el gráfico para imprimir.');
   }
+  }
+
+
+  impresionFaltasPorDepartamento(idImage: string){
+
   }
 
 

@@ -1,7 +1,7 @@
 import { Component, OnInit , HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
-import { DatosComponent } from '../../frontend/Datos/datos.component';
+import { DatosComponent } from './shared/components/empleados/Datos/datos.component';
 import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
 import { LoginComponent } from './shared/components/Login/login.component';
 import { NgIf } from '@angular/common';

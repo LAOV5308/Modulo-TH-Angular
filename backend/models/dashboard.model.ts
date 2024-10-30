@@ -71,5 +71,10 @@ export interface D_HorasCapacitacionDepartamento{
 }
 
 
+export interface D_FaltasDepartamento{
+    NombreDepartamento: string;
+    CantidadFaltasDepartamento: number;
+}
+
 
 

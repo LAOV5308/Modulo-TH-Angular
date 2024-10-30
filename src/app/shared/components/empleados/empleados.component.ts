@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DatosComponent } from '../../../../../frontend/Datos/datos.component';
+import { DatosComponent } from './Datos/datos.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { EmpleadosService } from '../../../../../backend/services/empleados.service';

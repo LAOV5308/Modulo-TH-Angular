@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import { Departamento } from '../../backend/models/departamento.model';
+import { Departamento } from '../../../../../../backend/models/departamento.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
-import { DepartamentosService } from '../../backend/services/departamentos.service';
+import { DepartamentosService } from '../../../../../../backend/services/departamentos.service';
 import { NgFor, DatePipe, NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -9,16 +9,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
-import { CoreService } from '../../src/app/Core/core.service';
+import { CoreService } from '../../../../Core/core.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AddDepartamentoComponent } from '../../src/app/shared/components/Departamentos/add-departamento/add-departamento.component';
-import { UpdateDepartamentoComponent } from '../../src/app/shared/components/Departamentos/update-departamento/update-departamento.component';
+import { AddDepartamentoComponent } from '../add-departamento/add-departamento.component';
+import { UpdateDepartamentoComponent } from '../update-departamento/update-departamento.component';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { EmpleadosService } from '../../backend/services/empleados.service';
-import { Empleado } from '../../backend/models/empleado.model';
+import { EmpleadosService } from '../../../../../../backend/services/empleados.service';
+import { Empleado } from '../../../../../../backend/models/empleado.model';
 
 
 @Component({

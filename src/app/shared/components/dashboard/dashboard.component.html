@@ -258,7 +258,7 @@
   <mat-card class="dashboard-card">
   <mat-card-header>
     <mat-card-title>
-      Cantidad De Incidencias Por Departamento
+      Incidencias
 
 
       <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu7" aria-label="Toggle menu">
@@ -268,11 +268,40 @@
         <button (click)="impresionIncidenciasPorDepartamento('incidenciasPorDepartamento')" mat-menu-item>Imprimir Grafica</button>
       </mat-menu>
 
+      <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+        <mat-label>Meses</mat-label>
+        <mat-select (selectionChange)="consultaIncidencias()" [(ngModel)]="mesSeleccionadoIncidencias">
+          <mat-option>-</mat-option>
+            <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+
+    <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+      <mat-label>Año</mat-label>
+      <mat-select (selectionChange)="consultaIncidencias()" [(ngModel)]="anoSeleccionadoIncidencias" >
+          <mat-option *ngFor="let val of anos" [value]="val">{{val}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill" color="primary" style="width: 20%; ">
+    <mat-label>Total:</mat-label>
+    <input matInput disabled value="{{incidenciasTotales}} Incidencias">
+  </mat-form-field>
+
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
-    <div id="incidenciasPorDepartamento">
-      <p-chart type="bar" [data]="databarIncidenciasPorDepartamento" height="250px" responsive="true"></p-chart>
+    <div id="incidenciasPorDepartamento" *ngIf="incidenciasPorDepartamento.length>0">
+      <p-chart type="bar" [data]="databarIncidenciasPorDepartamento" height="200px" responsive="true"></p-chart>
+    </div>
+
+    <div *ngIf="incidenciasPorDepartamento.length==0" style="margin-top: 17%;">
+      <h2>No hay Registros</h2>
     </div>
     
   </mat-card-content>
@@ -286,48 +315,67 @@
     <mat-card-header>
       <mat-card-title>
         <div *ngIf="mesSeleccionado" style="width: 700px; height: 50px;">
-          Horas de Capacitaciones Por Departamento {{mesSeleccionado}} {{anoSeleccionado}}
+          Horas de Capacitaciones
           <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu8" aria-label="Toggle menu">
             <mat-icon>more_vert</mat-icon>
           </button>
+
+          <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+            <mat-label>Meses</mat-label>
+            <mat-select (selectionChange)="consulta()" [(ngModel)]="mesSeleccionado">
+              <mat-option>-</mat-option>
+                <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+  
+        <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+          <mat-label>Año</mat-label>
+          <mat-select (selectionChange)="consulta()" [(ngModel)]="anoSeleccionado" >
+              <mat-option *ngFor="let val of anos" [value]="val">{{val}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" color="primary" style="width: 17%; ">
+        <mat-label>Total:</mat-label>
+        <input matInput disabled value="{{horasTotales}} Horas">
+      </mat-form-field>
         </div>
           
         
         <div *ngIf="!mesSeleccionado" style=" width: 700px; height: 50px;">
-          Horas de Capacitaciones Por Departamento Año {{anoSeleccionado}}
+          Horas de Capacitaciones
           <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu8" aria-label="Toggle menu">
             <mat-icon>more_vert</mat-icon>
           </button>
-          
-        </div>
-
-       
-
-        <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
-          <mat-label>Meses</mat-label>
-          <mat-select (selectionChange)="consulta()" [(ngModel)]="mesSeleccionado">
-            <mat-option>-</mat-option>
-              <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+          <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+            <mat-label>Meses</mat-label>
+            <mat-select (selectionChange)="consulta()" [(ngModel)]="mesSeleccionado">
+              <mat-option>-</mat-option>
+                <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+  
+        <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+          <mat-label>Año</mat-label>
+          <mat-select (selectionChange)="consulta()" [(ngModel)]="anoSeleccionado" >
+              <mat-option *ngFor="let val of anos" [value]="val">{{val}}
               </mat-option>
           </mat-select>
       </mat-form-field>
-      
 
-      <mat-form-field appearance="fill" color="primary" style="width: 15%;">
-        <mat-label>Año</mat-label>
-        <mat-select (selectionChange)="consulta()" [(ngModel)]="anoSeleccionado" >
-            <mat-option *ngFor="let val of anos" [value]="val">{{val}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill" color="primary" style="width: 17%;">
+        <mat-label>Total:</mat-label>
+        <input matInput disabled value="{{horasTotales}} Horas">
+      </mat-form-field>
 
+        </div>
 
-  <mat-form-field appearance="fill" color="primary" style="padding-left: 20%; width: 50%; padding-right: 10%; ">
-    <mat-label>Total:</mat-label>
-    <input matInput disabled value="{{horasTotales}} Horas">
-  </mat-form-field>
-
-    
+       
 
         <mat-menu #menu8="matMenu" xPosition="before">
           <button (click)="impresionHorasCapacitaciones('HorasCapacitaciones')" mat-menu-item>Imprimir Grafica</button>
@@ -338,10 +386,10 @@
     </mat-card-header>
     <mat-card-content class="dashboard-card-content">
       <div id="HorasCapacitaciones" *ngIf="capacitacionesDepartamento.length>0">
-        <p-chart type="pie" [data]="datapieCapacitaciones" height="200px" responsive="true"></p-chart>
+        <p-chart type="pie" [data]="datapieCapacitaciones" height="250px" responsive="true"></p-chart>
       </div>
-      <div *ngIf="capacitacionesDepartamento.length==0">
-        <h3>No hay Registros</h3>
+      <div *ngIf="capacitacionesDepartamento.length==0" style="margin-top: 17%;">
+        <h2>No hay Registros</h2>
       </div>
     </mat-card-content>
     </mat-card>
@@ -367,14 +415,11 @@
       <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu9" aria-label="Toggle menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-
-      
-
       <mat-menu #menu9="matMenu" xPosition="before">
         <button (click)="impresionCambiosPuestos('cambiosPuestos')" mat-menu-item>Imprimir Grafica</button>
-        
-          
       </mat-menu>
+
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
@@ -385,6 +430,58 @@
 </mat-card>
 </mat-grid-tile>
 
+
+<mat-grid-tile [colspan]="1" [rowspan]="1">
+  <mat-card class="dashboard-card">
+  <mat-card-header>
+    <mat-card-title>
+      Faltas Por Departamento
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu15" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu15="matMenu" xPosition="before">
+        <button (click)="impresionFaltasPorDepartamento('faltas')" mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
+
+      <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+        <mat-label>Meses</mat-label>
+        <mat-select (selectionChange)="consultaFaltas()" [(ngModel)]="mesSeleccionadoFaltas">
+          <mat-option>-</mat-option>
+            <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+
+    <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+      <mat-label>Año</mat-label>
+      <mat-select (selectionChange)="consultaFaltas()" [(ngModel)]="anoSeleccionadoFaltas" >
+          <mat-option *ngFor="let val of anos" [value]="val">{{val}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill" color="primary" style="width: 17%; ">
+    <mat-label>Total:</mat-label>
+    <input matInput disabled value="{{diasTotales}} Dias">
+  </mat-form-field>
+
+
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="dashboard-card-content">
+    <div id="faltas" *ngIf="faltasDepartamento.length>0">
+      <p-chart type="doughnut" [data]="databarfaltas" height="250px" responsive="true"></p-chart>
+    </div>
+    <div *ngIf="faltasDepartamento.length==0" style="margin-top: 17%;">
+      <h2>No hay Registros</h2>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+</mat-grid-tile>
   
 
 

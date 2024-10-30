@@ -21,13 +21,21 @@
   
 
     <mat-form-field appearance="fill" class="form-input">
+      
       <mat-label>Crea Contraseña</mat-label>
-      <input matInput type="password" [(ngModel)]="Password">
+      <input matInput type="password" [(ngModel)]="Password" (keyup)="checkCapsLock1($event)">
+      <div *ngIf="capsLockOn1" style="color: rgb(0, 132, 255); font-size: 10px; height: 1rem;">
+        La tecla de mayúsculas activada
+      </div>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="form-input">
+      
       <mat-label>Confirmar Contraseña</mat-label>
-      <input matInput type="password" [(ngModel)]="PasswordConfirmar">
+      <input matInput type="password" [(ngModel)]="PasswordConfirmar" (keyup)="checkCapsLock2($event)">
+      <div *ngIf="capsLockOn2" style="color: rgb(0, 132, 255); font-size: 10px; height: 1rem;">
+        La tecla de mayúsculas activada
+      </div>
     </mat-form-field>
 
     

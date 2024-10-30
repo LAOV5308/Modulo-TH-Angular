@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
@@ -18,6 +17,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { StyleClassModule } from 'primeng/styleclass';
 import { Usuario } from '../../../../../backend/models/user.model';
 import { InactivityService } from '../../../../../backend/services/inactivity.service';
+import { ConfirmDialogComponent } from '../../../../../frontend/confirm-dialog/confirm-dialog.component';
+
 
 
 @Component({

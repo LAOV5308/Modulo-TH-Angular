@@ -40,6 +40,8 @@ export class UsuariosComponent implements OnInit{
   roles: Role[] = [];
   Usuarios: Usuario[]=[];
   IdUserActive!: number | null;
+  capsLockOn1: boolean = false;
+  capsLockOn2: boolean = false;
 
   constructor(private usuarioService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService,
     private router: Router, public dialog: MatDialog  
@@ -74,6 +76,13 @@ export class UsuariosComponent implements OnInit{
 
 
 
+  }
+  checkCapsLock1(event: KeyboardEvent): void {
+    this.capsLockOn1 = event.getModifierState('CapsLock');
+  }
+
+  checkCapsLock2(event: KeyboardEvent): void {
+    this.capsLockOn2 = event.getModifierState('CapsLock');
   }
 
 

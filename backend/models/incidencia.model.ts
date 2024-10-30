@@ -4,6 +4,7 @@ export interface Incidencia {
     IdIncidencias: number;
     NoNomina: number;
   NombreCompleto: string;
+  NSS: string;
   NombrePuesto: string;
   NombreDepartamento: string;
   NombreResponsable: string;
@@ -22,6 +23,7 @@ export interface IncidenciaB {
   NoNomina: number;
 Nombre: string;
 Apellidos: string;
+NSS: string;
 NombrePuesto: string;
 NombreDepartamento: string;
 NombreResponsable: string;

@@ -58,6 +58,8 @@ export class UsuarioeditarComponent implements OnInit{
   roles: Role[] = [];
   IdUserActive!: number | null;
   cambiarContrasena: boolean = false;
+  capsLockOn1: boolean = false;
+  capsLockOn2: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<UsuarioeditarComponent>,private usuariosService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService,
     private route: ActivatedRoute, @Inject(MAT_DIALOG_DATA) public data: {IdUser: number}){}
@@ -103,6 +105,14 @@ export class UsuarioeditarComponent implements OnInit{
 
   }
 
+
+  checkCapsLock1(event: KeyboardEvent): void {
+    this.capsLockOn1 = event.getModifierState('CapsLock');
+  }
+
+  checkCapsLock2(event: KeyboardEvent): void {
+    this.capsLockOn2 = event.getModifierState('CapsLock');
+  }
 
   actualizar(){
     if(this.IdRole || this.NombreUsuario){

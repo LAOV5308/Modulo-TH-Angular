@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
 
 import { AddDepartamentoComponent } from './add-departamento/add-departamento.component';
-import { DatosDepartamentosComponent } from '../../../../../frontend/datos-departamentos/datos-departamentos.component';
+import { DatosDepartamentosComponent } from './datos-departamentos/datos-departamentos.component';
 
 
 

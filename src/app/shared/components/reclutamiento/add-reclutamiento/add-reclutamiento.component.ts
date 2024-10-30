@@ -44,7 +44,7 @@ import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { SolicitudesService } from '../../../../../../backend/services/solicitudes.service';
-import { MessageAnyAceptarComponent } from '../../Messages/message-any-aceptar/message-any-aceptar.component';
+import { MessageAnyAceptarComponent } from '../../../../../../frontend/Messages/message-any-aceptar/message-any-aceptar.component';
 
 
 

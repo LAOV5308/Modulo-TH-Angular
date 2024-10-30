@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Puesto } from '../../backend/models/puesto.model';
+import { Puesto } from '../../../../../../backend/models/puesto.model';
 import { HttpClientModule, provideHttpClient, withFetch  } from '@angular/common/http';
 import { NgFor, DatePipe, NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
@@ -8,17 +8,17 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
-import { CoreService } from '../../src/app/Core/core.service';
+import { CoreService } from '../../../../Core/core.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { PuestosService } from '../../backend/services/puestos.service';
-import { AddPuestoComponent } from '../../src/app/shared/components/Puestos/add-puesto/add-puesto.component';
-import { UpdatePuestoComponent } from '../../src/app/shared/components/Puestos/update-puesto/update-puesto.component';
+import { PuestosService } from '../../../../../../backend/services/puestos.service';
+import { AddPuestoComponent } from '../add-puesto/add-puesto.component';
+import { UpdatePuestoComponent } from '../update-puesto/update-puesto.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { EmpleadosService } from '../../backend/services/empleados.service';
-import { Empleado } from '../../backend/models/empleado.model';
+import { EmpleadosService } from '../../../../../../backend/services/empleados.service';
+import { Empleado } from '../../../../../../backend/models/empleado.model';
 
 
 @Component({

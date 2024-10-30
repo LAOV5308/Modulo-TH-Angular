@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento, D_HorasCapacitacionDepartamento } from '../models/dashboard.model';
+import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento } from '../models/dashboard.model';
 import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
@@ -66,6 +66,17 @@ getSumaHorasCapacitacionPorDepartamento(FechaInicio: Date, FechaFin: Date): Obse
 }
 
 
+getFaltasPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_FaltasDepartamento[]> {
+  const body = {
+    FechaInicio: FechaInicio,
+    FechaFin: FechaFin
+  };
+  return this.http.post<D_FaltasDepartamento[]>(this.apiUrl+'/faltasdepartamento', body);
+}
+
+
+
+
 
 
 
@@ -98,8 +109,13 @@ getCambiosDepartamento(): Observable<D_CambiosPorDepartamento[]> {
 
 
 //Obtener Incidencias Por Departamento
-getIncidenciasPorDepartamento(): Observable<D_IncidenciasPorDepartamento[]> {
-  return this.http.get<D_IncidenciasPorDepartamento[]>(this.apiUrl+'/incidenciaspordepartamento');
+getIncidenciasPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_IncidenciasPorDepartamento[]> {
+  const body = {
+    FechaInicio: FechaInicio,
+    FechaFin: FechaFin
+  };
+
+  return this.http.post<D_IncidenciasPorDepartamento[]>(this.apiUrl+'/incidenciaspordepartamento', body);
 }
 
 

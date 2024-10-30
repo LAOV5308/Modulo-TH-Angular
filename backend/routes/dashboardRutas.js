@@ -137,17 +137,7 @@ router.get('/bajasdepartamento', async (req, res) => {
 });
 
 
-//Obtener Cantidad de Incidencias Por Departamento
-router.get('/incidenciaspordepartamento', async (req, res) => {
-    
-    try {
-        const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_IncidenciasPorDepartamento');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send('Error');
-    }
-});
+
 
 //Obtener Cantidad de Cambios Por Departamento
 router.get('/cambiospordepartamento', async (req, res) => {
@@ -160,6 +150,45 @@ router.get('/cambiospordepartamento', async (req, res) => {
         res.status(500).send('Error');
     }
 });
+
+
+router.post('/faltasdepartamento', async (req, res) => {
+    const { FechaInicio, FechaFin } = req.body;
+
+    try {
+        /*const sql = await db.getConnection();
+        const request = sql.request();*/
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        const result = await request.execute('stp_V_FaltasPorDepartamento');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
+
+
+//Obtener Cantidad de Incidencias Por Departamento
+router.post('/incidenciaspordepartamento', async (req, res) => {
+
+    const { FechaInicio, FechaFin } = req.body;
+    
+    try {
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        const result = await request.execute('stp_V_IncidenciasPorDepartamento');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error');
+    }
+});
+
+
+
 
 
 //Obtener Cantidad de Salidas Por Edades y Mes
