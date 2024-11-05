@@ -26,6 +26,11 @@
 
 <p-toast />
 
+
+<div>
+  <h1 class="title"><strong><i class="pi pi-spin pi-chart-pie" style="font-size: 2rem"></i> Dashboard Famo Alimentos <i class="pi pi-chart-bar" style="font-size: 2rem"></i></strong></h1>
+</div>
+
 <mat-grid-list cols="2" rowHeight="380px">
 <!-- ESTABA ANTES A 350-->
 
@@ -34,7 +39,7 @@
     <mat-card class="dashboard-card">
     <mat-card-header>
       <mat-card-title>
-        Empleados
+        Empleados Actuales Famo Alimentos
 
         <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu0" aria-label="Toggle menu">
           <mat-icon>more_vert</mat-icon>
@@ -499,7 +504,7 @@
       [options]="periodos" 
       [(ngModel)]="periodoSeleccionado"
       placeholder="Selecciona Un Periodo" 
-      (onChange)="periodo()"
+      (onChange)="periodosall()"
       />
 </div>
 <mat-grid-list cols="2" rowHeight="350px">
@@ -509,7 +514,7 @@
 <mat-card class="dashboard-card">
 <mat-card-header>
   <mat-card-title>
-    Cantidad de Incidencias por Mes y Año {{periodoSeleccionado}}
+    Cantidad de Incidencias {{periodoSeleccionado}}
 
 
     <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu10" aria-label="Toggle menu">
@@ -518,7 +523,12 @@
     <mat-menu #menu10="matMenu" xPosition="before">
       <button (click)="impresionPeriodoIncidencias('PeriodoIncidenciasPorMes')" mat-menu-item>Imprimir Grafica</button>
     </mat-menu>
-
+    <button mat-icon-button class="more-button" (click)="changeQuarterIncidencia(-1)">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button mat-icon-button class="more-button" (click)="changeQuarterIncidencia(1)" >
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
 
   </mat-card-title>
 </mat-card-header>
@@ -535,13 +545,19 @@
 <mat-card class="dashboard-card">
 <mat-card-header>
   <mat-card-title>
-    Cantidad de Dias de Capacitaciones por Mes y Año {{periodoSeleccionado}}
+    Cantidad de Dias de Capacitaciones {{periodoSeleccionado}}
     <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu11" aria-label="Toggle menu">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu11="matMenu" xPosition="before">
       <button (click)="impresionPeriodoCapacitaciones('PeriodoDiasCapacitaciones')" mat-menu-item>Imprimir Grafica</button>
     </mat-menu>
+    <button mat-icon-button class="more-button" (click)="changeQuarterCapacitaciones(-1)">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button mat-icon-button class="more-button" (click)="changeQuarterCapacitaciones(1)" >
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
 
   </mat-card-title>
 </mat-card-header>
@@ -559,7 +575,7 @@
 <mat-card class="dashboard-card">
 <mat-card-header>
   <mat-card-title>
-    Cantidad de Contrataciones por Mes y Año {{periodoSeleccionado}}
+    Cantidad de Contrataciones {{periodoSeleccionado}}
 
     <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu12" aria-label="Toggle menu">
       <mat-icon>more_vert</mat-icon>
@@ -567,6 +583,12 @@
     <mat-menu #menu12="matMenu" xPosition="before">
       <button (click)="impresionPeriodoContrataciones('PeriodoContrataciones')" mat-menu-item>Imprimir Grafica</button>
     </mat-menu>
+    <button mat-icon-button class="more-button" (click)="changeQuarterContrataciones(-1)">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button mat-icon-button class="more-button" (click)="changeQuarterContrataciones(1)" >
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
   </mat-card-title>
 </mat-card-header>
 <mat-card-content class="dashboard-card-content">
@@ -583,7 +605,7 @@
   <mat-card class="dashboard-card">
   <mat-card-header>
     <mat-card-title>
-      Salidas de Edades por Mes del Año {{periodoSeleccionado}}
+      Salidas de Edades {{periodoSeleccionado}}
 
       <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu13" aria-label="Toggle menu">
         <mat-icon>more_vert</mat-icon>
@@ -591,6 +613,13 @@
       <mat-menu #menu13="matMenu" xPosition="before">
         <button (click)="impresionPeriodoEdadesSalidas('PeriodoSalidasEdades')" mat-menu-item>Imprimir Grafica</button>
       </mat-menu>
+
+      <button mat-icon-button class="more-button" (click)="changeQuarterSalidas(-1)">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+      <button mat-icon-button class="more-button" (click)="changeQuarterSalidas(1)" >
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
 
     </mat-card-title>
   </mat-card-header>
@@ -609,7 +638,7 @@
   <mat-card class="dashboard-card">
   <mat-card-header>
     <mat-card-title>
-      Dias de Incidencias por Departamento por Mes del Año {{periodoSeleccionado}}
+      Dias de Incidencias Departamento {{periodoSeleccionado}}
 
       <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu14" aria-label="Toggle menu">
         <mat-icon>more_vert</mat-icon>
@@ -618,6 +647,12 @@
         <button (click)="impresionPeriodoDeDiasIncidencias('PeriodoDiasIncidenciasPorDepartamento')" mat-menu-item>Imprimir Grafica</button>
       </mat-menu>
 
+      <button mat-icon-button class="more-button" (click)="changeQuarterIncidenciasDias(-1)">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+      <button mat-icon-button class="more-button" (click)="changeQuarterIncidenciasDias(1)" >
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">

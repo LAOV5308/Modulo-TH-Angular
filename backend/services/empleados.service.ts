@@ -14,12 +14,11 @@ import { Peticion } from './Service';
 })
 export class EmpleadosService {
   //private apiUrl = 'http://localhost:3000/empleados';
-  private apiUrl = Peticion.apiUrl+'empleados';
   //private apiUrl ='https://all-keys-sip.loca.lt/empleados'
-  
   //private apiUrl = 'https://2vbqt1w4-3000.usw3.devtunnels.ms/empleados';
-
- 
+  
+  private apiUrl = Peticion.apiUrl+'empleados';
+  
   constructor(private http: HttpClient) {
    }
 

@@ -50,8 +50,8 @@
     
           <mat-form-field class="form-field" appearance="fill" color="primary" >
             <mat-label>Metodo de Selección</mat-label>
-            <mat-select formControlName="Frecuencia">
-                <mat-option *ngFor="let val of frecuencias" [value]="val" [disabled]="true" >{{val}}</mat-option>
+            <mat-select formControlName="Frecuencia" (selectionChange)="updateFechaFieldsVisibility()">
+                <mat-option *ngFor="let val of frecuencias" [value]="val">{{val}}</mat-option>
             </mat-select>
         </mat-form-field>
     
@@ -77,12 +77,12 @@
                   <label for="fechaInicio" class="font-bold block mb-2">Selecciona Dias</label> 
                   <p-calendar [inline]="true" inputId="fechaInicio" selectionMode="multiple" 
                   [readonlyInput]="true" formControlName="Fecha"
-                  dateFormat="dd/mm/yy" [minDate]="hoy" [(ngModel)]="dates"></p-calendar>
+                  dateFormat="dd/mm/yy" [(ngModel)]="dates"></p-calendar>
                 </div>
 
                 <div class="small-calendar" *ngIf="selectedFrecuencia !== 'Seleccion de Dias'">
                   <label for="fecharango" class="font-bold block mb-2">Selecciona Dia Inicio y Dia Fin</label> 
-                  <p-calendar [(ngModel)]="rangeDates" inputId="fecharango" [minDate]="hoy" formControlName="FechaRango"
+                  <p-calendar [(ngModel)]="rangeDates" inputId="fecharango" formControlName="FechaRango"
                 [inline]="true"
                 selectionMode="range" 
                 [readonlyInput]="true" />
@@ -120,8 +120,8 @@
 
 
           <button class="buton1" mat-raised-button color="primary" type="submit">Actualizar</button>
+          
       </form> 
-      
       </p-card>
     </div>
 

@@ -114,8 +114,13 @@ header="Header"
     </button>
 </div>
 --->
+
+<div>
+    <h1 class="title"><strong><i class="pi pi-clipboard" style="font-size: 2rem"></i> Capacitaciones Famo Alimentos <i class="pi pi-clipboard" style="font-size: 2rem"></i></strong></h1>
+</div>
+
 <p-card>
-    <div style="text-align: left">
+    <div style="text-align: left; margin-left: 10%">
         <button [routerLink]="['/system/programarcapacitaciones']" class="agregar"
     mat-raised-button 
     color = "primary"
@@ -136,7 +141,8 @@ header="Header"
           </div>
         </div>
         <div class="box2">
-            <h1>Descripción de la Capacitación</h1>
+
+            <h1 style="text-align: center;">Descripción de la Capacitación </h1>
             
 <ng-container *ngIf="programacionConsulta.length > 0">
 
@@ -177,6 +183,8 @@ header="Header"
     mat-raised-button (click)="asistenciaMostrar()"  *ngIf="cerrado && !eval"
     ><mat-icon>assignment</mat-icon>Ver Asistencia
     </button>
+
+    
 
 
 
@@ -469,7 +477,8 @@ header="Header"
 
   <!--MOSTRAR TODAS LAS CAPACITACIONES QUE HAY-->
   <ng-container *ngIf="programacionConsulta.length <= 0">
-    <mat-accordion *ngIf="capacitaciones.length > 0;">
+    <!--<mat-accordion *ngIf="capacitaciones.length > 0;">
+
         <mat-expansion-panel *ngFor="let capacitacion of capacitaciones">
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -485,12 +494,39 @@ header="Header"
 
           <p><strong>Persona Imparte:</strong> {{ capacitacion.PersonaImparte }}</p>
           <p><strong>Tipo:</strong> {{ capacitacion.Origen }}</p>
-          <p><strong>Horas:</strong> {{ capacitacion.Horas }} Horas</p>
+          <p><strong>Horas:</strong> {{ capacitacion.Horas }} Horas</p>-->
           <!-- Añade más detalles de la capacitación aquí - {{ capacitacion.FechaFin | date }} -->
-      
+      <!--
         </mat-expansion-panel>
       </mat-accordion>
-  
+    -->
+      <p-orderList 
+        [value]="capacitaciones" 
+        [listStyle]="{ height: '25rem' }" 
+        filterBy="NombreCapacitacion" 
+        filterPlaceholder="Filtrar Por Nombre"
+        header="Lista de Capacitaciones {{capacitaciones.length}}"
+        >
+            <ng-template let-capacitacion pTemplate="item">
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    <strong>{{ capacitacion.NombreCapacitacion }}</strong>
+                      <div *ngIf="capacitacion.FechaInicio" class="flex flex-wrap p-2 align-items-center gap-3">
+                        Fecha Inicio: {{capacitacion.Fecha? capacitacion.Fecha.toString().split('T')[0].split('-').reverse().join('/'): '-'}} 
+                      </div>
+                      <div *ngIf="!capacitacion.FechaInicio" class="flex flex-wrap p-2 align-items-center gap-3">
+                          Fechas Distintas
+                        </div>
+
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    <p><strong>Persona Imparte:</strong> {{ capacitacion.PersonaImparte }}</p>
+            <p><strong>Tipo:</strong> {{ capacitacion.Origen }}</p>
+            <p><strong>Horas:</strong> {{ capacitacion.Horas }} Horas</div>
+                    
+                </div>
+            </ng-template>
+    </p-orderList>
+
+
 
   </ng-container>
 

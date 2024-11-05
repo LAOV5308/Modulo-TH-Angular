@@ -425,9 +425,9 @@ router.delete('/programaciones/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { 
-        NombreCapacitacion, Origen, Frecuencia, Fecha,FechaInicio,
-        FechaFin, HoraInicio, HoraFin, PersonaImparte, Comentarios, Color, Evaluacion, Horas
+        NombreCapacitacion, Origen, Frecuencia, PersonaImparte, Comentarios, Color, Evaluacion, Horas
      } = req.body;
+
     try {
         const pool = await getConnection();
         const request = pool.request();
@@ -435,11 +435,6 @@ router.put('/:id', async (req, res) => {
         request.input('NombreCapacitacion', sql.VarChar, NombreCapacitacion);
         request.input('Origen', sql.VarChar, Origen);
         request.input('Frecuencia', sql.VarChar, Frecuencia);
-        /*request.input('Fecha', sql.Date, Fecha);
-        request.input('FechaInicio', sql.Date, FechaInicio);
-        request.input('FechaFin', sql.Date, FechaFin);
-        request.input('HoraInicio', HoraInicio);
-        request.input('HoraFin', HoraFin);*/
         request.input('PersonaImparte', sql.VarChar, PersonaImparte);
         request.input('Comentarios', sql.VarChar, Comentarios);
         request.input('Color', sql.VarChar, Color);
@@ -454,21 +449,16 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-
 router.put('/actualizarfechas/:id', async (req, res) => {
     const { id } = req.params;
     const { 
-        Frecuencia, Fecha,FechaInicio,
-        FechaFin
+        Fecha
      } = req.body;
     try {
         const pool = await getConnection();
         const request = pool.request();
         request.input('IdProgramacionCapacitacion', sql.Int, id);
-        request.input('Frecuencia', sql.VarChar, Frecuencia);
         request.input('Fecha', sql.Date, Fecha);
-        request.input('FechaInicio', sql.Date, FechaInicio);
-        request.input('FechaFin', sql.Date, FechaFin);
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_programacioncapacitacion_update_fecha');
         //const result = await request.execute('stp_prueba_add');
@@ -478,6 +468,27 @@ router.put('/actualizarfechas/:id', async (req, res) => {
     }
 });
 
+
+router.put('/actualizarfechasrango/:id', async (req, res) => {
+    const { id } = req.params;
+    const { 
+        FechaInicio,
+        FechaFin
+     } = req.body;
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdProgramacionCapacitacion', sql.Int, id);
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_programacioncapacitacion_update_fecharango');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Actualizado con exito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al actualizar el Catalogo: ' + err.message });
+    }
+});
 
 
 

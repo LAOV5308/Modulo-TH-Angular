@@ -84,13 +84,27 @@ export class AddBajaComponent implements OnInit{
 tipoBaja: string[] = [
   'Voluntaria',
   'Involuntaria',
-  'Estrategica'
+  'Estrategia'
 ];
 
 //Motivo
-motivo: string[] = [
-  'Mejor empleo', 'Inconformidad de Horarios/turnos', 'Inconformidad de Sueldo', 'Relación con compañeros', 
-  'Inconformidad con el trabajo', 'Lejania', 'Cambio de Residencia', 'Enfermedad', 'Situación Personal', 'Matrimonio', 'Otro'
+motivo: string[] = [ 
+  'Mejor empleo',
+  'Inconformidad de Horarios/turnos' ,
+  'Inconformidad de Sueldo',
+  'Relación con compañeros' ,
+  'Inconformidad con el trabajo',
+  'Lejania',
+  'Cambio de residencia' ,
+  'Enfermedad',
+  'Situación personal',
+  'Matrimonio',
+  'Otro',
+  'Sin renovación de contrato',
+  'Renovación de contrato',
+  'Pensión',
+  'Temporal' ,
+  'Relación con Lideres'
 ]
 
 

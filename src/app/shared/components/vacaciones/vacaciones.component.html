@@ -129,6 +129,7 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
               <th>Comentarios</th>
               <th>Periodo</th>
               <th>Acciones</th>
+              <th>Timbrado</th>
           </tr>
       </ng-template>
       <ng-template pTemplate="body" let-vacacion>
@@ -139,11 +140,23 @@ type="submit"><mat-icon>date_range</mat-icon>Agregar Nueva Vacación
               <td>{{ vacacion.Periodo ? vacacion.Periodo: 'Vacacion Adelantada'}}</td>
               <td>
                 <p-button 
+                matTooltip="Cancelar Vacacion"
                     icon="pi pi-trash" 
                     severity="danger" 
                     [rounded]="true" 
                     [outlined]="true" 
                     (onClick)="CancelarVacacion(vacacion.IdFechaVacacion, vacacion.IdVacacion)"/>
+
+            </td>
+            <td>
+
+              <p-inputSwitch 
+              matTooltip="Timbrar Vacacion"
+              [(ngModel)]="vacacion.Timbrada" 
+              (onChange)="timbrarVacacion(vacacion.IdFechaVacacion,!vacacion.Timbrada)"
+              />
+
+              
             </td>
           </tr>
       </ng-template>

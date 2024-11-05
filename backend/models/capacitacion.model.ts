@@ -18,6 +18,7 @@ export interface CapacitacionProgramada {
   NombreCapacitacion: string;
   Origen: string;
   Frecuencia: string;
+  FechaComienzo: Date;
   Fecha: Date;
   FechaInicio: Date;
   FechaFin: Date;

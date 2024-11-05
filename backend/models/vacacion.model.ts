@@ -7,6 +7,7 @@ export interface FechaVacacion {
     Periodo: string;
     IdVacacion: number | null;
     VacacionAdelantada: boolean;
+    Timbrada: boolean;
   }
 
   export interface Vacacion {

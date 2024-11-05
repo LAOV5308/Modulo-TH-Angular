@@ -50,6 +50,17 @@ getVacacionesPorPeriodo(NoNomina: number | undefined, Periodo: string): Observab
 }
 
 
+timbrarVacacion(IdFechaVacacion:number, Timbrada: boolean): Observable<Vacacion[]> {
+  const body = {
+    IdFechaVacacion: IdFechaVacacion,
+    Timbrada: Timbrada
+  }
+  return this.http.post<Vacacion[]>(this.apiUrl+'/timbrar', body);
+}
+
+
+
+
 
 
 

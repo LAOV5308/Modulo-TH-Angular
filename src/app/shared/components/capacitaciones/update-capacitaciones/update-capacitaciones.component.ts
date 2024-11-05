@@ -37,13 +37,13 @@ import { parseISO } from 'date-fns';
 })
 export class UpdateCapacitacionesComponent implements OnInit{
   dates: Date[] | undefined;
+
   rangeDates: Date[] | undefined;
   aux: any[]=[];
 
   idProgramacionFecha!: number;
   idProgramacionCapacitacion!: number;
   employeeForm: FormGroup;
-  fechaForm: FormGroup;
   hoy = new Date();
   fechaStart: Date = this.hoy;
   sourceEmpleados!: Empleado[];
@@ -76,6 +76,7 @@ export class UpdateCapacitacionesComponent implements OnInit{
     private fb: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService,
     private router: Router
   ){
+
     this.employeeForm = this.fb.group({
       Color:['', Validators.required],
       Evaluacion:[''],
@@ -91,12 +92,8 @@ export class UpdateCapacitacionesComponent implements OnInit{
       HoraInicio: [''],
       HoraFin: ['']
     });
-    this.fechaForm = this.fb.group({
-      Frecuencia:[''],
-      Fecha:[''],
-      FechaInicio:[],
-      FechaFin:[]
-    });
+
+
   }
   ngOnInit(): void {
 
@@ -109,6 +106,7 @@ export class UpdateCapacitacionesComponent implements OnInit{
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if(paramMap.has('IdProgramacionCapacitacion')){
         this.idProgramacionCapacitacion = Number(paramMap.get('IdProgramacionCapacitacion'));
+        
       }
     });
 
@@ -117,8 +115,11 @@ export class UpdateCapacitacionesComponent implements OnInit{
     this.capacitacionesService.getFechasProgramaciones(this.idProgramacionCapacitacion).subscribe({
       next: (data) => {
         this.capacitacionesprogramadas = data;
-        
-        //console.log('HOLA',this.capacitacionesprogramadas);
+
+       // console.log(this.capacitacionesprogramadas);
+       
+
+
         if(this.capacitacionesprogramadas.length>0){
           //this.idProgramacionCapacitacion = Number(this.capacitacionesprogramadas[0].IdProgramacionCapacitacion);
           
@@ -144,39 +145,24 @@ export class UpdateCapacitacionesComponent implements OnInit{
 
           if(this.capacitacionesprogramadas[0].Fecha!=null){
 
+
+
             this.dates = this.capacitacionesprogramadas.map(fecha => 
               //new Date(new Date(fecha.Fecha))
-              new Date(new Date(fecha.Fecha).setDate(new Date(fecha.Fecha).getDate() + 1))
+              new Date(this.zonahoraria(fecha.Fecha))
             );
-            /*
-            this.employeeForm.patchValue({
-              Fecha: this.dates
-            })*/
-            //console.log(this.employeeForm.value);
-            //console.log(this.dates);
-
-            /*this.capacitacionesService.getFechasProgramaciones(this.idProgramacionCapacitacion).subscribe({
-              next: (data)=> {
-                
-                this.capacitacionesFechas = data;
-                //console.log(this.capacitacionesFechas);
-                this.dates = this.capacitacionesFechas.map(fecha => 
-                  new Date(new Date(fecha.Fecha).setDate(new Date(fecha.Fecha).getDate() + 1))
-                );
-              },
-              error: (error) => {
-                console.error('Error al cargar las Capacitaciones', error);
-              }
-            })*/
-
-
             
-  
+
+           // console.log(this.dates);
+
+           // console.log('HOLA',this.capacitacionesprogramadas);
+
+
           }else{
   
             this.rangeDates = [
-              new Date(new Date(this.capacitacionesprogramadas[0].FechaInicio).setDate(new Date(this.capacitacionesprogramadas[0].FechaInicio).getDate() + 1)),
-              new Date(new Date(this.capacitacionesprogramadas[0].FechaFin).setDate(new Date(this.capacitacionesprogramadas[0].FechaFin).getDate() + 1))
+              this.zonahoraria(this.capacitacionesprogramadas[0].FechaInicio),
+              this.zonahoraria(this.capacitacionesprogramadas[0].FechaFin)
             ];
   
            //console.log(this.rangeDates);
@@ -215,10 +201,9 @@ export class UpdateCapacitacionesComponent implements OnInit{
         console.error('Error al cargar las Capacitaciones', error);
       }
     });
-
   }
+
   updateFechaFieldsVisibility() {
-    
     if (this.selectedFrecuencia === 'Seleccion de Dias') {
       this.employeeForm.get('FechaRango')?.reset();
       this.rangeDates = undefined;
@@ -229,11 +214,7 @@ export class UpdateCapacitacionesComponent implements OnInit{
     }
   }
 
-  getFechaConDiaMas(fecha: Date): Date {
-    const nuevaFecha = new Date(fecha);
-    nuevaFecha.setDate(nuevaFecha.getDate() + 1); // Agregar un día
-    return nuevaFecha;
- }
+  
 
   onSubmit(){
 
@@ -245,16 +226,7 @@ export class UpdateCapacitacionesComponent implements OnInit{
         rejectButtonStyleClass: "p-button-text",
         accept: () => {
 
-          if(this.employeeForm.value.HoraInicio == ''){
-            this.employeeForm.patchValue({
-              HoraInicio: null
-            });
-          };
-          if(this.employeeForm.value.HoraFin == ''){
-            this.employeeForm.patchValue({
-              HoraFin: null
-            });
-          };
+          
           if(this.employeeForm.value.FechaInicio == ''){
             this.employeeForm.patchValue({
               FechaInicio: null
@@ -265,31 +237,54 @@ export class UpdateCapacitacionesComponent implements OnInit{
               FechaFin: null
             });
           };
+
+
           //if(this.employeeForm.value.HoraInicio == ''){}
+
           if(this.dates == undefined && this.rangeDates==undefined){
             this.messageService.add({ severity: 'warn', summary: 'Precaucion', detail: 'No hay fechas Seleccionadas' });
           }else{
 
-            //console.log(this.employeeForm.value);
+            //console.log(this.employeeForm.value, this.dates, this.rangeDates);
+
+            //AQUI /actualizarfechasrango/:id'
             this.capacitacionesService.updateCapacitacion(this.idProgramacionCapacitacion,this.employeeForm.value).subscribe({
               next: (resp: any) => {
                 //alert('Actualizo con Exito');
-            },
-            error: (err: any) => {
-                console.log(err);
+
+               // console.log(this.dates);
+            
+            if(this.dates!=undefined){
+              //this.rangeDates=undefined;
+              //alert('Entro en fechas');
+          +
+              //console.log(this.dates.length);
+              
+
+              this.dates?.forEach(element => {
+
+                this.capacitacionesService.updateFechasCapacitacion(this.idProgramacionCapacitacion,element).subscribe({
+                  next: (resp: any) => {
+                    //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+                },
+                error: (err: any) => {
+                    console.log(err);
+                }
+                });
+
+
+              });
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
+              //this.limpiar();
             }
-            });
 
             if(this.rangeDates!=undefined){
-              if(this.rangeDates.length>=2){
-                this.employeeForm.patchValue({
-                  FechaRango: '',
-                  FechaInicio: this.rangeDates[0],
-                  FechaFin: this.rangeDates[1]
-                });
+              //this.dates=undefined;
+                //console.log(this.rangeDates[0], this.rangeDates[1]);
+
               
                 //console.log(this.employeeForm.value);
-                this.capacitacionesService.updateFechasCapacitacion(this.idProgramacionCapacitacion,this.employeeForm.value).subscribe({
+                this.capacitacionesService.updateFechasRangoCapacitacion(this.idProgramacionCapacitacion,this.rangeDates[0], this.rangeDates[1]).subscribe({
                   next: (resp: any) => {
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
                     //this.limpiar();
@@ -301,37 +296,25 @@ export class UpdateCapacitacionesComponent implements OnInit{
                     //this.limpiar();
                 }
                 });
-              }
+              
             }
+
+                //console.log(resp);
+
+            },
+            error: (err: any) => {
+                console.log(err);
+            }
+            });
+
 
 
           
-            if(this.dates!=undefined){
-              //alert('Entro en fechas');
-          
-              this.fechaForm.patchValue({
-                Frecuencia: this.employeeForm.value.Frecuencia
-              });
+            
 
-              this.dates.forEach((element:Date) => {
+            
+            
 
-                this.fechaForm.patchValue({
-                  Fecha: element
-                });
-
-                //console.log(this.fechaForm.value);
-                this.capacitacionesService.updateFechasCapacitacion(this.idProgramacionCapacitacion,this.fechaForm.value).subscribe({
-                  next: (resp: any) => {
-                    //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
-                },
-                error: (err: any) => {
-                    console.log(err);
-                }
-                });
-              });
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Capacitacion Agregada Exitosamente' });
-              //this.limpiar();
-            }
 
           
             
@@ -360,7 +343,10 @@ export class UpdateCapacitacionesComponent implements OnInit{
         reject: () => {
            
         }
+
+        
     });
+    
     }else{
       this.messageService.add({ severity: 'warn', summary: 'Completa Campos', detail: 'Faltan campos por llenar' });
     }
@@ -390,6 +376,13 @@ export class UpdateCapacitacionesComponent implements OnInit{
         Imparte:'',
         Comentarios:''
     });
+
   }
+
+  zonahoraria(fecha: Date): Date {
+    const fechaReporte = new Date(fecha); // Recibe la fecha del servidor
+  return new Date(fechaReporte.getTime() + fechaReporte.getTimezoneOffset() * 60000); 
+  }
+  
 
 }

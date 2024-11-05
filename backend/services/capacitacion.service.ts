@@ -44,9 +44,6 @@ export class CapacitacionService {
     );
   }
 
-  
-
-
   addCapacitacionFecha(IdProgramacionCapacitacion:number | null, Fecha: Date, Horas:number):Observable<any>{
     const body = {
       IdProgramacionCapacitacion: IdProgramacionCapacitacion,
@@ -178,11 +175,29 @@ export class CapacitacionService {
     );
   }
 
-  updateFechasCapacitacion(IdProgramacionCapacitacion: number, data: any): Observable<any> {
-    return this.http.put(this.apiUrl+'/actualizarfechas/'+IdProgramacionCapacitacion, data).pipe(
+  updateFechasCapacitacion(IdProgramacionCapacitacion: number, Fecha: Date): Observable<any> {
+
+    const body = {
+      Fecha: Fecha
+    };
+
+    return this.http.put(this.apiUrl+'/actualizarfechas/'+IdProgramacionCapacitacion, body).pipe(
       catchError(this.handleError)
     );
   }
+
+  updateFechasRangoCapacitacion(IdProgramacionCapacitacion: number, FechaInicio: Date, FechaFin: Date): Observable<any> {
+    const body = {
+      FechaInicio: FechaInicio,
+      FechaFin: FechaFin
+    };
+
+    return this.http.put(this.apiUrl+'/actualizarfechasrango/'+IdProgramacionCapacitacion, body).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
 
   private handleError(error: HttpErrorResponse) {
     // Puedes personalizar el mensaje de error basándote en el error.status o error.error

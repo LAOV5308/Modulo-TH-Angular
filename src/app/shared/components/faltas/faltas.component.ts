@@ -188,6 +188,7 @@ export class FaltasComponent implements OnInit {
       this.dt2.filterGlobal(inputElement.value, 'contains');
     }
   }
+  
   filterTable3(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {

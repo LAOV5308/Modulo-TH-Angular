@@ -30,11 +30,6 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-//Login
-//https://2vbqt1w4-3000.usw3.devtunnels.ms
-
-
-
 
 //Usar las rutas
 app.use('/departamentos', departamentosRutas);

@@ -29,6 +29,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { CheckboxModule } from 'primeng/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 interface Periodo {
   label: string;
@@ -39,7 +42,7 @@ interface Periodo {
 @Component({
   selector: 'app-vacaciones',
   standalone: true,
-  imports:[CommonModule, NgFor, CalendarModule, FullCalendarModule, CardModule,
+  imports:[CommonModule, NgFor, CalendarModule, FullCalendarModule, CardModule, CheckboxModule,MatTooltipModule,InputSwitchModule,
     MatIconModule, RouterModule, MatButtonModule, FormsModule, InputNumberModule, DialogModule, ReactiveFormsModule, InputTextareaModule,
     KeyFilterModule, ButtonModule, InputTextModule, TableModule, ConfirmDialogModule, ToastModule, DropdownModule, NgIf, SelectButtonModule
   ],
@@ -464,7 +467,7 @@ if(this.empleados.length > 0){
     //console.log(this.consultaForm.value);
     this.vacacionesService.getVacacionesRango(this.consultaForm.value).subscribe({
       next:(data: FechaVacacion[]) => {
-        //console.log(data);
+        console.log(data);
         this.vacaciones = data;
         this.countVacacionesAdelantadas = this.vacaciones.filter(vacacion => vacacion.VacacionAdelantada).length;
         this.vacacionesAdelantadas = this.vacaciones.filter(vacacion => vacacion.VacacionAdelantada);
@@ -482,7 +485,7 @@ if(this.empleados.length > 0){
     this.vacacionesService.getFechasVacaciones(this.NoNomina).subscribe({
     next:(data: FechaVacacion[]) => {
       this.vacaciones = data;
-      //console.log(this.vacaciones);
+      console.log(this.vacaciones);
       // Filtrar solo las vacaciones adelantadas y contar el número de elementos
  this.countVacacionesAdelantadas = this.vacaciones.filter(vacacion => vacacion.VacacionAdelantada).length;
 
@@ -741,6 +744,61 @@ this.vacacionesService.addVacacionAdelantada(this.vacacionForm.value).subscribe(
     }
 })
 
+ }
+
+ timbrarVacacion(IdFechaVacacion: number,VacacionTimbrada: boolean){
+  if(VacacionTimbrada){
+    this.confirmationService.confirm({
+      message: '¿Quitar la Vacacion Timbrada?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: "p-button-text",
+      accept: () => {
+        this.vacacionesService.timbrarVacacion(IdFechaVacacion, !VacacionTimbrada).subscribe({
+          next:()=>{
+            this.messageService.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Timbrada Con exito' });
+            this.ConsultarFechas();
+          },
+          error:(err: any)=>{
+            console.log('Error', err);
+          }
+        })
+
+
+      },
+      reject: () => {
+
+        this.ConsultarFechas();
+      }
+  })
+    
+  }else{
+    this.confirmationService.confirm({
+      message: '¿Quieres Timbrar Esta Vacacion?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: "p-button-text",
+      accept: () => {
+
+        this.vacacionesService.timbrarVacacion(IdFechaVacacion, !VacacionTimbrada).subscribe({
+          next:()=>{
+            this.messageService.add({ severity: 'success', summary: 'Satisfactorio', detail: 'Timbrada Con exito' });
+            this.ConsultarFechas();
+          },
+          error:(err: any)=>{
+            console.log('Error', err);
+          }
+        })
+
+      },
+      reject: () => {
+
+        this.ConsultarFechas();
+      }
+  })
+
+  }
+  
  }
 
 

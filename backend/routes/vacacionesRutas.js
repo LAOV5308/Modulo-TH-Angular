@@ -121,6 +121,23 @@ router.post('/increase', async (req, res) => {
 
 });
 
+router.post('/timbrar', async (req, res) => {
+    const { IdFechaVacacion, Timbrada} = req.body;
+    try {
+        const pool = await getConnection();
+        const request = pool.request();
+        request.input('IdFechaVacacion', sql.Int, IdFechaVacacion);
+        request.input('Timbrada', sql.Bit, Timbrada);
+        // Ejecutar el procedimiento almacenado
+        const result = await request.execute('stp_vacacionfecha_timbrar');
+        //const result = await request.execute('stp_prueba_add');
+        res.status(201).json({ message: "Timbrada Con exito" });
+    } catch (err) {
+        res.status(500).json({ message: 'Error al Timbrar: ' + err.message });
+    }
+
+});
+
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {

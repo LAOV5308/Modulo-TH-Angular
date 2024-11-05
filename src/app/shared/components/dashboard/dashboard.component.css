@@ -36,3 +36,9 @@ p{
     text-align: center;
   }
   
+
+  .title {
+    color: rgb(52, 104, 163);
+    text-align: center;
+    padding-top: 15px;
+  }

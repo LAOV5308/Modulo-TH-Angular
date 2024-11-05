@@ -425,6 +425,9 @@ switch (this.FormEmpleados.value.Opcion) {
 
   //Imprimir Empleados 
   imprimirEmpleados(preview: boolean){
+
+   //Todos Los empleados
+
     // Obtener la fecha y hora actual
     const now = new Date();
     const dateStr = now.toLocaleDateString();
@@ -443,8 +446,10 @@ switch (this.FormEmpleados.value.Opcion) {
     }else{
       doc.text('Lista de Todos los Empleados', 14, 22);
     }
-    
+    doc.setFontSize(14);
+    doc.text('Cantidad Total: '+this.empleados.length+' Empleados', 200, 28);
 
+    doc.setFontSize(16);
     // Definir columnas de la tabla
     const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso','Antiguedad','Estatus'];
     //const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso', 'Antiguedad'];
@@ -498,9 +503,18 @@ switch (this.FormEmpleados.value.Opcion) {
 
     //Imprimir Empleados 
     imprimirEmpleadosActive(preview: boolean){
+      const now = new Date();
+      const dateStr = now.toLocaleDateString();
+      const timeStr = now.toLocaleTimeString();
+
       const doc = new jsPDF({
         orientation: 'landscape',  // Establecer orientación horizontal
       });
+
+      doc.setFontSize(10);
+    doc.text(`Fecha de impresión: ${dateStr}`, 220, 6);
+    doc.text(`Hora de impresión: ${timeStr}`, 220, 10);
+
       // Agregar título
       doc.setFontSize(16);
       if(this.departamentoSeleccionado){
@@ -509,6 +523,10 @@ switch (this.FormEmpleados.value.Opcion) {
         doc.text('Lista de Todos los Empleados Activos', 14, 22);
       }
   
+      doc.setFontSize(14);
+    doc.text('Cantidad Total: '+this.empleadosActive.length+' Empleados', 200, 28);
+
+    doc.setFontSize(16);
       // Definir columnas de la tabla
       const columns = ['No. Nomina','Nombre Completo', 'Genero','Puesto', 'Departamento', 'Edad', 'CURP','RFC','Fecha Ingreso', 'Antiguedad'];
   
@@ -534,13 +552,9 @@ switch (this.FormEmpleados.value.Opcion) {
       });
   
       // Obtener la fecha y hora actual
-      const now = new Date();
-      const dateStr = now.toLocaleDateString();
-      const timeStr = now.toLocaleTimeString();
+      
       doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
       // Agregar la fecha y hora en la parte inferior del documento
-      doc.text(`Fecha de impresión: ${dateStr}`, 10, 180);
-      doc.text(`Hora de impresión: ${timeStr}`, 10, 190);
   
       if (preview) {
         const pdfBlob = doc.output('bloburl');
@@ -563,9 +577,18 @@ switch (this.FormEmpleados.value.Opcion) {
 
 
     imprimirEmpleadosInactive(preview: boolean){
+      const now = new Date();
+      const dateStr = now.toLocaleDateString();
+      const timeStr = now.toLocaleTimeString();
+
       const doc = new jsPDF({
         orientation: 'landscape',  // Establecer orientación horizontal
       });
+      doc.setFontSize(10);
+      doc.text(`Fecha de impresión: ${dateStr}`, 220, 6);
+      doc.text(`Hora de impresión: ${timeStr}`, 220, 10);
+
+
       // Agregar título
       doc.setFontSize(16);
       if(this.departamentoSeleccionado){
@@ -573,6 +596,10 @@ switch (this.FormEmpleados.value.Opcion) {
       }else{
         doc.text('Lista de Empleados Dados de Bajas', 14, 22);
       }
+
+      doc.setFontSize(14);
+    doc.text('Cantidad Total: '+this.empleadosInactive.length+' Empleados', 200, 28);
+    doc.setFontSize(16);
   
       // Definir columnas de la tabla
       const columns = ['No. Nomina','Nombre Completo', 'Puesto', 'Departamento', 'Edad', 'Fecha Ingreso', 'Fecha Salida', 'Antiguedad','Finiquito', 'Fondo de Ahorro', 'Motivo'];
@@ -600,14 +627,6 @@ switch (this.FormEmpleados.value.Opcion) {
         startY: 30, // Posición inicial de la tabla en el eje Y
       });
   
-      // Obtener la fecha y hora actual
-      const now = new Date();
-      const dateStr = now.toLocaleDateString();
-      const timeStr = now.toLocaleTimeString();
-      doc.setFontSize(10); // Cambia el tamaño de la letra (por ejemplo, 10)
-      // Agregar la fecha y hora en la parte inferior del documento
-      doc.text(`Fecha de impresión: ${dateStr}`, 10, 180);
-      doc.text(`Hora de impresión: ${timeStr}`, 10, 190);
   
       if (preview) {
         const pdfBlob = doc.output('bloburl');
@@ -752,7 +771,7 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
       
       // Definir columnas de la tabla
       //const columns = ['Fecha Inicio', 'Fecha Fin', 'Días Tomados', 'Días Restantes'];
-      const columns = ['Fecha', 'Periodo', 'Comentarios'];
+      const columns = ['Fecha', 'Periodo', 'Comentarios', 'Timbrado'];
       
       
       //console.log(this.vacacionesEmpleado)
@@ -762,7 +781,8 @@ this.vacacionesService.getVacacionesPorPeriodo(this.selectedEmpleados.NoNomina, 
         //new Date(vacacion.Fecha).toLocaleDateString('es-ES'),
         vacacion.Fecha.toString().split('T')[0].split('-').reverse().join('/'),
         vacacion.Periodo,
-        vacacion.Comentarios
+        vacacion.Comentarios,
+        vacacion.Timbrada ? 'Timbrada': '-'
         //new Date(vacacion.FechaFin).toLocaleDateString('es-ES'),
         
     ]);

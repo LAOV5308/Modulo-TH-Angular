@@ -7,7 +7,6 @@ export interface D_EstadoCivil{
     CantidadEstadoCivil: number;
 }
 
-
 export interface D_IncidenciasPeriodo{
     Motivo: string;
     Mes: number;

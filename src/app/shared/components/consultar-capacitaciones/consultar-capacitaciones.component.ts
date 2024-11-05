@@ -46,7 +46,8 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
-
+import { OrderListModule } from 'primeng/orderlist';
+import { StringifyOptions } from 'querystring';
 
 
 interface Column {
@@ -68,7 +69,7 @@ interface ExportColumn {
     MatButtonModule, MatIcon, DynamicDialogModule, ToastModule, ButtonModule, SplitterModule, MatCardModule, MatGridListModule,
     PickListModule, NgFor, TableModule,  InputTextModule, DialogModule, ConfirmDialogModule, CheckboxModule, InputNumberModule
     , InputTextareaModule, FloatLabelModule, SplitButtonModule, MenubarModule, CardModule, MatMenuModule, DropdownModule, MatFormFieldModule,
-    MatOptionModule, MatSelectModule, MatDatepickerModule, MatExpansionModule
+    MatOptionModule, MatSelectModule, MatDatepickerModule, MatExpansionModule, OrderListModule
 
   ],
   providers:[CapacitacionService, DialogService, MessageService, EmpleadosService, ConfirmationService, provideNativeDateAdapter()],
@@ -126,6 +127,7 @@ fechaDate!:Date;
 verificacion: boolean = false;
 asistenciadata: any[]=[];
 cerrado!: boolean;
+selection: Capacitacion[] = [];
 
 orig: string[] = [
   'Interna',
@@ -165,6 +167,10 @@ orig: string[] = [
   ngAfterViewInit(): void {
       this.ngOnInit();
   }
+
+ 
+ 
+    
 
   ngOnInit(): void {
 

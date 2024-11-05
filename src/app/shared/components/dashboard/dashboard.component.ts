@@ -118,6 +118,13 @@ export class DashboardComponent implements OnInit {
   diasTotales!:number;
   incidenciasTotales!:number;
 
+  mesesConDias!: any;
+  currentQuarterIncidencia: number = 0; 
+  currentQuarterCapacitaciones: number = 0; 
+  currentQuarterContrataciones: number = 0; 
+  currentQuarterSalidas: number = 0; 
+  currentQuarterIncidenciasDias: number = 0; 
+
   //Opciones de Eleccion de Meses
   meses: string[] = [
     'Enero',
@@ -191,6 +198,7 @@ Chart.defaults.set('plugins.datalabels', {
     this.Femenino = 0;
     this.Otro = 0;
 
+    this.periodosall();
     this.consulta();
     this.consultaFaltas();
     this.consultaIncidencias();
@@ -523,309 +531,6 @@ const datasets = this.edades.map((dept, index) => ({
 
     });
 
-
-    this.dashboardservice.getIncidencias(this.periodoSeleccionado).subscribe({
-      next: (data: any) => {
-        this.incidenciasPeriodo = data;
-        //console.log(this.incidenciasPeriodo);
-    
-        // Inicializa un objeto para almacenar los datos por motivo
-        const motivoData:any = {};
-    
-        // Recorre las incidencias y organiza los datos por motivo y mes
-        this.incidenciasPeriodo.forEach(incidencia => {
-          const mes = incidencia.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
-          const motivo = incidencia.Motivo;
-    
-          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
-          if (!motivoData[motivo]) {
-            motivoData[motivo] = new Array(12).fill(0);
-          }
-    
-          // Asignar la cantidad de incidencias al mes correspondiente
-          motivoData[motivo][mes] = incidencia.CantidadIncidencias;
-        });
-    
-        // Crear datasets a partir de motivoData
-        const datasets = Object.keys(motivoData).map(motivo => ({
-          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
-          data: motivoData[motivo],  // Los datos organizados por mes
-          tension: 0.4,
-          fill: false  // Evitar que la línea se llene
-        }));
-    
-        // Configura el gráfico de líneas
-        this.dataline = {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          datasets: datasets,
-          options: {
-            plugins: {
-              colors: {
-                enabled: true
-              }
-            }
-          }
-        };
-    
-        //console.log(datasets);
-      },
-      error: (err) => {
-        console.log('Error' + err);
-      }
-    });
-
-
-    this.dashboardservice.getCapacitaciones(this.periodoSeleccionado).subscribe({
-      next: (data: any) => {
-        this.capacitacionesPeriodo = data;
-        //console.log(this.capacitacionesPeriodo);
-    
-        // Inicializa un objeto para almacenar los datos por motivo
-        const motivoData:any = {};
-    
-        // Recorre las incidencias y organiza los datos por motivo y mes
-        this.capacitacionesPeriodo.forEach(capacitacion => {
-          const mes = capacitacion.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
-          const nombre = capacitacion.NombreCapacitacion;
-    
-          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
-          if (!motivoData[nombre]) {
-            motivoData[nombre] = new Array(12).fill(0);
-          }
-    
-          // Asignar la cantidad de incidencias al mes correspondiente
-          motivoData[nombre][mes] = capacitacion.CantidadCapacitaciones;
-        });
-    
-        // Crear datasets a partir de motivoData
-        const datasets = Object.keys(motivoData).map(motivo => ({
-          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
-          data: motivoData[motivo],  // Los datos organizados por mes
-          tension: 0.4,
-          fill: false  // Evitar que la línea se llene
-        }));
-    
-        // Configura el gráfico de líneas
-        this.datalineCapacitaciones = {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          datasets: datasets,
-          options: {
-            plugins: {
-              colors: {
-                enabled: true
-              }
-            }
-          }
-        };
-    
-        //console.log(datasets);
-      },
-      error: (err) => {
-        console.log('Error' + err);
-      }
-    });
-
-
-    this.dashboardservice.getContrataciones(this.periodoSeleccionado).subscribe({
-      next: (data: any) => {
-        this.contratacionesPeriodo = data;
-    
-        // Inicializa un objeto para almacenar los datos por motivo
-        const motivoData:any = {};
-    
-        // Recorre las incidencias y organiza los datos por motivo y mes
-        this.contratacionesPeriodo.forEach(contratacion => {
-          const mes = contratacion.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
-          const nombre = contratacion.NombreDepartamento;
-    
-          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
-          if (!motivoData[nombre]) {
-            motivoData[nombre] = new Array(12).fill(0);
-          }
-    
-          // Asignar la cantidad de incidencias al mes correspondiente
-          motivoData[nombre][mes] = contratacion.CantidadContrataciones;
-        });
-    
-        // Crear datasets a partir de motivoData
-        const datasets = Object.keys(motivoData).map(motivo => ({
-          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
-          data: motivoData[motivo],  // Los datos organizados por mes
-          tension: 0.4,
-          fill: false  // Evitar que la línea se llene
-        }));
-    
-        // Configura el gráfico de líneas
-        this.datalineContrataciones = {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          datasets: datasets,
-          options: {
-            plugins: {
-              colors: {
-                enabled: true
-              }
-            }
-          }
-        };
-    
-        //console.log(datasets);
-      },
-      error: (err) => {
-        console.log('Error' + err);
-      }
-    });
-    
-
-    this.incidenciasService.getIncidenciasAll().subscribe({
-      next: (data: any) => {
-        
-       /* this.incidencias = data;
-        console.log(this.incidencias);
-
-        const datasets = this.incidencias.map((incidencia, index) => ({
-          label: incidencia.Motivo,  // Etiqueta para cada dataset
-          data: [incidencia.DiasSubsidios, Math.floor (Math.random ()*18) + 1, Math.floor (Math.random ()*18) + 1,Math.floor (Math.random ()*18) + 1],  // Solo un valor para este dataset
-          tension: 0.4
-        }));
-
-        console.log(datasets);
-        //Line Chart
-this.dataline = {
-  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-  datasets: datasets /*[
-      {
-          label: 'Maternidad',
-          data: [6, 5, 8, 8, 5, 5, 6, 5, 8, 8, 5, 4],
-          fill: false,
-          borderColor: '#42A5F5',
-          tension: 0.4
-      },
-      {
-          label: 'Trayecto',
-          data: [2, 4, 4, 1, 8, 2, 2, 4, 4, 1, 8, 9],
-          fill: false,
-          borderColor: '#FFA726',
-          tension: 0.4
-      }
-  ]*/
-//};
-
-      },
-      error: (err) => {
-        console.log('Error'+err);
-      }
-    });
-//ewf
-    //Obtener Incidencias Por Departamento
-   
-
-
-    //Obtener Salidas por Edades por mes
-    this.dashboardservice.getSalidasEdadesPeriodo(this.periodoSeleccionado).subscribe({
-      next: (data: any) => {
-        this.salidasPeriodoRango = data;
-        //console.log(this.salidasPeriodoRango);
-    
-        // Inicializa un objeto para almacenar los datos por motivo
-        const motivoData:any = {};
-    
-        // Recorre las incidencias y organiza los datos por motivo y mes
-        this.salidasPeriodoRango.forEach(salida => {
-          const mes = salida.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
-          const nombre = salida.RangoEdad;
-    
-          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
-          if (!motivoData[nombre]) {
-            motivoData[nombre] = new Array(12).fill(0);
-          }
-    
-          // Asignar la cantidad de incidencias al mes correspondiente
-          motivoData[nombre][mes] = salida.CantidadEdades;
-        });
-    
-        // Crear datasets a partir de motivoData
-        const datasets = Object.keys(motivoData).map(motivo => ({
-          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
-          data: motivoData[motivo],  // Los datos organizados por mes
-          tension: 0.4,
-          fill: false  // Evitar que la línea se llene
-        }));
-    
-        // Configura el gráfico de líneas
-        this.datalineSalidasFechas = {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          datasets: datasets,
-          options: {
-            plugins: {
-              colors: {
-                enabled: true
-              }
-            }
-          }
-        };
-    
-        //console.log(datasets);
-      },
-      error: (err) => {
-        console.log('Error' + err);
-      }
-    });
-
-
-
-
-    //Obtener la suma de Dias de Subsidios por Departamento
-    this.dashboardservice.getSumaDiasIncidenciasPorDepartamento(this.periodoSeleccionado).subscribe({
-      next: (data: any) => {
-        this.sumaDiasSubsidiosPorDepartamento = data;
-        //console.log(this.salidasPeriodoRango);
-    
-        // Inicializa un objeto para almacenar los datos por motivo
-        const motivoData:any = {};
-    
-        // Recorre las incidencias y organiza los datos por motivo y mes
-        this.sumaDiasSubsidiosPorDepartamento.forEach(dia => {
-          const mes = dia.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
-          const nombre = dia.NombreDepartamento;
-    
-          // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
-          if (!motivoData[nombre]) {
-            motivoData[nombre] = new Array(12).fill(0);
-          }
-    
-          // Asignar la cantidad de incidencias al mes correspondiente
-          motivoData[nombre][mes] = dia.TotalDiasSubsidios;
-        });
-    
-        // Crear datasets a partir de motivoData
-        const datasets = Object.keys(motivoData).map(motivo => ({
-          label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
-          data: motivoData[motivo],  // Los datos organizados por mes
-          tension: 0.4,
-          fill: false  // Evitar que la línea se llene
-        }));
-    
-        // Configura el gráfico de líneas
-        this.datalineDiasIncidencias = {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          datasets: datasets,
-          options: {
-            plugins: {
-              colors: {
-                enabled: true
-              }
-            }
-          }
-        };
-    
-        //console.log(datasets);
-      },
-      error: (err) => {
-        console.log('Error' + err);
-      }
-    });
-
-
 //CAPACITACIONES  
 /*
     this.capacitacionService.getCapacitaciones().subscribe({
@@ -896,15 +601,25 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
 
 
 
-  //Metodo del Periodo
-  periodo(){
 
+
+
+
+  //Metodo del Periodo
+
+  periodosall(){
+    this.periodoIncidencia();
+    this.periodoCapacitaciones();
+    this.periodoContrataciones();
+    this.periodoSalidas();
+    this.periodoIncidenciasDias();
+  }
+
+
+  periodoIncidencia(){
     this.dashboardservice.getIncidencias(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.incidenciasPeriodo = data;
-        //console.log(this.incidenciasPeriodo);
-    
-        // Inicializa un objeto para almacenar los datos por motivo
         const motivoData:any = {};
     
         // Recorre las incidencias y organiza los datos por motivo y mes
@@ -941,6 +656,8 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
             }
           }
         };
+
+        this.updateQuarterViewIncidencia();
     
         //console.log(datasets);
       },
@@ -948,8 +665,9 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
         console.log('Error' + err);
       }
     });
+  }
 
-
+  periodoCapacitaciones(){
     this.dashboardservice.getCapacitaciones(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.capacitacionesPeriodo = data;
@@ -961,7 +679,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
         // Recorre las incidencias y organiza los datos por motivo y mes
         this.capacitacionesPeriodo.forEach(capacitacion => {
           const mes = capacitacion.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
-          const nombre = capacitacion.NombreCapacitacion;
+          const nombre = 'Dias De Capacitaciones';
     
           // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
           if (!motivoData[nombre]) {
@@ -992,6 +710,8 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
             }
           }
         };
+
+        this.updateQuarterViewCapacitaciones();
     
         //console.log(datasets);
       },
@@ -999,7 +719,9 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
         console.log('Error' + err);
       }
     });
+  }
 
+  periodoContrataciones(){
     this.dashboardservice.getContrataciones(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.contratacionesPeriodo = data;
@@ -1041,6 +763,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
             }
           }
         };
+        this.updateQuarterViewContrataciones();
     
        // console.log(datasets);
       },
@@ -1048,8 +771,10 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
         console.log('Error' + err);
       }
     });
+  }
 
-
+  periodoSalidas(){
+    
     //Obtener Salidas por Edades por mes
     this.dashboardservice.getSalidasEdadesPeriodo(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
@@ -1093,6 +818,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
             }
           }
         };
+        this.updateQuarterViewSalidas();
     
        // console.log(datasets);
       },
@@ -1100,6 +826,11 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
         console.log('Error' + err);
       }
     });
+
+  }
+
+  periodoIncidenciasDias(){
+    
 
     //Obtener la suma de Dias de Subsidios por Departamento
     this.dashboardservice.getSumaDiasIncidenciasPorDepartamento(this.periodoSeleccionado).subscribe({
@@ -1144,7 +875,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
             }
           }
         };
-    
+        this.updateQuarterViewIncidenciasDias();
         //console.log(datasets);
       },
       error: (err) => {
@@ -1154,6 +885,229 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
 
 
   }
+
+
+    // Función para cambiar el trimestre
+changeQuarterIncidencia(direction: number) {
+  this.periodoIncidencia();
+  this.currentQuarterIncidencia += direction;
+  if (this.currentQuarterIncidencia < 0) {
+    this.currentQuarterIncidencia = 3; // Volver al último trimestre
+  } else if (this.currentQuarterIncidencia > 3) {
+    this.currentQuarterIncidencia = 0; // Volver al primer trimestre
+  }
+  this.updateQuarterViewIncidencia();
+}
+
+updateQuarterViewIncidencia() {
+  const trimestreLabels = [
+    ['Enero', 'Febrero', 'Marzo'],
+    ['Abril', 'Mayo', 'Junio'],
+    ['Julio', 'Agosto', 'Septiembre'],
+    ['Octubre', 'Noviembre', 'Diciembre']
+  ];
+  
+  const startMonth = this.currentQuarterIncidencia * 3; // Índice de inicio del trimestre
+  const endMonth = startMonth + 3; // Índice de fin del trimestre
+
+  const datasets = this.dataline.datasets.map((dataset: any) => ({
+    ...dataset,
+    data: dataset.data.slice(startMonth, endMonth) // Extrae solo los datos del trimestre actual
+  }));
+
+  // Actualiza el gráfico de líneas para mostrar solo los meses del trimestre actual
+  this.dataline = {
+    labels: trimestreLabels[this.currentQuarterIncidencia],
+    datasets: datasets,
+    options: {
+      plugins: {
+        colors: {
+          enabled: true
+        }
+      }
+    }
+  };
+}
+
+
+    // Función para cambiar el trimestre
+    changeQuarterCapacitaciones(direction: number) {
+      this.periodoCapacitaciones();
+      this.currentQuarterCapacitaciones += direction;
+      if (this.currentQuarterCapacitaciones < 0) {
+        this.currentQuarterCapacitaciones = 3; // Volver al último trimestre
+      } else if (this.currentQuarterCapacitaciones > 3) {
+        this.currentQuarterCapacitaciones = 0; // Volver al primer trimestre
+      }
+      
+      this.updateQuarterViewCapacitaciones();
+    }
+    
+    updateQuarterViewCapacitaciones() {
+
+      const trimestreLabels = [
+        ['Enero', 'Febrero', 'Marzo'],
+        ['Abril', 'Mayo', 'Junio'],
+        ['Julio', 'Agosto', 'Septiembre'],
+        ['Octubre', 'Noviembre', 'Diciembre']
+      ];
+      
+      const startMonth = this.currentQuarterCapacitaciones * 3; // Índice de inicio del trimestre
+      const endMonth = startMonth + 3; // Índice de fin del trimestre
+    
+      const datasets = this.datalineCapacitaciones.datasets.map((dataset: any) => ({
+        ...dataset,
+        data: dataset.data.slice(startMonth, endMonth) // Extrae solo los datos del trimestre actual
+      }));
+    
+      // Actualiza el gráfico de líneas para mostrar solo los meses del trimestre actual
+      this.datalineCapacitaciones = {
+        labels: trimestreLabels[this.currentQuarterCapacitaciones],
+        datasets: datasets,
+        options: {
+          plugins: {
+            colors: {
+              enabled: true
+            }
+          }
+        }
+      };
+    }
+
+
+     // Función para cambiar el trimestre
+     changeQuarterContrataciones(direction: number) {
+      this.periodoContrataciones();
+      this.currentQuarterContrataciones += direction;
+      if (this.currentQuarterContrataciones < 0) {
+        this.currentQuarterContrataciones = 3; // Volver al último trimestre
+      } else if (this.currentQuarterContrataciones > 3) {
+        this.currentQuarterContrataciones = 0; // Volver al primer trimestre
+      }
+      
+      this.updateQuarterViewContrataciones();
+    }
+    
+    updateQuarterViewContrataciones() {
+
+      const trimestreLabels = [
+        ['Enero', 'Febrero', 'Marzo'],
+        ['Abril', 'Mayo', 'Junio'],
+        ['Julio', 'Agosto', 'Septiembre'],
+        ['Octubre', 'Noviembre', 'Diciembre']
+      ];
+      
+      const startMonth = this.currentQuarterContrataciones * 3; // Índice de inicio del trimestre
+      const endMonth = startMonth + 3; // Índice de fin del trimestre
+    
+      const datasets = this.datalineContrataciones.datasets.map((dataset: any) => ({
+        ...dataset,
+        data: dataset.data.slice(startMonth, endMonth) // Extrae solo los datos del trimestre actual
+      }));
+    
+      // Actualiza el gráfico de líneas para mostrar solo los meses del trimestre actual
+      this.datalineContrataciones = {
+        labels: trimestreLabels[this.currentQuarterContrataciones],
+        datasets: datasets,
+        options: {
+          plugins: {
+            colors: {
+              enabled: true
+            }
+          }
+        }
+      };
+    }
+
+
+    // Función para cambiar el trimestre
+    changeQuarterSalidas(direction: number) {
+      this.periodoSalidas();
+      this.currentQuarterSalidas += direction;
+      if (this.currentQuarterSalidas < 0) {
+        this.currentQuarterSalidas = 3; // Volver al último trimestre
+      } else if (this.currentQuarterSalidas > 3) {
+        this.currentQuarterSalidas = 0; // Volver al primer trimestre
+      }
+      
+      this.updateQuarterViewSalidas();
+    }
+    
+    updateQuarterViewSalidas() {
+
+      const trimestreLabels = [
+        ['Enero', 'Febrero', 'Marzo'],
+        ['Abril', 'Mayo', 'Junio'],
+        ['Julio', 'Agosto', 'Septiembre'],
+        ['Octubre', 'Noviembre', 'Diciembre']
+      ];
+      
+      const startMonth = this.currentQuarterSalidas * 3; // Índice de inicio del trimestre
+      const endMonth = startMonth + 3; // Índice de fin del trimestre
+    
+      const datasets = this.datalineSalidasFechas.datasets.map((dataset: any) => ({
+        ...dataset,
+        data: dataset.data.slice(startMonth, endMonth) // Extrae solo los datos del trimestre actual
+      }));
+    
+      // Actualiza el gráfico de líneas para mostrar solo los meses del trimestre actual
+      this.datalineSalidasFechas = {
+        labels: trimestreLabels[this.currentQuarterSalidas],
+        datasets: datasets,
+        options: {
+          plugins: {
+            colors: {
+              enabled: true
+            }
+          }
+        }
+      };
+    }
+
+
+     // Función para cambiar el trimestre
+     changeQuarterIncidenciasDias(direction: number) {
+      this.periodoIncidenciasDias();
+      this.currentQuarterIncidenciasDias += direction;
+      if (this.currentQuarterIncidenciasDias < 0) {
+        this.currentQuarterIncidenciasDias = 3; // Volver al último trimestre
+      } else if (this.currentQuarterIncidenciasDias > 3) {
+        this.currentQuarterIncidenciasDias = 0; // Volver al primer trimestre
+      }
+      
+      this.updateQuarterViewIncidenciasDias();
+    }
+    
+    updateQuarterViewIncidenciasDias() {
+
+      const trimestreLabels = [
+        ['Enero', 'Febrero', 'Marzo'],
+        ['Abril', 'Mayo', 'Junio'],
+        ['Julio', 'Agosto', 'Septiembre'],
+        ['Octubre', 'Noviembre', 'Diciembre']
+      ];
+      
+      const startMonth = this.currentQuarterIncidenciasDias * 3; // Índice de inicio del trimestre
+      const endMonth = startMonth + 3; // Índice de fin del trimestre
+    
+      const datasets = this.datalineDiasIncidencias.datasets.map((dataset: any) => ({
+        ...dataset,
+        data: dataset.data.slice(startMonth, endMonth) // Extrae solo los datos del trimestre actual
+      }));
+    
+      // Actualiza el gráfico de líneas para mostrar solo los meses del trimestre actual
+      this.datalineDiasIncidencias = {
+        labels: trimestreLabels[this.currentQuarterIncidenciasDias],
+        datasets: datasets,
+        options: {
+          plugins: {
+            colors: {
+              enabled: true
+            }
+          }
+        }
+      };
+    }
 
 
 consulta(){
@@ -1428,6 +1382,8 @@ consultaFaltas(){
 };
 
 
+
+/*
 consultaIncidencias(){
   this.incidenciasTotales = 0;
 
@@ -1592,11 +1548,69 @@ consultaIncidencias(){
     });
 
   }
+};*/
+
+consultaIncidencias(){
+  this.incidenciasTotales = 0;
+  const ano = parseInt(this.anoSeleccionadoIncidencias, 10);
+  const fechas = this.obtenerFechas(ano, this.mesSeleccionadoIncidencias);
+
+  this.fechaInicioIncidencias = fechas.inicio;
+  this.fechaFinIncidencias = fechas.fin;
+
+    this.dashboardservice.getIncidenciasPorDepartamento(this.fechaInicioIncidencias, this.fechaFinIncidencias).subscribe({
+      next: (data: any) => {
+        this.incidenciasPorDepartamento = data;
+        console.log(this.incidenciasPorDepartamento);
+
+      this.incidenciasPorDepartamento.forEach(element => {
+          this.incidenciasTotales = this.incidenciasTotales+element.CantidadMotivos;
+        });
+
+
+    // Extraer los nombres únicos de los departamentos
+    const labels = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.NombreDepartamento))];
+
+    // Extraer los motivos únicos
+    const motivosUnicos = [...new Set(this.incidenciasPorDepartamento.map(inc => inc.Motivo))];
+
+
+      // Crear los datasets por cada motivo
+      const datasets = motivosUnicos.map(motivo => {
+        return {
+          label: motivo,  // Etiqueta del dataset (Motivo de la incidencia)
+          data: labels.map(departamento => {
+            // Encontrar la cantidad de motivos para cada departamento
+            const incidencia = this.incidenciasPorDepartamento.find(
+              inc => inc.NombreDepartamento === departamento && inc.Motivo === motivo
+            );
+            return incidencia ? incidencia.CantidadMotivos : 0;  // Si hay incidencia, se toma la cantidad, sino 0
+          })
+        };
+      });
+
+        // Configurar la gráfica de barras
+        this.databarIncidenciasPorDepartamento = {
+          labels: labels,
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+    
+      },
+      error: (err) => {
+        console.log('Error' + err);
+      }
+    });
+
 };
 
-isLeapYear(year: number): boolean {
-  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-};
+
 
   /*onDataSelect(event: any){
     console.log(event);
@@ -1650,7 +1664,34 @@ isLeapYear(year: number): boolean {
 
 
 
-
+  obtenerFechas(ano: number, mes: string | null): { inicio: Date; fin: Date } {
+    this.mesesConDias = {
+      'Enero': [0, 31],
+      'Febrero': [1, this.isLeapYear(ano) ? 29 : 28],
+      'Marzo': [2, 31],
+      'Abril': [3, 30],
+      'Mayo': [4, 31],
+      'Junio': [5, 30],
+      'Julio': [6, 31],
+      'Agosto': [7, 31],
+      'Septiembre': [8, 30],
+      'Octubre': [9, 31],
+      'Noviembre': [10, 30],
+      'Diciembre': [11, 31]
+    };
+  
+    if (!mes) {
+      return { inicio: new Date(ano, 0, 1), fin: new Date(ano, 11, 31) };
+    }
+  
+    const [mesInicio, diaFin] = this.mesesConDias[mes];
+    return { inicio: new Date(ano, mesInicio, 1), fin: new Date(ano, mesInicio, diaFin) };
+  }
+  
+  
+  isLeapYear(year: number): boolean {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  };
 
 
   impresionEmpleados(chartId: string) {

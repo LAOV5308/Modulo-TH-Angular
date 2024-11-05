@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js exporta una función para obtener el pool de conexiones
 const {sql, getConnection} = require('../ConexionDB/dbConfig');
 
+
 //Obtener cantidad de empleados por departamentos
 router.get('/departamentos', async (req, res) => {
     

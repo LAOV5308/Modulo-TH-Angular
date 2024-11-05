@@ -62,14 +62,22 @@ import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 import {MatButtonModule} from '@angular/material/button';
 import { MessageRecuperarComponent } from '../../../../../../frontend/Messages/message-recuperar/message-recuperar.component';
 
-
-
+import { TableModule } from 'primeng/table';
+import { Table } from 'primeng/table'; 
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @Component({
   selector: 'app-datos',
   standalone: true,
   imports: [
+    IconFieldModule,
+    MatTooltipModule,
+    InputIconModule,
+    InputTextModule,
     MatButtonModule,
     ButtonModule, NgIf, MatCardModule,ToastModule, CardModule,MatDialogModule, MatInputModule, 
     MatDatepickerModule, MatNativeDateModule, MatRadioModule, MatSelectModule, ReactiveFormsModule,
@@ -77,6 +85,7 @@ import { MessageRecuperarComponent } from '../../../../../../frontend/Messages/m
     NgFor, MatButton, MatExpansionModule,
     MatSort, MatTableModule, MatIcon,
     MatIconModule,
+    TableModule,
     //UpdateEmpleadoComponent,
     MatPaginator,
     MatFormFieldModule,
@@ -97,6 +106,9 @@ import { MessageRecuperarComponent } from '../../../../../../frontend/Messages/m
 })
 export class DatosComponent implements OnInit, AfterViewInit{
   NoNomina: number = 0;
+  @ViewChild('dt2') dt2!: Table;
+  @ViewChild('dt3') dt3!: Table;
+
     //Opciones de Eleccion
     sexo: string[] = [
       'Masculino',
@@ -164,8 +176,6 @@ export class DatosComponent implements OnInit, AfterViewInit{
       "Maestria",
       "TSU"
     ];
-
-
 
   displayedColumns: string[] = [
     'NoNomina',
@@ -662,6 +672,20 @@ export class DatosComponent implements OnInit, AfterViewInit{
 }
 
   
+filterTable(event: Event) {
+  const inputElement = event.target as HTMLInputElement;
+  if (inputElement) {
+    this.dt2.filterGlobal(inputElement.value, 'contains');
+  }
+}
+
+filterTable3(event: Event) {
+  const inputElement = event.target as HTMLInputElement;
+  if (inputElement) {
+    this.dt3.filterGlobal(inputElement.value, 'contains');
+  }
+}
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
 

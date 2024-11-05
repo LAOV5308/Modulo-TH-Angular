@@ -3,6 +3,31 @@ const router = express.Router();
 const db = require('../ConexionDB/dbConfig');// Asumiendo que dbConfig.js exporta una función para obtener el pool de conexiones
 const {sql, getConnection} = require('../ConexionDB/dbConfig');
 
+/*
+const IMAGE_TYPE_MAP = {
+    'image/png': 'png',
+    'image/jpg': 'jpg',
+    'image/jpeg':  'jpeg'
+};
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) =>{
+        const isValid = IMAGE_TYPE_MAP[file.mimetype];
+        let error = new Error("Extension no valida");
+        if(isValid){
+            error = null;
+        }
+    cb(error, "backend/images");
+    },
+    filename: (req, file, cb) =>{
+        const name = file.originalname.toLowerCase( ).split(' ').join('-');
+        const ext = IMAGE_TYPE_MAP[file.mimetype];
+        cb(null, name + '-' + Date.now() + '.' + ext);
+    }
+});*/
+
+
+
 // Obtener todos los empleados all
 router.get('/capacitacion', async (req, res) => {
     try {
@@ -67,7 +92,7 @@ router.post('/programarcapacitacion', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_EmpleadosActive Order by NoNomina');
+        const result = await sql.query('Select * from V_EmpleadosActive Order by NoNomina DESC');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -77,7 +102,7 @@ router.get('/', async (req, res) => {
 router.get('/all', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_EmpleadosAll Order by NoNomina');
+        const result = await sql.query('Select * from V_EmpleadosAll Order by NoNomina DESC');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -88,7 +113,7 @@ router.get('/all', async (req, res) => {
 router.get('/inactive', async (req, res) => {
     try {
         const sql = await db.getConnection();
-        const result = await sql.query('Select * from V_EmpleadosInactive Order by NoNomina');
+        const result = await sql.query('Select * from V_EmpleadosInactive Order by NoNomina DESC');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send('Error al obtener datos de la base de datos');
@@ -130,6 +155,7 @@ router.delete('/:id', async (req, res) => {
 // Crear un nuevo empleado
 router.post('/', async (req, res) => {
 
+    
     
     /*
     const { NombreDepartamento } = req.body;
