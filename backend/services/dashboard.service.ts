@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento } from '../models/dashboard.model';
+import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento, D_SumaIncidenciasPorDepartamento } from '../models/dashboard.model';
 import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
@@ -50,12 +50,12 @@ getSalidasEdadesPeriodo(Periodo: string): Observable<D_SalidasEdades[]> {
   return this.http.post<[D_SalidasEdades]>(this.apiUrl+'/salidasedades', body);
 }
 
-getSumaDiasIncidenciasPorDepartamento(Periodo: string): Observable<D_SalidasEdades[]> {
+/*getSumaDiasIncidenciasPorDepartamento(Periodo: string): Observable<D_SalidasEdades[]> {
   const body = {
     Periodo: Periodo
   };
   return this.http.post<D_SalidasEdades[]>(this.apiUrl+'/sumaincidencias', body);
-}
+}*/
 
 getSumaHorasCapacitacionPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_HorasCapacitacionDepartamento[]> {
   const body = {
@@ -66,19 +66,14 @@ getSumaHorasCapacitacionPorDepartamento(FechaInicio: Date, FechaFin: Date): Obse
 }
 
 
-getFaltasPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_FaltasDepartamento[]> {
+getFaltasPorDepartamento(FechaInicio: Date, FechaFin: Date, Tipo: number): Observable<D_FaltasDepartamento[]> {
   const body = {
     FechaInicio: FechaInicio,
-    FechaFin: FechaFin
+    FechaFin: FechaFin,
+    Tipo: Tipo
   };
   return this.http.post<D_FaltasDepartamento[]>(this.apiUrl+'/faltasdepartamento', body);
 }
-
-
-
-
-
-
 
 
 getEmpleadosporEdades(): Observable<D_Edades[]> {
@@ -90,8 +85,13 @@ getRangosAntiguedadActive(): Observable<D_RangoAntiguedad[]> {
 }
 
 
-getRangosAntiguedadSalidas(): Observable<D_RangoAntiguedad[]> {
-  return this.http.get<D_RangoAntiguedad[]>(this.apiUrl+'/rangoantiguedadsalidas');
+getRangosAntiguedadSalidas(FechaInicio: Date, FechaFin: Date): Observable<D_RangoAntiguedad[]> {
+  const body = {
+    FechaInicio: FechaInicio,
+    FechaFin: FechaFin
+  };
+
+  return this.http.post<D_RangoAntiguedad[]>(this.apiUrl+'/rangoantiguedadsalidas', body);
 }
 
 
@@ -117,6 +117,31 @@ getIncidenciasPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_I
 
   return this.http.post<D_IncidenciasPorDepartamento[]>(this.apiUrl+'/incidenciaspordepartamento', body);
 }
+
+
+//Obtener Bajas Por Departamento
+getBajasPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_Departamentos[]> {
+  const body = {
+    FechaInicio: FechaInicio,
+    FechaFin: FechaFin
+  };
+
+  return this.http.post<D_Departamentos[]>(this.apiUrl+'/bajaspordepartamento', body);
+}
+
+
+getDiasIncidenciasPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable<D_SumaIncidenciasPorDepartamento[]> {
+  const body = {
+    FechaInicio: FechaInicio,
+    FechaFin: FechaFin
+  };
+
+  return this.http.post<D_SumaIncidenciasPorDepartamento[]>(this.apiUrl+'/diasincidenciasdepartamento', body);
+}
+
+
+
+
 
 
 }

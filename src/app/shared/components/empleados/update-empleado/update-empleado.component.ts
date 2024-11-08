@@ -111,10 +111,10 @@ export class UpdateEmpleadoComponent implements OnInit{
   estadocivil: string[] = [
     'Casado',
     'Soltero',
+    'Divorciado',
     'Unión libre',
     'Mama/padre soltero',
     'Viud@'
-
   ];
   tipoingreso: string[] = [
     'Nuevo',

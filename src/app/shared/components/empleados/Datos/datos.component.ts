@@ -126,6 +126,7 @@ export class DatosComponent implements OnInit, AfterViewInit{
     estadocivil: string[] = [
       'Casado',
       'Soltero',
+      'Divorciado',
       'Unión libre',
       'Mama/padre soltero',
       'Viud@'

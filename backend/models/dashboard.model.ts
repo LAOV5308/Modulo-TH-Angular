@@ -2,6 +2,8 @@ export interface D_Departamentos{
     NombreDepartamento: string;
     CantidadEmpleados: number;
 }
+
+
 export interface D_EstadoCivil{
     EstadoCivil: string;
     CantidadEstadoCivil: number;
@@ -55,7 +57,7 @@ export interface D_SumaIncidenciasPorDepartamento{
     Mes: number;
     NombreDepartamento: string;
     TotalDiasSubsidios: number;
-    
+    Motivo: string;
 }
 
 export interface D_CambiosPorDepartamento{

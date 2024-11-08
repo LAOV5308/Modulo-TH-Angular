@@ -118,6 +118,33 @@
 </mat-card>
 </mat-grid-tile>
 
+
+<!--Empleados por Estado Civil-->
+<mat-grid-tile [colspan]="1" [rowspan]="1">
+  <mat-card class="dashboard-card">
+  <mat-card-header>
+    <mat-card-title>
+      Empleados por Estado Civil
+
+
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu6" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu6="matMenu" xPosition="before">
+        <button (click)="impresionEmpleadosEstadoCivil('EmpleadosActivosPorEstadoCivil')" mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="dashboard-card-content">
+    <div id="EmpleadosActivosPorEstadoCivil">
+      <p-chart type="bar" [data]="databar" height="250px" responsive="true"></p-chart>
+    </div>
+  </mat-card-content>
+</mat-card>
+</mat-grid-tile>
+
+
 <!--Rango de Antiguedades por empleado Active-->
 <mat-grid-tile [colspan]="1" [rowspan]="1">
   <mat-card class="dashboard-card">
@@ -159,11 +186,30 @@
         <button (click)="impresionSalidasAntiguedades('chartAntiguedadesSalidas')" mat-menu-item >Imprimir Grafica</button>
       </mat-menu>
 
+
+      <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+        <mat-label>Meses</mat-label>
+        <mat-select (selectionChange)="consultaSalidasAntiguedades()" [(ngModel)]="mesSeleccionadoSalidasAntiguedades">
+          <mat-option>-</mat-option>
+            <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+
+    <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+      <mat-label>Año</mat-label>
+      <mat-select (selectionChange)="consultaSalidasAntiguedades()" [(ngModel)]="anoSeleccionadoSalidasAntiguedades" >
+          <mat-option *ngFor="let val of anos" [value]="val">{{val}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
     <div id="chartAntiguedadesSalidas">
-      <h4>Promedio Antiguedad De Empleados en Bajas:  <strong>{{promedioantiguedadBaja}} Años</strong></h4>
+      <!--<h4>Promedio Antiguedad De Empleados en Bajas:  <strong>{{promedioantiguedadBaja}} Años</strong></h4>-->
       <p-chart type="bar" [data]="databarRangosAntiguedadInactive"  height="210px"  responsive="true"></p-chart>
     </div>
   </mat-card-content>
@@ -205,7 +251,7 @@
   <mat-card class="dashboard-card">
   <mat-card-header>
     <mat-card-title>
-      Empleados Bajas por Departamento
+      Bajas Departamento
 
       <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu5" aria-label="Toggle menu">
         <mat-icon>more_vert</mat-icon>
@@ -214,13 +260,40 @@
         <button (click)="impresionBajasPorDepartamento('bajasporDepartamento')" mat-menu-item>Imprimir Grafica</button>
       </mat-menu>
 
+
+      <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+        <mat-label>Meses</mat-label>
+        <mat-select (selectionChange)="consultaBajas()" [(ngModel)]="mesSeleccionadoBajas">
+          <mat-option>-</mat-option>
+            <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+
+    <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+      <mat-label>Año</mat-label>
+      <mat-select (selectionChange)="consultaBajas()" [(ngModel)]="anoSeleccionadoBajas" >
+          <mat-option *ngFor="let val of anos" [value]="val">{{val}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" color="primary" style="width: 20%; ">
+    <mat-label>Total:</mat-label>
+    <input matInput disabled value="{{bajasTotales}} Bajas">
+  </mat-form-field>
+
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
     
       <div class="p-grid p-p-4">
-        <div class="p-col-4" id="bajasporDepartamento">
+        <div class="p-col-4" id="bajasporDepartamento" *ngIf="bajasDepartamentos.length>0">
           <p-chart type="doughnut" [data]="datapolar" height="250px" responsive="true"></p-chart>
+      </div>
+      <div *ngIf="bajasDepartamentos.length==0" style="margin-top: 15%;">
+        <h2>No hay Registros</h2>
       </div>
     </div>  
     
@@ -234,30 +307,6 @@
 
 
 
-<!--Empleados por Estado Civil-->
-<mat-grid-tile [colspan]="1" [rowspan]="1">
-  <mat-card class="dashboard-card">
-  <mat-card-header>
-    <mat-card-title>
-      Empleados por Estado Civil
-
-
-      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu6" aria-label="Toggle menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu6="matMenu" xPosition="before">
-        <button (click)="impresionEmpleadosEstadoCivil('EmpleadosActivosPorEstadoCivil')" mat-menu-item>Imprimir Grafica</button>
-      </mat-menu>
-
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="dashboard-card-content">
-    <div id="EmpleadosActivosPorEstadoCivil">
-      <p-chart type="bar" [data]="databar" height="250px" responsive="true"></p-chart>
-    </div>
-  </mat-card-content>
-</mat-card>
-</mat-grid-tile>
 
 <mat-grid-tile [colspan]="1" [rowspan]="1">
   <mat-card class="dashboard-card">
@@ -314,6 +363,64 @@
   </mat-grid-tile>
 
   
+
+    <!--Sumas de Dias de Incidencias por Departamento por Mes y Año-->
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-card class="dashboard-card">
+      <mat-card-header>
+        <mat-card-title>
+          Dias Incidencias
+    
+          <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu14" aria-label="Toggle menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu14="matMenu" xPosition="before">
+            <button (click)="impresionPeriodoDeDiasIncidencias('PeriodoDiasIncidenciasPorDepartamento')" mat-menu-item>Imprimir Grafica</button>
+          </mat-menu>
+
+          <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+            <mat-label>Meses</mat-label>
+            <mat-select (selectionChange)="consultaDiasIncidencias()" [(ngModel)]="mesSeleccionadoDiasIncidencias">
+              <mat-option>-</mat-option>
+                <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+    
+        <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+          <mat-label>Año</mat-label>
+          <mat-select (selectionChange)="consultaDiasIncidencias()" [(ngModel)]="anoSeleccionadoDiasIncidencias" >
+              <mat-option *ngFor="let val of anos" [value]="val">{{val}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+    
+    
+      <mat-form-field appearance="fill" color="primary" style="width: 20%; ">
+        <mat-label>Total:</mat-label>
+        <input matInput disabled value="{{diasincidenciasTotales}} Dias">
+      </mat-form-field>
+    
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="dashboard-card-content">
+
+        <div id="PeriodoDiasIncidenciasPorDepartamento">
+          <p-chart type="bar" [data]="datalineDiasIncidencias" height="250px" responsive="true"></p-chart>
+        </div>
+
+        
+      </mat-card-content>
+      </mat-card>
+      </mat-grid-tile>
+
+
+
+
+
+
+
 
   <mat-grid-tile [colspan]="1" [rowspan]="1">
   <mat-card class="dashboard-card">
@@ -470,19 +577,46 @@
 
   <mat-form-field appearance="fill" color="primary" style="width: 17%; ">
     <mat-label>Total:</mat-label>
-    <input matInput disabled value="{{diasTotales}} Dias">
+    <input matInput disabled value="{{faltasTotales}} Faltas">
   </mat-form-field>
 
+
+  <!--<mat-form-field>
+    <mat-label>Tipo</mat-label>
+    <mat-select [(ngModel)]="tipos" multiple (selectionChange)="Tipo()">
+      @for (topping of toppingList; track topping) {
+        <mat-option [value]="topping">{{topping}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>-->
+
+
+  <div class="flex align-items-center">
+    <p-checkbox
+    (onChange)="Tipo()" 
+    [(ngModel)]="checkedJ"
+    [binary]="true" 
+        inputId="binary"
+        label="Justificada"
+         />
+        <p-checkbox 
+        (onChange)="Tipo()"
+        [(ngModel)]="checkedI"
+        [binary]="true" 
+        inputId="binary"
+            label="Injustificada" />
+</div>
 
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
-    <div id="faltas" *ngIf="faltasDepartamento.length>0">
-      <p-chart type="doughnut" [data]="databarfaltas" height="250px" responsive="true"></p-chart>
-    </div>
-    <div *ngIf="faltasDepartamento.length==0" style="margin-top: 17%;">
-      <h2>No hay Registros</h2>
-    </div>
+      <div id="faltas" *ngIf="faltasDepartamento.length>0">
+        <p-chart type="doughnut" [data]="databarfaltas" height="230px" responsive="true"></p-chart>
+      </div>
+      <div *ngIf="faltasDepartamento.length==0" style="margin-top: 12%;">
+        <h2>No hay Registros</h2>
+      </div>
+    
 
   </mat-card-content>
 </mat-card>
@@ -507,38 +641,9 @@
       (onChange)="periodosall()"
       />
 </div>
+
 <mat-grid-list cols="2" rowHeight="350px">
 
-<!--Cantidad de Incidencias por Mes y Año-->
-<mat-grid-tile [colspan]="1" [rowspan]="1">
-<mat-card class="dashboard-card">
-<mat-card-header>
-  <mat-card-title>
-    Cantidad de Incidencias {{periodoSeleccionado}}
-
-
-    <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu10" aria-label="Toggle menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu10="matMenu" xPosition="before">
-      <button (click)="impresionPeriodoIncidencias('PeriodoIncidenciasPorMes')" mat-menu-item>Imprimir Grafica</button>
-    </mat-menu>
-    <button mat-icon-button class="more-button" (click)="changeQuarterIncidencia(-1)">
-      <mat-icon>keyboard_arrow_left</mat-icon>
-    </button>
-    <button mat-icon-button class="more-button" (click)="changeQuarterIncidencia(1)" >
-      <mat-icon>keyboard_arrow_right</mat-icon>
-    </button>
-
-  </mat-card-title>
-</mat-card-header>
-<mat-card-content class="dashboard-card-content">
-  <div id="PeriodoIncidenciasPorMes">
-    <p-chart type="bar" [data]="dataline" height="250px" responsive="true"></p-chart>
-  </div>
-</mat-card-content>
-</mat-card>
-</mat-grid-tile>
 
 <!--Cantidad de Capacitaciones por Mes y Año-->
 <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -633,35 +738,6 @@
   </mat-grid-tile>
 
 
-  <!--Sumas de Dias de Incidencias por Departamento por Mes y Año-->
-<mat-grid-tile [colspan]="1" [rowspan]="1">
-  <mat-card class="dashboard-card">
-  <mat-card-header>
-    <mat-card-title>
-      Dias de Incidencias Departamento {{periodoSeleccionado}}
 
-      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu14" aria-label="Toggle menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu14="matMenu" xPosition="before">
-        <button (click)="impresionPeriodoDeDiasIncidencias('PeriodoDiasIncidenciasPorDepartamento')" mat-menu-item>Imprimir Grafica</button>
-      </mat-menu>
-
-      <button mat-icon-button class="more-button" (click)="changeQuarterIncidenciasDias(-1)">
-        <mat-icon>keyboard_arrow_left</mat-icon>
-      </button>
-      <button mat-icon-button class="more-button" (click)="changeQuarterIncidenciasDias(1)" >
-        <mat-icon>keyboard_arrow_right</mat-icon>
-      </button>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="dashboard-card-content">
-    <div id="PeriodoDiasIncidenciasPorDepartamento">
-      <p-chart type="bar" [data]="datalineDiasIncidencias" height="250px" responsive="true"></p-chart>
-    </div>
-    
-  </mat-card-content>
-  </mat-card>
-  </mat-grid-tile>
 
 </mat-grid-list>

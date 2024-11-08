@@ -190,6 +190,23 @@ router.post('/incidenciaspordepartamento', async (req, res) => {
 
 
 
+//Obtener Cantidad de Incidencias Por Departamento
+router.post('/bajaspordepartamento', async (req, res) => {
+
+    const { FechaInicio, FechaFin } = req.body;
+    
+    try {
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        const result = await request.execute('stp_V_BajasPorDepartamento');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send('Error');
+    }
+});
+
 
 
 //Obtener Cantidad de Salidas Por Edades y Mes
@@ -244,6 +261,24 @@ router.post('/horasdepartamento', async (req, res) => {
     }
 });
 
+
+
+router.post('/diasincidenciasdepartamento', async (req, res) => {
+    const { FechaInicio, FechaFin } = req.body;
+
+    try {
+        /*const sql = await db.getConnection();
+        const request = sql.request();*/
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        const result = await request.execute('stp_V_IncidenciasDiasPorDepartamento');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
 
 
 module.exports = router;

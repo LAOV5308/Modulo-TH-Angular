@@ -7,7 +7,7 @@ import {MAT_DATE_LOCALE, provideNativeDateAdapter} from '@angular/material/core'
 
 
 import { MatCard, MatCardHeader, MatCardModule } from '@angular/material/card';
-import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
+//import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 import {Chart, Colors } from 'chart.js';
 
 import { ChartModule } from 'primeng/chart';
@@ -43,14 +43,18 @@ import html2canvas from 'html2canvas';
 import { MatSelectModule } from '@angular/material/select';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [FormsModule,MatCard, MatCardHeader, MatCardModule,
-    BaseChartDirective, MeterGroupModule, ChartModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
-    DropdownModule, MatGridListModule, DividerModule, AsyncPipe, MatMenuModule, MatIconModule, MatButtonModule,MatSelectModule,NgFor, NgIf,
-    ToastModule
+    MeterGroupModule, ChartModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,
+    DropdownModule, MatGridListModule, DividerModule,  MatMenuModule, MatIconModule, MatButtonModule,MatSelectModule,NgFor, NgIf,
+    ToastModule, ReactiveFormsModule, CheckboxModule
+    /*BaseChartDirective,
+    AsyncPipe,*/
   ],
     providers:[EmpleadosService, DepartamentosService, DashboardService, IncidenciasService,CapacitacionService,MessageService,
       { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, provideNativeDateAdapter()
@@ -96,11 +100,17 @@ export class DashboardComponent implements OnInit {
   anoSeleccionado: string = '2024';
   anoSeleccionadoFaltas: string = '2024';
   anoSeleccionadoIncidencias: string ='2024';
+  anoSeleccionadoBajas: string = '2024';
+  anoSeleccionadoDiasIncidencias: string ='2024';
+  anoSeleccionadoSalidasAntiguedades: string ='2024';
 
 
   mesSeleccionado!: string;
   mesSeleccionadoFaltas!: string;
   mesSeleccionadoIncidencias!: string;
+  mesSeleccionadoBajas!: string;
+  mesSeleccionadoDiasIncidencias!: string;
+  mesSeleccionadoSalidasAntiguedades!: string;
 
 
   periodos: string[]=['2022','2023', '2024', '2025', '2026'];
@@ -112,11 +122,25 @@ export class DashboardComponent implements OnInit {
   fechaFinFaltas!: Date;
   fechaInicioIncidencias!: Date;
   fechaFinIncidencias!: Date;
+  fechaInicioBajas!: Date;
+  fechaFinBajas!: Date;
+  fechaInicioDiasIncidencias!: Date;
+  fechaFinDiasIncidencias!: Date;
+  fechaInicioSalidasAntiguedades!: Date;
+  fechaFinSalidasAntiguedades!: Date;
 
 
   horasTotales!: number;
   diasTotales!:number;
+  faltasTotales!: number;
   incidenciasTotales!:number;
+  bajasTotales!: number;
+  salidasTotales!: number;
+  diasincidenciasTotales!:number;
+
+
+  cadena!: string | null;
+
 
   mesesConDias!: any;
   currentQuarterIncidencia: number = 0; 
@@ -124,6 +148,10 @@ export class DashboardComponent implements OnInit {
   currentQuarterContrataciones: number = 0; 
   currentQuarterSalidas: number = 0; 
   currentQuarterIncidenciasDias: number = 0; 
+
+
+  checkedJ: boolean = true;
+  checkedI: boolean = true;
 
   //Opciones de Eleccion de Meses
   meses: string[] = [
@@ -180,6 +208,10 @@ export class DashboardComponent implements OnInit {
     //Grafica de Pastel
     datapieCapacitaciones:any;
 
+    toppings = new FormControl('');
+  toppingList: string[] = ['Justificada', 'Injustificada'];
+  tipos: string[] = ['Justificada', 'Injustificada'];
+  tipo: number = 1;
 
   constructor(private empleadosService: EmpleadosService, private departamentosService: DepartamentosService, private dashboardservice: DashboardService,
     private incidenciasService: IncidenciasService, private bajasService: BajasService, private capacitacionService: CapacitacionService,private messageService: MessageService
@@ -193,15 +225,87 @@ Chart.defaults.set('plugins.datalabels', {
 
   }
 
+  Tipo(){
+    //const cadena: string = "uno,dos,tres,cuatro";
+//const arreglo: string[] = cadena.split(","); // ["uno", "dos", "tres", "cuatro"]
+
+//console.log(arreglo);
+
+if(this.checkedJ || this.checkedI){
+  if(this.checkedJ && this.checkedI){
+    this.tipo = 1;
+  }else{
+    if(this.checkedJ){
+      this.tipo = 2;
+    }else{
+      if(this.checkedI){
+        this.tipo = 3;  
+      }
+    }
+  }
+  this.consultaFaltas();
+}else{
+  this.faltasDepartamento = [];
+  this.faltasTotales = 0;
+}
+
+
+
+
+    
+
+  
+  
+  
+
+
+
+
+
+  /*console.log(this.tipos);
+console.log(this.tipos[1]);*/
+
+
+      /*this.cadena = this.toppings.value;
+      console.log(this.cadena);
+
+      if(this.cadena = "'Justificada', 'Injustificada'"){
+        console.log('Ambas');
+      }else{
+        console.log('No')
+
+      }*/
+
+      /*switch(this.cadena){
+         case "Justificada, Injustificada":
+          console.log('Ambas')
+          break;
+        case "Justificada":
+          console.log('Jus');
+          break;
+          case "Injustificada":
+            console.log('Injus');
+            break;
+      }*/
+      
+            
+
+    //console.log(this.toppings.value);
+  }
+
   ngOnInit(): void {
     this.Masculino = 0;
     this.Femenino = 0;
     this.Otro = 0;
 
+    //this.Tipo();
     this.periodosall();
     this.consulta();
     this.consultaFaltas();
     this.consultaIncidencias();
+    this.consultaBajas();
+    this.consultaDiasIncidencias();
+    this.consultaSalidasAntiguedades();
     
 
 
@@ -334,42 +438,6 @@ const datasets = this.rangosAntiguedadActive.map((dept, index) => ({
     });
 
 
-
-    this.dashboardservice.getRangosAntiguedadSalidas().subscribe({
-      next:(rangoAntiguedad: any)=>{
-        this.rangosAntiguedadSalidas = rangoAntiguedad;
-        //this.edades = edades;
-        //console.log(this.rangosAntiguedadSalidas);
-
-// Crea un dataset para cada entrada en el estado civil
-const datasets = this.rangosAntiguedadSalidas.map((dept, index) => ({
-  label: dept.RangoAntiguedad,  // Etiqueta para cada dataset
-  data: [dept.CantidadAntiguedades],  // Solo un valor para este dataset
-}));
-
-//const data = this.estadocivil.map(dept => dept.CantidadEstadoCivil);
-
-        //Databar Chart
-      this.databarRangosAntiguedadInactive = {
-      labels: ['Antiguedad Salidas'],
-      datasets: datasets,
-          options: {
-            plugins: {
-                colors: {
-                    enabled: true
-                }
-            }
-        }
-      };
-
-      },
-      error:(error: any)=>{
-        console.log(error);
-      }
-    });
-
-
-
     
     this.bajasService.getAllBajas().subscribe({
       next:(bajas: any)=>{
@@ -384,39 +452,6 @@ const datasets = this.rangosAntiguedadSalidas.map((dept, index) => ({
       },
     });
 
-    this.dashboardservice.getbajasDepartamento().subscribe({
-      next:(bajas: any)=>{
-        this.bajasDepartamentos = bajas;
-        //console.log(this.bajasDepartamentos);
-
-        
-// Inicializa el arreglo de labels y data
-const labels = this.bajasDepartamentos.map(dept => dept.NombreDepartamento);
-const data = this.bajasDepartamentos.map(dept => dept.CantidadEmpleados);
-
-        //Datapolar Chart
-    this.datapolar = {
-      labels: labels,
-      datasets: [
-          {
-              data: data,
-          }],
-          options: {
-            plugins: {
-                colors: {
-                    enabled: true
-                }
-            }
-        }
-      };
-
-      },
-      error:(error: any)=>{
-        console.log(error);
-      },
-    });
-
-    
 
     this.empleadosService.getEmpleadosInactive().subscribe({
       next:(data: any)=>{
@@ -830,10 +865,8 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
   }
 
   periodoIncidenciasDias(){
-    
-
     //Obtener la suma de Dias de Subsidios por Departamento
-    this.dashboardservice.getSumaDiasIncidenciasPorDepartamento(this.periodoSeleccionado).subscribe({
+    /*this.dashboardservice.getSumaDiasIncidenciasPorDepartamento(this.periodoSeleccionado).subscribe({
       next: (data: any) => {
         this.sumaDiasSubsidiosPorDepartamento = data;
         //console.log(this.salidasPeriodoRango);
@@ -881,7 +914,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
       error: (err) => {
         console.log('Error' + err);
       }
-    });
+    });*/
 
 
   }
@@ -1247,7 +1280,7 @@ consulta(){
 
 
 consultaFaltas(){
-  this.diasTotales = 0;
+  this.faltasTotales = 0;
 
   if (!this.mesSeleccionadoFaltas) {
 
@@ -1255,14 +1288,18 @@ consultaFaltas(){
     this.fechaInicioFaltas = new Date(ano, 0, 1);
     this.fechaFinFaltas = new Date(ano, 11, 31);
 
-    this.dashboardservice.getFaltasPorDepartamento(this.fechaInicioFaltas, this.fechaFinFaltas).subscribe({
+    this.dashboardservice.getFaltasPorDepartamento(this.fechaInicioFaltas, this.fechaFinFaltas, this.tipo).subscribe({
       next: (dataFaltas: any) => {
+        console.log(dataFaltas);
         this.faltasDepartamento= dataFaltas;
+        console.log(this.faltasDepartamento);
 
       this.faltasDepartamento.forEach(element => {
-        this.diasTotales = this.diasTotales + element.CantidadFaltasDepartamento;
+        console.log(element.CantidadFaltasDepartamento);
+        this.faltasTotales = this.faltasTotales + element.CantidadFaltasDepartamento;
           
         });
+
         // Inicializa el arreglo de labels y data
         const labels = this.faltasDepartamento.map(dept => dept.NombreDepartamento);
         const data = this.faltasDepartamento.map(dept => dept.CantidadFaltasDepartamento);
@@ -1289,95 +1326,6 @@ consultaFaltas(){
       }
 
     });
-  }
-  else {
-    const ano = parseInt(this.anoSeleccionadoFaltas, 10); // Convertir el año a número
-    switch (this.mesSeleccionadoFaltas) {
-      case 'Enero':
-        this.fechaInicioFaltas = new Date(ano, 0, 1);  // Enero es el mes 0 en JavaScript
-        this.fechaFinFaltas = new Date(ano, 0, 31);    // Último día de enero
-        break;
-      case 'Febrero':
-        this.fechaInicioFaltas = new Date(ano, 1, 1);
-        this.fechaFinFaltas = new Date(ano, 1, this.isLeapYear(ano) ? 29 : 28);  // Manejar años bisiestos
-        break;
-      case 'Marzo':
-        this.fechaInicioFaltas = new Date(ano, 2, 1);
-        this.fechaFinFaltas = new Date(ano, 2, 31);
-        break;
-      case 'Abril':
-        this.fechaInicioFaltas = new Date(ano, 3, 1);
-        this.fechaFinFaltas = new Date(ano, 3, 30);
-        break;
-      case 'Mayo':
-        this.fechaInicioFaltas = new Date(ano, 4, 1);
-        this.fechaFinFaltas = new Date(ano, 4, 31);
-        break;
-      case 'Junio':
-        this.fechaInicioFaltas = new Date(ano, 5, 1);
-        this.fechaFinFaltas = new Date(ano, 5, 30);
-        break;
-      case 'Julio':
-        this.fechaInicioFaltas = new Date(ano, 6, 1);
-        this.fechaFinFaltas = new Date(ano, 6, 31);
-        break;
-      case 'Agosto':
-        this.fechaInicioFaltas = new Date(ano, 7, 1);
-        this.fechaFinFaltas = new Date(ano, 7, 31);
-        break;
-      case 'Septiembre':
-        this.fechaInicioFaltas = new Date(ano, 8, 1);
-        this.fechaFinFaltas = new Date(ano, 8, 30);
-        break;
-      case 'Octubre':
-        this.fechaInicioFaltas = new Date(ano, 9, 1);
-        this.fechaFinFaltas = new Date(ano, 9, 31);
-        break;
-      case 'Noviembre':
-        this.fechaInicioFaltas = new Date(ano, 10, 1);
-        this.fechaFinFaltas = new Date(ano, 10, 30);
-        break;
-      case 'Diciembre':
-        this.fechaInicioFaltas = new Date(ano, 11, 1);
-        this.fechaFinFaltas = new Date(ano, 11, 31);
-        break;
-    }
-
-    this.dashboardservice.getFaltasPorDepartamento(this.fechaInicioFaltas, this.fechaFinFaltas).subscribe({
-      next: (dataFaltas: any) => {
-        this.faltasDepartamento= dataFaltas;
-
-        this.faltasDepartamento.forEach(element => {
-          this.diasTotales = this.diasTotales + element.CantidadFaltasDepartamento;
-            
-          });
-        // Inicializa el arreglo de labels y data
-        const labels = this.faltasDepartamento.map(dept => dept.NombreDepartamento);
-        const data = this.faltasDepartamento.map(dept => dept.CantidadFaltasDepartamento);
-
-        //Datapie Chart
-        this.databarfaltas = {
-          labels: labels,
-          datasets: [
-            {
-              data: data,
-            }],
-          options: {
-            plugins: {
-              colors: {
-                enabled: true
-              }
-            }
-          }
-        };
-
-      },
-      error: (err) => {
-        console.log('Error' + err);
-      }
-
-    });
-
   }
 };
 
@@ -1609,6 +1557,211 @@ consultaIncidencias(){
     });
 
 };
+
+consultaBajas(){
+  this.bajasTotales = 0;
+  const ano = parseInt(this.anoSeleccionadoBajas, 10);
+  const fechas = this.obtenerFechas(ano, this.mesSeleccionadoBajas);
+
+  this.fechaInicioBajas = fechas.inicio;
+  this.fechaFinBajas = fechas.fin;
+
+
+  
+
+  this.dashboardservice.getBajasPorDepartamento(this.fechaInicioBajas, this.fechaFinBajas).subscribe({
+    next:(bajas: any)=>{
+      this.bajasDepartamentos = bajas;
+      //console.log(this.bajasDepartamentos);
+
+      this.bajasDepartamentos.forEach(element => {
+        this.bajasTotales = this.bajasTotales + element.CantidadEmpleados;
+        
+      });
+
+      
+// Inicializa el arreglo de labels y data
+const labels = this.bajasDepartamentos.map(dept => dept.NombreDepartamento);
+const data = this.bajasDepartamentos.map(dept => dept.CantidadEmpleados);
+
+      //Datapolar Chart
+  this.datapolar = {
+    labels: labels,
+    datasets: [
+        {
+            data: data,
+        }],
+        options: {
+          plugins: {
+              colors: {
+                  enabled: true
+              }
+          }
+      }
+    };
+
+    },
+    error:(error: any)=>{
+      console.log(error);
+    },
+  });
+
+}
+
+
+consultaDiasIncidencias(){
+  this.diasincidenciasTotales = 0;
+  const ano = parseInt(this.anoSeleccionadoDiasIncidencias, 10);
+  const fechas = this.obtenerFechas(ano, this.mesSeleccionadoDiasIncidencias);
+
+  this.fechaInicioDiasIncidencias = fechas.inicio;
+  this.fechaFinDiasIncidencias = fechas.fin;
+
+
+  this.dashboardservice.getDiasIncidenciasPorDepartamento(this.fechaInicioDiasIncidencias, this.fechaFinDiasIncidencias).subscribe({
+    next: (data: any) => {
+      this.sumaDiasSubsidiosPorDepartamento = data;
+      
+      console.log(this.sumaDiasSubsidiosPorDepartamento);
+
+      this.sumaDiasSubsidiosPorDepartamento.forEach(element => {
+          this.diasincidenciasTotales = this.diasincidenciasTotales+element.TotalDiasSubsidios;
+        });
+
+
+    // Extraer los nombres únicos de los departamentos
+    const labels = [...new Set(this.sumaDiasSubsidiosPorDepartamento.map(inc => inc.NombreDepartamento))];
+
+    // Extraer los motivos únicos
+    //const motivosUnicos = [...new Set(this.sumaDiasSubsidiosPorDepartamento.map(inc => inc.Motivo))];
+    const motivosUnicos = [...new Set(this.sumaDiasSubsidiosPorDepartamento.map(inc => inc.Motivo))];
+
+
+      // Crear los datasets por cada motivo
+      const datasets = motivosUnicos.map(motivo => {
+        return {
+          label: motivo,  // Etiqueta del dataset (Motivo de la incidencia)
+          data: labels.map(departamento => {
+            // Encontrar la cantidad de motivos para cada departamento
+            const incidencia = this.sumaDiasSubsidiosPorDepartamento.find(
+              inc => inc.NombreDepartamento === departamento && inc.Motivo === motivo
+            );
+            return incidencia ? incidencia.TotalDiasSubsidios : 0;  // Si hay incidencia, se toma la cantidad, sino 0
+          })
+        };
+      });
+
+        // Configurar la gráfica de barras
+        this.datalineDiasIncidencias = {
+          labels: labels,
+          datasets: datasets,
+          options: {
+            plugins: {
+              colors: {
+                enabled: true
+              }
+            }
+          }
+        };
+
+
+
+  
+     /* // Inicializa un objeto para almacenar los datos por motivo
+      const motivoData:any = {};
+  
+      // Recorre las incidencias y organiza los datos por motivo y mes
+      this.sumaDiasSubsidiosPorDepartamento.forEach(dia => {
+        const mes = dia.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
+        const nombre = dia.NombreDepartamento;
+  
+        // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
+        if (!motivoData[nombre]) {
+          motivoData[nombre] = new Array(12).fill(0);
+        }
+  
+        // Asignar la cantidad de incidencias al mes correspondiente
+        motivoData[nombre][mes] = dia.TotalDiasSubsidios;
+      });
+  
+      // Crear datasets a partir de motivoData
+      const datasets = Object.keys(motivoData).map(motivo => ({
+        label: motivo,  // Etiqueta para cada dataset (Motivo de la incidencia)
+        data: motivoData[motivo],  // Los datos organizados por mes
+        tension: 0.4,
+        fill: false  // Evitar que la línea se llene
+      }));
+  
+      // Configura el gráfico de líneas
+      this.datalineDiasIncidencias = {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: datasets,
+        options: {
+          plugins: {
+            colors: {
+              enabled: true
+            }
+          }
+        }
+      };*/
+
+      //console.log(datasets);
+    },
+    error: (err) => {
+      console.log('Error' + err);
+    }
+  });
+
+}
+
+
+
+consultaSalidasAntiguedades(){
+
+  const ano = parseInt(this.anoSeleccionadoSalidasAntiguedades, 10);
+  const fechas = this.obtenerFechas(ano, this.mesSeleccionadoSalidasAntiguedades);
+
+  this.fechaInicioSalidasAntiguedades = fechas.inicio;
+  this.fechaFinSalidasAntiguedades = fechas.fin;
+
+
+
+  this.dashboardservice.getRangosAntiguedadSalidas(this.fechaInicioSalidasAntiguedades, this.fechaFinSalidasAntiguedades).subscribe({
+    next:(rangoAntiguedad: any)=>{
+      this.rangosAntiguedadSalidas = rangoAntiguedad;
+      //this.edades = edades;
+      //console.log(this.rangosAntiguedadSalidas);
+
+// Crea un dataset para cada entrada en el estado civil
+const datasets = this.rangosAntiguedadSalidas.map((dept, index) => ({
+label: dept.RangoAntiguedad,  // Etiqueta para cada dataset
+data: [dept.CantidadAntiguedades],  // Solo un valor para este dataset
+}));
+
+//const data = this.estadocivil.map(dept => dept.CantidadEstadoCivil);
+
+      //Databar Chart
+    this.databarRangosAntiguedadInactive = {
+    labels: ['Antiguedad Salidas'],
+    datasets: datasets,
+        options: {
+          plugins: {
+              colors: {
+                  enabled: true
+              }
+          }
+      }
+    };
+
+    },
+    error:(error: any)=>{
+      console.log(error);
+    }
+  });
+
+
+}
+
 
 
 
