@@ -59,11 +59,6 @@ timbrarVacacion(IdFechaVacacion:number, Timbrada: boolean): Observable<Vacacion[
 }
 
 
-
-
-
-
-
 getVacacionesPeriodo(NoNomina: number | undefined): Observable<Vacacion[]> {
   const body = {
     NoNomina: NoNomina
@@ -86,6 +81,8 @@ getVacaciones(NoNomina: number | undefined, Periodo: string): Observable<Vacacio
   };
   return this.http.post<Vacacion[]>(`${this.apiUrl}/all`, body);
 }
+
+
 
 updateDiasVacaciones(IdVacacion: number, DiasDisponibles: number, DiasUtilizados: number ): Observable<any> {
   const body = {
@@ -125,5 +122,6 @@ asignarvacacionesadelantadas(IdFechaVacacion:number, Periodo: string, IdVacacion
 deleteVacacion(IdVacacion: number): Observable<any> {
   return this.http.delete(this.apiUrl+'/'+IdVacacion);
 }
+
 
 }

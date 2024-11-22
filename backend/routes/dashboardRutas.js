@@ -281,4 +281,23 @@ router.post('/diasincidenciasdepartamento', async (req, res) => {
 });
 
 
+router.post('/motivosalida', async (req, res) => {
+    const { FechaInicio, FechaFin } = req.body;
+
+    try {
+        /*const sql = await db.getConnection();
+        const request = sql.request();*/
+        const pool = await db.getConnection();
+        const request = pool.request();
+        request.input('FechaInicio', sql.Date, FechaInicio);
+        request.input('FechaFin', sql.Date, FechaFin);
+        const result = await request.execute('stp_V_MotivoSalida');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
+
+
+
 module.exports = router;

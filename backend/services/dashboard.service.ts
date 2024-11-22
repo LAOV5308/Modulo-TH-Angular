@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento, D_SumaIncidenciasPorDepartamento } from '../models/dashboard.model';
+import { D_Departamentos, D_EstadoCivil, D_IncidenciasPeriodo, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Edades, D_Bajas, D_RangoAntiguedad, D_IncidenciasPorDepartamento, D_SalidasEdades, D_CambiosPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento, D_SumaIncidenciasPorDepartamento, D_MotivoSalida } from '../models/dashboard.model';
 import { Peticion } from './Service';
 @Injectable({
   providedIn: 'root'
@@ -138,6 +138,16 @@ getDiasIncidenciasPorDepartamento(FechaInicio: Date, FechaFin: Date): Observable
 
   return this.http.post<D_SumaIncidenciasPorDepartamento[]>(this.apiUrl+'/diasincidenciasdepartamento', body);
 }
+
+getMotivosSalida(FechaInicio: Date, FechaFin: Date): Observable<D_MotivoSalida[]> {
+  const body = {
+    FechaInicio: FechaInicio,
+    FechaFin: FechaFin
+  };
+
+  return this.http.post<D_MotivoSalida[]>(this.apiUrl+'/motivosalida', body);
+}
+
 
 
 

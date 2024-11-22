@@ -536,7 +536,7 @@
   </mat-card-header>
   <mat-card-content class="dashboard-card-content">
     <div id="cambiosPuestos">
-      <p-chart type="polarArea" [data]="datapolarCambios" height="250px" responsive="true"></p-chart>
+      <p-chart type="pie" [data]="datapolarCambios" height="250px" responsive="true"></p-chart>
     </div>
   </mat-card-content>
 </mat-card>
@@ -558,7 +558,7 @@
 
       <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
         <mat-label>Meses</mat-label>
-        <mat-select (selectionChange)="consultaFaltas()" [(ngModel)]="mesSeleccionadoFaltas">
+        <mat-select (selectionChange)="Tipo()" [(ngModel)]="mesSeleccionadoFaltas">
           <mat-option>-</mat-option>
             <mat-option *ngFor="let val of meses" [value]="val">{{val}}
             </mat-option>
@@ -568,7 +568,7 @@
 
     <mat-form-field appearance="fill" color="primary" style="width: 15%;">
       <mat-label>Año</mat-label>
-      <mat-select (selectionChange)="consultaFaltas()" [(ngModel)]="anoSeleccionadoFaltas" >
+      <mat-select (selectionChange)="Tipo()" [(ngModel)]="anoSeleccionadoFaltas" >
           <mat-option *ngFor="let val of anos" [value]="val">{{val}}
           </mat-option>
       </mat-select>
@@ -623,6 +623,59 @@
 </mat-grid-tile>
   
 
+
+<!--Motivos de Salida-->
+<mat-grid-tile [colspan]="1" [rowspan]="1">
+  <mat-card class="dashboard-card">
+  <mat-card-header>
+    <mat-card-title>
+      Motivos Salida
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu16" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu16="matMenu" xPosition="before">
+        <button (click)="impresionFaltasPorDepartamento('motivosalidas')" mat-menu-item>Imprimir Grafica</button>
+      </mat-menu>
+
+
+      <mat-form-field appearance="fill" color="primary" style="width: 25%; padding-right: 1rem;">
+        <mat-label>Meses</mat-label>
+        <mat-select (selectionChange)="consultaMotivosSalida()" [(ngModel)]="mesSeleccionadoMotivoSalidas">
+          <mat-option>-</mat-option>
+            <mat-option *ngFor="let val of meses" [value]="val">{{val}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+
+    <mat-form-field appearance="fill" color="primary" style="width: 15%;">
+      <mat-label>Año</mat-label>
+      <mat-select (selectionChange)="consultaMotivosSalida()" [(ngModel)]="anoSeleccionadoMotivoSalidas" >
+          <mat-option *ngFor="let val of anos" [value]="val">{{val}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill" color="primary" style="width: 17%; ">
+    <mat-label>Total:</mat-label>
+    <input matInput disabled value="{{motivosSalidasTotales}} Salidas">
+  </mat-form-field>
+
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="dashboard-card-content">
+      <div id="motivosalidas" *ngIf="motivosSalidas.length>0">
+        <p-chart type="bar" [data]="databarMotivoSalidas" height="230px" responsive="true"></p-chart>
+      </div>
+      <div style="margin-top: 12%;" *ngIf="motivosSalidas.length==0">
+        <h2>No hay Registros</h2>
+      </div>
+    
+
+  </mat-card-content>
+</mat-card>
+</mat-grid-tile>
 
 
 

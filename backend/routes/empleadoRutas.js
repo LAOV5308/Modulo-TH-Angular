@@ -98,6 +98,7 @@ router.get('/', async (req, res) => {
         res.status(500).send('Error al obtener datos de la base de datos');
     }
 });
+
 // Obtener todos los empleados all
 router.get('/all', async (req, res) => {
     try {
@@ -154,19 +155,6 @@ router.delete('/:id', async (req, res) => {
 
 // Crear un nuevo empleado
 router.post('/', async (req, res) => {
-
-    
-    
-    /*
-    const { NombreDepartamento } = req.body;
-    const { NombreResponsable } = req.body;
-    
-        
-        const sql = await db.getConnection();
-        const result = await sql.query('EXEC stp_departamento_add '+ NombreDepartamento + ', '+NombreResponsable);
-        //res.status(201).send("Departamento creado con éxito");
-        res.status(201).json({ message: "Departamento creado con éxito" });
-*/
     const { NoNomina, Nivel, NombrePuesto, TipoIngreso, Ingreso, HorarioSemanal,NSS, UMF, Sueldo,
         Nombre, Apellidos, Sexo, EstadoCivil, FechaNacimiento, EntidadNacimiento, CiudadNacimiento, CURP, RFC, 
         DomicilioIne, Poblacion, EntidadDireccion, CP, CorreoElectronico, NumeroTelefono1, NumeroTelefono2,

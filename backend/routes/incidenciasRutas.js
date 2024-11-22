@@ -212,13 +212,10 @@ router.put('/:id', async (req, res) => {
         request.input('CategoriaIncidencia', sql.VarChar, CategoriaIncidencia);
         request.input('FolioAlta', sql.VarChar, FolioAlta);
         request.input('FolioBaja', sql.VarChar, FolioBaja);
-
         // Ejecutar el procedimiento almacenado
         const result = await request.execute('stp_incidencias_update');
         //const result = await request.execute('stp_prueba_add');
         res.status(201).json({ message: "Incidencia actualizada con exito" });
-
-
     } catch (err) {
         res.status(500).json({ message: 'Error al actualizar la Incidencia: ' + err.message });
     }

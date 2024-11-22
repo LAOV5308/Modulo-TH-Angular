@@ -67,10 +67,7 @@ router.delete('/:id', async (req, res) => {
 // Crear un nuevo Puesto
 
 router.post('/', async (req, res) => {
-
-
     const { NombrePuesto, NombreDepartamento} = req.body;
-
     try {
         const pool = await getConnection();
         const request = pool.request();

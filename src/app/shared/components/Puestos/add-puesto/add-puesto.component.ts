@@ -78,7 +78,7 @@ export class AddPuestoComponent implements OnInit{
   onFormSubmit() {
     
     if (this.Form.valid) {
-      console.log(this.Form.value);
+      //console.log(this.Form.value);
       this._puestoService.addPuestos(this.Form.value).subscribe({
         next: (resp: any) => {
             this._coreService.openSnackBar('Puesto Agregado successfully', resp);

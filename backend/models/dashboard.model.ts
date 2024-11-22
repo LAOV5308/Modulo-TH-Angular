@@ -77,5 +77,10 @@ export interface D_FaltasDepartamento{
     CantidadFaltasDepartamento: number;
 }
 
+export interface D_MotivoSalida{
+    Motivo: string;
+    CantidadMotivo: number;
+}
+
 
 

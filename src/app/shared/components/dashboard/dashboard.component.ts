@@ -18,7 +18,7 @@ import { Empleado } from '../../../../../backend/models/empleado.model';
 import { Departamento } from '../../../../../backend/models/departamento.model';
 import { DepartamentosService } from '../../../../../backend/services/departamentos.service';
 import { DashboardService } from '../../../../../backend/services/dashboard.service';
-import { D_Bajas, D_CambiosPorDepartamento, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo, D_IncidenciasPorDepartamento, D_RangoAntiguedad, D_SalidasEdades, D_SumaIncidenciasPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento } from '../../../../../backend/models/dashboard.model';
+import { D_Bajas, D_CambiosPorDepartamento, D_CapacitacionesPeriodo, D_ContratacionesPeriodo, D_Departamentos, D_Edades, D_EstadoCivil, D_IncidenciasPeriodo, D_IncidenciasPorDepartamento, D_RangoAntiguedad, D_SalidasEdades, D_SumaIncidenciasPorDepartamento, D_HorasCapacitacionDepartamento, D_FaltasDepartamento, D_MotivoSalida } from '../../../../../backend/models/dashboard.model';
 import { IncidenciasService } from '../../../../../backend/services/incidencias.service';
 import { Incidencia } from '../../../../../backend/models/incidencia.model';
 
@@ -94,6 +94,8 @@ export class DashboardComponent implements OnInit {
   rangosAntiguedadActive: D_RangoAntiguedad[]=[];
   rangosAntiguedadSalidas: D_RangoAntiguedad[]=[];
   incidenciasPorDepartamento: D_IncidenciasPorDepartamento[]=[];
+  motivosSalidas: D_MotivoSalida[]=[];
+
   edades: D_Edades[]=[];
   periodoSeleccionado: string = '2024';
 
@@ -103,6 +105,7 @@ export class DashboardComponent implements OnInit {
   anoSeleccionadoBajas: string = '2024';
   anoSeleccionadoDiasIncidencias: string ='2024';
   anoSeleccionadoSalidasAntiguedades: string ='2024';
+  anoSeleccionadoMotivoSalidas: string ='2024';
 
 
   mesSeleccionado!: string;
@@ -111,6 +114,7 @@ export class DashboardComponent implements OnInit {
   mesSeleccionadoBajas!: string;
   mesSeleccionadoDiasIncidencias!: string;
   mesSeleccionadoSalidasAntiguedades!: string;
+  mesSeleccionadoMotivoSalidas!: string;
 
 
   periodos: string[]=['2022','2023', '2024', '2025', '2026'];
@@ -128,6 +132,8 @@ export class DashboardComponent implements OnInit {
   fechaFinDiasIncidencias!: Date;
   fechaInicioSalidasAntiguedades!: Date;
   fechaFinSalidasAntiguedades!: Date;
+  fechaInicioMotivoSalidas!: Date;
+  fechaFinMotivoSalidas!: Date;
 
 
   horasTotales!: number;
@@ -137,6 +143,7 @@ export class DashboardComponent implements OnInit {
   bajasTotales!: number;
   salidasTotales!: number;
   diasincidenciasTotales!:number;
+  motivosSalidasTotales!:number;
 
 
   cadena!: string | null;
@@ -193,6 +200,7 @@ export class DashboardComponent implements OnInit {
     databarRangosAntiguedadInactive: any;
     databarIncidenciasPorDepartamento: any;
     databarfaltas: any;
+    databarMotivoSalidas: any;
 
     //DataLine se encarga de Periodo Por mes
     dataline: any;
@@ -306,6 +314,7 @@ console.log(this.tipos[1]);*/
     this.consultaBajas();
     this.consultaDiasIncidencias();
     this.consultaSalidasAntiguedades();
+    this.consultaMotivosSalida();
     
 
 
@@ -502,11 +511,11 @@ const data = this.departamentos.map(dept => dept.CantidadEmpleados);
     this.dashboardservice.getEmpleadosporEstadoCivil().subscribe({
       next: (estadocivil: any) => {
         this.estadocivil = estadocivil;
-        //console.log(this.estadocivil);
+        console.log(this.estadocivil);
 
 // Crea un dataset para cada entrada en el estado civil
 const datasets = this.estadocivil.map((dept, index) => ({
-  label: dept.EstadoCivil,  // Etiqueta para cada dataset
+  label: dept.EstadoCivil ? dept.EstadoCivil : 'Sin Clasificar',  // Etiqueta para cada dataset
   data: [dept.CantidadEstadoCivil],  // Solo un valor para este dataset
 }));
 
@@ -822,7 +831,7 @@ const data = this.cambiosDepartamento.map(dept => dept.CantidadCambios);
         // Recorre las incidencias y organiza los datos por motivo y mes
         this.salidasPeriodoRango.forEach(salida => {
           const mes = salida.Mes - 1; // Restamos 1 porque los arrays empiezan en 0 (Enero = 0)
-          const nombre = salida.RangoEdad;
+          const nombre = salida.RangoEdad ? salida.RangoEdad : 'Sin Clasificar';
     
           // Si el motivo no existe en motivoData, inicializarlo con un array de 12 ceros
           if (!motivoData[nombre]) {
@@ -1282,17 +1291,19 @@ consulta(){
 consultaFaltas(){
   this.faltasTotales = 0;
 
-  if (!this.mesSeleccionadoFaltas) {
+  const ano = parseInt(this.anoSeleccionadoFaltas, 10);
+  const fechas = this.obtenerFechas(ano, this.mesSeleccionadoFaltas);
 
-    const ano = parseInt(this.anoSeleccionadoFaltas, 10);
-    this.fechaInicioFaltas = new Date(ano, 0, 1);
-    this.fechaFinFaltas = new Date(ano, 11, 31);
+  this.fechaInicioFaltas = fechas.inicio;
+  this.fechaFinFaltas = fechas.fin;
+
+  //console.log(this.fechaInicioFaltas, this.fechaFinFaltas);
 
     this.dashboardservice.getFaltasPorDepartamento(this.fechaInicioFaltas, this.fechaFinFaltas, this.tipo).subscribe({
       next: (dataFaltas: any) => {
-        console.log(dataFaltas);
+        //console.log(dataFaltas);
         this.faltasDepartamento= dataFaltas;
-        console.log(this.faltasDepartamento);
+       // console.log(this.faltasDepartamento);
 
       this.faltasDepartamento.forEach(element => {
         console.log(element.CantidadFaltasDepartamento);
@@ -1326,7 +1337,7 @@ consultaFaltas(){
       }
 
     });
-  }
+
 };
 
 
@@ -1718,6 +1729,8 @@ consultaDiasIncidencias(){
 
 consultaSalidasAntiguedades(){
 
+  
+
   const ano = parseInt(this.anoSeleccionadoSalidasAntiguedades, 10);
   const fechas = this.obtenerFechas(ano, this.mesSeleccionadoSalidasAntiguedades);
 
@@ -1732,6 +1745,9 @@ consultaSalidasAntiguedades(){
       //this.edades = edades;
       //console.log(this.rangosAntiguedadSalidas);
 
+      
+
+
 // Crea un dataset para cada entrada en el estado civil
 const datasets = this.rangosAntiguedadSalidas.map((dept, index) => ({
 label: dept.RangoAntiguedad,  // Etiqueta para cada dataset
@@ -1743,6 +1759,56 @@ data: [dept.CantidadAntiguedades],  // Solo un valor para este dataset
       //Databar Chart
     this.databarRangosAntiguedadInactive = {
     labels: ['Antiguedad Salidas'],
+    datasets: datasets,
+        options: {
+          plugins: {
+              colors: {
+                  enabled: true
+              }
+          }
+      }
+    };
+
+    },
+    error:(error: any)=>{
+      console.log(error);
+    }
+  });
+
+
+}
+
+
+consultaMotivosSalida(){
+  this.motivosSalidasTotales = 0;
+  const ano = parseInt(this.anoSeleccionadoMotivoSalidas, 10);
+  const fechas = this.obtenerFechas(ano, this.mesSeleccionadoMotivoSalidas);
+
+  this.fechaInicioMotivoSalidas = fechas.inicio;
+  this.fechaFinMotivoSalidas = fechas.fin;
+
+
+
+  this.dashboardservice.getMotivosSalida(this.fechaInicioMotivoSalidas, this.fechaFinMotivoSalidas).subscribe({
+    next:(motivosalida: any)=>{
+      this.motivosSalidas = motivosalida;
+      //this.edades = edades;
+      //console.log(this.rangosAntiguedadSalidas);
+      this.motivosSalidas.forEach(element => {
+        this.motivosSalidasTotales = this.motivosSalidasTotales + element.CantidadMotivo;
+      });
+
+// Crea un dataset para cada entrada en el estado civil
+const datasets = this.motivosSalidas.map((dept, index) => ({
+label: dept.Motivo ,  // Etiqueta para cada dataset
+data: [dept.CantidadMotivo],  // Solo un valor para este dataset
+}));
+
+//const data = this.estadocivil.map(dept => dept.CantidadEstadoCivil);
+
+      //Databar Chart
+    this.databarMotivoSalidas = {
+    labels: ['Motivos de Salida'],
     datasets: datasets,
         options: {
           plugins: {

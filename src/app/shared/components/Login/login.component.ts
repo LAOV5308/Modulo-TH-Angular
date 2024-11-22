@@ -3,9 +3,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf } from '@angular/common';
 
-import { Router, RouterModule } from '@angular/router';// Importante para manejar la navegación
+import { Router } from '@angular/router';// Importante para manejar la navegación
 
 import { EmpleadosService } from '../../../../../backend/services/empleados.service';
 import { AuthService } from '../../../../../backend/services/auth.service';
@@ -29,11 +29,11 @@ import { TooltipModule } from 'primeng/tooltip';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatButtonModule,
+  imports: [
+    MatButtonModule,
     MatToolbarModule,
     MatIconModule,
     NgIf,
-    NgFor,
     HttpClientModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -100,19 +100,6 @@ export class LoginComponent implements OnInit{
       localStorage.removeItem('token');
       //this.router.navigate(['/login']);
     }
-    //this.limpiarlocalstorage();
-    
-    //this._authService.logout();
-
-    //Obtener Empleados
-    /*this.empleadosService.getEmpleados().subscribe({
-      next: (data) => {
-        this.empleados = data;
-      },
-      error: (error) => {
-        console.error('Error al cargar los empleados', error);
-      }
-    });*/
 
   }
 
@@ -163,8 +150,6 @@ entrar(){
 
 
 onSubmit(): void {
-  
-  
   if(this.loginForm.value.NombreUsuario == '' || this.loginForm.value.Password == '' ){
     this.messageService.add({ severity: 'warn', summary: 'Precaución', detail: 'Completa Los campos', life: 2000 });
   }else{
